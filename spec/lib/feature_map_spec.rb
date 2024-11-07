@@ -229,6 +229,10 @@ RSpec.describe FeatureMap do
         - frontend/javascripts/packages/my_package/assigned_file.jsx
         - packs/my_pack/assigned_file.rb
 
+        ## Feature-specific assigned globs
+        - app/services/bar_stuff/**
+        - frontend/javascripts/bar_stuff/**
+
         ## Feature Assigned in .feature
         - directory/my_feature/**/**
 
