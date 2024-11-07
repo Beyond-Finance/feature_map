@@ -39,17 +39,3 @@ jobs:
           ruby-version: 3.3
       - name: Run static type checks
         run: bundle exec srb tc
-  notify_on_failure:
-    runs-on: ubuntu-latest
-    needs: [rspec, static_type_check]
-    if: ${{ failure() && github.ref == 'refs/heads/main' }}
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-    steps:
-      - uses: slackapi/slack-github-action@v1.25.0
-        with:
-          payload: |
-            {
-              "text": "${{ github.repository }}/${{ github.ref }}: FAILED\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            }

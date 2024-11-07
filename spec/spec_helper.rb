@@ -1,9 +1,8 @@
 require 'bundler/setup'
 require 'debug'
-require 'packwerk'
-require 'code_ownership'
-require 'code_teams'
-require 'packs/rspec/support'
+require 'feature_map'
+require 'packs-specification'
+require 'packs/rspec/support' # Provides Rspec wrappers that support and isolate test files setup.
 require_relative 'support/application_fixtures'
 
 RSpec.configure do |config|
@@ -20,14 +19,13 @@ RSpec.configure do |config|
   config.include_context 'application fixtures'
 
   config.before do |c|
-    allow_any_instance_of(CodeOwnership.const_get(:Private)::Validations::GithubCodeownersUpToDate).to receive(:`)
-    allow(CodeOwnership::Cli).to receive(:`)
-    codeowners_path.delete if codeowners_path.exist?
+    allow_any_instance_of(FeatureMap.const_get(:Private)::Validations::FeaturesUpToDate).to receive(:`)
+    allow(FeatureMap::Cli).to receive(:`)
+    features_file_path.delete if features_file_path.exist?
 
     unless c.metadata[:do_not_bust_cache]
-      CodeOwnership.bust_caches!
-      CodeTeams.bust_caches!
-      allow(CodeTeams::Plugin).to receive(:registry).and_return({})
+      FeatureMap.bust_caches!
+      FeatureMap::CodeFeatures.bust_caches!
     end
   end
 end
