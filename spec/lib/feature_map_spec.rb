@@ -125,7 +125,7 @@ RSpec.describe FeatureMap do
         CONTENTS
         write_file('app/javascript/[test]/test.js', '')
       end
-
+ 
       it 'properly assigns feature' do
         expect(FeatureMap.for_file('app/javascript/[test]/test.js')).to eq FeatureMap::CodeFeatures.find('Bar')
       end
