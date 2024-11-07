@@ -1,46 +1,46 @@
 RSpec.shared_context 'application fixtures' do
-  let(:codeowners_path) { Pathname.pwd.join('.github/CODEOWNERS') }
+  let(:features_file_path) { Pathname.pwd.join('FEATURES.yml') }
 
-  def write_configuration(owned_globs: nil, **kwargs)
-    owned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml}']
+  def write_configuration(assigned_globs: nil, **kwargs)
+    assigned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml}']
     config = {
-      'owned_globs' => owned_globs,
-      'unowned_globs' => ['config/code_ownership.yml']
+      'assigned_globs' => assigned_globs,
+      'unassigned_globs' => ['config/feature_map.yml']
     }.merge(kwargs)
-    write_file('config/code_ownership.yml', config.to_yaml)
+    write_file('config/feature_map.yml', config.to_yaml)
   end
 
   let(:create_non_empty_application) do
     write_configuration
 
-    write_file('frontend/javascripts/packages/my_package/owned_file.jsx', <<~CONTENTS)
-      // @team Bar
+    write_file('frontend/javascripts/packages/my_package/assigned_file.jsx', <<~CONTENTS)
+      // @feature Bar
     CONTENTS
 
-    write_file('packs/my_pack/owned_file.rb', <<~CONTENTS)
-      # @team Bar
+    write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
+      # @feature Bar
     CONTENTS
 
-    write_file('directory/owner/.codeowner', <<~CONTENTS)
+    write_file('directory/my_feature/.feature', <<~CONTENTS)
       Bar
     CONTENTS
-    write_file('directory/owner/some_directory_file.ts')
+    write_file('directory/my_feature/some_directory_file.ts')
 
     write_file('frontend/javascripts/packages/my_other_package/package.json', <<~CONTENTS)
       {
         "name": "@gusto/my_package",
         "metadata": {
-          "owner": "Bar"
+          "feature": "Bar"
         }
       }
     CONTENTS
     write_file('frontend/javascripts/packages/my_other_package/my_file.jsx')
 
-    write_file('config/teams/bar.yml', <<~CONTENTS)
+    write_file('config/features/bar.yml', <<~CONTENTS)
       name: Bar
-      github:
-        team: '@MyOrg/bar-team'
-      owned_globs:
+      description: Lorem ipsum...
+      documentation_link: https://notion.io/path/to/feature/docs/
+      assigned_globs:
         - app/services/bar_stuff/**
         - frontend/javascripts/bar_stuff/**
     CONTENTS
@@ -51,7 +51,7 @@ RSpec.shared_context 'application fixtures' do
     write_file('packs/my_other_package/package.yml', <<~CONTENTS)
       enforce_dependency: true
       enforce_privacy: true
-      owner: Bar
+      feature: Bar
     CONTENTS
 
     write_file('package.yml', <<~CONTENTS)
@@ -64,7 +64,7 @@ RSpec.shared_context 'application fixtures' do
 
   let(:create_files_with_defined_classes) do
     write_file('app/my_file.rb', <<~CONTENTS)
-      # @team Foo
+      # @feature Foo
 
       require_relative 'my_error'
 
@@ -76,7 +76,7 @@ RSpec.shared_context 'application fixtures' do
     CONTENTS
 
     write_file('app/my_error.rb', <<~CONTENTS)
-      # @team Bar
+      # @feature Bar
 
       class MyError
         def self.raise_error
@@ -85,11 +85,11 @@ RSpec.shared_context 'application fixtures' do
       end
     CONTENTS
 
-    write_file('config/teams/foo.yml', <<~CONTENTS)
+    write_file('config/features/foo.yml', <<~CONTENTS)
       name: Foo
     CONTENTS
 
-    write_file('config/teams/bar.yml', <<~CONTENTS)
+    write_file('config/features/bar.yml', <<~CONTENTS)
       name: Bar
     CONTENTS
 
