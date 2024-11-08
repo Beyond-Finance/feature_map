@@ -51,13 +51,6 @@ module FeatureMap
         ]
       end
 
-      FeatureAssignments = T.type_alias do
-        T::Hash[
-          String,
-          T.any(FilesContent, FeaturesContent)
-        ]
-      end
-
       sig { returns(T::Array[String]) }
       def self.actual_contents_lines
         if path.exist?
@@ -149,14 +142,13 @@ module FeatureMap
         mapper_descriptions = Set.new(Mapper.all.map(&:description))
 
         features_file_content = YAML.load_file(path)
-        if features_file_content[FILES_KEY].present?
-          features_file_content[FILES_KEY].each do |file_path, file_assignment|
-            next if file_assignment.nil?
-            next if file_assignment[FILE_FEATURE_KEY].nil? || features_by_name[file_assignment[FILE_FEATURE_KEY]].nil?
-            next if file_assignment[FILE_MAPPER_KEY].nil? || !mapper_descriptions.include?(file_assignment[FILE_MAPPER_KEY])
+        features_file_content[FILES_KEY]&.each do |file_path, file_assignment|
+          next if file_assignment.nil?
+          next if file_assignment[FILE_FEATURE_KEY].nil? || features_by_name[file_assignment[FILE_FEATURE_KEY]].nil?
+          next if file_assignment[FILE_MAPPER_KEY].nil? || !mapper_descriptions.include?(file_assignment[FILE_MAPPER_KEY])
 
-            raw_cache_contents.fetch(file_assignment[FILE_MAPPER_KEY])[file_path] = features_by_name[file_assignment[FILE_FEATURE_KEY]]
-          end
+          raw_cache_contents[file_assignment[FILE_MAPPER_KEY]] ||= {}
+          raw_cache_contents.fetch(file_assignment[FILE_MAPPER_KEY])[file_path] = features_by_name[file_assignment[FILE_FEATURE_KEY]]
         end
 
         GlobCache.new(raw_cache_contents)
