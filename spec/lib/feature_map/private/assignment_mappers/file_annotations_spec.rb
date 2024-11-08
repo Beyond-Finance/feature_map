@@ -18,6 +18,9 @@ module FeatureMap
           ## Annotations at the top of file
           - packs/my_pack/assigned_file.rb
 
+          ## Feature-specific assigned globs
+          This feature does not have any files in this category.
+
           ## Feature Assigned in .feature
           This feature does not have any files in this category.
 

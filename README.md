@@ -46,10 +46,6 @@ File annotations are a last resort if there is no clear home for your code. File
 ```
 
 ### Glob-Based Assignment
-__TODO__: The following support has been removed and needs to be added back in by reintroducing the `CodeOwnership::Private::OwnershipMappers::TeamGlobs` class as `FeatureMap::Private::OwnershipMappers::FeatureGlobs`.
-When this is done, please reenable the Cli spec on line 60 with a description of "outputs the feature info in human readable format"
-and on line 91 with a description of "outputs JSONified information to the console".
-
 In the YML configuration of a feature, you can set `assigned_globs` to be a glob of files assigned to this feature. For example, in `onboarding.yml`:
 ```yml
 name: Onboarding

@@ -56,8 +56,7 @@ RSpec.describe FeatureMap::Cli do
       context 'when run with one file' do
         let(:argv) { ['for_file', 'app/services/my_file.rb'] }
 
-        # TODO: Feature configuration globs are not yet supported.
-        xit 'outputs the feature info in human readable format' do
+        it 'outputs the feature info in human readable format' do
           expect(FeatureMap::Cli).to receive(:puts).with(<<~MSG)
             Feature: Onboarding
             Feature YML: config/features/onboarding.yml
@@ -87,8 +86,7 @@ RSpec.describe FeatureMap::Cli do
       let(:argv) { ['for_file', '--json', 'app/services/my_file.rb'] }
 
       context 'when run with one file' do
-        # TODO: Feature configuration globs are not yet supported.
-        xit 'outputs JSONified information to the console' do
+        it 'outputs JSONified information to the console' do
           json = {
             feature_name: 'Onboarding',
             feature_yml: 'config/features/onboarding.yml'

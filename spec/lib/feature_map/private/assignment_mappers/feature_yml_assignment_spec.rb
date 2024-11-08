@@ -14,6 +14,9 @@ module FeatureMap
           ## Annotations at the top of file
           This feature does not have any files in this category.
 
+          ## Feature-specific assigned globs
+          This feature does not have any files in this category.
+
           ## Feature Assigned in .feature
           This feature does not have any files in this category.
 
