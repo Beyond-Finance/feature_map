@@ -92,6 +92,12 @@ module FeatureMap
                                                                         '  packs/my_pack/assigned_file.rb:',
                                                                         '    feature: Bar',
                                                                         '    mapper: Annotations at the top of file',
+                                                                        '  app/services/bar_stuff/**:',
+                                                                        '    feature: Bar',
+                                                                        '    mapper: Feature-specific assigned globs',
+                                                                        '  frontend/javascripts/bar_stuff/**:',
+                                                                        '    feature: Bar',
+                                                                        '    mapper: Feature-specific assigned globs',
                                                                         '  directory/my_feature/**/**:',
                                                                         '    feature: Bar',
                                                                         '    mapper: Feature Assigned in .feature',
@@ -101,8 +107,10 @@ module FeatureMap
                                                                         'features:',
                                                                         '  Bar:',
                                                                         '    files:',
+                                                                        '    - app/services/bar_stuff/**',
                                                                         '    - config/features/bar.yml',
                                                                         '    - directory/my_feature/**/**',
+                                                                        '    - frontend/javascripts/bar_stuff/**',
                                                                         '    - frontend/javascripts/packages/my_package/assigned_file.jsx',
                                                                         '    - packs/my_pack/assigned_file.rb',
                                                                         ''
@@ -282,6 +290,12 @@ module FeatureMap
               packs/my_pack/assigned_file.rb:
                 feature: Bar
                 mapper: Annotations at the top of file
+              app/services/bar_stuff/**:
+                feature: Bar
+                mapper: Feature-specific assigned globs
+              frontend/javascripts/bar_stuff/**:
+                feature: Bar
+                mapper: Feature-specific assigned globs
               directory/my_feature/**/**:
                 feature: Bar
                 mapper: Feature Assigned in .feature
@@ -291,8 +305,10 @@ module FeatureMap
             features:
               Bar:
                 files:
+                - app/services/bar_stuff/**
                 - config/features/bar.yml
                 - directory/my_feature/**/**
+                - frontend/javascripts/bar_stuff/**
                 - frontend/javascripts/packages/my_package/assigned_file.jsx
                 - packs/my_pack/assigned_file.rb
           CONTENTS
@@ -301,11 +317,16 @@ module FeatureMap
         it 'initializes the glob cache properly from the FEATURES.yml file' do
           glob_cache = Private::FeaturesFile.to_glob_cache
           expect(glob_cache).to be_a(Private::GlobCache)
-          expect(glob_cache.raw_cache_contents.keys).to eq(['Annotations at the top of file', 'Feature Assigned in .feature', 'Feature YML assignment'])
+          expect(glob_cache.raw_cache_contents.keys).to eq(['Annotations at the top of file', 'Feature-specific assigned globs', 'Feature Assigned in .feature', 'Feature YML assignment'])
           expect(glob_cache.raw_cache_contents['Annotations at the top of file'].length).to eq(2)
           expect(glob_cache.raw_cache_contents['Annotations at the top of file']).to eq(
             'frontend/javascripts/packages/my_package/assigned_file.jsx' => CodeFeatures.find('Bar'),
             'packs/my_pack/assigned_file.rb' => CodeFeatures.find('Bar')
+          )
+          expect(glob_cache.raw_cache_contents['Feature-specific assigned globs'].length).to eq(2)
+          expect(glob_cache.raw_cache_contents['Feature-specific assigned globs']).to eq(
+            'app/services/bar_stuff/**' => CodeFeatures.find('Bar'),
+            'frontend/javascripts/bar_stuff/**' => CodeFeatures.find('Bar')
           )
           expect(glob_cache.raw_cache_contents['Feature Assigned in .feature'].length).to eq(1)
           expect(glob_cache.raw_cache_contents['Feature Assigned in .feature']).to eq('directory/my_feature/**/**' => CodeFeatures.find('Bar'))
