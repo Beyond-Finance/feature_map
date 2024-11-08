@@ -31,7 +31,7 @@ module FeatureMap
             expect(e.message).to eq <<~EXPECTED.chomp
               Feature assignment should only be defined for each file in one way. The following files have had features assigned in multiple ways.
 
-              - app/services/bar/some_file.rb (Annotations at the top of file, Feature Assigned in .feature)
+              - app/services/bar/some_file.rb (Annotations at the top of file, Feature-specific assigned globs, Feature Assigned in .feature)
 
               See https://github.com/Beyond-Finance/feature_map#README.md for more details
             EXPECTED
