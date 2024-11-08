@@ -5,6 +5,7 @@
 require 'set'
 require 'sorbet-runtime'
 require 'json'
+require 'yaml'
 require 'feature_map/code_features'
 require 'feature_map/mapper'
 require 'feature_map/validator'
