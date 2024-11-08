@@ -98,6 +98,7 @@ module FeatureMap
               - app/services/my_assignable_file.rb
               - config/features/bar.yml
               - lib/my_extension.rb
+              total_lines: 37
         EXPECTED
       end
     end

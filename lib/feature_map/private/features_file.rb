@@ -92,8 +92,11 @@ module FeatureMap
           end
         end
 
-        # TODO: The complexity score for the feature needs to be calculated and recorded.
+        # Calculate total lines of code for each feature
         features_content.each_value do |feature_content|
+          expanded_files = T.must(feature_content[FEATURE_FILES_KEY]).flat_map { |file| Dir.glob(file) }.reject { |path| File.directory?(path) }
+          total_lines = expanded_files.sum { |file| count_lines_of_code(file) }
+          feature_content['total_lines'] = total_lines
           T.must(feature_content[FEATURE_FILES_KEY]).sort! if feature_content[FEATURE_FILES_KEY]
         end
 
@@ -103,6 +106,10 @@ module FeatureMap
           *{ FILES_KEY => files_content, FEATURES_KEY => features_content }.to_yaml.split("\n"),
           '' # For end-of-file newline
         ]
+      end
+
+      def self.count_lines_of_code(file)
+        File.read(file).lines.count
       end
 
       sig { void }
