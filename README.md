@@ -146,7 +146,7 @@ FeatureMap.validate!
 ```
 or the CLI
 ```
-bin/featruemap validate
+bin/featuremap validate
 ```
 
 ## Development
