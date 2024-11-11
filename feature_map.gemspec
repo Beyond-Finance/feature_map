@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir['README.md', 'lib/**/*', 'bin/**/*']
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'code_ownership'
   spec.add_dependency 'packs-specification'
   spec.add_dependency 'sorbet-runtime', '>= 0.5.11249'
 

@@ -1,5 +1,7 @@
 # typed: strict
 
+require 'code_ownership'
+
 module FeatureMap
   module Private
     module Validations
@@ -18,7 +20,15 @@ module FeatureMap
 
           errors = T.let([], T::Array[String])
 
-          # TODO: Update to ignore non-settlement owned files.
+          # When a set of teams are configured that require assignments, ignore any files NOT
+          # assigned to one of these teams.
+          unless Private.configuration.require_assignment_for_teams.nil?
+            files_not_mapped_at_all.filter! do |file, _mappers|
+              file_team = CodeOwnership.for_file(file)
+              file_team && T.must(Private.configuration.require_assignment_for_teams).include?(file_team.name)
+            end
+          end
+
           if files_not_mapped_at_all.any?
             errors << <<~MSG
               Some files are missing a feature assignment:
