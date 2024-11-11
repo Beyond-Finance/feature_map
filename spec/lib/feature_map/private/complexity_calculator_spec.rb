@@ -1,4 +1,3 @@
-# spec/lib/feature_map/private/complexity_calculator_spec.rb
 require 'spec_helper'
 require 'tmpdir'
 
@@ -15,9 +14,6 @@ module FeatureMap
               x + y
             end
           RUBY
-
-          # puts "\nSimple test file content:"
-          # puts content
 
           File.write(file_path, content)
 
@@ -51,9 +47,6 @@ module FeatureMap
               result
             end
           RUBY
-
-          # puts "\nComplex test file content:"
-          # puts content
 
           File.write(file_path, content)
 
@@ -163,7 +156,6 @@ module FeatureMap
             end
           RUBY
 
-          # Test different combinations
           simple_feature = described_class.calculate_for_feature([very_simple_path])
           moderate_feature = described_class.calculate_for_feature([very_simple_path, moderate_path])
           complex_feature = described_class.calculate_for_feature([very_simple_path, moderate_path, very_complex_path])
