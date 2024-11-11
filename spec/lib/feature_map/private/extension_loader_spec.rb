@@ -99,6 +99,7 @@ module FeatureMap
               - config/features/bar.yml
               - lib/my_extension.rb
               total_lines: 37
+              abc_size: 33.56
         EXPECTED
       end
     end

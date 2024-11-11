@@ -3,6 +3,7 @@
 # typed: strict
 
 require 'feature_map/private/extension_loader'
+require 'feature_map/private/complexity_calculator'
 require 'feature_map/private/features_file'
 require 'feature_map/private/glob_cache'
 require 'feature_map/private/feature_assigner'

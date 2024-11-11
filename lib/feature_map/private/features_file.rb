@@ -40,7 +40,7 @@ module FeatureMap
       FeatureDetails = T.type_alias do
         T::Hash[
           String,
-          FileList
+          T.any(FileList, Integer)
         ]
       end
 
@@ -92,11 +92,18 @@ module FeatureMap
           end
         end
 
-        # Calculate total lines of code for each feature
         features_content.each_value do |feature_content|
-          expanded_files = T.must(feature_content[FEATURE_FILES_KEY]).flat_map { |file| Dir.glob(file) }.reject { |path| File.directory?(path) }
+          expanded_files = T.must(feature_content[FEATURE_FILES_KEY]).flat_map { |file| Dir.glob(file) }
+            .reject { |path| File.directory?(path) }
+
+          # Calculate total lines
           total_lines = expanded_files.sum { |file| count_lines_of_code(file) }
           feature_content['total_lines'] = total_lines
+
+          # Calculate complexity
+          complexity_metrics = ComplexityCalculator.calculate_for_feature(expanded_files)
+          feature_content.merge!(complexity_metrics)
+
           T.must(feature_content[FEATURE_FILES_KEY]).sort! if feature_content[FEATURE_FILES_KEY]
         end
 
