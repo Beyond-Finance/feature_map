@@ -79,18 +79,16 @@ module FeatureMap
           return if File.directory?(filename)
           return unless File.file?(filename)
 
-          # The annotation should be on line 1 but as of this comment
-          # there's no linter installed to enforce that. We therefore check the
-          # first line (the Ruby VM makes a single `read(1)` call for 8KB),
-          # and if the annotation isn't in the first two lines we assume it
+          # The annotation should be on one of the first three lines.
+          # If the annotation isn't in the first three lines we assume it
           # doesn't exist.
 
-          line1 = File.foreach(filename).first
+          lines = File.foreach(filename).first(3)
 
-          return if !line1
+          return if lines.empty?
 
           begin
-            feature = line1[FEATURE_PATTERN, :feature]
+            feature = lines.map { |line| line[FEATURE_PATTERN, :feature] }.compact.first
           rescue ArgumentError => e
             if e.message.include?('invalid byte sequence')
               feature = nil
