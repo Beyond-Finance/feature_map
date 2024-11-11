@@ -151,7 +151,7 @@ bin/featuremap validate
 
 ## Development
 Contributions are welcome and appreciated. Here's how to get started:
-- clone repo: `$ git@github.com:Beyond-Finance/feature_map.git`
+- clone repo: `$ git clone git@github.com:Beyond-Finance/feature_map.git`
 - install dependencies: `$ bundle install`
 - run tests: `$ bundle exec rspec`
 - run Rubocop: `$ bundle exec rubocop`
