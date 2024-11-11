@@ -135,10 +135,7 @@ RSpec.describe FeatureMap do
   end
 
   describe '.for_backtrace' do
-    before do
-      create_files_with_defined_classes
-      write_configuration
-    end
+    before { create_files_with_defined_classes }
 
     context 'excluded_features is not passed in as an input parameter' do
       it 'finds the right feature' do
@@ -159,10 +156,7 @@ RSpec.describe FeatureMap do
   end
 
   describe '.first_assigned_file_for_backtrace' do
-    before do
-      write_configuration
-      create_files_with_defined_classes
-    end
+    before { create_files_with_defined_classes }
 
     context 'excluded_features is not passed in as an input parameter' do
       it 'finds the right feature' do
@@ -191,11 +185,7 @@ RSpec.describe FeatureMap do
   end
 
   describe '.for_class' do
-    before do
-      create_files_with_defined_classes
-      write_configuration
-      # binding.break
-    end
+    before { create_files_with_defined_classes }
 
     it 'can find the right feature for a class' do
       expect(FeatureMap.for_class(MyFile)).to eq FeatureMap::CodeFeatures.find('Foo')

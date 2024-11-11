@@ -11,6 +11,46 @@ module FeatureMap
     class FeaturesFile
       extend T::Sig
 
+      FILES_KEY = 'files'
+      FILE_FEATURE_KEY = 'feature'
+      FILE_MAPPER_KEY = 'mapper'
+      FEATURES_KEY = 'features'
+      FEATURE_FILES_KEY = 'files'
+
+      FeatureName = T.type_alias { String }
+      FilePath = T.type_alias { String }
+      MapperDescription = T.type_alias { String }
+
+      FileDetails = T.type_alias do
+        T::Hash[
+          String,
+          T.any(FeatureName, MapperDescription)
+        ]
+      end
+
+      FilesContent = T.type_alias do
+        T::Hash[
+          FilePath,
+          FileDetails
+        ]
+      end
+
+      FileList = T.type_alias { T::Array[String] }
+
+      FeatureDetails = T.type_alias do
+        T::Hash[
+          String,
+          FileList
+        ]
+      end
+
+      FeaturesContent = T.type_alias do
+        T::Hash[
+          FeatureName,
+          FeatureDetails
+        ]
+      end
+
       sig { returns(T::Array[String]) }
       def self.actual_contents_lines
         if path.exist?
@@ -36,38 +76,31 @@ module FeatureMap
           # https://github.com/Beyond-Finance/feature_map
         HEADER
 
-        files_assignment_lines = T.let(['files:'], T::Array[String])
-        feature_lines = T.let(['features:'], T::Array[String])
-
-        feature_files_map = {}
+        files_content = T.let({}, FilesContent)
+        features_content = T.let({}, FeaturesContent)
 
         cache.each do |mapper_description, assignment_map_cache|
-          files_assignment_entries = []
           assignment_map_cache = assignment_map_cache.sort_by do |glob, _feature|
             glob
           end
+
           assignment_map_cache.to_h.each do |path, feature|
-            feature_files_map[feature.name] ||= []
-            files_assignment_entries << "  #{path}: #{feature.name}"
-            feature_files_map[feature.name] << path
+            files_content[path] = T.let({ FILE_FEATURE_KEY => feature.name, FILE_MAPPER_KEY => mapper_description }, FileDetails)
+            features_content[feature.name] ||= T.let({}, FeatureDetails)
+            T.must(features_content[feature.name])[FEATURE_FILES_KEY] ||= T.let([], FileList)
+            T.must(T.must(features_content[feature.name])[FEATURE_FILES_KEY]) << path
           end
-
-          next if files_assignment_entries.none?
-
-          files_assignment_lines += ['', "# #{mapper_description}", *files_assignment_entries.sort]
         end
 
-        feature_files_map.each do |feature_name, files|
-          # TODO: The complexity score for the feature needs to be calculated and recorded.
-          feature_lines += ['', "  #{feature_name}:", '    files:', *files.sort.map { |path| "      - #{path}" }]
+        # TODO: The complexity score for the feature needs to be calculated and recorded.
+        features_content.each_value do |feature_content|
+          T.must(feature_content[FEATURE_FILES_KEY]).sort! if feature_content[FEATURE_FILES_KEY]
         end
 
         [
           *header.split("\n"),
           '', # For line between header and files_assignment_lines
-          *files_assignment_lines,
-          '', # For line between files_assignment_lines and feature_lines
-          *feature_lines,
+          *{ FILES_KEY => files_content, FEATURES_KEY => features_content }.to_yaml.split("\n"),
           '' # For end-of-file newline
         ]
       end
@@ -102,8 +135,23 @@ module FeatureMap
 
       sig { returns(GlobCache) }
       def self.to_glob_cache
-        # TODO: This method needs to be implemented.
-        GlobCache.new({})
+        raw_cache_contents = T.let({}, GlobCache::CacheShape)
+        features_by_name = CodeFeatures.all.each_with_object({}) do |feature, map|
+          map[feature.name] = feature
+        end
+        mapper_descriptions = Set.new(Mapper.all.map(&:description))
+
+        features_file_content = YAML.load_file(path)
+        features_file_content[FILES_KEY]&.each do |file_path, file_assignment|
+          next if file_assignment.nil?
+          next if file_assignment[FILE_FEATURE_KEY].nil? || features_by_name[file_assignment[FILE_FEATURE_KEY]].nil?
+          next if file_assignment[FILE_MAPPER_KEY].nil? || !mapper_descriptions.include?(file_assignment[FILE_MAPPER_KEY])
+
+          raw_cache_contents[file_assignment[FILE_MAPPER_KEY]] ||= {}
+          raw_cache_contents.fetch(file_assignment[FILE_MAPPER_KEY])[file_path] = features_by_name[file_assignment[FILE_FEATURE_KEY]]
+        end
+
+        GlobCache.new(raw_cache_contents)
       end
     end
   end

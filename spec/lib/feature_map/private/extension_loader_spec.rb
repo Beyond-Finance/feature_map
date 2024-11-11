@@ -81,22 +81,23 @@ module FeatureMap
           # is generated any changes will be lost. For more details:
           # https://github.com/Beyond-Finance/feature_map
 
+          ---
           files:
-
-          # Feature YML assignment
-            config/features/bar.yml: Bar
-
-          # My special extension
-            app/services/my_assignable_file.rb: Bar
-            lib/my_extension.rb: Bar
-
+            config/features/bar.yml:
+              feature: Bar
+              mapper: Feature YML assignment
+            app/services/my_assignable_file.rb:
+              feature: Bar
+              mapper: My special extension
+            lib/my_extension.rb:
+              feature: Bar
+              mapper: My special extension
           features:
-
             Bar:
               files:
-                - app/services/my_assignable_file.rb
-                - config/features/bar.yml
-                - lib/my_extension.rb
+              - app/services/my_assignable_file.rb
+              - config/features/bar.yml
+              - lib/my_extension.rb
         EXPECTED
       end
     end
