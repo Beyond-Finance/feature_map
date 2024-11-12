@@ -88,12 +88,12 @@ module FeatureMap
             files_content[path] = T.let({ FILE_FEATURE_KEY => feature.name, FILE_MAPPER_KEY => mapper_description }, FileDetails)
             features_content[feature.name] ||= T.let({}, FeatureDetails)
             T.must(features_content[feature.name])[FEATURE_FILES_KEY] ||= T.let([], FileList)
-            T.must(T.must(features_content[feature.name])[FEATURE_FILES_KEY]) << path
+            T.cast(T.must(features_content[feature.name])[FEATURE_FILES_KEY], FileList) << path
           end
         end
 
         features_content.each_value do |feature_content|
-          expanded_files = T.must(feature_content[FEATURE_FILES_KEY]).flat_map { |file| Dir.glob(file) }
+          expanded_files = T.cast(feature_content[FEATURE_FILES_KEY], FileList).flat_map { |file| Dir.glob(file) }
             .reject { |path| File.directory?(path) }
 
           # Calculate total lines
@@ -104,7 +104,7 @@ module FeatureMap
           complexity_metrics = ComplexityCalculator.calculate_for_feature(expanded_files)
           feature_content.merge!(complexity_metrics)
 
-          T.must(feature_content[FEATURE_FILES_KEY]).sort! if feature_content[FEATURE_FILES_KEY]
+          T.cast(feature_content[FEATURE_FILES_KEY], FileList).sort! if feature_content[FEATURE_FILES_KEY]
         end
 
         [
@@ -115,6 +115,7 @@ module FeatureMap
         ]
       end
 
+      sig { params(file: String).returns(Integer) }
       def self.count_lines_of_code(file)
         File.read(file).lines.count
       end
