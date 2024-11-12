@@ -20,6 +20,8 @@ module FeatureMap
           metrics = described_class.calculate_for_file(file_path)
           expect(metrics['abc_size']).to be_kind_of(Numeric)
           expect(metrics['abc_size']).to be > 0
+          expect(metrics['lines_of_code']).to be_kind_of(Integer)
+          expect(metrics['lines_of_code']).to eq(5) # Accounts for the actual lines in the file
         end
       end
 
@@ -53,13 +55,15 @@ module FeatureMap
           metrics = described_class.calculate_for_file(file_path)
           expect(metrics['abc_size']).to be_kind_of(Numeric)
           expect(metrics['abc_size']).to be > 2 # Should be more complex than simple file
+          expect(metrics['lines_of_code']).to be_kind_of(Integer)
+          expect(metrics['lines_of_code']).to eq(19) # Accounts for the actual lines in the file
         end
       end
     end
 
     describe '.calculate_for_feature' do
       it 'returns 0 for empty file list' do
-        expect(described_class.calculate_for_feature([])).to eq({ 'abc_size' => 0 })
+        expect(described_class.calculate_for_feature([])).to eq({ 'abc_size' => 0, 'lines_of_code' => 0 })
       end
 
       it 'calculates abc_size for a feature with files of varying ABC size' do
@@ -99,6 +103,8 @@ module FeatureMap
 
           expect(metrics['abc_size']).to be_kind_of(Numeric)
           expect(metrics['abc_size']).to be > 0
+          expect(metrics['lines_of_code']).to be_kind_of(Integer)
+          expect(metrics['lines_of_code']).to be > 0
         end
       end
 
@@ -160,9 +166,20 @@ module FeatureMap
           moderate_feature = described_class.calculate_for_feature([very_simple_path, moderate_path])
           complex_feature = described_class.calculate_for_feature([very_simple_path, moderate_path, very_complex_path])
 
-          expect(simple_feature['abc_size']).to eq(1.41)
-          expect(moderate_feature['abc_size']).to eq(9.6)
-          expect(complex_feature['abc_size']).to eq(26.83)
+          expect(simple_feature).to eq({
+                                         'abc_size' => 1.41,
+                                         'lines_of_code' => 5
+                                       })
+
+          expect(moderate_feature).to eq({
+                                           'abc_size' => 9.6,
+                                           'lines_of_code' => 16
+                                         })
+
+          expect(complex_feature).to eq({
+                                          'abc_size' => 26.83,
+                                          'lines_of_code' => 37
+                                        })
         end
       end
     end

@@ -96,13 +96,8 @@ module FeatureMap
           expanded_files = T.cast(feature_content[FEATURE_FILES_KEY], FileList).flat_map { |file| Dir.glob(file) }
             .reject { |path| File.directory?(path) }
 
-          # Calculate total lines
-          total_lines = expanded_files.sum { |file| count_lines_of_code(file) }
-          feature_content['total_lines'] = total_lines
-
-          # Calculate complexity
-          complexity_metrics = ComplexityCalculator.calculate_for_feature(expanded_files)
-          feature_content.merge!(complexity_metrics)
+          # Calculate complexity Metrics
+          feature_content.merge!(ComplexityCalculator.calculate_for_feature(expanded_files))
 
           T.cast(feature_content[FEATURE_FILES_KEY], FileList).sort! if feature_content[FEATURE_FILES_KEY]
         end
@@ -113,11 +108,6 @@ module FeatureMap
           *{ FILES_KEY => files_content, FEATURES_KEY => features_content }.to_yaml.split("\n"),
           '' # For end-of-file newline
         ]
-      end
-
-      sig { params(file: String).returns(Integer) }
-      def self.count_lines_of_code(file)
-        File.read(file).lines.count
       end
 
       sig { void }
