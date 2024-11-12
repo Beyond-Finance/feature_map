@@ -113,6 +113,8 @@ module FeatureMap
                                                                         '    - frontend/javascripts/bar_stuff/**',
                                                                         '    - frontend/javascripts/packages/my_package/assigned_file.jsx',
                                                                         '    - packs/my_pack/assigned_file.rb',
+                                                                        '    abc_size: 0',
+                                                                        '    lines_of_code: 1',
                                                                         ''
                                                                       ])
         end
@@ -147,10 +149,14 @@ module FeatureMap
                                                                         '    files:',
                                                                         '    - app/my_error.rb',
                                                                         '    - config/features/bar.yml',
+                                                                        '    abc_size: 1.0',
+                                                                        '    lines_of_code: 7',
                                                                         '  Foo:',
                                                                         '    files:',
                                                                         '    - app/my_file.rb',
                                                                         '    - config/features/foo.yml',
+                                                                        '    abc_size: 2.0',
+                                                                        '    lines_of_code: 9',
                                                                         ''
                                                                       ])
         end
@@ -174,6 +180,8 @@ module FeatureMap
             Foo:
               files:
               - config/features/foo.yml
+              abc_size: 0
+              lines_of_code: 0
         FEATURES
       end
 

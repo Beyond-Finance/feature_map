@@ -40,7 +40,7 @@ module FeatureMap
       FeatureDetails = T.type_alias do
         T::Hash[
           String,
-          FileList
+          T.any(FileList, Integer)
         ]
       end
 
@@ -88,13 +88,18 @@ module FeatureMap
             files_content[path] = T.let({ FILE_FEATURE_KEY => feature.name, FILE_MAPPER_KEY => mapper_description }, FileDetails)
             features_content[feature.name] ||= T.let({}, FeatureDetails)
             T.must(features_content[feature.name])[FEATURE_FILES_KEY] ||= T.let([], FileList)
-            T.must(T.must(features_content[feature.name])[FEATURE_FILES_KEY]) << path
+            T.cast(T.must(features_content[feature.name])[FEATURE_FILES_KEY], FileList) << path
           end
         end
 
-        # TODO: The complexity score for the feature needs to be calculated and recorded.
         features_content.each_value do |feature_content|
-          T.must(feature_content[FEATURE_FILES_KEY]).sort! if feature_content[FEATURE_FILES_KEY]
+          expanded_files = T.cast(feature_content[FEATURE_FILES_KEY], FileList).flat_map { |file| Dir.glob(file) }
+            .reject { |path| File.directory?(path) }
+
+          # Calculate complexity Metrics
+          feature_content.merge!(ComplexityCalculator.calculate_for_feature(expanded_files))
+
+          T.cast(feature_content[FEATURE_FILES_KEY], FileList).sort! if feature_content[FEATURE_FILES_KEY]
         end
 
         [

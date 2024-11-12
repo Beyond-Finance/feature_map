@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'debug'
+require 'rubocop'
 require 'feature_map'
 require 'packs-specification'
 require 'packs/rspec/support' # Provides Rspec wrappers that support and isolate test files setup.
