@@ -63,7 +63,7 @@ module FeatureMap
 
     describe '.calculate_for_feature' do
       it 'returns 0 for empty file list' do
-        expect(described_class.calculate_for_feature([])).to eq({ 'abc_size' => 0, 'lines_of_code' => 0 })
+        expect(described_class.calculate_for_feature([])).to eq({ 'abc_size' => 0, 'lines_of_code' => 0, 'cyclomatic_complexity' => 0 })
       end
 
       it 'calculates abc_size for a feature with files of varying ABC size' do
@@ -168,17 +168,20 @@ module FeatureMap
 
           expect(simple_feature).to eq({
                                          'abc_size' => 1.41,
-                                         'lines_of_code' => 5
+                                         'lines_of_code' => 5,
+                                         'cyclomatic_complexity' => 1
                                        })
 
           expect(moderate_feature).to eq({
                                            'abc_size' => 9.6,
-                                           'lines_of_code' => 16
+                                           'lines_of_code' => 16,
+                                           'cyclomatic_complexity' => 3
                                          })
 
           expect(complex_feature).to eq({
                                           'abc_size' => 26.83,
-                                          'lines_of_code' => 37
+                                          'lines_of_code' => 37,
+                                          'cyclomatic_complexity' => 7
                                         })
         end
       end

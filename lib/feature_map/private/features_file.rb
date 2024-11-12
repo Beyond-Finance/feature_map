@@ -5,7 +5,7 @@ module FeatureMap
   module Private
     #
     # This class is responsible for turning FeatureMap directives (e.g. annotations, directory assignments, etc)
-    # into a FEAUTERS.yml file, that can be used as an input to a variety of engineering team utilities (e.g.
+    # into a FEATURES.yml file, that can be used as an input to a variety of engineering team utilities (e.g.
     # PR/release announcements, documentation generation, etc).
     #
     class FeaturesFile

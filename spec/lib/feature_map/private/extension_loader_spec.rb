@@ -100,6 +100,7 @@ module FeatureMap
               - lib/my_extension.rb
               abc_size: 33.56
               lines_of_code: 36
+              cyclomatic_complexity: 1
         EXPECTED
       end
     end
