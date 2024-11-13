@@ -122,7 +122,7 @@ FeatureMap comes with a validation function to ensure the following things are t
 1) Only one mechanism is defining the feature assignment for a file. That is -- you can't have a file annotation on a file assigned via glob-based assignment. This helps make feature assignment behavior more clear by avoiding concerns about precedence.
 2) All features referenced as an assignment for any file is a valid feature (i.e. it's in the list of `CodeFeatures.all`).
 3) All files have a feature assigned. You can specify in `unassigned_globs` to represent a TODO list of files to add feature assignments to.
-  * Teams using the [CodeOwnership](https://github.com/rubyatscale/code_ownership/tree/main) gem include a `require_assignment_for_teams` key in the `feature_map.yml` file to have this validation to apply a specific list of team. This allows feature assignments to be rolled out in a gradual manner on a team-by-team basis. The `require_assignment_for_teams` configuration should contain a list of team names (i.e. the value from the `name` key in the associated `config/teams/*.yml` file) for the teams whose files will be included in this validation.
+    * Teams using the [CodeOwnership](https://github.com/rubyatscale/code_ownership/tree/main) gem include a `require_assignment_for_teams` key in the `feature_map.yml` file to have this validation to apply a specific list of team. This allows feature assignments to be rolled out in a gradual manner on a team-by-team basis. The `require_assignment_for_teams` configuration should contain a list of team names (i.e. the value from the `name` key in the associated `config/teams/*.yml` file) for the teams whose files will be included in this validation.
 3) The `FEATURES.yml` file is up to date. This is automatically corrected and staged unless specified otherwise with `bin/featuremap validate --skip-autocorrect --skip-stage`. You can turn this validation off by setting `skip_features_validation: true` in `config/feature_map.yml`.
 
 FeatureMap also allows you to specify which globs and file extensions should be considered assignable.
@@ -147,7 +147,9 @@ bin/featuremap validate
 ```
 
 ## Development
+
 Contributions are welcome and appreciated. Here's how to get started:
+
 - clone repo: `$ git clone git@github.com:Beyond-Finance/feature_map.git`
 - install dependencies: `$ bundle install`
 - run tests: `$ bundle exec rspec`
@@ -156,5 +158,6 @@ Contributions are welcome and appreciated. Here's how to get started:
 
 That's it! Assuming you can complete all of these steps without any error or issues, you should be good to go.
 
-#### Versioning
-TODO: add support and documentation documentation for publishing new versions of this gem.
+#### Publication
+
+This gem is integrated into other Beyond Finance applications directly via Github. Pushing out a pull request in this repo, getting it reviewed and approved, and merging the changes back to main are all that is needed to publish a new version of this gem and incorporate the changes into downstream applications.
