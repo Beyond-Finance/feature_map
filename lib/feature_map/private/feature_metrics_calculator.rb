@@ -6,7 +6,7 @@ require 'sorbet-runtime'
 
 module FeatureMap
   module Private
-    class ComplexityCalculator
+    class FeatureMetricsCalculator
       extend T::Sig
 
       ABC_SIZE_METRIC = 'abc_size'

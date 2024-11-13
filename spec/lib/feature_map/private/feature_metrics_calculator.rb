@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'tmpdir'
 
 module FeatureMap
-  RSpec.describe Private::ComplexityCalculator do
+  RSpec.describe Private::FeatureMetricsCalculator do
     describe '.calculate_for_file' do
       it 'calculates abc size for a simple file' do
         Dir.mktmpdir do |dir|

@@ -97,7 +97,7 @@ module FeatureMap
             .reject { |path| File.directory?(path) }
 
           # Calculate complexity Metrics
-          feature_content.merge!(ComplexityCalculator.calculate_for_feature(expanded_files))
+          feature_content.merge!(FeatureMetricsCalculator.calculate_for_feature(expanded_files))
 
           T.cast(feature_content[FEATURE_FILES_KEY], FileList).sort! if feature_content[FEATURE_FILES_KEY]
         end
