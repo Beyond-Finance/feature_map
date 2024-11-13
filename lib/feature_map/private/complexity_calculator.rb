@@ -3,7 +3,6 @@
 
 require 'rubocop'
 require 'sorbet-runtime'
-require_relative 'cyclomatic_complexity_calculator'
 
 module FeatureMap
   module Private
@@ -14,6 +13,12 @@ module FeatureMap
       LINES_OF_CODE_METRIC = 'lines_of_code'
       CYCLOMATIC_COMPLEXITY_METRIC = 'cyclomatic_complexity'
 
+      SUPPORTED_METRICS = T.let([
+        ABC_SIZE_METRIC,
+        LINES_OF_CODE_METRIC,
+        CYCLOMATIC_COMPLEXITY_METRIC
+      ].freeze, T::Array[String])
+
       ComplexityMetrics = T.type_alias do
         T::Hash[
           String, # metric name
@@ -21,15 +26,13 @@ module FeatureMap
         ]
       end
 
-      sig { params(file_paths: T::Array[String]).returns(T::Hash[String, Integer]) }
+      sig { params(file_paths: T::Array[String]).returns(ComplexityMetrics) }
       def self.calculate_for_feature(file_paths)
         metrics = file_paths.map { |file| calculate_for_file(file) }
 
-        {
-          ABC_SIZE_METRIC => metrics.sum { |m| m[ABC_SIZE_METRIC] || 0 },
-          LINES_OF_CODE_METRIC => metrics.sum { |m| m[LINES_OF_CODE_METRIC] || 0 },
-          CYCLOMATIC_COMPLEXITY_METRIC => metrics.sum { |m| m[CYCLOMATIC_COMPLEXITY_METRIC] || 0 }
-        }
+        SUPPORTED_METRICS.each_with_object({}) do |metric_key, aggregate_metrics|
+          aggregate_metrics[metric_key] = metrics.sum { |m| m[metric_key] || 0 }
+        end
       end
 
       sig { params(file_path: String).returns(ComplexityMetrics) }
