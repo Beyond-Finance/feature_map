@@ -3,6 +3,7 @@
 
 require 'rubocop'
 require 'sorbet-runtime'
+require_relative 'cyclomatic_complexity_calculator'
 
 module FeatureMap
   module Private
@@ -18,36 +19,6 @@ module FeatureMap
           String, # metric name
           Integer # score
         ]
-      end
-
-      # Internal class to calculate cyclomatic complexity
-      class CyclomaticComplexityCalculator
-        COMPLEXITY_NODES = %i[
-          if case while until for
-          rescue when and or
-        ].freeze
-
-        def initialize(ast)
-          @ast = ast
-          @complexity = 1 # Start at 1 for the base path
-        end
-
-        def calculate
-          process(@ast)
-          @complexity
-        end
-
-        private
-
-        def process(node)
-          return unless node.is_a?(Parser::AST::Node)
-
-          # Increment complexity for each branching node
-          @complexity += 1 if COMPLEXITY_NODES.include?(node.type)
-
-          # Process children
-          node.children.each { |child| process(child) }
-        end
       end
 
       sig { params(file_paths: T::Array[String]).returns(T::Hash[String, Integer]) }
@@ -71,6 +42,11 @@ module FeatureMap
         source = RuboCop::ProcessedSource.new(file_content, RUBY_VERSION.to_f)
         return file_metrics unless source.ast
 
+        # TODO: We're using some internal RuboCop classes to calculate complexity metrics
+        # for each file. Doing this tightly couples our functionality with RuboCop,
+        # which does introduce some risk, should RuboCop decide to change the interface
+        # of these classes. That being said, this is a tradeoff we're willing to
+        # make right now.
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
 
