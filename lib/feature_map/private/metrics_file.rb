@@ -5,10 +5,10 @@ module FeatureMap
   module Private
     #
     # This class is responsible for turning FeatureMap directives (e.g. annotations, directory assignments, etc)
-    # into a FEATURES.yml file, that can be used as an input to a variety of engineering team utilities (e.g.
+    # into a metrics.yml file, that can be used as an input to a variety of engineering team utilities (e.g.
     # PR/release announcements, documentation generation, etc).
     #
-    class FeaturesFile
+    class MetricsFile
       extend T::Sig
 
       FILES_KEY = 'files'
@@ -115,7 +115,7 @@ module FeatureMap
 
       sig { returns(Pathname) }
       def self.path
-        Pathname.pwd.join('FEATURES.yml')
+        Pathname.pwd.join('metrics.yml')
       end
 
       sig { params(files: T::Array[String]).void }
@@ -132,7 +132,7 @@ module FeatureMap
 
       sig { returns(T::Boolean) }
       def self.use_features_cache?
-        FeaturesFile.path.exist? && !Private.configuration.skip_features_validation
+        MetricsFile.path.exist? && !Private.configuration.skip_features_validation
       end
 
       sig { returns(GlobCache) }

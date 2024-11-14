@@ -5,7 +5,7 @@
 require 'feature_map/private/extension_loader'
 require 'feature_map/private/cyclomatic_complexity_calculator'
 require 'feature_map/private/feature_metrics_calculator'
-require 'feature_map/private/features_file'
+require 'feature_map/private/assignments_file'
 require 'feature_map/private/glob_cache'
 require 'feature_map/private/feature_assigner'
 require 'feature_map/private/feature_plugins/assignment'
@@ -44,7 +44,7 @@ module FeatureMap
 
     sig { params(files: T::Array[String], autocorrect: T::Boolean, stage_changes: T::Boolean).void }
     def self.validate!(files:, autocorrect: true, stage_changes: true)
-      FeaturesFile.update_cache!(files) if FeaturesFile.use_features_cache?
+      AssignmentsFile.update_cache!(files) if AssignmentsFile.use_features_cache?
 
       errors = Validator.all.flat_map do |validator|
         validator.validation_errors(
@@ -58,6 +58,7 @@ module FeatureMap
         errors << 'See https://github.com/Beyond-Finance/feature_map#README.md for more details'
         raise InvalidFeatureMapConfigurationError.new(errors.join("\n")) # rubocop:disable Style/RaiseArgs
       end
+      # TODO: generate metrics.yml file?
     end
 
     # Returns a string version of the relative path to a Rails constant,
@@ -113,8 +114,8 @@ module FeatureMap
     sig { returns(GlobCache) }
     def self.glob_cache
       @glob_cache ||= T.let(@glob_cache, T.nilable(GlobCache))
-      @glob_cache ||= if FeaturesFile.use_features_cache?
-                        FeaturesFile.to_glob_cache
+      @glob_cache ||= if AssignmentsFile.use_features_cache?
+                        AssignmentsFile.to_glob_cache
                       else
                         Mapper.to_glob_cache
                       end

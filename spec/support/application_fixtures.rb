@@ -1,5 +1,5 @@
 RSpec.shared_context 'application fixtures' do
-  let(:features_file_path) { Pathname.pwd.join('FEATURES.yml') }
+  let(:assignments_file_path) { Pathname.pwd.join('assignments.yml') }
 
   def write_configuration(assigned_globs: nil, **kwargs)
     assigned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml}']
