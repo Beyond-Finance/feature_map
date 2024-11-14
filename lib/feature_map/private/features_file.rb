@@ -93,11 +93,8 @@ module FeatureMap
         end
 
         features_content.each_value do |feature_content|
-          expanded_files = T.cast(feature_content[FEATURE_FILES_KEY], FileList).flat_map { |file| Dir.glob(file) }
+          T.cast(feature_content[FEATURE_FILES_KEY], FileList).flat_map { |file| Dir.glob(file) }
             .reject { |path| File.directory?(path) }
-
-          # Calculate complexity Metrics
-          feature_content.merge!(FeatureMetricsCalculator.calculate_for_feature(expanded_files))
 
           T.cast(feature_content[FEATURE_FILES_KEY], FileList).sort! if feature_content[FEATURE_FILES_KEY]
         end

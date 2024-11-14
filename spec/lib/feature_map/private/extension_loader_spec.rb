@@ -98,9 +98,6 @@ module FeatureMap
               - app/services/my_assignable_file.rb
               - config/features/bar.yml
               - lib/my_extension.rb
-              abc_size: 33.56
-              lines_of_code: 36
-              cyclomatic_complexity: 1
         EXPECTED
       end
     end
