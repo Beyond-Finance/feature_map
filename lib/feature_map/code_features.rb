@@ -17,7 +17,7 @@ module FeatureMap
     sig { returns(T::Array[Feature]) }
     def self.all
       @all = T.let(@all, T.nilable(T::Array[Feature]))
-      @all ||= for_directory('config/features')
+      @all ||= for_directory('features/definitions')
     end
 
     sig { params(name: String).returns(T.nilable(Feature)) }

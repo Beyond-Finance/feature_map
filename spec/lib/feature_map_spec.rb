@@ -3,7 +3,7 @@ RSpec.describe FeatureMap do
   describe '.validate!' do
     describe 'features must exist validation' do
       before do
-        write_file('config/features/bar.yml', <<~CONTENTS)
+        write_file('features/definitions/bar.yml', <<~CONTENTS)
           name: Bar
         CONTENTS
 
@@ -75,7 +75,7 @@ RSpec.describe FeatureMap do
 
     context 'file is unassigned' do
       before do
-        write_file('config/features/bar.yml', <<~CONTENTS)
+        write_file('features/definitions/bar.yml', <<~CONTENTS)
           name: Bar
         CONTENTS
 
@@ -227,7 +227,7 @@ RSpec.describe FeatureMap do
         - directory/my_feature/**/**
 
         ## Feature YML assignment
-        - config/features/bar.yml
+        - features/definitions/bar.yml
       FEATURE_REPORT
     end
   end

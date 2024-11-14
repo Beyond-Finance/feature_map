@@ -13,10 +13,10 @@ module FeatureMap
             app/services/my_assignable_file.rb:
               feature: Bar
               mapper: Annotations at the top of file
-            config/features/bar.yml:
+            features/definitions/bar.yml:
               feature: Bar
               mapper: Feature YML assignment
-            config/features/foo.yml:
+            features/definitions/foo.yml:
               feature: Foo
               mapper: Feature YML assignment
             lib/foo_logic.rb:
@@ -25,9 +25,9 @@ module FeatureMap
           features:
             Bar:
             - app/services/my_assignable_file.rb
-            - config/features/bar.yml
+            - features/definitions/bar.yml
             Foo:
-            - config/features/foo.yml
+            - features/definitions/foo.yml
             - lib/foo_logic.rb
         YML
 
@@ -42,10 +42,10 @@ module FeatureMap
                                                                        '  app/services/my_assignable_file.rb:',
                                                                        '    feature: Bar',
                                                                        '    mapper: Annotations at the top of file',
-                                                                       '  config/features/bar.yml:',
+                                                                       '  features/definitions/bar.yml:',
                                                                        '    feature: Bar',
                                                                        '    mapper: Feature YML assignment',
-                                                                       '  config/features/foo.yml:',
+                                                                       '  features/definitions/foo.yml:',
                                                                        '    feature: Foo',
                                                                        '    mapper: Feature YML assignment',
                                                                        '  lib/foo_logic.rb:',
@@ -54,9 +54,9 @@ module FeatureMap
                                                                        'features:',
                                                                        '  Bar:',
                                                                        '  - app/services/my_assignable_file.rb',
-                                                                       '  - config/features/bar.yml',
+                                                                       '  - features/definitions/bar.yml',
                                                                        '  Foo:',
-                                                                       '  - config/features/foo.yml',
+                                                                       '  - features/definitions/foo.yml',
                                                                        '  - lib/foo_logic.rb',
                                                                        ''
                                                                      ])
@@ -98,14 +98,14 @@ module FeatureMap
             '  directory/my_feature/**/**:',
             '    feature: Bar',
             '    mapper: Feature Assigned in .feature',
-            '  config/features/bar.yml:',
+            '  features/definitions/bar.yml:',
             '    feature: Bar',
             '    mapper: Feature YML assignment',
             'features:',
             '  Bar:',
             '  - app/services/bar_stuff/thing.rb',
-            '  - config/features/bar.yml',
             '  - directory/my_feature/some_directory_file.ts',
+            '  - features/definitions/bar.yml',
             '  - frontend/javascripts/bar_stuff/thing.jsx',
             '  - frontend/javascripts/packages/my_package/assigned_file.jsx',
             '  - packs/my_pack/assigned_file.rb',
@@ -134,19 +134,19 @@ module FeatureMap
                                                                            '  app/my_file.rb:',
                                                                            '    feature: Foo',
                                                                            '    mapper: Annotations at the top of file',
-                                                                           '  config/features/bar.yml:',
+                                                                           '  features/definitions/bar.yml:',
                                                                            '    feature: Bar',
                                                                            '    mapper: Feature YML assignment',
-                                                                           '  config/features/foo.yml:',
+                                                                           '  features/definitions/foo.yml:',
                                                                            '    feature: Foo',
                                                                            '    mapper: Feature YML assignment',
                                                                            'features:',
                                                                            '  Bar:',
                                                                            '  - app/my_error.rb',
-                                                                           '  - config/features/bar.yml',
+                                                                           '  - features/definitions/bar.yml',
                                                                            '  Foo:',
                                                                            '  - app/my_file.rb',
-                                                                           '  - config/features/foo.yml',
+                                                                           '  - features/definitions/foo.yml',
                                                                            ''
                                                                          ])
         end
@@ -163,19 +163,19 @@ module FeatureMap
 
           ---
           files:
-            config/features/foo.yml:
+            features/definitions/foo.yml:
               feature: Foo
               mapper: Feature YML assignment
           features:
             Foo:
-            - config/features/foo.yml
+            - features/definitions/foo.yml
         FEATURES
       end
 
       before do
         # Must use the skip_features_validation to avoid having the GlobCache loaded from the stub assignments.yml file.
         write_configuration('skip_features_validation' => true)
-        write_file('config/features/foo.yml', <<~CONTENTS)
+        write_file('features/definitions/foo.yml', <<~CONTENTS)
           name: Foo
         CONTENTS
       end
@@ -267,7 +267,7 @@ module FeatureMap
         before do
           write_configuration
 
-          write_file('config/features/bar.yml', <<~CONTENTS)
+          write_file('features/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
 
@@ -294,13 +294,13 @@ module FeatureMap
               directory/my_feature/**/**:
                 feature: Bar
                 mapper: Feature Assigned in .feature
-              config/features/bar.yml:
+              features/definitions/bar.yml:
                 feature: Bar
                 mapper: Feature YML assignment
             features:
               Bar:
               - app/services/bar_stuff/**'
-              - config/features/bar.yml
+              - features/definitions/bar.yml
               - directory/my_feature/**/**'
               - frontend/javascripts/bar_stuff/**'
               - frontend/javascripts/packages/my_package/assigned_file.jsx
@@ -324,7 +324,7 @@ module FeatureMap
           )
           expect(glob_cache.raw_cache_contents['Feature Assigned in .feature'].length).to eq(1)
           expect(glob_cache.raw_cache_contents['Feature Assigned in .feature']).to eq('directory/my_feature/**/**' => CodeFeatures.find('Bar'))
-          expect(glob_cache.raw_cache_contents['Feature YML assignment']).to eq('config/features/bar.yml' => CodeFeatures.find('Bar'))
+          expect(glob_cache.raw_cache_contents['Feature YML assignment']).to eq('features/definitions/bar.yml' => CodeFeatures.find('Bar'))
         end
       end
 
@@ -332,11 +332,11 @@ module FeatureMap
         before do
           write_configuration
 
-          write_file('config/features/bar.yml', <<~CONTENTS)
+          write_file('features/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
 
-          write_file('config/features/foo.yml', <<~CONTENTS)
+          write_file('features/definitions/foo.yml', <<~CONTENTS)
             name: Foo
           CONTENTS
 
@@ -354,19 +354,19 @@ module FeatureMap
               app/my_file.rb:
                 feature: Foo
                 mapper: Annotations at the top of file
-              config/features/bar.yml:
+              features/definitions/bar.yml:
                 feature: Bar
                 mapper: Feature YML assignment
-              config/features/foo.yml:
+              features/definitions/foo.yml:
                 feature: Foo
                 mapper: Feature YML assignment
             features:
               Bar:
               - app/my_error.rb
-              - config/features/bar.yml
+              - features/definitions/bar.yml
               Foo:
               - app/my_file.rb
-              - config/features/foo.yml
+              - features/definitions/foo.yml
           CONTENTS
         end
 
@@ -381,8 +381,8 @@ module FeatureMap
           )
           expect(glob_cache.raw_cache_contents['Feature YML assignment'].length).to eq(2)
           expect(glob_cache.raw_cache_contents['Feature YML assignment']).to eq(
-            'config/features/bar.yml' => CodeFeatures.find('Bar'),
-            'config/features/foo.yml' => CodeFeatures.find('Foo')
+            'features/definitions/bar.yml' => CodeFeatures.find('Bar'),
+            'features/definitions/foo.yml' => CodeFeatures.find('Foo')
           )
         end
       end

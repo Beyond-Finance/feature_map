@@ -21,7 +21,7 @@ module FeatureMap
             # @feature Bar
           CONTENTS
 
-          write_file('config/features/bar.yml', <<~CONTENTS)
+          write_file('features/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
         end

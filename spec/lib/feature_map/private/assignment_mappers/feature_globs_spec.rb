@@ -4,7 +4,7 @@ module FeatureMap
 
     describe 'FeatureMap.for_file' do
       before do
-        write_file('config/features/bar.yml', <<~CONTENTS)
+        write_file('features/definitions/bar.yml', <<~CONTENTS)
           name: Bar
           assigned_globs:
             - app/services/bar_stuff/**/**
@@ -29,14 +29,14 @@ module FeatureMap
           write_file('frontend/javascripts/blah/my_file.rb')
           write_file('frontend/javascripts/blah/subdir/my_file.rb')
 
-          write_file('config/features/bar.yml', <<~CONTENTS)
+          write_file('features/definitions/bar.yml', <<~CONTENTS)
             name: Bar
             assigned_globs:
               - packs/**/**
               - frontend/javascripts/blah/subdir/my_file.rb
           CONTENTS
 
-          write_file('config/features/foo.yml', <<~CONTENTS)
+          write_file('features/definitions/foo.yml', <<~CONTENTS)
             name: Foo
             assigned_globs:
               - packs/**/**
@@ -50,8 +50,8 @@ module FeatureMap
             expect(e.message).to eq <<~EXPECTED.chomp
               `assigned_globs` cannot overlap between features. The following globs overlap:
 
-              - `packs/**/**` (from `config/features/bar.yml`), `packs/**/**` (from `config/features/foo.yml`)
-              - `frontend/javascripts/blah/subdir/my_file.rb` (from `config/features/bar.yml`), `frontend/javascripts/blah/**/**` (from `config/features/foo.yml`)
+              - `packs/**/**` (from `features/definitions/bar.yml`), `packs/**/**` (from `features/definitions/foo.yml`)
+              - `frontend/javascripts/blah/subdir/my_file.rb` (from `features/definitions/bar.yml`), `frontend/javascripts/blah/**/**` (from `features/definitions/foo.yml`)
 
               See https://github.com/Beyond-Finance/feature_map#README.md for more details
             EXPECTED
