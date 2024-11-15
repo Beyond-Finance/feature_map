@@ -17,11 +17,11 @@ module FeatureMap
           features:
             Bar:
               abc_size: 1.0
-              lines_of_code: 7
+              lines_of_code: 3
               cyclomatic_complexity: 1
             Foo:
               abc_size: 2.0
-              lines_of_code: 9
+              lines_of_code: 6
               cyclomatic_complexity: 1
             Empty Feature:
               abc_size: 0

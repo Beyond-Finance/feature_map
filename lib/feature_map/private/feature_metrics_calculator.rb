@@ -40,23 +40,29 @@ module FeatureMap
         return {} unless file_path.end_with?('.rb')
 
         file_content = File.read(file_path)
-        file_metrics = T.let({ LINES_OF_CODE_METRIC => file_content.lines.count }, FeatureMetrics)
-
         source = RuboCop::ProcessedSource.new(file_content, RUBY_VERSION.to_f)
-        return file_metrics unless source.ast
+        return {} unless source.ast
 
-        # TODO: We're using some internal RuboCop classes to calculate complexity metrics
+        # NOTE: We're using some internal RuboCop classes to calculate complexity metrics
         # for each file. Doing this tightly couples our functionality with RuboCop,
         # which does introduce some risk, should RuboCop decide to change the interface
         # of these classes. That being said, this is a tradeoff we're willing to
         # make right now.
+        code_length_calculator = RuboCop::Cop::Metrics::Utils::CodeLengthCalculator.new(
+          source.ast,
+          source,
+          count_comments: false,
+          foldable_types: %i[array hash heredoc method_call]
+        )
+
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
 
-        file_metrics.merge(
+        {
           ABC_SIZE_METRIC => abc_calculator.calculate.first,
-          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate
-        )
+          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
+          LINES_OF_CODE_METRIC => code_length_calculator.calculate
+        }
       end
     end
   end
