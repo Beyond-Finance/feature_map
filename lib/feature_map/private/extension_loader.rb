@@ -4,7 +4,7 @@
 module FeatureMap
   module Private
     # This class handles loading extensions to feature_map using the `require` directive
-    # in the `feature_map.yml` configuration.
+    # in the `.features/config.yml` configuration.
     module ExtensionLoader
       class << self
         extend T::Sig

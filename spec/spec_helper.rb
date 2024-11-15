@@ -22,7 +22,7 @@ RSpec.configure do |config|
   config.before do |c|
     allow_any_instance_of(FeatureMap.const_get(:Private)::Validations::FeaturesUpToDate).to receive(:`)
     allow(FeatureMap::Cli).to receive(:`)
-    features_file_path.delete if features_file_path.exist?
+    assignments_file_path.delete if assignments_file_path.exist?
 
     unless c.metadata[:do_not_bust_cache]
       FeatureMap.bust_caches!

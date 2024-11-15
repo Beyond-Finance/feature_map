@@ -12,22 +12,22 @@ module FeatureMap
         def validation_errors(files:, autocorrect: true, stage_changes: true)
           return [] if Private.configuration.skip_features_validation
 
-          actual_content_lines = FeaturesFile.actual_contents_lines
-          expected_content_lines = FeaturesFile.expected_contents_lines
+          actual_content_lines = AssignmentsFile.actual_contents_lines
+          expected_content_lines = AssignmentsFile.expected_contents_lines
 
           features_file_up_to_date = actual_content_lines == expected_content_lines
           errors = T.let([], T::Array[String])
 
           if !features_file_up_to_date
             if autocorrect
-              FeaturesFile.write!
+              AssignmentsFile.write!
               if stage_changes
-                `git add #{FeaturesFile.path}`
+                `git add #{AssignmentsFile.path}`
               end
             # If there is no current file or its empty, display a shorter message.
             elsif actual_content_lines == ['']
               errors << <<~FEATURES_FILE_ERROR
-                FEATURES.yml out of date. Run `bin/featuremap validate` to update the FEATURES.yml file
+                assignments.yml out of date. Run `bin/featuremap validate` to update the assignments.yml file
               FEATURES_FILE_ERROR
             else
               missing_lines = expected_content_lines - actual_content_lines
@@ -35,14 +35,14 @@ module FeatureMap
 
               missing_lines_text = if missing_lines.any?
                                      <<~COMMENT
-                                       FEATURES.yml should contain the following lines, but does not:
+                                       assignments.yml should contain the following lines, but does not:
                                        #{missing_lines.map { |line| "- \"#{line}\"" }.join("\n")}
                                      COMMENT
                                    end
 
               extra_lines_text = if extra_lines.any?
                                    <<~COMMENT
-                                     FEATURES.yml should not contain the following lines, but it does:
+                                     assignments.yml should not contain the following lines, but it does:
                                      #{extra_lines.map { |line| "- \"#{line}\"" }.join("\n")}
                                    COMMENT
                                  end
@@ -56,14 +56,14 @@ module FeatureMap
                           else
                             <<~TEXT
                               There may be extra lines, or lines are out of order.
-                              You can try to regenerate the FEATURES.yml file from scratch:
-                              1) `rm FEATURES.yml`
+                              You can try to regenerate the assignments.yml file from scratch:
+                              1) `rm assignments.yml`
                               2) `bin/featuremap validate`
                             TEXT
                           end
 
               errors << <<~FEATURES_FILE_ERROR
-                FEATURES.yml out of date. Run `bin/featuremap validate` to update the FEATURES.yml file
+                assignments.yml out of date. Run `bin/featuremap validate` to update the assignments.yml file
 
                 #{diff_text.chomp}
               FEATURES_FILE_ERROR

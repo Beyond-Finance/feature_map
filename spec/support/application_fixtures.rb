@@ -1,13 +1,13 @@
 RSpec.shared_context 'application fixtures' do
-  let(:features_file_path) { Pathname.pwd.join('FEATURES.yml') }
+  let(:assignments_file_path) { Pathname.pwd.join('assignments.yml') }
 
   def write_configuration(assigned_globs: nil, **kwargs)
     assigned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml}']
     config = {
       'assigned_globs' => assigned_globs,
-      'unassigned_globs' => ['config/feature_map.yml']
+      'unassigned_globs' => ['.features/config.yml']
     }.merge(kwargs)
-    write_file('config/feature_map.yml', config.to_yaml)
+    write_file('.features/config.yml', config.to_yaml)
   end
 
   let(:create_non_empty_application) do
@@ -36,7 +36,7 @@ RSpec.shared_context 'application fixtures' do
     CONTENTS
     write_file('frontend/javascripts/packages/my_other_package/my_file.jsx')
 
-    write_file('config/features/bar.yml', <<~CONTENTS)
+    write_file('.features/definitions/bar.yml', <<~CONTENTS)
       name: Bar
       description: Lorem ipsum...
       documentation_link: https://notion.io/path/to/feature/docs/
@@ -87,11 +87,11 @@ RSpec.shared_context 'application fixtures' do
       end
     CONTENTS
 
-    write_file('config/features/foo.yml', <<~CONTENTS)
+    write_file('.features/definitions/foo.yml', <<~CONTENTS)
       name: Foo
     CONTENTS
 
-    write_file('config/features/bar.yml', <<~CONTENTS)
+    write_file('.features/definitions/bar.yml', <<~CONTENTS)
       name: Bar
     CONTENTS
 
