@@ -48,3 +48,9 @@ class RuboCop::Cop::Metrics::Utils::AbcSizeCalculator
   # source://rubocop//lib/rubocop/cop/metrics/utils/abc_size_calculator.rb#42
   def calculate; end
 end
+
+# source://rubocop//lib/rubocop/cop/metrics/utils/code_length_calculator.rb#L8
+class RuboCop::Cop::Metrics::Utils::CodeLengthCalculator
+  def initialize(node, processed_source, count_comments: T.unsafe(nil), foldable_types: T.unsafe(nil)); end
+  def calculate; end
+end
