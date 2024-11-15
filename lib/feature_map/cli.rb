@@ -12,7 +12,7 @@ module FeatureMap
         validate!(argv)
       elsif command == 'for_file'
         for_file(argv)
-      elsif command == 'for_feature' # TODO: potentially look to include metrics for feature in this
+      elsif command == 'for_feature'
         for_feature(argv)
       elsif [nil, 'help'].include?(command)
         puts <<~USAGE
