@@ -19,14 +19,14 @@ module FeatureMap
         CYCLOMATIC_COMPLEXITY_METRIC
       ].freeze, T::Array[String])
 
-      ComplexityMetrics = T.type_alias do
+      FeatureMetrics = T.type_alias do
         T::Hash[
           String, # metric name
           Integer # score
         ]
       end
 
-      sig { params(file_paths: T::Array[String]).returns(ComplexityMetrics) }
+      sig { params(file_paths: T::Array[String]).returns(FeatureMetrics) }
       def self.calculate_for_feature(file_paths)
         metrics = file_paths.map { |file| calculate_for_file(file) }
 
@@ -35,12 +35,12 @@ module FeatureMap
         end
       end
 
-      sig { params(file_path: String).returns(ComplexityMetrics) }
+      sig { params(file_path: String).returns(FeatureMetrics) }
       def self.calculate_for_file(file_path)
         return {} unless file_path.end_with?('.rb')
 
         file_content = File.read(file_path)
-        file_metrics = T.let({ LINES_OF_CODE_METRIC => file_content.lines.count }, ComplexityMetrics)
+        file_metrics = T.let({ LINES_OF_CODE_METRIC => file_content.lines.count }, FeatureMetrics)
 
         source = RuboCop::ProcessedSource.new(file_content, RUBY_VERSION.to_f)
         return file_metrics unless source.ast

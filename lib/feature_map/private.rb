@@ -6,6 +6,7 @@ require 'feature_map/private/extension_loader'
 require 'feature_map/private/cyclomatic_complexity_calculator'
 require 'feature_map/private/feature_metrics_calculator'
 require 'feature_map/private/assignments_file'
+require 'feature_map/private/metrics_file'
 require 'feature_map/private/glob_cache'
 require 'feature_map/private/feature_assigner'
 require 'feature_map/private/feature_plugins/assignment'
@@ -58,7 +59,8 @@ module FeatureMap
         errors << 'See https://github.com/Beyond-Finance/feature_map#README.md for more details'
         raise InvalidFeatureMapConfigurationError.new(errors.join("\n")) # rubocop:disable Style/RaiseArgs
       end
-      # TODO: generate metrics.yml file?
+
+      MetricsFile.write!
     end
 
     # Returns a string version of the relative path to a Rails constant,
