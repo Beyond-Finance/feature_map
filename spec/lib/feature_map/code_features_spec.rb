@@ -6,7 +6,7 @@ RSpec.describe FeatureMap::CodeFeatures do
   end
 
   before do
-    write_file('.features/definitions/my_feature.yml', feature_yml)
+    write_file('.feature_map/definitions/my_feature.yml', feature_yml)
     FeatureMap::CodeFeatures.bust_caches!
     allow(FeatureMap::CodeFeatures::Plugin).to receive(:registry).and_return({})
   end
@@ -17,7 +17,7 @@ RSpec.describe FeatureMap::CodeFeatures do
       feature = FeatureMap::CodeFeatures.all.first
       expect(feature.name).to eq 'My Feature'
       expect(feature.raw_hash['name']).to eq 'My Feature'
-      expect(feature.config_yml).to eq '.features/definitions/my_feature.yml'
+      expect(feature.config_yml).to eq '.feature_map/definitions/my_feature.yml'
     end
 
     context 'feature YML has syntax errors' do
@@ -31,7 +31,7 @@ RSpec.describe FeatureMap::CodeFeatures do
       it 'spits out a helpful error message' do
         expect { FeatureMap::CodeFeatures.all }.to raise_error do |e|
           expect(e).to be_a FeatureMap::CodeFeatures::IncorrectPublicApiUsageError
-          expect(e.message).to eq('The YML in .features/definitions/my_feature.yml has a syntax error!')
+          expect(e.message).to eq('The YML in .feature_map/definitions/my_feature.yml has a syntax error!')
         end
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe FeatureMap::CodeFeatures do
 
     context 'there are multiple definitions for the same feature' do
       before do
-        write_file('.features/definitions/my_other_features.yml', feature_yml)
+        write_file('.feature_map/definitions/my_other_features.yml', feature_yml)
       end
 
       it 'registers the feature file as invalid' do

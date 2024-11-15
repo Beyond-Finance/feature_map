@@ -9,7 +9,7 @@ module FeatureMap
       FeatureMap::CodeFeatures.bust_caches!
       write_configuration('require' => ['./lib/my_extension.rb'])
 
-      write_file('.features/definitions/bar.yml', <<~CONTENTS)
+      write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
         name: Bar
       CONTENTS
 
@@ -86,7 +86,7 @@ module FeatureMap
 
           ---
           files:
-            ".features/definitions/bar.yml":
+            ".feature_map/definitions/bar.yml":
               feature: Bar
               mapper: Feature YML assignment
             app/services/my_assignable_file.rb:
@@ -97,7 +97,7 @@ module FeatureMap
               mapper: My special extension
           features:
             Bar:
-            - ".features/definitions/bar.yml"
+            - ".feature_map/definitions/bar.yml"
             - app/services/my_assignable_file.rb
             - lib/my_extension.rb
         EXPECTED
