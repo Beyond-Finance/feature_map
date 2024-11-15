@@ -5,9 +5,9 @@ RSpec.shared_context 'application fixtures' do
     assigned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml}']
     config = {
       'assigned_globs' => assigned_globs,
-      'unassigned_globs' => ['config/feature_map.yml']
+      'unassigned_globs' => ['.features/config.yml']
     }.merge(kwargs)
-    write_file('config/feature_map.yml', config.to_yaml)
+    write_file('.features/config.yml', config.to_yaml)
   end
 
   let(:create_non_empty_application) do

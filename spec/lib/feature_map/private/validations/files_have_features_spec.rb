@@ -121,7 +121,7 @@ module FeatureMap
 
         context 'that file is in unassigned_globs' do
           before do
-            write_configuration('unassigned_globs' => ['app/missing_assignment.rb', 'config/feature_map.yml'])
+            write_configuration('unassigned_globs' => ['app/missing_assignment.rb', '.features/config.yml'])
           end
 
           it 'does not raise an error' do
