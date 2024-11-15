@@ -27,7 +27,7 @@ description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiu
 documentation_link: https://www.notion.so/onboarding-feature-abcd1234
 ```
 3) Declare feature assignments. You can do this at a directory level or at a file level. All of the files within the `assigned_globs` you declared in step 1 will need to have a feature assigned (or be opted out via `unassigned_globs`). See the next section for more detail.
-4) Run validations when you commit, and/or in CI. If you run validations in CI, ensure that if your `assignments.yml` file gets changed, that gets pushed to the PR.
+4) Run validations when you commit, and/or in CI. If you run validations in CI, ensure that if your `assignments.yml` file gets changed, that gets pushed to the PR. A `metrics.yml` file will also be generated but we recommend NOT commiting that file because it changes very frequently.
 
 ## Usage: Assigning Features
 
@@ -111,9 +111,11 @@ You can shovel this into a markdown file for easy viewing using the CLI:
 bin/feature_map for_feature 'Onboarding' > tmp/onboarding_feature_report.md
 ```
 
-## Usage: Generating a `assignments.yml` file
+## Usage: Generating Feature Assignment files
 
-An `assignments.yml` file captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files. When you run `bin/featuremap validate`, an `assignments.yml` file will automatically be generated and updated.
+When you run `bin/featuremap validate`, the following files will automatically be generated:
+ * `.feature_map/assignments.yml`: Captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files.
+ * `.feature_map/metrics.yml`: cCaptures a set of metrics rolled up at the feature level (i.e. computed over all files assigned to the feature).
 
 ## Proper Configuration & Validation
 
