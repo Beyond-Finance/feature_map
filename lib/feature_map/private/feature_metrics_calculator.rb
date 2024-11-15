@@ -55,16 +55,14 @@ module FeatureMap
           foldable_types: %i[array hash heredoc method_call]
         )
 
-        file_metrics = T.let({ LINES_OF_CODE_METRIC => code_length_calculator.calculate }, FeatureMetrics)
-
-        # Calculate other complexity metrics
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
 
-        file_metrics.merge(
+        {
           ABC_SIZE_METRIC => abc_calculator.calculate.first,
-          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate
-        )
+          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
+          LINES_OF_CODE_METRIC => code_length_calculator.calculate
+        }
       end
     end
   end
