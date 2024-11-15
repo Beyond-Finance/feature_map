@@ -5,9 +5,9 @@ RSpec.shared_context 'application fixtures' do
     assigned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml}']
     config = {
       'assigned_globs' => assigned_globs,
-      'unassigned_globs' => ['.features/config.yml']
+      'unassigned_globs' => ['.feature_map/config.yml']
     }.merge(kwargs)
-    write_file('.features/config.yml', config.to_yaml)
+    write_file('.feature_map/config.yml', config.to_yaml)
   end
 
   let(:create_non_empty_application) do
@@ -36,7 +36,7 @@ RSpec.shared_context 'application fixtures' do
     CONTENTS
     write_file('frontend/javascripts/packages/my_other_package/my_file.jsx')
 
-    write_file('.features/definitions/bar.yml', <<~CONTENTS)
+    write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
       name: Bar
       description: Lorem ipsum...
       documentation_link: https://notion.io/path/to/feature/docs/
@@ -87,11 +87,11 @@ RSpec.shared_context 'application fixtures' do
       end
     CONTENTS
 
-    write_file('.features/definitions/foo.yml', <<~CONTENTS)
+    write_file('.feature_map/definitions/foo.yml', <<~CONTENTS)
       name: Foo
     CONTENTS
 
-    write_file('.features/definitions/bar.yml', <<~CONTENTS)
+    write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
       name: Bar
     CONTENTS
 

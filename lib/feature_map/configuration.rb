@@ -13,7 +13,7 @@ module FeatureMap
 
     sig { returns(Configuration) }
     def self.fetch
-      config_hash = YAML.load_file('.features/config.yml')
+      config_hash = YAML.load_file('.feature_map/config.yml')
 
       if config_hash.key?('require')
         config_hash['require'].each do |require_directive|

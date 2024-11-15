@@ -10,7 +10,7 @@ Check out [`feature_map_spec.rb`](https://github.com/Beyond-Finance/feature_map/
 
 To get started there's a few things you should do.
 
-1) Create a `.features/config.yml` file and declare where your files live. Here's a sample to start with:
+1) Create a `.feature_map/config.yml` file and declare where your files live. Here's a sample to start with:
 ```yml
 assigned_globs:
   - '{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx}'
@@ -20,7 +20,7 @@ unassigned_globs:
   - app/services/some_file2.rb
   - frontend/javascripts/**/__generated__/**/*
 ```
-2) Declare some features. Here's an example, that would live at `.features/definitions/onboarding.yml`:
+2) Declare some features. Here's an example, that would live at `.feature_map/definitions/onboarding.yml`:
 ```yml
 name: Onboarding
 description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
@@ -57,7 +57,7 @@ assigned_globs:
 ### Custom Assignment
 To enable custom assignment, you can inject your own custom classes into `feature_map`.
 To do this, first create a class that adheres to the `FeatureMap::Mapper` and/or `FeatureMap::Validator` interface.
-Then, in `.features/config.yml`, you can require that file:
+Then, in `.feature_map/config.yml`, you can require that file:
 ```yml
 require:
   - ./lib/my_extension.rb
@@ -122,12 +122,12 @@ FeatureMap comes with a validation function to ensure the following things are t
 1) Only one mechanism is defining the feature assignment for a file. That is -- you can't have a file annotation on a file assigned via glob-based assignment. This helps make feature assignment behavior more clear by avoiding concerns about precedence.
 2) All features referenced as an assignment for any file is a valid feature (i.e. it's in the list of `CodeFeatures.all`).
 3) All files have a feature assigned. You can specify in `unassigned_globs` to represent a TODO list of files to add feature assignments to.
-    * Teams using the [CodeOwnership](https://github.com/rubyatscale/code_ownership/tree/main) gem include a `require_assignment_for_teams` key in the `.features/config.yml` file to have this validation to apply a specific list of team. This allows feature assignments to be rolled out in a gradual manner on a team-by-team basis. The `require_assignment_for_teams` configuration should contain a list of team names (i.e. the value from the `name` key in the associated `config/teams/*.yml` file) for the teams whose files will be included in this validation.
-3) The `assignments.yml` file is up to date. This is automatically corrected and staged unless specified otherwise with `bin/featuremap validate --skip-autocorrect --skip-stage`. You can turn this validation off by setting `skip_features_validation: true` in `.features/config.yml`.
+    * Teams using the [CodeOwnership](https://github.com/rubyatscale/code_ownership/tree/main) gem include a `require_assignment_for_teams` key in the `.feature_map/config.yml` file to have this validation to apply a specific list of team. This allows feature assignments to be rolled out in a gradual manner on a team-by-team basis. The `require_assignment_for_teams` configuration should contain a list of team names (i.e. the value from the `name` key in the associated `config/teams/*.yml` file) for the teams whose files will be included in this validation.
+3) The `assignments.yml` file is up to date. This is automatically corrected and staged unless specified otherwise with `bin/featuremap validate --skip-autocorrect --skip-stage`. You can turn this validation off by setting `skip_features_validation: true` in `.feature_map/config.yml`.
 
 FeatureMap also allows you to specify which globs and file extensions should be considered assignable.
 
-Here is an example `.features/config.yml`.
+Here is an example `.feature_map/config.yml`.
 ```yml
 assigned_globs:
   - '{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx}'

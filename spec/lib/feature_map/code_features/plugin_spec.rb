@@ -1,6 +1,6 @@
 RSpec.describe FeatureMap::CodeFeatures::Plugin do
   def write_feature_yml(extra_data: false)
-    write_file('.features/definitions/my_feature.yml', <<~YML.strip)
+    write_file('.feature_map/definitions/my_feature.yml', <<~YML.strip)
       name: My Feature
       extra_data: #{extra_data}
     YML

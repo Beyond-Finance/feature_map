@@ -34,7 +34,7 @@ module FeatureMap
         # Must use the skip_features_validation to avoid having the GlobCache loaded from the stub assignments.yml file.
         write_configuration('skip_features_validation' => true)
         create_files_with_defined_classes
-        write_file('.features/definitions/empty.yml', <<~CONTENTS)
+        write_file('.feature_map/definitions/empty.yml', <<~CONTENTS)
           name: Empty Feature
         CONTENTS
       end
