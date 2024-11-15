@@ -108,7 +108,7 @@ module FeatureMap
 
       sig { returns(Pathname) }
       def self.path
-        Pathname.pwd.join('assignments.yml')
+        Pathname.pwd.join('.feature_map/assignments.yml')
       end
 
       sig { params(files: T::Array[String]).void }

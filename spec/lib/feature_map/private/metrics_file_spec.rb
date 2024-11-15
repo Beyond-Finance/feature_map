@@ -49,7 +49,7 @@ module FeatureMap
 
       context 'an existing metrics.yml file exists' do
         before do
-          write_file('metrics.yml', <<~CONTENTS)
+          write_file('.feature_map/metrics.yml', <<~CONTENTS)
             # Placeholder to be removed by test.
             ---
             foo: 123
@@ -67,7 +67,7 @@ module FeatureMap
     describe '.path' do
       it 'returns the path to the metrics.yml file' do
         # Expects path to be something like: /private/var/folders/6d/.../metrics.yml
-        expect(Private::MetricsFile.path.to_s).to match(%r{/[a-zA-Z0-9-/]+/metrics\.yml})
+        expect(Private::MetricsFile.path.to_s).to match(%r{/[a-zA-Z0-9-/]+/.feature_map/metrics\.yml})
       end
     end
   end
