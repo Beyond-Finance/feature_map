@@ -4,7 +4,7 @@ module FeatureMap
       context 'when the feature assignment comment is on one of the first three lines' do
         before do
           write_configuration
-          write_file('.features/definitions/bar.yml', <<~CONTENTS)
+          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
 
@@ -28,7 +28,7 @@ module FeatureMap
             This feature does not have any files in this category.
 
             ## Feature YML assignment
-            - .features/definitions/bar.yml
+            - .feature_map/definitions/bar.yml
           FEATURE_REPORT
         end
       end
@@ -36,7 +36,7 @@ module FeatureMap
       context 'when the feature assignment comment is on the fourth lines' do
         before do
           write_configuration
-          write_file('.features/definitions/bar.yml', <<~CONTENTS)
+          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
 
@@ -61,7 +61,7 @@ module FeatureMap
             This feature does not have any files in this category.
 
             ## Feature YML assignment
-            - .features/definitions/bar.yml
+            - .feature_map/definitions/bar.yml
           FEATURE_REPORT
         end
       end
@@ -71,7 +71,7 @@ module FeatureMap
       context 'when the feature assignment comment is on one of the first three lines' do
         before do
           write_configuration
-          write_file('.features/definitions/bar.yml', <<~CONTENTS)
+          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
 
@@ -90,7 +90,7 @@ module FeatureMap
       context 'when the feature assignment comment is on the fourth lines' do
         before do
           write_configuration
-          write_file('.features/definitions/bar.yml', <<~CONTENTS)
+          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
 
@@ -116,7 +116,7 @@ module FeatureMap
       end
 
       before do
-        write_file('.features/definitions/foo.yml', <<~CONTENTS)
+        write_file('.feature_map/definitions/foo.yml', <<~CONTENTS)
           name: Foo
         CONTENTS
         write_configuration

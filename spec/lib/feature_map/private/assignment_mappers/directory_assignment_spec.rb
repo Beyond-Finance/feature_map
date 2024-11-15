@@ -10,7 +10,7 @@ module FeatureMap
         write_file('a/b/c/c_file.jsx')
         write_file('a/b/b_file.jsx')
         write_file('a/b/[test]/b_file.jsx')
-        write_file('.features/definitions/bar.yml', <<~CONTENTS)
+        write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
           name: Bar
         CONTENTS
       end

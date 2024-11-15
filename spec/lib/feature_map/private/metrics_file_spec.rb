@@ -17,11 +17,11 @@ module FeatureMap
           features:
             Bar:
               abc_size: 1.0
-              lines_of_code: 7
+              lines_of_code: 3
               cyclomatic_complexity: 1
             Foo:
               abc_size: 2.0
-              lines_of_code: 9
+              lines_of_code: 6
               cyclomatic_complexity: 1
             Empty Feature:
               abc_size: 0
@@ -34,7 +34,7 @@ module FeatureMap
         # Must use the skip_features_validation to avoid having the GlobCache loaded from the stub assignments.yml file.
         write_configuration('skip_features_validation' => true)
         create_files_with_defined_classes
-        write_file('.features/definitions/empty.yml', <<~CONTENTS)
+        write_file('.feature_map/definitions/empty.yml', <<~CONTENTS)
           name: Empty Feature
         CONTENTS
       end
@@ -49,7 +49,7 @@ module FeatureMap
 
       context 'an existing metrics.yml file exists' do
         before do
-          write_file('metrics.yml', <<~CONTENTS)
+          write_file('.feature_map/metrics.yml', <<~CONTENTS)
             # Placeholder to be removed by test.
             ---
             foo: 123
@@ -67,7 +67,7 @@ module FeatureMap
     describe '.path' do
       it 'returns the path to the metrics.yml file' do
         # Expects path to be something like: /private/var/folders/6d/.../metrics.yml
-        expect(Private::MetricsFile.path.to_s).to match(%r{/[a-zA-Z0-9-/]+/metrics\.yml})
+        expect(Private::MetricsFile.path.to_s).to match(%r{/[a-zA-Z0-9-/]+/.feature_map/metrics\.yml})
       end
     end
   end

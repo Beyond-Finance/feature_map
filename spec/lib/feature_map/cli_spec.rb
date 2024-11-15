@@ -45,7 +45,7 @@ RSpec.describe FeatureMap::Cli do
       write_configuration
 
       write_file('app/services/my_file.rb')
-      write_file('.features/definitions/onboarding.yml', <<~YML)
+      write_file('.feature_map/definitions/onboarding.yml', <<~YML)
         name: Onboarding
         assigned_globs:#{' '}
           - 'app/**/*.rb'
@@ -59,7 +59,7 @@ RSpec.describe FeatureMap::Cli do
         it 'outputs the feature info in human readable format' do
           expect(FeatureMap::Cli).to receive(:puts).with(<<~MSG)
             Feature: Onboarding
-            Feature YML: .features/definitions/onboarding.yml
+            Feature YML: .feature_map/definitions/onboarding.yml
           MSG
           subject
         end
@@ -89,7 +89,7 @@ RSpec.describe FeatureMap::Cli do
         it 'outputs JSONified information to the console' do
           json = {
             feature_name: 'Onboarding',
-            feature_yml: '.features/definitions/onboarding.yml'
+            feature_yml: '.feature_map/definitions/onboarding.yml'
           }
           expect(FeatureMap::Cli).to receive(:puts).with(json.to_json)
           subject

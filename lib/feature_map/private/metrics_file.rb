@@ -46,7 +46,7 @@ module FeatureMap
 
       sig { returns(Pathname) }
       def self.path
-        Pathname.pwd.join('metrics.yml')
+        Pathname.pwd.join('.feature_map/metrics.yml')
       end
 
       sig { returns(T::Array[T.nilable(String)]) }
