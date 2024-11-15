@@ -17,7 +17,7 @@ module FeatureMap
             Bar
           CONTENTS
 
-          write_file('features/definitions/bar.yml', <<~CONTENTS)
+          write_file('.features/definitions/bar.yml', <<~CONTENTS)
             name: Bar
             assigned_globs:
               - app/services/bar/**/**
@@ -47,11 +47,11 @@ module FeatureMap
         before do
           write_configuration
 
-          write_file('features/definitions/bar.yml', <<~CONTENTS)
+          write_file('.features/definitions/bar.yml', <<~CONTENTS)
             name: Bar
           CONTENTS
 
-          write_file('features/definitions/foo.yml', <<~CONTENTS)
+          write_file('.features/definitions/foo.yml', <<~CONTENTS)
             name: Foo
           CONTENTS
 

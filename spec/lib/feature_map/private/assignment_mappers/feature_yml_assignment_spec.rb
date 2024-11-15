@@ -2,7 +2,7 @@ module FeatureMap
   RSpec.describe Private::AssignmentMappers::FeatureYmlAssignment do
     before do
       write_configuration
-      write_file('features/definitions/bar.yml', <<~CONTENTS)
+      write_file('.features/definitions/bar.yml', <<~CONTENTS)
         name: Bar
       CONTENTS
     end
@@ -21,14 +21,14 @@ module FeatureMap
           This feature does not have any files in this category.
 
           ## Feature YML assignment
-          - features/definitions/bar.yml
+          - .features/definitions/bar.yml
         FEATURE_REPORT
       end
     end
 
     describe 'FeatureMap.for_file' do
       it 'maps a feature YML to be assigned to the feature itself' do
-        expect(FeatureMap.for_file('features/definitions/bar.yml').name).to eq 'Bar'
+        expect(FeatureMap.for_file('.features/definitions/bar.yml').name).to eq 'Bar'
       end
     end
   end

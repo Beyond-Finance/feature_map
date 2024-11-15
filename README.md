@@ -20,7 +20,7 @@ unassigned_globs:
   - app/services/some_file2.rb
   - frontend/javascripts/**/__generated__/**/*
 ```
-2) Declare some features. Here's an example, that would live at `features/definitions/onboarding.yml`:
+2) Declare some features. Here's an example, that would live at `.features/definitions/onboarding.yml`:
 ```yml
 name: Onboarding
 description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
@@ -113,7 +113,7 @@ bin/feature_map for_feature 'Onboarding' > tmp/onboarding_feature_report.md
 
 ## Usage: Generating a `assignments.yml` file
 
-A `assignments.yml` file captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files. When you run `bin/featuremap validate`, a `assignments.ymle` file will automatically be generated and updated.
+An `assignments.yml` file captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files. When you run `bin/featuremap validate`, an `assignments.yml` file will automatically be generated and updated.
 
 ## Proper Configuration & Validation
 
@@ -127,7 +127,7 @@ FeatureMap comes with a validation function to ensure the following things are t
 
 FeatureMap also allows you to specify which globs and file extensions should be considered assignable.
 
-Here is an example `features/feature_map.yml`.
+Here is an example `.features/feature_map.yml`.
 ```yml
 assigned_globs:
   - '{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx}'

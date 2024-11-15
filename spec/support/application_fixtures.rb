@@ -36,7 +36,7 @@ RSpec.shared_context 'application fixtures' do
     CONTENTS
     write_file('frontend/javascripts/packages/my_other_package/my_file.jsx')
 
-    write_file('features/definitions/bar.yml', <<~CONTENTS)
+    write_file('.features/definitions/bar.yml', <<~CONTENTS)
       name: Bar
       description: Lorem ipsum...
       documentation_link: https://notion.io/path/to/feature/docs/
@@ -87,11 +87,11 @@ RSpec.shared_context 'application fixtures' do
       end
     CONTENTS
 
-    write_file('features/definitions/foo.yml', <<~CONTENTS)
+    write_file('.features/definitions/foo.yml', <<~CONTENTS)
       name: Foo
     CONTENTS
 
-    write_file('features/definitions/bar.yml', <<~CONTENTS)
+    write_file('.features/definitions/bar.yml', <<~CONTENTS)
       name: Bar
     CONTENTS
 
