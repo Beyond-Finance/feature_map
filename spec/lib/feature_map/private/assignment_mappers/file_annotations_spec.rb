@@ -27,7 +27,7 @@ module FeatureMap
             ## Feature Assigned in .feature
             This feature does not have any files in this category.
 
-            ## Feature YML assignment
+            ## Feature definition file assignment
             - .feature_map/definitions/bar.yml
           FEATURE_REPORT
         end
@@ -60,7 +60,7 @@ module FeatureMap
             ## Feature Assigned in .feature
             This feature does not have any files in this category.
 
-            ## Feature YML assignment
+            ## Feature definition file assignment
             - .feature_map/definitions/bar.yml
           FEATURE_REPORT
         end

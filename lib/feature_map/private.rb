@@ -16,7 +16,7 @@ require 'feature_map/private/validations/files_have_unique_features'
 require 'feature_map/private/assignment_mappers/file_annotations'
 require 'feature_map/private/assignment_mappers/feature_globs'
 require 'feature_map/private/assignment_mappers/directory_assignment'
-require 'feature_map/private/assignment_mappers/feature_yml_assignment'
+require 'feature_map/private/assignment_mappers/feature_definition_assignment'
 
 module FeatureMap
   module Private

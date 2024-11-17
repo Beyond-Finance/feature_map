@@ -18,10 +18,10 @@ module FeatureMap
               mapper: Annotations at the top of file
             ".feature_map/definitions/bar.yml":
               feature: Bar
-              mapper: Feature YML assignment
+              mapper: Feature definition file assignment
             ".feature_map/definitions/foo.yml":
               feature: Foo
-              mapper: Feature YML assignment
+              mapper: Feature definition file assignment
             lib/foo_logic.rb:
               feature: Foo
               mapper: Feature Assigned in .feature
@@ -50,10 +50,10 @@ module FeatureMap
                                                                        '    mapper: Annotations at the top of file',
                                                                        '  ".feature_map/definitions/bar.yml":',
                                                                        '    feature: Bar',
-                                                                       '    mapper: Feature YML assignment',
+                                                                       '    mapper: Feature definition file assignment',
                                                                        '  ".feature_map/definitions/foo.yml":',
                                                                        '    feature: Foo',
-                                                                       '    mapper: Feature YML assignment',
+                                                                       '    mapper: Feature definition file assignment',
                                                                        '  lib/foo_logic.rb:',
                                                                        '    feature: Foo',
                                                                        '    mapper: Feature Assigned in .feature',
@@ -109,7 +109,7 @@ module FeatureMap
             '    mapper: Feature Assigned in .feature',
             '  ".feature_map/definitions/bar.yml":',
             '    feature: Bar',
-            '    mapper: Feature YML assignment',
+            '    mapper: Feature definition file assignment',
             'features:',
             '  Bar:',
             '  - ".feature_map/definitions/bar.yml"',
@@ -148,10 +148,10 @@ module FeatureMap
                                                                            '    mapper: Annotations at the top of file',
                                                                            '  ".feature_map/definitions/bar.yml":',
                                                                            '    feature: Bar',
-                                                                           '    mapper: Feature YML assignment',
+                                                                           '    mapper: Feature definition file assignment',
                                                                            '  ".feature_map/definitions/foo.yml":',
                                                                            '    feature: Foo',
-                                                                           '    mapper: Feature YML assignment',
+                                                                           '    mapper: Feature definition file assignment',
                                                                            'features:',
                                                                            '  Bar:',
                                                                            '  - ".feature_map/definitions/bar.yml"',
@@ -180,7 +180,7 @@ module FeatureMap
           files:
             ".feature_map/definitions/foo.yml":
               feature: Foo
-              mapper: Feature YML assignment
+              mapper: Feature definition file assignment
           features:
             Foo:
             - ".feature_map/definitions/foo.yml"
@@ -314,7 +314,7 @@ module FeatureMap
                 mapper: Feature Assigned in .feature
               ".feature_map/definitions/bar.yml":
                 feature: Bar
-                mapper: Feature YML assignment
+                mapper: Feature definition file assignment
             features:
               Bar:
               - app/services/bar_stuff/**'
@@ -329,7 +329,7 @@ module FeatureMap
         it 'initializes the glob cache properly from the assignments.yml file' do
           glob_cache = Private::AssignmentsFile.to_glob_cache
           expect(glob_cache).to be_a(Private::GlobCache)
-          expect(glob_cache.raw_cache_contents.keys).to eq(['Annotations at the top of file', 'Feature-specific assigned globs', 'Feature Assigned in .feature', 'Feature YML assignment'])
+          expect(glob_cache.raw_cache_contents.keys).to eq(['Annotations at the top of file', 'Feature-specific assigned globs', 'Feature Assigned in .feature', 'Feature definition file assignment'])
           expect(glob_cache.raw_cache_contents['Annotations at the top of file'].length).to eq(2)
           expect(glob_cache.raw_cache_contents['Annotations at the top of file']).to eq(
             'frontend/javascripts/packages/my_package/assigned_file.jsx' => CodeFeatures.find('Bar'),
@@ -342,7 +342,7 @@ module FeatureMap
           )
           expect(glob_cache.raw_cache_contents['Feature Assigned in .feature'].length).to eq(1)
           expect(glob_cache.raw_cache_contents['Feature Assigned in .feature']).to eq('directory/my_feature/**/**' => CodeFeatures.find('Bar'))
-          expect(glob_cache.raw_cache_contents['Feature YML assignment']).to eq('.feature_map/definitions/bar.yml' => CodeFeatures.find('Bar'))
+          expect(glob_cache.raw_cache_contents['Feature definition file assignment']).to eq('.feature_map/definitions/bar.yml' => CodeFeatures.find('Bar'))
         end
       end
 
@@ -377,10 +377,10 @@ module FeatureMap
                 mapper: Annotations at the top of file
               ".feature_map/definitions/bar.yml":
                 feature: Bar
-                mapper: Feature YML assignment
+                mapper: Feature definition file assignment
               ".feature_map/definitions/foo.yml":
                 feature: Foo
-                mapper: Feature YML assignment
+                mapper: Feature definition file assignment
             features:
               Bar:
               - app/my_error.rb
@@ -394,14 +394,14 @@ module FeatureMap
         it 'initializes the glob cache properly from the assignments.yml file' do
           glob_cache = Private::AssignmentsFile.to_glob_cache
           expect(glob_cache).to be_a(Private::GlobCache)
-          expect(glob_cache.raw_cache_contents.keys).to eq(['Annotations at the top of file', 'Feature YML assignment'])
+          expect(glob_cache.raw_cache_contents.keys).to eq(['Annotations at the top of file', 'Feature definition file assignment'])
           expect(glob_cache.raw_cache_contents['Annotations at the top of file'].length).to eq(2)
           expect(glob_cache.raw_cache_contents['Annotations at the top of file']).to eq(
             'app/my_error.rb' => CodeFeatures.find('Bar'),
             'app/my_file.rb' => CodeFeatures.find('Foo')
           )
-          expect(glob_cache.raw_cache_contents['Feature YML assignment'].length).to eq(2)
-          expect(glob_cache.raw_cache_contents['Feature YML assignment']).to eq(
+          expect(glob_cache.raw_cache_contents['Feature definition file assignment'].length).to eq(2)
+          expect(glob_cache.raw_cache_contents['Feature definition file assignment']).to eq(
             '.feature_map/definitions/bar.yml' => CodeFeatures.find('Bar'),
             '.feature_map/definitions/foo.yml' => CodeFeatures.find('Foo')
           )

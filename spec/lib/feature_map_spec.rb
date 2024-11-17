@@ -226,7 +226,7 @@ RSpec.describe FeatureMap do
         ## Feature Assigned in .feature
         - directory/my_feature/**/**
 
-        ## Feature YML assignment
+        ## Feature definition file assignment
         - .feature_map/definitions/bar.yml
       FEATURE_REPORT
     end

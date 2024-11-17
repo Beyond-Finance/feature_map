@@ -88,7 +88,7 @@ module FeatureMap
           files:
             ".feature_map/definitions/bar.yml":
               feature: Bar
-              mapper: Feature YML assignment
+              mapper: Feature definition file assignment
             app/services/my_assignable_file.rb:
               feature: Bar
               mapper: My special extension
