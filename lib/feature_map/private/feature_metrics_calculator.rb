@@ -59,7 +59,7 @@ module FeatureMap
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
 
         {
-          ABC_SIZE_METRIC => abc_calculator.calculate.first,
+          ABC_SIZE_METRIC => abc_calculator.calculate.first.round(2),
           CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
           LINES_OF_CODE_METRIC => code_length_calculator.calculate
         }
