@@ -5,7 +5,7 @@
 module FeatureMap
   module Private
     module AssignmentMappers
-      class FeatureYmlAssignment
+      class FeatureDefinitionAssignment
         extend T::Sig
         include Mapper
 
@@ -29,6 +29,8 @@ module FeatureMap
             .returns(T.nilable(CodeFeatures::Feature))
         end
         def map_file_to_feature(file)
+          return nil if Private.configuration.ignore_feature_definitions
+
           map_files_to_features([file])[file]
         end
 
@@ -37,6 +39,8 @@ module FeatureMap
             .returns(T::Hash[String, CodeFeatures::Feature])
         end
         def globs_to_feature(files)
+          return {} if Private.configuration.ignore_feature_definitions
+
           CodeFeatures.all.each_with_object({}) do |feature, map|
             map[feature.config_yml] = feature
           end
@@ -56,7 +60,7 @@ module FeatureMap
 
         sig { override.returns(String) }
         def description
-          'Feature YML assignment'
+          'Feature definition file assignment'
         end
       end
     end

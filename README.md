@@ -31,7 +31,7 @@ documentation_link: https://www.notion.so/onboarding-feature-abcd1234
 
 ## Usage: Assigning Features
 
-There are three ways to assign the feature for a source file using this gem.
+There are multiple ways to assign the feature for a source file using this gem.
 
 ### Directory-Based Assignment
 Directory based assignment allows for all files in that directory and all its sub-directories to be assigned to a single feature. To define this, add a `.feature` file inside that directory with the name of the feature as the contents of that file.
@@ -53,6 +53,23 @@ assigned_globs:
   - app/services/stuff_for_onboarding/**/**
   - app/controllers/other_stuff_for_onboarding/**/**
 ```
+
+### Feature Definition File Assignment
+By default all feature definition YML files, located in the `.feature_map/definitions' directory, are assigned to their corresponding feature.
+
+The leading `.` in the path for these files results in them being quoted within the resulting `.feature_map/assignments` file. The following is an example of this content:
+```yml
+---
+files:
+  ".feature_map/definitions/bar.yml":
+    feature: Bar
+    mapper: Feature definition file assignment
+features:
+  Bar:
+  - ".feature_map/definitions/bar.yml"
+```
+
+In cases when the feature assignments for these files is irrelevant, this behavior can be disabled by setting the `ignore_feature_definitions` key in the `.feature_map/config.yml` file to `true`.
 
 ### Custom Assignment
 To enable custom assignment, you can inject your own custom classes into `feature_map`.

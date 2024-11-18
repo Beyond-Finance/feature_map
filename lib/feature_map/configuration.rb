@@ -10,6 +10,7 @@ module FeatureMap
     const :skip_features_validation, T::Boolean
     const :raw_hash, T::Hash[T.untyped, T.untyped]
     const :require_assignment_for_teams, T.nilable(T::Array[String])
+    const :ignore_feature_definitions, T::Boolean
 
     sig { returns(Configuration) }
     def self.fetch
@@ -26,7 +27,8 @@ module FeatureMap
         unassigned_globs: config_hash.fetch('unassigned_globs', []),
         skip_features_validation: config_hash.fetch('skip_features_validation', false),
         raw_hash: config_hash,
-        require_assignment_for_teams: config_hash.fetch('require_assignment_for_teams', nil)
+        require_assignment_for_teams: config_hash.fetch('require_assignment_for_teams', nil),
+        ignore_feature_definitions: config_hash.fetch('ignore_feature_definitions', false)
       )
     end
   end
