@@ -75,6 +75,12 @@ module FeatureMap
         files_content = T.let({}, FilesContent)
         features_content = T.let({}, FeaturesContent)
 
+        # Ordering of features in the resulting YAML content is determined by the order in which keys are added to
+        # each hash.
+        CodeFeatures.all.sort_by(&:name).each do |feature|
+          features_content[feature.name] = T.let([], FileList)
+        end
+
         cache.each do |mapper_description, assignment_map_cache|
           assignment_map_cache = assignment_map_cache.sort_by do |glob, _feature|
             glob
@@ -82,7 +88,6 @@ module FeatureMap
 
           assignment_map_cache.to_h.each do |path, feature|
             files_content[path] = T.let({ FILE_FEATURE_KEY => feature.name, FILE_MAPPER_KEY => mapper_description }, FileDetails)
-            features_content[feature.name] ||= T.let([], FileList)
             T.must(features_content[feature.name]) << path
           end
         end
