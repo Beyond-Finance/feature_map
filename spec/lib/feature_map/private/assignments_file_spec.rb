@@ -27,11 +27,13 @@ module FeatureMap
               mapper: Feature Assigned in .feature
           features:
             Bar:
-            - app/services/my_assignable_file.rb
-            - ".feature_map/definitions/bar.yml"
+              files:
+              - app/services/my_assignable_file.rb
+              - ".feature_map/definitions/bar.yml"
             Foo:
-            - ".feature_map/definitions/foo.yml"
-            - lib/foo_logic.rb
+              files:
+              - ".feature_map/definitions/foo.yml"
+              - lib/foo_logic.rb
         YML
 
         expect(Private::AssignmentsFile.actual_contents_lines).to eq([
@@ -59,11 +61,13 @@ module FeatureMap
                                                                        '    mapper: Feature Assigned in .feature',
                                                                        'features:',
                                                                        '  Bar:',
-                                                                       '  - app/services/my_assignable_file.rb',
-                                                                       '  - ".feature_map/definitions/bar.yml"',
+                                                                       '    files:',
+                                                                       '    - app/services/my_assignable_file.rb',
+                                                                       '    - ".feature_map/definitions/bar.yml"',
                                                                        '  Foo:',
-                                                                       '  - ".feature_map/definitions/foo.yml"',
-                                                                       '  - lib/foo_logic.rb',
+                                                                       '    files:',
+                                                                       '    - ".feature_map/definitions/foo.yml"',
+                                                                       '    - lib/foo_logic.rb',
                                                                        ''
                                                                      ])
       end
@@ -112,12 +116,13 @@ module FeatureMap
             '    mapper: Feature definition file assignment',
             'features:',
             '  Bar:',
-            '  - ".feature_map/definitions/bar.yml"',
-            '  - app/services/bar_stuff/thing.rb',
-            '  - directory/my_feature/some_directory_file.ts',
-            '  - frontend/javascripts/bar_stuff/thing.jsx',
-            '  - frontend/javascripts/packages/my_package/assigned_file.jsx',
-            '  - packs/my_pack/assigned_file.rb',
+            '    files:',
+            '    - ".feature_map/definitions/bar.yml"',
+            '    - app/services/bar_stuff/thing.rb',
+            '    - directory/my_feature/some_directory_file.ts',
+            '    - frontend/javascripts/bar_stuff/thing.jsx',
+            '    - frontend/javascripts/packages/my_package/assigned_file.jsx',
+            '    - packs/my_pack/assigned_file.rb',
             ''
           ]
 
@@ -154,11 +159,13 @@ module FeatureMap
                                                                            '    mapper: Feature definition file assignment',
                                                                            'features:',
                                                                            '  Bar:',
-                                                                           '  - ".feature_map/definitions/bar.yml"',
-                                                                           '  - app/my_error.rb',
+                                                                           '    files:',
+                                                                           '    - ".feature_map/definitions/bar.yml"',
+                                                                           '    - app/my_error.rb',
                                                                            '  Foo:',
-                                                                           '  - ".feature_map/definitions/foo.yml"',
-                                                                           '  - app/my_file.rb',
+                                                                           '    files:',
+                                                                           '    - ".feature_map/definitions/foo.yml"',
+                                                                           '    - app/my_file.rb',
                                                                            ''
                                                                          ])
         end
@@ -198,10 +205,12 @@ module FeatureMap
               '    mapper: Annotations at the top of file',
               'features:',
               '  Bar:',
-              '  - app/abc.rb',
-              '  - app/my_error.rb',
+              '    files:',
+              '    - app/abc.rb',
+              '    - app/my_error.rb',
               '  Foo:',
-              '  - app/my_file.rb',
+              '    files:',
+              '    - app/my_file.rb',
               ''
             ]
           end
@@ -236,10 +245,12 @@ module FeatureMap
               '    mapper: Annotations at the top of file',
               'features:',
               '  Bar:',
-              '  - app/my_error.rb',
+              '    files:',
+              '    - app/my_error.rb',
               '  Foo:',
-              '  - app/abc.rb',
-              '  - app/my_file.rb',
+              '    files:',
+              '    - app/abc.rb',
+              '    - app/my_file.rb',
               ''
             ]
           end
@@ -247,6 +258,72 @@ module FeatureMap
           it 'uses alphabetical order in the features section' do
             expect(Private::AssignmentsFile.expected_contents_lines).to eq(expected_lines)
           end
+        end
+      end
+
+      context 'when CodeOwnership team assignments are enabled' do
+        before do
+          create_files_with_defined_classes
+          create_files_with_team_assignments
+          write_configuration('unassigned_globs' => ['.feature_map/config.yml', 'config/code_ownership.yml'], 'skip_code_ownership' => false)
+        end
+
+        let(:expected_lines) do
+          [
+            '# STOP! - DO NOT EDIT THIS FILE MANUALLY',
+            '# This file was automatically generated by "bin/featuremap validate". The next time this file',
+            '# is generated any changes will be lost. For more details:',
+            '# https://github.com/Beyond-Finance/feature_map',
+            '#',
+            '# It is recommended to commit this file into your source control. It will only change when the',
+            '# set of files assigned to a feature change, which should be explicitly tracked.',
+            '',
+            '---',
+            'files:',
+            '  app/foo_stuff_owned_by_team_a.rb:',
+            '    feature: Foo',
+            '    mapper: Annotations at the top of file',
+            '  app/foo_stuff_owned_by_team_b.rb:',
+            '    feature: Foo',
+            '    mapper: Annotations at the top of file',
+            '  app/my_error.rb:',
+            '    feature: Bar',
+            '    mapper: Annotations at the top of file',
+            '  app/my_file.rb:',
+            '    feature: Foo',
+            '    mapper: Annotations at the top of file',
+            '  app/other_team_b_stuff.rb:',
+            '    feature: Bar',
+            '    mapper: Annotations at the top of file',
+            '  ".feature_map/definitions/bar.yml":',
+            '    feature: Bar',
+            '    mapper: Feature definition file assignment',
+            '  ".feature_map/definitions/foo.yml":',
+            '    feature: Foo',
+            '    mapper: Feature definition file assignment',
+            'features:',
+            '  Bar:',
+            '    files:',
+            '    - ".feature_map/definitions/bar.yml"',
+            '    - app/my_error.rb',
+            '    - app/other_team_b_stuff.rb',
+            '    teams:',
+            '    - Team B',
+            '  Foo:',
+            '    files:',
+            '    - ".feature_map/definitions/foo.yml"',
+            '    - app/foo_stuff_owned_by_team_a.rb',
+            '    - app/foo_stuff_owned_by_team_b.rb',
+            '    - app/my_file.rb',
+            '    teams:',
+            '    - Team A',
+            '    - Team B',
+            ''
+          ]
+        end
+
+        it 'includes team assignments in the output content' do
+          expect(Private::AssignmentsFile.expected_contents_lines).to eq(expected_lines)
         end
       end
     end
@@ -269,7 +346,8 @@ module FeatureMap
               mapper: Feature definition file assignment
           features:
             Foo:
-            - ".feature_map/definitions/foo.yml"
+              files:
+              - ".feature_map/definitions/foo.yml"
         FEATURES
       end
 
@@ -403,12 +481,13 @@ module FeatureMap
                 mapper: Feature definition file assignment
             features:
               Bar:
-              - app/services/bar_stuff/**'
-              - ".feature_map/definitions/bar.yml"
-              - directory/my_feature/**/**'
-              - frontend/javascripts/bar_stuff/**'
-              - frontend/javascripts/packages/my_package/assigned_file.jsx
-              - packs/my_pack/assigned_file.rb
+              files:
+                - app/services/bar_stuff/**'
+                - ".feature_map/definitions/bar.yml"
+                - directory/my_feature/**/**'
+                - frontend/javascripts/bar_stuff/**'
+                - frontend/javascripts/packages/my_package/assigned_file.jsx
+                - packs/my_pack/assigned_file.rb
           CONTENTS
         end
 
@@ -469,11 +548,13 @@ module FeatureMap
                 mapper: Feature definition file assignment
             features:
               Bar:
-              - app/my_error.rb
-              - ".feature_map/definitions/bar.yml"
+                files:
+                - app/my_error.rb
+                - ".feature_map/definitions/bar.yml"
               Foo:
-              - app/my_file.rb
-              - ".feature_map/definitions/foo.yml"
+                files:
+                - app/my_file.rb
+                - ".feature_map/definitions/foo.yml"
           CONTENTS
         end
 

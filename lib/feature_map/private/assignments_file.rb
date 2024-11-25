@@ -36,11 +36,19 @@ module FeatureMap
       end
 
       FileList = T.type_alias { T::Array[String] }
+      TeamList = T.type_alias { T::Array[String] }
+
+      FeatureDetails = T.type_alias do
+        T::Hash[
+          String,
+          T.any(FileList, TeamList)
+        ]
+      end
 
       FeaturesContent = T.type_alias do
         T::Hash[
           FeatureName,
-          FileList
+          FeatureDetails
         ]
       end
 
@@ -73,13 +81,8 @@ module FeatureMap
         HEADER
 
         files_content = T.let({}, FilesContent)
+        files_by_feature = T.let({}, T::Hash[FeatureName, FileList])
         features_content = T.let({}, FeaturesContent)
-
-        # Ordering of features in the resulting YAML content is determined by the order in which keys are added to
-        # each hash.
-        CodeFeatures.all.sort_by(&:name).each do |feature|
-          features_content[feature.name] = T.let([], FileList)
-        end
 
         cache.each do |mapper_description, assignment_map_cache|
           assignment_map_cache = assignment_map_cache.sort_by do |glob, _feature|
@@ -88,13 +91,23 @@ module FeatureMap
 
           assignment_map_cache.to_h.each do |path, feature|
             files_content[path] = T.let({ FILE_FEATURE_KEY => feature.name, FILE_MAPPER_KEY => mapper_description }, FileDetails)
-            T.must(features_content[feature.name]) << path
+
+            files_by_feature[feature.name] ||= []
+            T.must(files_by_feature[feature.name]) << path
           end
         end
 
-        features_content.each_value do |files|
+        # Ordering of features in the resulting YAML content is determined by the order in which keys are added to
+        # each hash.
+        CodeFeatures.all.sort_by(&:name).each do |feature|
+          files = files_by_feature[feature.name] || []
           expanded_files = files.flat_map { |file| Dir.glob(file) }.reject { |path| File.directory?(path) }
-          files.replace(expanded_files.sort)
+
+          features_content[feature.name] = T.let({ 'files' => expanded_files.sort }, FeatureDetails)
+
+          if !Private.configuration.skip_code_ownership
+            T.must(features_content[feature.name])['teams'] = expanded_files.map { |file| CodeOwnership.for_file(file)&.name }.compact.uniq.sort
+          end
         end
 
         [

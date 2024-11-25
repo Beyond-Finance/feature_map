@@ -102,4 +102,60 @@ RSpec.shared_context 'application fixtures' do
     Object.send(:remove_const, :MyError) if defined? MyError # :
     require Pathname.pwd.join('app/my_file')
   end
+
+  # Only to be used in conjuction with the create_files_with_defined_classes fixture.
+  let(:create_files_with_team_assignments) do
+    write_file('config/code_ownership.yml', { assigned_globs: ['app/**/*'] }.to_yaml)
+
+    write_file('config/teams/team_a.yml', <<~CONTENTS)
+      name: Team A
+    CONTENTS
+
+    write_file('config/teams/team_b.yml', <<~CONTENTS)
+      name: Team B
+    CONTENTS
+
+    write_file('app/foo_stuff_owned_by_team_a.rb', <<~CONTENTS)
+      # @team Team A
+      # @feature Foo
+
+      class FooStuffOwnedByTeamA
+        def self.call
+          puts "Doing some Foo related stuff that Team A knows about..."
+        end
+      end
+    CONTENTS
+
+    write_file('app/foo_stuff_owned_by_team_b.rb', <<~CONTENTS)
+      # @team Team B
+      # @feature Foo
+
+      class FooStuffOwnedByTeamB
+        def self.call
+          puts "Doing some Foo related stuff that Team B knows about..."
+        end
+      end
+    CONTENTS
+
+    write_file('app/other_team_b_stuff.rb', <<~CONTENTS)
+      # @team Team B
+      # @feature Bar
+
+      class OtherTeamBStuff
+        def self.call
+          puts "Doing some other stuff that Team B knows about."
+        end
+      end
+    CONTENTS
+
+    # Some of the tests use the `SequoiaTree` constant. Since the implementation leverages:
+    # `path = Object.const_source_location(klass.to_s)&.first`, we want to make sure that
+    # we re-require the constant each time, since `RSpecTempfiles` changes where the file lives with each test
+    Object.send(:remove_const, :FooStuffOwnedByTeamA) if defined? FooStuffOwnedByTeamA # :
+    Object.send(:remove_const, :FooStuffOwnedByTeamB) if defined? FooStuffOwnedByTeamB # :
+    Object.send(:remove_const, :OtherTeamBStuff) if defined? OtherTeamBStuff # :
+    require Pathname.pwd.join('app/foo_stuff_owned_by_team_a')
+    require Pathname.pwd.join('app/foo_stuff_owned_by_team_b')
+    require Pathname.pwd.join('app/other_team_b_stuff')
+  end
 end
