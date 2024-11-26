@@ -21,7 +21,7 @@ module FeatureMap
           expect(metrics['abc_size']).to be_kind_of(Numeric)
           expect(metrics['abc_size']).to be > 0
           expect(metrics['lines_of_code']).to be_kind_of(Integer)
-          expect(metrics['lines_of_code']).to eq(5) # Accounts for the actual lines in the file
+          expect(metrics['lines_of_code']).to eq(5) # Counts all non-whitespace, non-comment lines
         end
       end
 
@@ -56,7 +56,7 @@ module FeatureMap
           expect(metrics['abc_size']).to be_kind_of(Numeric)
           expect(metrics['abc_size']).to be > 2 # Should be more complex than simple file
           expect(metrics['lines_of_code']).to be_kind_of(Integer)
-          expect(metrics['lines_of_code']).to eq(19) # Accounts for the actual lines in the file
+          expect(metrics['lines_of_code']).to eq(16) # Counts all non-whitespace, non-comment lines
         end
       end
     end
@@ -168,19 +168,19 @@ module FeatureMap
 
           expect(simple_feature).to eq({
                                          'abc_size' => 1.41,
-                                         'lines_of_code' => 5,
+                                         'lines_of_code' => 4,
                                          'cyclomatic_complexity' => 1
                                        })
 
           expect(moderate_feature).to eq({
                                            'abc_size' => 9.6,
-                                           'lines_of_code' => 16,
+                                           'lines_of_code' => 15,
                                            'cyclomatic_complexity' => 3
                                          })
 
           expect(complex_feature).to eq({
                                           'abc_size' => 26.83,
-                                          'lines_of_code' => 37,
+                                          'lines_of_code' => 35,
                                           'cyclomatic_complexity' => 7
                                         })
         end

@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require 'rubocop'
-require 'sorbet-runtime'
 
 module FeatureMap
   module Private
@@ -48,20 +47,14 @@ module FeatureMap
         # which does introduce some risk, should RuboCop decide to change the interface
         # of these classes. That being said, this is a tradeoff we're willing to
         # make right now.
-        code_length_calculator = RuboCop::Cop::Metrics::Utils::CodeLengthCalculator.new(
-          source.ast,
-          source,
-          count_comments: false,
-          foldable_types: %i[array hash heredoc method_call]
-        )
-
+        lines_of_code_calculator = LinesOfCodeCalculator.new(file_path)
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
 
         {
           ABC_SIZE_METRIC => abc_calculator.calculate.first.round(2),
           CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
-          LINES_OF_CODE_METRIC => code_length_calculator.calculate
+          LINES_OF_CODE_METRIC => lines_of_code_calculator.calculate
         }
       end
     end
