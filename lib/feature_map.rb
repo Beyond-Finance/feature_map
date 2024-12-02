@@ -101,6 +101,13 @@ module FeatureMap
     Private.validate!(files: tracked_file_subset, autocorrect: autocorrect, stage_changes: stage_changes)
   end
 
+  sig { void }
+  def generate_docs!
+    Private.load_configuration!
+
+    Private.generate_docs!
+  end
+
   # Given a backtrace from either `Exception#backtrace` or `caller`, find the
   # first line that corresponds to a file with an assigned feature
   sig { params(backtrace: T.nilable(T::Array[String]), excluded_features: T::Array[CodeFeatures::Feature]).returns(T.nilable(CodeFeatures::Feature)) }

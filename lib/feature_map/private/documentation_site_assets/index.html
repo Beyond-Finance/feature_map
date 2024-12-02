@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <link href="./app.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <script src="./features.js" type="text/javascript"></script>
+    <script src="./app.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="header">Feature Map Documentation Site</div>
+
+      <div class="cumulative-metrics">
+        <div class="cumulative-metric-card">
+          <div class="title" style="color: purple;">Average ABC Size</div>
+          <div id="abc-size-average" class="value"></div>
+        </div>
+        <div class="cumulative-metric-card">
+          <div class="title" style="color: green;">Average Lines of Code</div>
+          <div id="lines-of-code-average" class="value"></div>
+        </div>
+        <div class="cumulative-metric-card">
+          <div class="title" style="color: orange;">Average Complexity</div>
+          <div id="complexity-average" class="value"></div>
+        </div>
+      </div>
+
+      <div class="features-table-container">
+        <table class="features-table">
+          <thead>
+            <th>Feature</th>
+            <th>ABC Size</th>
+            <th>Lines of Code</th>
+            <th>Complexity</th>
+            <th>File Count</th>
+          </thead>
+          <tbody id="features-table-body"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </body>
+</html>

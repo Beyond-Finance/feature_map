@@ -10,6 +10,8 @@ module FeatureMap
       command = argv.shift
       if command == 'validate'
         validate!(argv)
+      elsif command == 'docs'
+        docs!(argv)
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -20,6 +22,7 @@ module FeatureMap
 
           Subcommands:
             validate - run all validations
+            docs - generates feature documentation
             for_file - find feature assignment for a single file
             for_feature - find assignment information for a feature
             help  - display help information about feature_map
@@ -35,7 +38,7 @@ module FeatureMap
       parser = OptionParser.new do |opts|
         opts.banner = 'Usage: bin/featuremap validate [options]'
 
-        opts.on('--skip-autocorrect', 'Skip automatically correcting any errors, such as the FEATURES.yml file') do
+        opts.on('--skip-autocorrect', 'Skip automatically correcting any errors, such as the .feature_map/assignments.yml file') do
           options[:skip_autocorrect] = true
         end
 
@@ -43,7 +46,7 @@ module FeatureMap
           options[:diff] = true
         end
 
-        opts.on('-s', '--skip-stage', 'Skips staging the FEATURES.yml file') do
+        opts.on('-s', '--skip-stage', 'Skips staging the .feature_map/assignments.yml file') do
           options[:skip_stage] = true
         end
 
@@ -68,6 +71,33 @@ module FeatureMap
         autocorrect: !options[:skip_autocorrect],
         stage_changes: !options[:skip_stage]
       )
+    end
+
+    def self.docs!(argv)
+      options = {}
+
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap docs [options]'
+
+        opts.on('-s', '--skip-stage', 'Skips staging the .feature_map/assignments.yml file') do
+          options[:skip_stage] = true
+        end
+
+        opts.on('--skip-validate', 'Skip the execution of the validate command, using the existing feature output files') do
+          options[:skip_validate] = true
+        end
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      args = parser.order!(argv)
+      parser.parse!(args)
+
+      FeatureMap.validate!(stage_changes: !options[:skip_stage]) unless options[:skip_validate]
+
+      FeatureMap.generate_docs!
     end
 
     # For now, this just returns feature assignment

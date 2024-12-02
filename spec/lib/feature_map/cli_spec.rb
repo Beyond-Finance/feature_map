@@ -40,6 +40,53 @@ RSpec.describe FeatureMap::Cli do
     end
   end
 
+  describe 'docs' do
+    let(:argv) { ['docs'] }
+    let(:assigned_globs) { nil }
+
+    before do
+      create_non_empty_application
+      write_file('.feature_map/assignments.yml', <<~CONTENTS)
+        ---
+        files:
+          packs/my_pack/assigned_file.rb:
+            feature: Bar
+            mapper: Annotations at the top of file
+        features:
+          Bar:
+            - packs/my_pack/assigned_file.rb
+      CONTENTS
+      write_file('.feature_map/metrics.yml', <<~CONTENTS)
+        ---
+        features:
+          Bar:
+            abc_size: 12.34
+            lines_of_code: 56
+            cyclomatic_complexity: 7
+      CONTENTS
+    end
+
+    context 'when run without arguments' do
+      it 'runs validations with the right defaults' do
+        expect(FeatureMap).to receive(:validate!) do |args|
+          expect(args[:stage_changes]).to eq true
+        end
+        expect(FeatureMap).to receive(:generate_docs!)
+        subject
+      end
+    end
+
+    context 'with --skip-validate' do
+      let(:argv) { ['docs', '--skip-validate'] }
+
+      it 'does not trigger the validate operation' do
+        expect(FeatureMap).not_to receive(:validate!)
+        expect(FeatureMap).to receive(:generate_docs!)
+        subject
+      end
+    end
+  end
+
   describe 'for_file' do
     before do
       write_configuration
@@ -132,6 +179,7 @@ RSpec.describe FeatureMap::Cli do
 
         Subcommands:
           validate - run all validations
+          docs - generates feature documentation
           for_file - find feature assignment for a single file
           for_feature - find assignment information for a feature
           help  - display help information about feature_map

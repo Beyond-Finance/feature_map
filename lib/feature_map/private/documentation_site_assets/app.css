@@ -1,0 +1,65 @@
+body {
+    background-color: #DDDDDD;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.header {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.cumulative-metrics {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem
+}
+
+.cumulative-metric-card {
+    flex: 1;
+    border-radius: 0.5rem;
+    border: #999999 1px solid;
+    box-shadow: 1px 1px 1px #999999;
+    padding: 0.5rem;
+    margin: 0.5rem;
+}
+
+.cumulative-metric-card .title {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.features-table-container {
+    margin: 0.5rem;
+}
+
+.features-table {
+    border-radius: 0.5rem;
+    border: #999999 1px solid;
+    box-shadow: 1px 1px 1px #999999;
+    width: 100%;
+}
+
+.features-table tr {
+    padding: 0.5rem;
+}
+
+.features-table thead tr {
+    color: gray;
+    text-transform: uppercase;
+}
+
+.features-table tbody td.metric-value {
+    text-align: center;
+}
+
+.features-table tbody tr:hover {
+    background-color: lightgray;
+}
