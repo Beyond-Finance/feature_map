@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require 'parser/current'
-require 'sorbet-runtime'
 
 module FeatureMap
   module Private

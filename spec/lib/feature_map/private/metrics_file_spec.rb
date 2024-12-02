@@ -17,7 +17,7 @@ module FeatureMap
           features:
             Bar:
               abc_size: 1.0
-              lines_of_code: 3
+              lines_of_code: 5
               cyclomatic_complexity: 1
             Foo:
               abc_size: 2.0
