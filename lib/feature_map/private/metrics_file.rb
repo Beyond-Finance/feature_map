@@ -71,7 +71,8 @@ module FeatureMap
         cache.each_value do |assignment_map_cache|
           assignment_map_cache.to_h.each do |path, feature|
             feature_files[feature.name] ||= T.let([], FileList)
-            T.must(feature_files[feature.name]) << path
+            files = Dir.glob(path).reject { |glob_entry| File.directory?(glob_entry) }
+            files.each { |file| T.must(feature_files[feature.name]) << file }
           end
         end
 
