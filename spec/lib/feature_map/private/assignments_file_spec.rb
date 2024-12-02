@@ -494,5 +494,51 @@ module FeatureMap
         end
       end
     end
+
+    describe '.load_features!' do
+      before { create_validation_artifacts }
+
+      it 'returns the feature metrics details from the existing Metrics File' do
+        expect(Private::AssignmentsFile.load_features!).to eq({
+                                                                'Bar' => ['packs/my_pack/assigned_file.rb']
+                                                              })
+      end
+
+      it 'raises an error if the file does not contain any features content' do
+        write_file('.feature_map/assignments.yml', <<~CONTENTS)
+          ---
+          files:
+            packs/my_pack/assigned_file.rb:
+              feature: Bar
+              mapper: Annotations at the top of file
+        CONTENTS
+
+        expect { Private::AssignmentsFile.load_features! }.to raise_error(Private::AssignmentsFile::FileContentError, /Unexpected content found/i)
+      end
+
+      it 'raises an error if the file does not contain an object' do
+        write_file('.feature_map/assignments.yml', 'Test 1234')
+
+        expect { Private::AssignmentsFile.load_features! }.to raise_error(Private::AssignmentsFile::FileContentError, /Unexpected content found/i)
+      end
+
+      it 'raises an error if the file contains invalid YAML' do
+        write_file('.feature_map/assignments.yml', <<~CONTENTS)
+          ---
+          features:
+            Bar:
+                - packs/my_pack/assigned_file.rb
+              - some/other/file.rb
+        CONTENTS
+
+        expect { Private::AssignmentsFile.load_features! }.to raise_error(Private::AssignmentsFile::FileContentError, /Invalid YAML content/i)
+      end
+
+      it 'raises an error if the file is not found' do
+        File.delete('.feature_map/assignments.yml')
+
+        expect { Private::AssignmentsFile.load_features! }.to raise_error(Private::AssignmentsFile::FileContentError, /No feature assignments file found/i)
+      end
+    end
   end
 end

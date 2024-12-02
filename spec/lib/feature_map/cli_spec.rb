@@ -46,24 +46,7 @@ RSpec.describe FeatureMap::Cli do
 
     before do
       create_non_empty_application
-      write_file('.feature_map/assignments.yml', <<~CONTENTS)
-        ---
-        files:
-          packs/my_pack/assigned_file.rb:
-            feature: Bar
-            mapper: Annotations at the top of file
-        features:
-          Bar:
-            - packs/my_pack/assigned_file.rb
-      CONTENTS
-      write_file('.feature_map/metrics.yml', <<~CONTENTS)
-        ---
-        features:
-          Bar:
-            abc_size: 12.34
-            lines_of_code: 56
-            cyclomatic_complexity: 7
-      CONTENTS
+      create_validation_artifacts
     end
 
     context 'when run without arguments' do

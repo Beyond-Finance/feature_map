@@ -134,6 +134,10 @@ When you run `bin/featuremap validate`, the following files will automatically b
  * `.feature_map/assignments.yml`: Captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files.
  * `.feature_map/metrics.yml`: cCaptures a set of metrics rolled up at the feature level (i.e. computed over all files assigned to the feature).
 
+## Usage: Generating Documentation
+
+When you run `bin/featuremap docs`, a set of HTML, JS, and CSS artifacts for a documentation site will be generated and deposited into the `.feature_map/docs` directory. The `index.html` file of this documentation site can be loaded in a browser to review information and diagrams detailing the set of features that have been defined within the application.
+
 ## Proper Configuration & Validation
 
 FeatureMap comes with a validation function to ensure the following things are true:

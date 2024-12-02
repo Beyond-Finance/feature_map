@@ -9,6 +9,30 @@ module FeatureMap
     # is combined with a JSON file containing the assignment and metrics information about all application
     # features.
     #
+    # The HTML, JS, and CSS files within the `documentation_site_assets` directory are directly copied into
+    # output directory and combined with a single `features_js` file containing content like the following:
+    #   ```
+    #   window.FEATURES = {
+    #     "Foo": {
+    #       "assignments": ["app/jobs/foo_job.rb", "app/lib/foo_service.rb"],
+    #       "metrics": {
+    #         "abc_size": 12.34,
+    #         "lines_of_code": 56,
+    #         "cyclomatic_complexity": 7
+    #       }
+    #     },
+    #     "Bar": {
+    #       "assignments": ["app/controllers/bar_controller.rb", "app/lib/bar_service.rb"],
+    #       "metrics": {
+    #         "abc_size": 98.76,
+    #         "lines_of_code": 54,
+    #         "cyclomatic_complexity": 32
+    #       }
+    #     }
+    #   };
+    #   ```
+    # The `window.FEATURES` global variable is used within the site logic to render an appropriate set of
+    # documentation artifacts and charts.
     class DocumentationSite
       extend T::Sig
 
