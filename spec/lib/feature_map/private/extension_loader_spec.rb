@@ -97,9 +97,10 @@ module FeatureMap
               mapper: My special extension
           features:
             Bar:
-            - ".feature_map/definitions/bar.yml"
-            - app/services/my_assignable_file.rb
-            - lib/my_extension.rb
+              files:
+              - ".feature_map/definitions/bar.yml"
+              - app/services/my_assignable_file.rb
+              - lib/my_extension.rb
         EXPECTED
       end
     end
