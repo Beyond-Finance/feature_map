@@ -4,6 +4,7 @@
 
 require 'feature_map/private/extension_loader'
 require 'feature_map/private/cyclomatic_complexity_calculator'
+require 'feature_map/private/lines_of_code_calculator'
 require 'feature_map/private/feature_metrics_calculator'
 require 'feature_map/private/assignments_file'
 require 'feature_map/private/metrics_file'
