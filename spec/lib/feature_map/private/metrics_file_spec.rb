@@ -70,5 +70,57 @@ module FeatureMap
         expect(Private::MetricsFile.path.to_s).to match(%r{/[a-zA-Z0-9-/]+/.feature_map/metrics\.yml})
       end
     end
+
+    describe '.load_features!' do
+      before { create_validation_artifacts }
+
+      it 'returns the feature metrics details from the existing Metrics File' do
+        expect(Private::MetricsFile.load_features!).to eq({
+                                                            'Bar' => {
+                                                              'abc_size' => 12.34,
+                                                              'lines_of_code' => 56,
+                                                              'cyclomatic_complexity' => 7
+                                                            }
+                                                          })
+      end
+
+      it 'raises an error if the file does not contain any features content' do
+        write_file('.feature_map/metrics.yml', <<~CONTENTS)
+          ---
+          files:
+            app/lib/foo.rb:
+              abc_size: 12.34
+              lines_of_code: 56
+              cyclomatic_complexity: 7
+        CONTENTS
+
+        expect { Private::MetricsFile.load_features! }.to raise_error(Private::MetricsFile::FileContentError, /Unexpected content found/i)
+      end
+
+      it 'raises an error if the file does not contain an object' do
+        write_file('.feature_map/metrics.yml', 'Test 1234')
+
+        expect { Private::MetricsFile.load_features! }.to raise_error(Private::MetricsFile::FileContentError, /Unexpected content found/i)
+      end
+
+      it 'raises an error if the file contains invalid YAML' do
+        write_file('.feature_map/metrics.yml', <<~CONTENTS)
+          ---
+          files:
+            app/lib/foo.rb:
+                abc_size: 12.34
+              lines_of_code: 56
+              cyclomatic_complexity: 7
+        CONTENTS
+
+        expect { Private::MetricsFile.load_features! }.to raise_error(Private::MetricsFile::FileContentError, /Invalid YAML content/i)
+      end
+
+      it 'raises an error if the file is not found' do
+        File.delete('.feature_map/metrics.yml')
+
+        expect { Private::MetricsFile.load_features! }.to raise_error(Private::MetricsFile::FileContentError, /No feature metrics file found/i)
+      end
+    end
   end
 end

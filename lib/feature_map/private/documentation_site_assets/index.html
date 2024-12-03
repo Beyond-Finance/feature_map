@@ -1,0 +1,121 @@
+<html>
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./features.js" type="text/javascript"></script>
+    <script src="./app.js" type="text/javascript"></script>
+    <link href="./app.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  </head>
+  <body class="bg-gray-100 h-screen">
+    <div class="max-w-7xl mx-auto p-4 md:p-8">
+      <div class="mb-8">
+        <ul class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <li class="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
+            <div class="flex items-center justify-between">
+              <h3 class="flex items-center text-xs font-medium text-gray-600 uppercase">
+                <div class="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shapes">
+                    <path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <circle cx="17.5" cy="17.5" r="3.5"/>
+                  </svg>
+                </div>
+
+                <span class="flex pl-2">ABC Size</span>
+              </h3>
+
+              <div class="relative flex-shrink-0 group" data-tooltip="Average abc size across all features">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                </svg>
+                <div class="absolute whitespace-nowrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2">
+                  Average abc size across all features
+                </div>
+              </div>
+            </div>
+
+            <div id="abc-size-average" class="text-3xl font-bold"></div>
+          </li>
+
+          <li class="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
+            <div class="flex items-center justify-between">
+              <h3 class="flex items-center text-xs font-medium text-gray-600 uppercase">
+                <div class="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
+                    <path d="M10 12.5 8 15l2 2.5"/>
+                    <path d="m14 12.5 2 2.5-2 2.5"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>
+                  </svg>
+                </div>
+
+                <span class="flex pl-2">Lines of Code</span>
+              </h3>
+
+              <div class="relative flex-shrink-0 group" data-tooltip="Average lines of code across all features">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                </svg>
+                <div class="absolute whitespace-nowrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2">
+                  Average lines of code across all features
+                </div>
+              </div>
+            </div>
+
+            <div id="lines-of-code-average" class="text-3xl font-bold"></div>
+          </li>
+
+          <li class="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
+            <div class="flex items-center justify-between">
+              <h3 class="flex items-center text-xs font-medium text-gray-600 uppercase">
+                <div class="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
+                    <circle cx="5" cy="6" r="3"/>
+                    <path d="M5 9v6"/>
+                    <circle cx="5" cy="18" r="3"/>
+                    <path d="M12 3v18"/>
+                    <circle cx="19" cy="6" r="3"/>
+                    <path d="M16 15.7A9 9 0 0 0 19 9"/>
+                  </svg>
+                </div>
+
+                <span class="flex pl-2">Complexity</span>
+              </h3>
+
+              <div class="relative flex-shrink-0 group" data-tooltip="Average cyclomatic complexity across all features">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                </svg>
+                <div class="absolute whitespace-nowrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2">
+                  Average cyclomatic complexity across all features
+                </div>
+              </div>
+            </div>
+
+            <div id="complexity-average" class="text-3xl font-bold"></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-8 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div class="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">Feature</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">ABC Size</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">Lines of code</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">Complexity</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">File Count</th>
+                  </tr>
+                </thead>
+                <tbody id="features-table-body" class="divide-y divide-gray-200 bg-white"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -11,6 +11,8 @@ module FeatureMap
     class AssignmentsFile
       extend T::Sig
 
+      class FileContentError < StandardError; end
+
       FILES_KEY = 'files'
       FILE_FEATURE_KEY = 'feature'
       FILE_MAPPER_KEY = 'mapper'
@@ -165,6 +167,19 @@ module FeatureMap
         end
 
         GlobCache.new(raw_cache_contents)
+      end
+
+      sig { returns(FeaturesContent) }
+      def self.load_features!
+        assignments_content = YAML.load_file(path)
+
+        return assignments_content[FEATURES_KEY] if assignments_content.is_a?(Hash) && assignments_content[FEATURES_KEY]
+
+        raise FileContentError, "Unexpected content found in #{path}. Use `bin/featuremap validate` to regenerate it and try again."
+      rescue Psych::SyntaxError => e
+        raise FileContentError, "Invalid YAML content found at #{path}. Error: #{e.message} Use `bin/featuremap validate` to generate it and try again."
+      rescue Errno::ENOENT
+        raise FileContentError, "No feature assignments file found at #{path}. Use `bin/featuremap validate` to generate it and try again."
       end
     end
   end

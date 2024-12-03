@@ -11,6 +11,8 @@ module FeatureMap
     class MetricsFile
       extend T::Sig
 
+      class FileContentError < StandardError; end
+
       FEATURES_KEY = 'features'
 
       FeatureName = T.type_alias { String }
@@ -86,6 +88,19 @@ module FeatureMap
           *{ FEATURES_KEY => feature_metrics }.to_yaml.split("\n"),
           '' # For end-of-file newline
         ]
+      end
+
+      sig { returns(FeaturesContent) }
+      def self.load_features!
+        metrics_content = YAML.load_file(path)
+
+        return metrics_content[FEATURES_KEY] if metrics_content.is_a?(Hash) && metrics_content[FEATURES_KEY]
+
+        raise FileContentError, "Unexpected content found in #{path}. Use `bin/featuremap validate` to regenerate it and try again."
+      rescue Psych::SyntaxError => e
+        raise FileContentError, "Invalid YAML content found at #{path}. Error: #{e.message} Use `bin/featuremap validate` to generate it and try again."
+      rescue Errno::ENOENT
+        raise FileContentError, "No feature metrics file found at #{path}. Use `bin/featuremap validate` to generate it and try again."
       end
     end
   end

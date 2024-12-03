@@ -10,6 +10,7 @@ require 'feature_map/private/assignments_file'
 require 'feature_map/private/metrics_file'
 require 'feature_map/private/glob_cache'
 require 'feature_map/private/feature_assigner'
+require 'feature_map/private/documentation_site'
 require 'feature_map/private/feature_plugins/assignment'
 require 'feature_map/private/validations/files_have_features'
 require 'feature_map/private/validations/features_up_to_date'
@@ -62,6 +63,14 @@ module FeatureMap
       end
 
       MetricsFile.write!
+    end
+
+    sig { void }
+    def self.generate_docs!
+      feature_assignments = AssignmentsFile.load_features!
+      feature_metrics = MetricsFile.load_features!
+
+      DocumentationSite.generate(feature_assignments, feature_metrics)
     end
 
     # Returns a string version of the relative path to a Rails constant,
