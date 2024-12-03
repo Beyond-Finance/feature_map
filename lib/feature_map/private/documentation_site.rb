@@ -14,7 +14,10 @@ module FeatureMap
     #   ```
     #   window.FEATURES = {
     #     "Foo": {
-    #       "assignments": ["app/jobs/foo_job.rb", "app/lib/foo_service.rb"],
+    #       "assignments": {
+    #         "files": ["app/jobs/foo_job.rb", "app/lib/foo_service.rb"],
+    #         "teams": ["team_a", "team_b"]
+    #       },
     #       "metrics": {
     #         "abc_size": 12.34,
     #         "lines_of_code": 56,
@@ -22,7 +25,10 @@ module FeatureMap
     #       }
     #     },
     #     "Bar": {
-    #       "assignments": ["app/controllers/bar_controller.rb", "app/lib/bar_service.rb"],
+    #       "assignments":{
+    #         "files": ["app/controllers/bar_controller.rb", "app/lib/bar_service.rb"],
+    #         "teams": ["team_a"]
+    #       },
     #       "metrics": {
     #         "abc_size": 98.76,
     #         "lines_of_code": 54,
