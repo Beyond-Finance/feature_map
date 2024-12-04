@@ -581,7 +581,7 @@ module FeatureMap
 
       it 'returns the feature metrics details from the existing Metrics File' do
         expect(Private::AssignmentsFile.load_features!).to eq({
-                                                                'Bar' => ['packs/my_pack/assigned_file.rb']
+                                                                'Bar' => ['app/my_error.rb']
                                                               })
       end
 
@@ -589,7 +589,7 @@ module FeatureMap
         write_file('.feature_map/assignments.yml', <<~CONTENTS)
           ---
           files:
-            packs/my_pack/assigned_file.rb:
+            app/my_error.rb:
               feature: Bar
               mapper: Annotations at the top of file
         CONTENTS
@@ -608,7 +608,7 @@ module FeatureMap
           ---
           features:
             Bar:
-                - packs/my_pack/assigned_file.rb
+                - app/my_error.rb
               - some/other/file.rb
         CONTENTS
 

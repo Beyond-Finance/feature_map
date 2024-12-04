@@ -12,6 +12,8 @@ module FeatureMap
         validate!(argv)
       elsif command == 'docs'
         docs!(argv)
+      elsif command == 'test_coverage'
+        test_coverage!(argv)
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -98,6 +100,25 @@ module FeatureMap
       FeatureMap.validate!(stage_changes: !options[:skip_stage]) unless options[:skip_validate]
 
       FeatureMap.generate_docs!
+    end
+
+    def self.test_coverage!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap test_coverage [options] commit_sha code_cov_token'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      args = parser.order!(argv)
+      parser.parse!(args)
+
+      non_flag_args = argv.reject { |arg| arg.start_with?('--') }
+      commit_sha = non_flag_args.first || `git rev-parse HEAD`.chomp
+      code_cov_token = non_flag_args.last
+
+      FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
     end
 
     # For now, this just returns feature assignment

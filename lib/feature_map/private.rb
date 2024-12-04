@@ -11,6 +11,8 @@ require 'feature_map/private/metrics_file'
 require 'feature_map/private/glob_cache'
 require 'feature_map/private/feature_assigner'
 require 'feature_map/private/documentation_site'
+require 'feature_map/private/code_cov'
+require 'feature_map/private/test_coverage_file'
 require 'feature_map/private/feature_plugins/assignment'
 require 'feature_map/private/validations/files_have_features'
 require 'feature_map/private/validations/features_up_to_date'
@@ -23,6 +25,15 @@ require 'feature_map/private/assignment_mappers/feature_definition_assignment'
 module FeatureMap
   module Private
     extend T::Sig
+
+    FeatureName = T.type_alias { String }
+    FileList = T.type_alias { T::Array[String] }
+    FeatureFiles = T.type_alias do
+      T::Hash[
+        FeatureName,
+        FileList
+      ]
+    end
 
     sig { returns(Configuration) }
     def self.configuration
@@ -71,6 +82,13 @@ module FeatureMap
       feature_metrics = MetricsFile.load_features!
 
       DocumentationSite.generate(feature_assignments, feature_metrics)
+    end
+
+    sig { params(commit_sha: String, code_cov_token: String).void }
+    def self.gather_test_coverage!(commit_sha, code_cov_token)
+      coverage_stats = CodeCov.fetch_coverage_stats(commit_sha, code_cov_token)
+
+      TestCoverageFile.write!(coverage_stats)
     end
 
     # Returns a string version of the relative path to a Rails constant,
@@ -131,6 +149,19 @@ module FeatureMap
                       else
                         Mapper.to_glob_cache
                       end
+    end
+
+    sig { returns(FeatureFiles) }
+    def self.feature_file_assignments
+      glob_cache.raw_cache_contents.values.each_with_object(T.let({}, FeatureFiles)) do |assignment_map_cache, feature_files|
+        assignment_map_cache.to_h.each do |path, feature|
+          feature_files[feature.name] ||= T.let([], FileList)
+          files = Dir.glob(path).reject { |glob_entry| File.directory?(glob_entry) }
+          files.each { |file| T.must(feature_files[feature.name]) << file }
+        end
+
+        feature_files
+      end
     end
   end
 

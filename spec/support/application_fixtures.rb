@@ -165,12 +165,12 @@ RSpec.shared_context 'application fixtures' do
     write_file('.feature_map/assignments.yml', <<~CONTENTS)
       ---
       files:
-        packs/my_pack/assigned_file.rb:
+        app/my_error.rb:
           feature: Bar
           mapper: Annotations at the top of file
       features:
         Bar:
-          - packs/my_pack/assigned_file.rb
+          - app/my_error.rb
     CONTENTS
     write_file('.feature_map/metrics.yml', <<~CONTENTS)
       ---

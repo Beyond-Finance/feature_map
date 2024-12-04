@@ -245,7 +245,37 @@ RSpec.describe FeatureMap do
     it 'captueres the feature details for the current application within a features.js file' do
       FeatureMap.generate_docs!
       expect(File.exist?(Pathname.pwd.join('.feature_map/docs/features.js'))).to be_truthy
-      expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).to eq('window.FEATURES = {"Bar":{"assignments":["packs/my_pack/assigned_file.rb"],"metrics":{"abc_size":12.34,"lines_of_code":56,"cyclomatic_complexity":7}},"Foo":{"assignments":null,"metrics":null}};')
+      expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).to eq('window.FEATURES = {"Bar":{"assignments":["app/my_error.rb"],"metrics":{"abc_size":12.34,"lines_of_code":56,"cyclomatic_complexity":7}},"Foo":{"assignments":null,"metrics":null}};')
+    end
+  end
+
+  describe '.gather_test_coverage!' do
+    let(:commit_sha) { '39808e938c9f6d75a81c5f3050cc1a5c496d11b5' }
+    let(:code_cov_token) { '552e67da-dcf9-4b58-adfc-b71ec6558798' }
+    let(:code_cov_service) { 'github' }
+    let(:code_cov_owner) { 'Acme-Org' }
+    let(:code_cov_repo) { 'sample_app' }
+    let(:test_coverage_output_file) { Pathname.pwd.join('.feature_map/test-coverage.yml') }
+    let(:code_cov_response) do
+      {
+        report: {
+          files: [{ name: 'app/my_error.rb', totals: { lines: 10, hits: 8, misses: 2 } }]
+        }
+      }
+    end
+
+    before do
+      create_validation_artifacts
+      write_configuration('code_cov' => { 'service' => code_cov_service, 'owner' => code_cov_owner, 'repo' => code_cov_repo })
+      stub_request(:get, "https://api.codecov.io/api/v2/#{code_cov_service}/#{code_cov_owner}/repos/#{code_cov_repo}/commits/#{commit_sha}")
+        .with(headers: { 'Authorization' => "Bearer #{code_cov_token}" })
+        .to_return(status: 200, body: code_cov_response.to_json, headers: { 'Content-Type' => 'application/json' })
+    end
+
+    it 'captures the test coverage statistics for all features in a test-coverage.yml file within the .feature_map directory' do
+      FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
+      expect(File.exist?(test_coverage_output_file)).to be_truthy
+      expect(YAML.load_file(test_coverage_output_file)).to match({ 'features' => { 'Bar' => { 'hits' => 8, 'lines' => 10, 'misses' => 2 } } })
     end
   end
 end

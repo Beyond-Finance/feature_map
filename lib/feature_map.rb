@@ -103,9 +103,12 @@ module FeatureMap
 
   sig { void }
   def generate_docs!
-    Private.load_configuration!
-
     Private.generate_docs!
+  end
+
+  sig { params(commit_sha: String, code_cov_token: String).void }
+  def gather_test_coverage!(commit_sha, code_cov_token)
+    Private.gather_test_coverage!(commit_sha, code_cov_token)
   end
 
   # Given a backtrace from either `Exception#backtrace` or `caller`, find the

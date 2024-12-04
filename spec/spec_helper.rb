@@ -1,4 +1,5 @@
 require 'bundler/setup'
+require 'webmock/rspec'
 require 'debug'
 require 'rubocop'
 require 'feature_map'
