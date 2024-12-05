@@ -1,10 +1,16 @@
 import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import inlinePlugin from './build-plugin'
 
 export default defineConfig({
-  root: 'src',
-  base: '/',
+  plugins: [react(), inlinePlugin()],
   build: {
-    outDir: '../dist',
-    emptyOutDir: true
+    outDir: '../lib/feature_map/private/docs',
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   }
 })
