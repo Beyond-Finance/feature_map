@@ -29,6 +29,7 @@ export default function inlinePlugin() {
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <title>Feature Map Dashboard</title>
               <style>${cssCode}</style>
+              <script src="./features.js" type="text/javascript"></script>
             </head>
             <body class="bg-gray-100">
               <div id="root"></div>

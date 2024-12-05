@@ -7,7 +7,6 @@ import LinesOfCodeIcon from './components/icons/LinesOfCodeIcon'
 import CyclomaticComplexityIcon from './components/icons/CyclomaticComplexityIcon'
 
 export default function App() {
-  //const [features, setFeatures] = useState(sampleFeatures);
   const features = window.FEATURES || useState(sampleFeatures)[0];
   const [metrics, setMetrics] = useState({
     abcSize: 0,
