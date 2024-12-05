@@ -9,7 +9,7 @@ module FeatureMap
     # is combined with a JSON file containing the assignment and metrics information about all application
     # features.
     #
-    # The HTML, JS, and CSS files within the `documentation_site_assets` directory are directly copied into
+    # The code within the `docs` directory is directly copied into an
     # output directory and combined with a single `features_js` file containing content like the following:
     #   ```
     #   window.FEATURES = {
@@ -42,7 +42,7 @@ module FeatureMap
     class DocumentationSite
       extend T::Sig
 
-      ASSETS_DIRECTORY = 'documentation_site_assets'
+      ASSETS_DIRECTORY = 'docs'
 
       sig { params(feature_assignments: AssignmentsFile::FeaturesContent, feature_metrics: MetricsFile::FeaturesContent).void }
       def self.generate(feature_assignments, feature_metrics)
