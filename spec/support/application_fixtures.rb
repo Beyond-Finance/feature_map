@@ -181,4 +181,17 @@ RSpec.shared_context 'application fixtures' do
           cyclomatic_complexity: 7
     CONTENTS
   end
+
+  let(:create_test_coverage_artifacts) do
+    create_files_with_defined_classes
+
+    write_file('.feature_map/test-coverage.yml', <<~CONTENTS)
+      ---
+      features:
+        Bar:
+          lines: 56
+          hits: 48
+          misses: 6
+    CONTENTS
+  end
 end

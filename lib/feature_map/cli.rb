@@ -114,9 +114,13 @@ module FeatureMap
       args = parser.order!(argv)
       parser.parse!(args)
 
-      non_flag_args = argv.reject { |arg| arg.start_with?('--') }
-      commit_sha = non_flag_args.first || `git rev-parse HEAD`.chomp
-      code_cov_token = non_flag_args.last
+      current_commit = `git rev-parse HEAD`.chomp
+
+      puts "Enter SHA for commit to pull CodeCov data or press enter to use the current commit ('#{current_commit}'): "
+      commit_sha = $stdin.gets&.chomp || current_commit
+
+      puts 'Enter your CodeCov API token (see https://github.com/Beyond-Finance/feature_map?tab=readme-ov-file#codecov-api-token-generation for instructions): '
+      code_cov_token = $stdin.gets&.chomp || ''
 
       FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
     end

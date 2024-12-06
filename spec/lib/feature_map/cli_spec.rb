@@ -70,6 +70,39 @@ RSpec.describe FeatureMap::Cli do
     end
   end
 
+  describe 'test_coverage' do
+    let(:argv) { ['test_coverage'] }
+    let(:assigned_globs) { nil }
+    let(:current_commit) { 'fedcba9876543210fedcba9876543210' }
+
+    before do
+      create_non_empty_application
+      create_validation_artifacts
+      allow(FeatureMap::Cli).to receive(:`).with('git rev-parse HEAD').and_return(current_commit)
+    end
+
+    context 'when the user provides input values' do
+      let(:provided_commit_sha) { '1234567890abcdef1234567890abcdef' }
+      let(:provided_code_cov_token) { 'abc-123-xyz-987' }
+
+      before { allow($stdin).to receive(:gets).and_return(provided_commit_sha, provided_code_cov_token) }
+
+      it 'runs validations with the right defaults' do
+        expect(FeatureMap).to receive(:gather_test_coverage!).with(provided_commit_sha, provided_code_cov_token)
+        subject
+      end
+    end
+
+    context 'when the user provides no input values' do
+      before { allow($stdin).to receive(:gets).and_return(nil, nil) }
+
+      it 'uses the current commit SHA and no CodeCov token' do
+        expect(FeatureMap).to receive(:gather_test_coverage!).with(current_commit, '')
+        subject
+      end
+    end
+  end
+
   describe 'for_file' do
     before do
       write_configuration

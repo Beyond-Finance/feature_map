@@ -250,8 +250,8 @@ RSpec.describe FeatureMap do
   end
 
   describe '.gather_test_coverage!' do
-    let(:commit_sha) { '39808e938c9f6d75a81c5f3050cc1a5c496d11b5' }
-    let(:code_cov_token) { '552e67da-dcf9-4b58-adfc-b71ec6558798' }
+    let(:commit_sha) { '1234567890abcdef1234567890abcdef' }
+    let(:code_cov_token) { 'e5124eb5-c948-4136-9297-08efa6f2d537' }
     let(:code_cov_service) { 'github' }
     let(:code_cov_owner) { 'Acme-Org' }
     let(:code_cov_repo) { 'sample_app' }

@@ -4,9 +4,9 @@
 module FeatureMap
   module Private
     #
-    # This class is responsible for turning FeatureMap directives (e.g. annotations, directory assignments, etc)
-    # into a metrics.yml file, that can be used as an input to a variety of engineering team utilities (e.g.
-    # PR/release announcements, documentation generation, etc).
+    # This class is responsible for compiling a set of file-level test coverage statistics into a test-coverage.yml
+    # file that captures test coverage statistics on a per-feature basis. This file can then be used as an input to
+    # a variety of engineering team utilities (e.g. PR/release announcements, documentation generation, etc).
     #
     class TestCoverageFile
       extend T::Sig
@@ -90,7 +90,7 @@ module FeatureMap
       rescue Psych::SyntaxError => e
         raise FileContentError, "Invalid YAML content found at #{path}. Error: #{e.message} Use `bin/featuremap test_coverage` to generate it and try again."
       rescue Errno::ENOENT
-        raise FileContentError, "No feature metrics file found at #{path}. Use `bin/featuremap test_coverage` to generate it and try again."
+        raise FileContentError, "No feature test coverage file found at #{path}. Use `bin/featuremap test_coverage` to generate it and try again."
       end
     end
   end

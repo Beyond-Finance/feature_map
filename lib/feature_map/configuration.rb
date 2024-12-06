@@ -12,7 +12,7 @@ module FeatureMap
     const :skip_code_ownership, T::Boolean
     const :require_assignment_for_teams, T.nilable(T::Array[String])
     const :ignore_feature_definitions, T::Boolean
-    const :code_cov, T::Hash[String, String]
+    const :code_cov, T::Hash[String, T.nilable(String)]
 
     sig { returns(Configuration) }
     def self.fetch
