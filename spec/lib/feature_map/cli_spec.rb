@@ -94,7 +94,7 @@ RSpec.describe FeatureMap::Cli do
     end
 
     context 'when the user provides no input values' do
-      before { allow($stdin).to receive(:gets).and_return(nil, nil) }
+      before { allow($stdin).to receive(:gets).and_return('', '') }
 
       it 'uses the current commit SHA and no CodeCov token' do
         expect(FeatureMap).to receive(:gather_test_coverage!).with(current_commit, '')

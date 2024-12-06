@@ -117,7 +117,8 @@ module FeatureMap
       current_commit = `git rev-parse HEAD`.chomp
 
       puts "Enter SHA for commit to pull CodeCov data or press enter to use the current commit ('#{current_commit}'): "
-      commit_sha = $stdin.gets&.chomp || current_commit
+      commit_sha = $stdin.gets&.chomp || ''
+      commit_sha = current_commit if commit_sha.empty?
 
       puts 'Enter your CodeCov API token (see https://github.com/Beyond-Finance/feature_map?tab=readme-ov-file#codecov-api-token-generation for instructions): '
       code_cov_token = $stdin.gets&.chomp || ''
