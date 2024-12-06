@@ -13,9 +13,14 @@ const features = {
     "description": "Core authentication system handling user login, OAuth integration, and session management",
     "documentation_link": "https://internal-docs.company.com/auth/overview",
     "metrics": {
-      "abc_size": 245.32,
-      "lines_of_code": 428,
-      "cyclomatic_complexity": 36
+      "abc_size": 890.32,
+      "lines_of_code": 1200,
+      "cyclomatic_complexity": 400
+    },
+    "test_coverage": {
+      "lines": 1200,
+      "hits": 1140,
+      "misses": 60
     }
   },
   "Payment Processing": {
@@ -34,9 +39,14 @@ const features = {
     "description": "Payment processing system integrating with Stripe for charges, refunds and reconciliation",
     "documentation_link": "https://internal-docs.company.com/payments/overview",
     "metrics": {
-      "abc_size": 892.45,
-      "lines_of_code": 1247,
-      "cyclomatic_complexity": 94
+      "abc_size": 1202.78,
+      "lines_of_code": 2582,
+      "cyclomatic_complexity": 500
+    },
+    "test_coverage": {
+      "lines": 2582,
+      "hits": 2530,
+      "misses": 52
     }
   },
   "User Management": {
@@ -53,9 +63,14 @@ const features = {
     "description": "User profile and account management system",
     "documentation_link": "https://internal-docs.company.com/users/overview",
     "metrics": {
-      "abc_size": 346.78,
-      "lines_of_code": 582,
-      "cyclomatic_complexity": 45
+      "abc_size": 1202.78,
+      "lines_of_code": 1582,
+      "cyclomatic_complexity": 300
+    },
+    "test_coverage": {
+      "lines": 1582,
+      "hits": 1108,
+      "misses": 474
     }
   },
   "Email Service": {
@@ -74,6 +89,11 @@ const features = {
       "abc_size": 156.92,
       "lines_of_code": 289,
       "cyclomatic_complexity": 22
+    },
+    "test_coverage": {
+      "lines": 289,
+      "hits": 286,
+      "misses": 3
     }
   },
   "Data Sync": {
@@ -94,6 +114,11 @@ const features = {
       "abc_size": 764.23,
       "lines_of_code": 1124,
       "cyclomatic_complexity": 82
+    },
+    "test_coverage": {
+      "lines": 1124,
+      "hits": 652,
+      "misses": 472
     }
   },
   "Analytics": {
@@ -112,6 +137,11 @@ const features = {
       "abc_size": 234.56,
       "lines_of_code": 412,
       "cyclomatic_complexity": 28
+    },
+    "test_coverage": {
+      "lines": 412,
+      "hits": 324,
+      "misses": 88
     }
   },
   "API Gateway": {
@@ -130,6 +160,11 @@ const features = {
       "abc_size": 423.67,
       "lines_of_code": 678,
       "cyclomatic_complexity": 52
+    },
+    "test_coverage": {
+      "lines": 678,
+      "hits": 671,
+      "misses": 7
     }
   },
   "Document Processing": {
@@ -149,6 +184,11 @@ const features = {
       "abc_size": 534.89,
       "lines_of_code": 892,
       "cyclomatic_complexity": 64
+    },
+    "test_coverage": {
+      "lines": 892,
+      "hits": 534,
+      "misses": 358
     }
   },
   "Notification System": {
@@ -164,9 +204,14 @@ const features = {
     "description": "Push notification system for mobile and web clients",
     "documentation_link": "https://internal-docs.company.com/notifications/overview",
     "metrics": {
-      "abc_size": 289.34,
-      "lines_of_code": 456,
-      "cyclomatic_complexity": 34
+      "abc_size": 780.34,
+      "lines_of_code": 1456,
+      "cyclomatic_complexity": 241
+    },
+    "test_coverage": {
+      "lines": 1456,
+      "hits": 998,
+      "misses": 458
     }
   },
   "Search Engine": {
@@ -178,7 +223,7 @@ const features = {
         "src/search/models/search_index.rb",
         "src/search/workers/indexing_worker.rb"
       ],
-      "teams": ["Search & Discovery", "Platform"]
+      "teams": ["Search & Discovery", "Platform", "Communications", "Another one"]
     },
     "description": "Elasticsearch-based full-text search engine",
     "documentation_link": "https://internal-docs.company.com/search/overview",
@@ -186,8 +231,13 @@ const features = {
       "abc_size": 645.78,
       "lines_of_code": 934,
       "cyclomatic_complexity": 76
+    },
+    "test_coverage": {
+      "lines": 934,
+      "hits": 742,
+      "misses": 192
     }
   }
- };
+};
 
- export default features;
+export default features;
