@@ -29,6 +29,10 @@ export default function inlinePlugin() {
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <title>Feature Map Dashboard</title>
               <style>${cssCode}</style>
+              <!--
+                Running the \`bin/featuremap docs\` command within a particular codebase will generate a \`features.js\` file in the \`.featuremap/docs/\` directory and
+                load the \`window.FEATURES\` global variable with the information necessary to populate feature data in the documentation site.
+              -->
               <script src="./features.js" type="text/javascript"></script>
             </head>
             <body class="bg-gray-100">
@@ -51,43 +55,3 @@ export default function inlinePlugin() {
     }
   }
 }
-
-// export default function inlinePlugin() {
-//   return {
-//     name: 'inline-bundle',
-//     apply: 'build',
-//     transformIndexHtml: {
-//       enforce: 'post',
-//       async transform(html, ctx) {
-//         if (!ctx.bundle) return html
-
-//         let jsCode = ''
-//         let cssCode = ''
-
-//         for (const [fileName, chunk] of Object.entries(ctx.bundle)) {
-//           if (chunk.type === 'chunk' && chunk.isEntry) {
-//             jsCode = chunk.code
-//           } else if (chunk.type === 'asset' && fileName.endsWith('.css')) {
-//             cssCode = chunk.source
-//           }
-//         }
-
-//         return `
-//           <!DOCTYPE html>
-//           <html lang="en">
-//             <head>
-//               <meta charset="UTF-8" />
-//               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-//               <title>Feature Map Dashboard</title>
-//               <style>${cssCode}</style>
-//               <script src="./features.js" type="text/javascript"></script>
-//             </head>
-//             <body class="bg-gray-100">
-//               <div id="root"></div>
-//               <script>${jsCode}</script>
-//             </body>
-//           </html>`
-//       }
-//     }
-//   }
-// }

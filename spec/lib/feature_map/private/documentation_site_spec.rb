@@ -14,6 +14,13 @@ module FeatureMap
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/index.html'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/index.html'))).to eq(File.read(File.join(assets_directory, 'index.html')))
         end
+
+        it 'creates a features.js file with the appropriate feature details in the docs output directory' do
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics)
+
+          expect(File.exist?(Pathname.pwd.join('.feature_map/docs/features.js'))).to be_truthy
+          expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).to eq('window.FEATURES = {"Bar":{"assignments":["app/lib/some_file.rb"],"metrics":{"abc_size":12.34,"lines_of_code":56,"cyclomatic_complexity":7}},"Foo":{"assignments":["app/lib/some_other_file.rb"],"metrics":{"abc_size":98.76,"lines_of_code":543,"cyclomatic_complexity":21}}};')
+        end
       end
 
       context 'when a previous instance of the site content exists' do

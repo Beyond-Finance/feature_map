@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // NOTE: This is just a starting point. If we find this useful,
 // we'll want to update these numbers with ones that more closely
 // resemble the thresholds commonly seen in a codebase.
-function calculateComplexityScore(data) {
+function calculateHealthScore(data) {
   const normalized = {
     abc: data.metrics.abc_size / 2000,
     loc: data.metrics.lines_of_code / 3000,
@@ -19,10 +19,10 @@ function calculateComplexityScore(data) {
   );
 }
 
-function getComplexityColor(score) {
-  if (score < 0.33) return 'text-green-400 bg-green-400/10';
+function getHealthScoreColor(score) {
+  if (score < 0.33) return 'text-red-400 bg-red-400/10 ';
   if (score < 0.66) return 'text-yellow-400 bg-yellow-400/10';
-  return 'text-red-400 bg-red-400/10';
+  return 'text-green-400 bg-green-400/10';
 }
 
 export default function FeatureTable({ features }) {
@@ -43,9 +43,9 @@ export default function FeatureTable({ features }) {
           aValue = a[1].assignments.teams[0];
           bValue = b[1].assignments.teams[0];
           break;
-        case 'complexity_score':
-          aValue = calculateComplexityScore(a[1]);
-          bValue = calculateComplexityScore(b[1]);
+        case 'health_score':
+          aValue = calculateHealthScore(a[1]);
+          bValue = calculateHealthScore(b[1]);
           break;
         case 'test_coverage':
           aValue = a[1].test_coverage.hits / a[1].test_coverage.lines;
@@ -103,7 +103,7 @@ export default function FeatureTable({ features }) {
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
             <div className="overflow-hidden shadow-sm border border-gray-200 rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full">
                 <colgroup>
                   <col className="lg:w-1/4" />
                   <col className="lg:w-1/5" />
@@ -113,25 +113,22 @@ export default function FeatureTable({ features }) {
                   <col />
                   <col />
                 </colgroup>
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <SortHeader title="Feature" sortKey="name" />
                     <SortHeader title="Team" sortKey="team" hideOn="hidden lg:table-cell" />
                     <SortHeader title="ABC" sortKey="abc_size" hideOn="hidden lg:table-cell" />
                     <SortHeader title="LOC" sortKey="lines_of_code" hideOn="hidden lg:table-cell" />
                     <SortHeader title="Complexity" sortKey="complexity" hideOn="hidden lg:table-cell" />
-                    <SortHeader title="Health Score" sortKey="complexity_score" />
+                    <SortHeader title="Health Score" sortKey="health_score" />
                     <SortHeader title="Test Coverage" sortKey="test_coverage" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {sortedFeatures.map(([name, data]) => {
-                    const complexityScore = calculateComplexityScore(data);
-                    const colorClass = getComplexityColor(complexityScore);
+                    const healthScore = calculateHealthScore(data);
+                    const colorClass = getHealthScoreColor(healthScore);
                     const coveragePercent = (data.test_coverage.hits / data.test_coverage.lines * 100).toFixed(1);
-                    const coverageColor = coveragePercent >= 90 ? 'text-green-600' :
-                                        coveragePercent >= 75 ? 'text-yellow-600' :
-                                        'text-red-600';
 
                     return (
                       <tr key={name}>
@@ -199,7 +196,7 @@ export default function FeatureTable({ features }) {
                             <div className={`flex-none rounded-full p-1 ${colorClass}`}>
                               <div className="h-1.5 w-1.5 rounded-full bg-current" />
                             </div>
-                            <span>{(complexityScore * 100).toFixed(0)}%</span>
+                            <span>{(healthScore * 100).toFixed(0)}%</span>
                           </div>
                         </td>
                         <td className="table-cell px-4 py-4 text-sm">

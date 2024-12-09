@@ -9,8 +9,8 @@ module FeatureMap
     # is combined with a JSON file containing the assignment and metrics information about all application
     # features.
     #
-    # The code within the `docs` directory is directly copied into an
-    # output directory and combined with a single `features_js` file containing content like the following:
+    # The code within the `docs` directory is directly copied into an output directory and combined
+    # with a single `features.js` file containing content like the following:
     #   ```
     #   window.FEATURES = {
     #     "Foo": {
