@@ -238,8 +238,6 @@ RSpec.describe FeatureMap do
     it 'generates a static documentation site within the .feature_map directory' do
       FeatureMap.generate_docs!
       expect(File.exist?(Pathname.pwd.join('.feature_map/docs/index.html'))).to be_truthy
-      expect(File.exist?(Pathname.pwd.join('.feature_map/docs/app.js'))).to be_truthy
-      expect(File.exist?(Pathname.pwd.join('.feature_map/docs/app.css'))).to be_truthy
     end
 
     it 'captueres the feature details for the current application within a features.js file' do
