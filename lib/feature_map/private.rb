@@ -80,8 +80,9 @@ module FeatureMap
     def self.generate_docs!
       feature_assignments = AssignmentsFile.load_features!
       feature_metrics = MetricsFile.load_features!
+      feature_test_coverage = TestCoverageFile.load_features!
 
-      DocumentationSite.generate(feature_assignments, feature_metrics)
+      DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
     end
 
     sig { params(commit_sha: String, code_cov_token: String).void }

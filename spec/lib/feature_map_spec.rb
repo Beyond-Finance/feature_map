@@ -233,19 +233,20 @@ RSpec.describe FeatureMap do
   end
 
   describe '.generate_docs!' do
-    before { create_validation_artifacts }
+    before do
+      create_validation_artifacts
+      create_test_coverage_artifacts
+    end
 
     it 'generates a static documentation site within the .feature_map directory' do
       FeatureMap.generate_docs!
       expect(File.exist?(Pathname.pwd.join('.feature_map/docs/index.html'))).to be_truthy
-      expect(File.exist?(Pathname.pwd.join('.feature_map/docs/app.js'))).to be_truthy
-      expect(File.exist?(Pathname.pwd.join('.feature_map/docs/app.css'))).to be_truthy
     end
 
     it 'captueres the feature details for the current application within a features.js file' do
       FeatureMap.generate_docs!
       expect(File.exist?(Pathname.pwd.join('.feature_map/docs/features.js'))).to be_truthy
-      expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).to eq('window.FEATURES = {"Bar":{"assignments":["app/my_error.rb"],"metrics":{"abc_size":12.34,"lines_of_code":56,"cyclomatic_complexity":7}},"Foo":{"assignments":null,"metrics":null}};')
+      expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).to eq('window.FEATURES = {"Bar":{"assignments":["app/my_error.rb"],"metrics":{"abc_size":12.34,"lines_of_code":56,"cyclomatic_complexity":7},"test_coverage":{"lines":56,"hits":48,"misses":6}},"Foo":{"assignments":null,"metrics":null,"test_coverage":null}};')
     end
   end
 
