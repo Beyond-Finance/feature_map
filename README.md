@@ -139,6 +139,7 @@ When you run `bin/featuremap validate`, the following files will automatically b
 The feature map gem captures valuable insights about the features of your application (e.g. metrics like ABC size, lines of code, and cyclomatic complexity). To review this information locally, you can run `bin/featuremap docs` to produce a single, self contained HTML file that includes a fully functional documentation site with useful diagrams and details about the features of your application. This file is created within the `.feature_map/docs` directory and the `index.html` file can loaded in the browser of your choice by running `open .feature_map/docs/index.html`.
 
 **Example screenshot**
+![Feature Map Docs Dashboard](readme_assets/feature-map-docs-dashboard.png)
 
 ## Usage: Collecting Test Coverage
 
@@ -159,7 +160,7 @@ See the [CodeCov API docs](https://docs.codecov.com/reference/repos_retrieve) fo
 
 Running the `bin/featuremap test_coverage` will prompt the user to provided the following two pieces of information:
 
-* Commit SHA: The full commit SHA value for a commit with coverage statistics recorded in CodeCov. Typically this should be the latest commit from the `main` branch in the repo, but it doesn't have to be. 
+* Commit SHA: The full commit SHA value for a commit with coverage statistics recorded in CodeCov. Typically this should be the latest commit from the `main` branch in the repo, but it doesn't have to be.
 * CodeCov API Token: An active API access token that can be used to retrieve coverage statistics from the CodeCov account configured in `.feature_map/config.yml` file.
 
 Use the following steps to generate a new CodeCov API token:
