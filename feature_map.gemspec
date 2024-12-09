@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'code_ownership'
+  spec.add_dependency 'faraday'
   spec.add_dependency 'packs-specification'
   spec.add_dependency 'rubocop', '~> 1.0'
   spec.add_dependency 'sorbet-runtime', '>= 0.5.11249'
@@ -38,4 +39,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'sorbet'
   spec.add_development_dependency 'tapioca'
+  spec.add_development_dependency 'webmock'
 end

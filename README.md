@@ -138,6 +138,44 @@ When you run `bin/featuremap validate`, the following files will automatically b
 
 When you run `bin/featuremap docs`, a set of HTML, JS, and CSS artifacts for a documentation site will be generated and deposited into the `.feature_map/docs` directory. The `index.html` file of this documentation site can be loaded in a browser to review information and diagrams detailing the set of features that have been defined within the application.
 
+## Usage: Collecting Test Coverage
+
+When you run `bin/featuremap test_coverage`, the test coverage statistics for a specified commit will be pulled from [CodeCov](https://codecov.io/) and collected into a set of per-feature test coverage statistics. This feature level test coverage data is then captured in the `.feature_map/test-coverage.yml` file.
+
+This command requires the following CodeCov account settings to be configured within the `.feature_map/config.yml` file:
+
+```yml
+code_cov:
+  service: github
+  owner: Acme-Org
+  repo: sample_app
+```
+
+See the [CodeCov API docs](https://docs.codecov.com/reference/repos_retrieve) for more information about the expected values for these configurations.
+
+### CodeCov API Token Generation
+
+Running the `bin/featuremap test_coverage` will prompt the user to provided the following two pieces of information:
+
+* Commit SHA: The full commit SHA value for a commit with coverage statistics recorded in CodeCov. Typically this should be the latest commit from the `main` branch in the repo, but it doesn't have to be. 
+* CodeCov API Token: An active API access token that can be used to retrieve coverage statistics from the CodeCov account configured in `.feature_map/config.yml` file.
+
+Use the following steps to generate a new CodeCov API token:
+
+1. Log into your [CodeCov account](https://app.codecov.io/)
+1. Click the "Settings" menu option in the profile dropdown menu in the top right corner of the screen
+    ![CodeCov profile menu with Settings menu highlighted](readme_assets/codeCov-profileMenu.png)
+1. Click the "Access" menu option from the left-hand navigation menu of the Settings page
+    ![CodeCov Settings page navigation bar with Access menu highlighted](readme_assets/codeCov-settingsMenu.png)
+1. Click the "Generate Token" button in the "API Tokens" section of the page
+    ![CodeCov Access page with Generate Token button highlighted](readme_assets/codeCov-apiTokensTable.png)
+1. Enter a descriptive name for the token (e.g. FeatureMap CLI) and click the "Generate Token" button
+    ![CodeCov API token creation modal](readme_assets/codeCov-createTokenModal.png)
+1. __IMPORTANT__: Copy the access token value presented on the screen and store it in a secure location (e.g. 1Password entry, BitWarden entry, etc)
+    ![CodeCov newly created API token modal](readme_assets/codeCov-newTokenModal.png)
+
+For security reasons, this gem does not store or record your CodeCov access token anywhere. As a result, you will need to provide the acess token value each time your run the `bin/featuremap test_coverage` command. For this reason, it is important to record the access token in a secure location that you can easily retrieve it from when you need to perform this action.
+
 ## Proper Configuration & Validation
 
 FeatureMap comes with a validation function to ensure the following things are true:

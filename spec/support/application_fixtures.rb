@@ -165,12 +165,12 @@ RSpec.shared_context 'application fixtures' do
     write_file('.feature_map/assignments.yml', <<~CONTENTS)
       ---
       files:
-        packs/my_pack/assigned_file.rb:
+        app/my_error.rb:
           feature: Bar
           mapper: Annotations at the top of file
       features:
         Bar:
-          - packs/my_pack/assigned_file.rb
+          - app/my_error.rb
     CONTENTS
     write_file('.feature_map/metrics.yml', <<~CONTENTS)
       ---
@@ -179,6 +179,19 @@ RSpec.shared_context 'application fixtures' do
           abc_size: 12.34
           lines_of_code: 56
           cyclomatic_complexity: 7
+    CONTENTS
+  end
+
+  let(:create_test_coverage_artifacts) do
+    create_files_with_defined_classes
+
+    write_file('.feature_map/test-coverage.yml', <<~CONTENTS)
+      ---
+      features:
+        Bar:
+          lines: 56
+          hits: 48
+          misses: 6
     CONTENTS
   end
 end

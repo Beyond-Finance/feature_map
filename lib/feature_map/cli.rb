@@ -12,6 +12,8 @@ module FeatureMap
         validate!(argv)
       elsif command == 'docs'
         docs!(argv)
+      elsif command == 'test_coverage'
+        test_coverage!(argv)
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -98,6 +100,30 @@ module FeatureMap
       FeatureMap.validate!(stage_changes: !options[:skip_stage]) unless options[:skip_validate]
 
       FeatureMap.generate_docs!
+    end
+
+    def self.test_coverage!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap test_coverage [options] commit_sha code_cov_token'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      args = parser.order!(argv)
+      parser.parse!(args)
+
+      current_commit = `git rev-parse HEAD`.chomp
+
+      puts "Enter SHA for commit to pull CodeCov data or press enter to use the current commit ('#{current_commit}'): "
+      commit_sha = $stdin.gets&.chomp || ''
+      commit_sha = current_commit if commit_sha.empty?
+
+      puts 'Enter your CodeCov API token (see https://github.com/Beyond-Finance/feature_map?tab=readme-ov-file#codecov-api-token-generation for instructions): '
+      code_cov_token = $stdin.gets&.chomp || ''
+
+      FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
     end
 
     # For now, this just returns feature assignment
