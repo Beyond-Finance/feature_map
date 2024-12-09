@@ -204,8 +204,8 @@ export default function FeatureTable({ features }) {
                             <div className="flex-grow h-2 rounded-full bg-gray-100 overflow-hidden">
                               <div
                                 className={`h-full rounded-full ${
-                                  coveragePercent >= 95 ? 'bg-green-500' :
-                                  coveragePercent >= 75 ? 'bg-yellow-500' :
+                                  coveragePercent >= 99 ? 'bg-green-500' :
+                                  coveragePercent >= 95 ? 'bg-yellow-500' :
                                   'bg-red-500'
                                 }`}
                                 style={{ width: `${coveragePercent}%` }}
