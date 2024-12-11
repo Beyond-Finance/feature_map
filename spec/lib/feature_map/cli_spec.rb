@@ -73,31 +73,42 @@ RSpec.describe FeatureMap::Cli do
   describe 'test_coverage' do
     let(:argv) { ['test_coverage'] }
     let(:assigned_globs) { nil }
-    let(:current_commit) { 'fedcba9876543210fedcba9876543210' }
+    let(:latest_main_commit) { 'fedcba9876543210fedcba9876543210' }
+    let(:code_cov_token_input) { 'abc-123-xyz-987' }
 
     before do
       create_non_empty_application
       create_validation_artifacts
-      allow(FeatureMap::Cli).to receive(:`).with('git rev-parse HEAD').and_return(current_commit)
+      allow(FeatureMap::Cli).to receive(:`).with('git log -1 --format=%H origin/main').and_return(latest_main_commit)
+      allow($stdin).to receive(:gets).and_return(code_cov_token_input)
     end
 
-    context 'when the user provides input values' do
-      let(:provided_commit_sha) { '1234567890abcdef1234567890abcdef' }
-      let(:provided_code_cov_token) { 'abc-123-xyz-987' }
+    context 'when input values are included in CLI command args' do
+      let(:argv) { ['test_coverage', commit_sha, code_cov_api_token] }
+      let(:commit_sha) { '1234567890abcdef1234567890abcdef' }
+      let(:code_cov_api_token) { 'abc-123-xyz-987' }
 
-      before { allow($stdin).to receive(:gets).and_return(provided_commit_sha, provided_code_cov_token) }
+      it 'does NOT prompt the user for any input' do
+        allow(FeatureMap).to receive(:gather_test_coverage!)
+        subject
+        expect($stdin).not_to have_received(:gets)
+      end
 
-      it 'runs validations with the right defaults' do
-        expect(FeatureMap).to receive(:gather_test_coverage!).with(provided_commit_sha, provided_code_cov_token)
+      it 'uses the current commit SHA and no CodeCov token' do
+        expect(FeatureMap).to receive(:gather_test_coverage!).with(commit_sha, code_cov_api_token)
         subject
       end
     end
 
-    context 'when the user provides no input values' do
-      before { allow($stdin).to receive(:gets).and_return('', '') }
+    context 'when NO input values are included in CLI command args' do
+      it 'prompts the user to input their CodeCov API token' do
+        allow(FeatureMap).to receive(:gather_test_coverage!)
+        subject
+        expect($stdin).to have_received(:gets).once
+      end
 
-      it 'uses the current commit SHA and no CodeCov token' do
-        expect(FeatureMap).to receive(:gather_test_coverage!).with(current_commit, '')
+      it 'runs validations with the right defaults' do
+        expect(FeatureMap).to receive(:gather_test_coverage!).with(latest_main_commit, code_cov_token_input)
         subject
       end
     end
@@ -196,6 +207,7 @@ RSpec.describe FeatureMap::Cli do
         Subcommands:
           validate - run all validations
           docs - generates feature documentation
+          test_coverage - generates per-feature test coverage statistics
           for_file - find feature assignment for a single file
           for_feature - find assignment information for a feature
           help  - display help information about feature_map

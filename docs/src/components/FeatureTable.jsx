@@ -48,8 +48,8 @@ export default function FeatureTable({ features }) {
           bValue = calculateHealthScore(b[1]);
           break;
         case 'test_coverage':
-          aValue = a[1].test_coverage.hits / a[1].test_coverage.lines;
-          bValue = b[1].test_coverage.hits / b[1].test_coverage.lines;
+          aValue = a[1].test_coverage ? a[1].test_coverage.hits / a[1].test_coverage.lines : -1;
+          bValue = b[1].test_coverage ? b[1].test_coverage.hits / b[1].test_coverage.lines : -1;
           break;
         case 'abc_size':
           aValue = a[1].metrics.abc_size;
@@ -128,7 +128,7 @@ export default function FeatureTable({ features }) {
                   {sortedFeatures.map(([name, data]) => {
                     const healthScore = calculateHealthScore(data);
                     const colorClass = getHealthScoreColor(healthScore);
-                    const coveragePercent = (data.test_coverage.hits / data.test_coverage.lines * 100).toFixed(1);
+                    const coveragePercent = data.test_coverage && (data.test_coverage.hits / data.test_coverage.lines * 100).toFixed(1);
 
                     return (
                       <tr key={name}>
@@ -204,6 +204,7 @@ export default function FeatureTable({ features }) {
                             <div className="flex-grow h-2 rounded-full bg-gray-100 overflow-hidden">
                               <div
                                 className={`h-full rounded-full ${
+                                  !coveragePercent ? 'bg-grey-500' :
                                   coveragePercent >= 99 ? 'bg-green-500' :
                                   coveragePercent >= 95 ? 'bg-yellow-500' :
                                   'bg-red-500'
@@ -212,7 +213,7 @@ export default function FeatureTable({ features }) {
                               />
                             </div>
                             <span className="text-sm text-gray-500">
-                              {coveragePercent}%
+                              {coveragePercent ? `${coveragePercent}%` : 'No Data'}
                             </span>
                           </div>
                         </td>

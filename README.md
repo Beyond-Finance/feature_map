@@ -143,7 +143,7 @@ The feature map gem captures valuable insights about the features of your applic
 
 ## Usage: Collecting Test Coverage
 
-When you run `bin/featuremap test_coverage`, the test coverage statistics for a specified commit will be pulled from [CodeCov](https://codecov.io/) and collected into a set of per-feature test coverage statistics. This feature level test coverage data is then captured in the `.feature_map/test-coverage.yml` file.
+When you run `bin/featuremap test_coverage`, the test coverage statistics the latest commit on the main branch will be pulled from [CodeCov](https://codecov.io/) and collected into a set of per-feature test coverage statistics. This feature level test coverage data is then captured in the `.feature_map/test-coverage.yml` file.
 
 This command requires the following CodeCov account settings to be configured within the `.feature_map/config.yml` file:
 
@@ -156,12 +156,11 @@ code_cov:
 
 See the [CodeCov API docs](https://docs.codecov.com/reference/repos_retrieve) for more information about the expected values for these configurations.
 
+Test coverage statistics can be pulled for a specific commit (e.g. the latest commit on a feature branch) by including the full commit SHA as an argument at the end of this CLI command (e.g. `bin/featuremap test_coverage ae80a927654997be4f48d3dbcd1320083cf22eea`). Before running this command please check the [CodeCov dashboard](https://app.codecov.io/) for your application to ensure test coverage statistics have been reported for this commit.
+
 ### CodeCov API Token Generation
 
-Running the `bin/featuremap test_coverage` will prompt the user to provided the following two pieces of information:
-
-* Commit SHA: The full commit SHA value for a commit with coverage statistics recorded in CodeCov. Typically this should be the latest commit from the `main` branch in the repo, but it doesn't have to be.
-* CodeCov API Token: An active API access token that can be used to retrieve coverage statistics from the CodeCov account configured in `.feature_map/config.yml` file.
+Running the `bin/featuremap test_coverage` will prompt the user to provide an active CodeCov API access token. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
 
 Use the following steps to generate a new CodeCov API token:
 
