@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // NOTE: This is just a starting point. If we find this useful,
 // we'll want to update these numbers with ones that more closely
@@ -98,7 +99,7 @@ export default function FeatureTable({ features }) {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
@@ -122,6 +123,14 @@ export default function FeatureTable({ features }) {
                     <SortHeader title="Complexity" sortKey="complexity" hideOn="hidden lg:table-cell" />
                     <SortHeader title="Health Score" sortKey="health_score" />
                     <SortHeader title="Test Coverage" sortKey="test_coverage" />
+                    <th
+                      scope="col"
+                      className="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider"
+                    >
+                      {/* <div className="flex items-center gap-x-2 group cursor-pointer">
+                        Action
+                      </div> */}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
@@ -143,7 +152,7 @@ export default function FeatureTable({ features }) {
                                     <React.Fragment key={team}>
                                       <span className="text-sm lg:text-xs font-normal text-gray-500">{team}</span>
                                       {index < data.assignments.teams.length - 1 && (
-                                        <svg viewBox="0 0 2 2" class="size-1 fill-current text-gray-400">
+                                        <svg viewBox="0 0 2 2" className="size-1 fill-current text-gray-400">
                                           <circle cx="1" cy="1" r="1" />
                                         </svg>
                                       )}
@@ -171,7 +180,7 @@ export default function FeatureTable({ features }) {
                         <td className="hidden px-4 py-4 text-sm text-gray-500 lg:table-cell">
                           <div className="flex items-center gap-2">
                             <div className="flex-shrink-0 flex items-center justify-center h-6 w-6 bg-gray-200 rounded-full">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4 text-gray-500">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4 text-gray-500">
                                 <path d="M8 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3.156 11.763c.16-.629.44-1.21.813-1.72a2.5 2.5 0 0 0-2.725 1.377c-.136.287.102.58.418.58h1.449c.01-.077.025-.156.045-.237ZM12.847 11.763c.02.08.036.16.046.237h1.446c.316 0 .554-.293.417-.579a2.5 2.5 0 0 0-2.722-1.378c.374.51.653 1.09.813 1.72ZM14 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM3.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM5 13c-.552 0-1.013-.455-.876-.99a4.002 4.002 0 0 1 7.753 0c.136.535-.324.99-.877.99H5Z" />
                               </svg>
                             </div>
@@ -214,6 +223,18 @@ export default function FeatureTable({ features }) {
                             <span className="text-sm text-gray-500">
                               {coveragePercent}%
                             </span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-500">
+                          <div className="flex items-center gap-x-3">
+                            <div>
+                              <Link
+                                to={`/${encodeURIComponent(name)}`}  // Remove '/features' from the path
+                                className="font-medium text-gray-900 text-sm mb-1 hover:text-indigo-600"
+                              >
+                                view
+                              </Link>
+                            </div>
                           </div>
                         </td>
                       </tr>
