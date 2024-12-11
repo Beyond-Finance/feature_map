@@ -3,6 +3,7 @@
 require 'optparse'
 require 'pathname'
 require 'fileutils'
+require 'feature_map/output_color'
 
 module FeatureMap
   class Cli
@@ -25,6 +26,7 @@ module FeatureMap
           Subcommands:
             validate - run all validations
             docs - generates feature documentation
+            test_coverage - generates per-feature test coverage statistics
             for_file - find feature assignment for a single file
             for_feature - find assignment information for a feature
             help  - display help information about feature_map
@@ -73,6 +75,8 @@ module FeatureMap
         autocorrect: !options[:skip_autocorrect],
         stage_changes: !options[:skip_stage]
       )
+
+      puts OutputColor.green('FeatureMap validation complete.')
     end
 
     def self.docs!(argv)
@@ -100,11 +104,14 @@ module FeatureMap
       FeatureMap.validate!(stage_changes: !options[:skip_stage]) unless options[:skip_validate]
 
       FeatureMap.generate_docs!
+
+      puts OutputColor.green('FeatureMap documentaiton site generated.')
+      puts 'Open .feature_map/docs/index.html in a browser to view the documentation site.'
     end
 
     def self.test_coverage!(argv)
       parser = OptionParser.new do |opts|
-        opts.banner = 'Usage: bin/featuremap test_coverage [options] commit_sha code_cov_token'
+        opts.banner = 'Usage: bin/featuremap test_coverage [options] [code_cov_commit_sha] [code_cov_api_token]'
 
         opts.on('--help', 'Shows this prompt') do
           puts opts
@@ -113,17 +120,24 @@ module FeatureMap
       end
       args = parser.order!(argv)
       parser.parse!(args)
+      non_flag_args = argv.reject { |arg| arg.start_with?('--') }
+      custom_commit_sha = non_flag_args[0]
+      code_cov_token = non_flag_args[1]
 
-      current_commit = `git rev-parse HEAD`.chomp
+      # If no commit SHA was providid in the CLI command args, use the most recent commit of the main branch in the upstream remote.
+      commit_sha = custom_commit_sha || `git log -1 --format=%H origin/main`.chomp
+      puts "Pulling test coverage statistics for commit #{commit_sha}"
 
-      puts "Enter SHA for commit to pull CodeCov data or press enter to use the current commit ('#{current_commit}'): "
-      commit_sha = $stdin.gets&.chomp || ''
-      commit_sha = current_commit if commit_sha.empty?
-
-      puts 'Enter your CodeCov API token (see https://github.com/Beyond-Finance/feature_map?tab=readme-ov-file#codecov-api-token-generation for instructions): '
-      code_cov_token = $stdin.gets&.chomp || ''
+      # If no CodeCov API token was provided in the CLI command args SHA is provided, prompt the user to provide one.
+      if !code_cov_token || code_cov_token.empty?
+        puts 'Enter your CodeCov API token (see https://github.com/Beyond-Finance/feature_map?tab=readme-ov-file#codecov-api-token-generation for instructions): '
+        code_cov_token = $stdin.gets&.chomp || ''
+      end
 
       FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
+
+      puts OutputColor.green('FeatureMap test coverage statistics collected.')
+      puts 'View the resulting test coverage for each feature in .feature_map/test-coverage.yml'
     end
 
     # For now, this just returns feature assignment

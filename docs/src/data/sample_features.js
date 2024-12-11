@@ -117,11 +117,7 @@ const features = {
       "lines_of_code": 1124,
       "cyclomatic_complexity": 82
     },
-    "test_coverage": {
-      "lines": 1124,
-      "hits": 652,
-      "misses": 472
-    }
+    "test_coverage": null
   },
   "Analytics": {
     "assignments": {
@@ -234,11 +230,7 @@ const features = {
       "lines_of_code": 934,
       "cyclomatic_complexity": 76
     },
-    "test_coverage": {
-      "lines": 934,
-      "hits": 742,
-      "misses": 192
-    }
+    "test_coverage": null
   }
 };
 
