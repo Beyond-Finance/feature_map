@@ -9,7 +9,6 @@ import CyclomaticComplexityIcon from './components/icons/CyclomaticComplexityIco
 
 export default function App() {
   const features = window.FEATURES || useState(sampleFeatures)[0];
-  console.log(features);
   const [metrics, setMetrics] = useState({
     abcSize: 0,
     linesOfCode: 0,
