@@ -112,6 +112,7 @@ const FeatureTreemap = ({ data = {} }) => {
             data={treeMapData}
             dataKey={activeMetric}
             stroke="#fff"
+            isAnimationActive={false} 
             content={({ x, y, width, height, name, value, root }) => {
               if (!width || !height) return null;
 
