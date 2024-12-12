@@ -11,6 +11,17 @@ const FeatureTreemap = ({ data = {} }) => {
     { id: 'cyclomatic_complexity', label: 'Complexity', icon: BarChart2 }
   ];
 
+  const categoryThresholds = {
+    high: 0.67,
+    medium: 0.33,
+  };
+
+  const categoryColors = {
+    high: '#EF4444',
+    medium: '#F59E0B',
+    low: '#10B981',
+  };
+
   const transformData = () => ({
     children: Object.entries(data || {}).map(([name, value]) => ({
       name,
@@ -21,16 +32,26 @@ const FeatureTreemap = ({ data = {} }) => {
     }))
   });
 
-  const getColor = (value, data) => {
-    if (!data?.children?.length) return 'hsl(210, 90%, 65%)';
+  const getCategory = (value, data) => {
+    if (!data?.children?.length) return 'medium';
     const allValues = data.children.map(item => item[activeMetric] || 0);
     const max = Math.max(...allValues);
     const min = Math.min(...allValues);
     const range = max - min;
     const normalizedValue = range ? (value - min) / range : 0.5;
 
-    // Adjusted range to be between 65% and 25% lightness for better contrast
-    return `hsl(210, 90%, ${65 - (normalizedValue * 40)}%)`;
+    if (normalizedValue >= categoryThresholds.high) return 'high';
+    if (normalizedValue >= categoryThresholds.medium) return 'medium';
+    return 'low';
+  };
+
+  const getCategoryLabel = (category) => {
+    switch (category) {
+      case 'high': return 'High';
+      case 'medium': return 'Medium';
+      case 'low': return 'Low';
+      default: return '';
+    }
   };
 
   const calculateTotal = () => {
@@ -41,19 +62,7 @@ const FeatureTreemap = ({ data = {} }) => {
 
   const getFontSize = (width, height) => {
     const area = width * height;
-    return Math.min(Math.max(Math.sqrt(area) / 10, 8), 10);
-  };
-
-  const getTextColor = (value, root) => {
-    const allValues = root.children.map(item => item[activeMetric] || 0);
-    const max = Math.max(...allValues);
-    const min = Math.min(...allValues);
-    const range = max - min;
-    const normalizedValue = range ? (value - min) / range : 0.5;
-
-    // Return white text for darker backgrounds (higher values)
-    // and black text for lighter backgrounds (lower values)
-    return normalizedValue > 0.5 ? '#fff' : '#000';
+    return Math.min(Math.max(Math.sqrt(area) / 10, 8), 12);
   };
 
   const splitText = (text = '', maxLength = 12) => {
@@ -88,6 +97,20 @@ const FeatureTreemap = ({ data = {} }) => {
               Total {metrics.find(m => m.id === activeMetric)?.label}: {calculateTotal().toLocaleString()}
             </span>
           </div>
+
+          <div className="flex items-center gap-2">
+            {Object.entries(categoryColors).map(([category, color]) => (
+              <div key={category} className="flex items-center">
+                <div
+                  className="w-3 h-3 rounded-sm mr-1"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="text-xs text-gray-600">
+                  {getCategoryLabel(category)}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="flex space-x-2">
@@ -112,11 +135,14 @@ const FeatureTreemap = ({ data = {} }) => {
             data={treeMapData}
             dataKey={activeMetric}
             stroke="#fff"
-            isAnimationActive={false} 
+            isAnimationActive={false}
             content={({ x, y, width, height, name, value, root }) => {
               if (!width || !height) return null;
 
               const showText = width > 40 && height > 30;
+              const category = getCategory(value, root);
+              const backgroundColor = categoryColors[category];
+
               if (!showText) return (
                 <rect
                   x={x}
@@ -124,7 +150,7 @@ const FeatureTreemap = ({ data = {} }) => {
                   width={width}
                   height={height}
                   style={{
-                    fill: getColor(value, root),
+                    fill: backgroundColor,
                     stroke: '#fff',
                     strokeWidth: 2,
                   }}
@@ -136,7 +162,6 @@ const FeatureTreemap = ({ data = {} }) => {
               const lineHeight = fontSize * 1.2;
               const totalTextHeight = lines.length * lineHeight;
               const startY = y + (height - totalTextHeight) / 2;
-              const textColor = getTextColor(value, root);
 
               return (
                 <g>
@@ -146,7 +171,7 @@ const FeatureTreemap = ({ data = {} }) => {
                     width={width}
                     height={height}
                     style={{
-                      fill: getColor(value, root),
+                      fill: backgroundColor,
                       stroke: '#fff',
                       strokeWidth: 2,
                     }}
@@ -157,11 +182,12 @@ const FeatureTreemap = ({ data = {} }) => {
                       x={x + width / 2}
                       y={startY + (i * lineHeight)}
                       textAnchor="middle"
-                      fill={textColor}
+                      fill="#fff"
                       fontSize={fontSize}
                       style={{
                         fontWeight: 500,
-                        textTransform: 'uppercase'
+                        textTransform: 'uppercase',
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
                       }}
                     >
                       {line}
@@ -171,9 +197,12 @@ const FeatureTreemap = ({ data = {} }) => {
                     x={x + width / 2}
                     y={startY + totalTextHeight + 4}
                     textAnchor="middle"
-                    fill={textColor}
+                    fill="#fff"
                     fontSize={fontSize * 0.9}
                     fontWeight={500}
+                    style={{
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
+                    }}
                   >
                     {value.toLocaleString()}
                   </text>
