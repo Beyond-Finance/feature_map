@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import FeatureTable from './components/FeatureTable';
 import MetricCard from './components/MetricCard';
+import FeatureTreemap from './components/FeatureTreemap';
 import sampleFeatures from './data/sample_features';
 import AbcSizeIcon from './components/icons/AbcSizeIcon'
 import LinesOfCodeIcon from './components/icons/LinesOfCodeIcon'
@@ -8,6 +9,7 @@ import CyclomaticComplexityIcon from './components/icons/CyclomaticComplexityIco
 
 export default function App() {
   const features = window.FEATURES || useState(sampleFeatures)[0];
+  console.log(features);
   const [metrics, setMetrics] = useState({
     abcSize: 0,
     linesOfCode: 0,
@@ -58,6 +60,9 @@ export default function App() {
             icon={<CyclomaticComplexityIcon />}
           />
         </ul>
+      </div>
+      <div className="mb-8">
+        <FeatureTreemap data={features} />
       </div>
       <FeatureTable features={features} />
     </div>
