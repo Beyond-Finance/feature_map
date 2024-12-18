@@ -122,7 +122,7 @@ module FeatureMap
       parser.parse!(args)
       non_flag_args = argv.reject { |arg| arg.start_with?('--') }
       custom_commit_sha = non_flag_args[0]
-      code_cov_token = non_flag_args[1]
+      code_cov_token = ENV.fetch('FEATURE_MAP_CODE_COV_API_KEY', nil)
 
       # If no commit SHA was providid in the CLI command args, use the most recent commit of the main branch in the upstream remote.
       commit_sha = custom_commit_sha || `git log -1 --format=%H origin/main`.chomp

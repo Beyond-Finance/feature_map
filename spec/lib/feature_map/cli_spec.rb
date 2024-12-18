@@ -83,10 +83,14 @@ RSpec.describe FeatureMap::Cli do
       allow($stdin).to receive(:gets).and_return(code_cov_token_input)
     end
 
-    context 'when input values are included in CLI command args' do
+    context 'when input values are provided' do
       let(:argv) { ['test_coverage', commit_sha, code_cov_api_token] }
       let(:commit_sha) { '1234567890abcdef1234567890abcdef' }
       let(:code_cov_api_token) { 'abc-123-xyz-987' }
+
+      before do
+        stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => code_cov_api_token))
+      end
 
       it 'does NOT prompt the user for any input' do
         allow(FeatureMap).to receive(:gather_test_coverage!)
@@ -94,13 +98,17 @@ RSpec.describe FeatureMap::Cli do
         expect($stdin).not_to have_received(:gets)
       end
 
-      it 'uses the current commit SHA and no CodeCov token' do
+      it 'uses the current commit SHA and CodeCov token' do
         expect(FeatureMap).to receive(:gather_test_coverage!).with(commit_sha, code_cov_api_token)
         subject
       end
     end
 
     context 'when NO input values are included in CLI command args' do
+      before do
+        stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => nil))
+      end
+
       it 'prompts the user to input their CodeCov API token' do
         allow(FeatureMap).to receive(:gather_test_coverage!)
         subject
