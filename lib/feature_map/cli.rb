@@ -111,7 +111,10 @@ module FeatureMap
 
     def self.test_coverage!(argv)
       parser = OptionParser.new do |opts|
-        opts.banner = 'Usage: bin/featuremap test_coverage [options] [code_cov_commit_sha] [code_cov_api_token]'
+        opts.banner = <<~MSG
+          Usage: bin/featuremap test_coverage [options] [code_cov_commit_sha].
+          Note:  Requires environment variable `FEATURE_MAP_CODE_COV_API_KEY`.
+        MSG
 
         opts.on('--help', 'Shows this prompt') do
           puts opts
@@ -122,17 +125,13 @@ module FeatureMap
       parser.parse!(args)
       non_flag_args = argv.reject { |arg| arg.start_with?('--') }
       custom_commit_sha = non_flag_args[0]
-      code_cov_token = ENV.fetch('FEATURE_MAP_CODE_COV_API_KEY', nil)
+
+      code_cov_token = ENV.fetch('FEATURE_MAP_CODE_COV_API_KEY', '')
+      raise 'Please specify a code cov api token your environment as `FEATURE_MAP_CODE_COV_API_KEY`' if code_cov_token.nil? || code_cov_token.blank?
 
       # If no commit SHA was providid in the CLI command args, use the most recent commit of the main branch in the upstream remote.
       commit_sha = custom_commit_sha || `git log -1 --format=%H origin/main`.chomp
       puts "Pulling test coverage statistics for commit #{commit_sha}"
-
-      # If no CodeCov API token was provided in the CLI command args SHA is provided, prompt the user to provide one.
-      if !code_cov_token || code_cov_token.empty?
-        puts 'Enter your CodeCov API token (see https://github.com/Beyond-Finance/feature_map?tab=readme-ov-file#codecov-api-token-generation for instructions): '
-        code_cov_token = $stdin.gets&.chomp || ''
-      end
 
       FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
 

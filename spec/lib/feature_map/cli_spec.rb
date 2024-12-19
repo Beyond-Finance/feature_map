@@ -74,50 +74,41 @@ RSpec.describe FeatureMap::Cli do
     let(:argv) { ['test_coverage'] }
     let(:assigned_globs) { nil }
     let(:latest_main_commit) { 'fedcba9876543210fedcba9876543210' }
-    let(:code_cov_token_input) { 'abc-123-xyz-987' }
+    let(:code_cov_api_token) { 'abc-123-xyz-987' }
 
     before do
       create_non_empty_application
       create_validation_artifacts
       allow(FeatureMap::Cli).to receive(:`).with('git log -1 --format=%H origin/main').and_return(latest_main_commit)
-      allow($stdin).to receive(:gets).and_return(code_cov_token_input)
+      stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => code_cov_api_token))
     end
 
-    context 'when input values are provided' do
-      let(:argv) { ['test_coverage', commit_sha, code_cov_api_token] }
+    context 'when git sha is provided' do
       let(:commit_sha) { '1234567890abcdef1234567890abcdef' }
-      let(:code_cov_api_token) { 'abc-123-xyz-987' }
+      let(:argv) { ['test_coverage', commit_sha] }
 
-      before do
-        stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => code_cov_api_token))
-      end
-
-      it 'does NOT prompt the user for any input' do
-        allow(FeatureMap).to receive(:gather_test_coverage!)
-        subject
-        expect($stdin).not_to have_received(:gets)
-      end
-
-      it 'uses the current commit SHA and CodeCov token' do
+      it 'uses the provided commit SHA' do
         expect(FeatureMap).to receive(:gather_test_coverage!).with(commit_sha, code_cov_api_token)
         subject
       end
     end
 
-    context 'when NO input values are included in CLI command args' do
+    context 'when git sha is not provided' do
+      it 'defaults to the latest main git sha' do
+        expect(FeatureMap).to receive(:gather_test_coverage!).with(latest_main_commit, code_cov_api_token)
+        subject
+      end
+    end
+
+    context 'when no codecov api token can be found' do
       before do
-        stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => nil))
+        stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => ''))
       end
 
-      it 'prompts the user to input their CodeCov API token' do
-        allow(FeatureMap).to receive(:gather_test_coverage!)
-        subject
-        expect($stdin).to have_received(:gets).once
-      end
-
-      it 'runs validations with the right defaults' do
-        expect(FeatureMap).to receive(:gather_test_coverage!).with(latest_main_commit, code_cov_token_input)
-        subject
+      it 'raises an exception' do
+        expect do
+          subject
+        end.to raise_error(/Please specify a code cov api token your environment/)
       end
     end
   end
