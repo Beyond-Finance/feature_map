@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if git diff --quiet HEAD main -- docs/src; then
+if git diff --quiet HEAD origin/main -- docs/src; then
   echo ''
   echo '######################'
   echo '# docs/src unchanged #'
@@ -15,7 +15,7 @@ else
   echo '  checking for change to index.html'
   echo ''
 
-  if git diff --quiet HEAD main -- lib/feature_map/private/docs/index.html; then
+  if git diff --quiet HEAD origin/main -- lib/feature_map/private/docs/index.html; then
     echo '  ###########'
     echo '  # failure #'
     echo '  ###########'
