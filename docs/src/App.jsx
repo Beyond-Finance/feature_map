@@ -41,7 +41,7 @@ export default function App() {
       <div className="mb-8">
         <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <MetricCard
-            title="ABC Size"
+            title="ABC Size!"
             value={metrics.abcSize}
             tooltip="Average abc size across all features"
             icon={<AbcSizeIcon />}
