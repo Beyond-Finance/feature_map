@@ -127,7 +127,7 @@ module FeatureMap
       custom_commit_sha = non_flag_args[0]
 
       code_cov_token = ENV.fetch('FEATURE_MAP_CODE_COV_API_KEY', '')
-      raise 'Please specify a code cov api token your environment as `FEATURE_MAP_CODE_COV_API_KEY`' if code_cov_token.nil? || code_cov_token.blank?
+      raise 'Please specify a code cov api token your environment as `FEATURE_MAP_CODE_COV_API_KEY`' if code_cov_token.blank?
 
       # If no commit SHA was providid in the CLI command args, use the most recent commit of the main branch in the upstream remote.
       commit_sha = custom_commit_sha || `git log -1 --format=%H origin/main`.chomp
