@@ -108,7 +108,7 @@ RSpec.describe FeatureMap::Cli do
       it 'raises an exception' do
         expect do
           subject
-        end.to raise_error(/Please specify a code cov api token your environment/)
+        end.to raise_error(/Please specify a CodeCov API token in your environment as `FEATURE_MAP_CODE_COV_API_KEY`/)
       end
     end
   end
