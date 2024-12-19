@@ -80,7 +80,7 @@ RSpec.describe FeatureMap::Cli do
       create_non_empty_application
       create_validation_artifacts
       allow(FeatureMap::Cli).to receive(:`).with('git log -1 --format=%H origin/main').and_return(latest_main_commit)
-      stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => code_cov_api_token))
+      stub_const('ENV', ENV.to_h.merge('CODECOV_TOKEN' => code_cov_api_token))
     end
 
     context 'when git sha is provided' do
@@ -102,13 +102,13 @@ RSpec.describe FeatureMap::Cli do
 
     context 'when no codecov api token can be found' do
       before do
-        stub_const('ENV', ENV.to_h.merge('FEATURE_MAP_CODE_COV_API_KEY' => ''))
+        stub_const('ENV', ENV.to_h.merge('CODECOV_TOKEN' => ''))
       end
 
       it 'raises an exception' do
         expect do
           subject
-        end.to raise_error(/Please specify a CodeCov API token in your environment as `FEATURE_MAP_CODE_COV_API_KEY`/)
+        end.to raise_error(/Please specify a CodeCov API token in your environment as `CODECOV_TOKEN`/)
       end
     end
   end

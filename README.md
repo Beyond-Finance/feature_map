@@ -160,7 +160,7 @@ Test coverage statistics can be pulled for a specific commit (e.g. the latest co
 
 ### CodeCov API Token Generation
 
-Running the `bin/featuremap test_coverage` will prompt the user to provide an active CodeCov API access token unless one has been specified as the `FEATURE_MAP_CODE_COV_API_KEY` environment variable in your shell's environment. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
+Running the `bin/featuremap test_coverage` will prompt the user to provide an active CodeCov API access token unless one has been specified as the `CODECOV_TOKEN` environment variable in your shell's environment. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
 
 Use the following steps to generate a new CodeCov API token:
 
@@ -179,13 +179,13 @@ Use the following steps to generate a new CodeCov API token:
 #### __OPTIONAL__:  Store the token as an environment variable in your shell's environment:
 **ZSH**
   ```shell
-  echo 'export FEATURE_MAP_CODE_COV_API_KEY="YOUR_CODECOV_TOKEN"' >> ~/.zshrc
+  echo 'export CODECOV_TOKEN="YOUR_CODECOV_TOKEN"' >> ~/.zshrc
   ```
 
 **Bash**
   ```shell
   # Bash
-  echo 'export FEATURE_MAP_CODE_COV_API_KEY="YOUR_CODECOV_TOKEN"' >> ~/.bashrc
+  echo 'export CODECOV_TOKEN="YOUR_CODECOV_TOKEN"' >> ~/.bashrc
   ```
 
 ## Proper Configuration & Validation
