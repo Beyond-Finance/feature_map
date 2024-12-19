@@ -7,6 +7,12 @@ on:
   pull_request:
 
 jobs:
+  ensure_docs_updated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          ./.github/scripts/ensure-docs-build.sh
   rspec:
     runs-on: ubuntu-latest
     strategy:
