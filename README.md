@@ -132,7 +132,7 @@ bin/feature_map for_feature 'Onboarding' > tmp/onboarding_feature_report.md
 
 When you run `bin/featuremap validate`, the following files will automatically be generated:
  * `.feature_map/assignments.yml`: Captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files.
- * `.feature_map/metrics.yml`: cCaptures a set of metrics rolled up at the feature level (i.e. computed over all files assigned to the feature).
+ * `.feature_map/metrics.yml`: Captures a set of metrics rolled up at the feature level (i.e. computed over all files assigned to the feature).
 
 ## Usage: Generating Documentation
 
