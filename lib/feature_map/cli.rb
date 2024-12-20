@@ -113,7 +113,7 @@ module FeatureMap
       parser = OptionParser.new do |opts|
         opts.banner = <<~MSG
           Usage: bin/featuremap test_coverage [options] [code_cov_commit_sha].
-          Note:  Requires environment variable `CODECOV_TOKEN`.
+          Note:  Requires environment variable `CODECOV_API_TOKEN`.
         MSG
 
         opts.on('--help', 'Shows this prompt') do
@@ -126,8 +126,8 @@ module FeatureMap
       non_flag_args = argv.reject { |arg| arg.start_with?('--') }
       custom_commit_sha = non_flag_args[0]
 
-      code_cov_token = ENV.fetch('CODECOV_TOKEN', '')
-      raise 'Please specify a CodeCov API token in your environment as `CODECOV_TOKEN`' if code_cov_token.empty?
+      code_cov_token = ENV.fetch('CODECOV_API_TOKEN', '')
+      raise 'Please specify a CodeCov API token in your environment as `CODECOV_API_TOKEN`' if code_cov_token.empty?
 
       # If no commit SHA was providid in the CLI command args, use the most recent commit of the main branch in the upstream remote.
       commit_sha = custom_commit_sha || `git log -1 --format=%H origin/main`.chomp
