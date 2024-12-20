@@ -1,216 +1,210 @@
-import React, { useState } from 'react';
-import { Treemap, ResponsiveContainer } from 'recharts';
-import { GitCommit, Activity, BarChart2 } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import * as d3 from 'd3';
+import { FolderTree } from 'lucide-react';
 
-const FeatureTreemap = ({ data = {} }) => {
-  const [activeMetric, setActiveMetric] = useState('lines_of_code');
+const FeatureTreemap = ({ files }) => {
+  const containerRef = useRef(null);
+  const svgRef = useRef(null);
 
-  const metrics = [
-    { id: 'lines_of_code', label: 'Lines of Code', icon: GitCommit },
-    { id: 'abc_size', label: 'ABC Size', icon: Activity },
-    { id: 'cyclomatic_complexity', label: 'Complexity', icon: BarChart2 }
-  ];
+  useEffect(() => {
+    if (!files?.length || !containerRef.current) return;
 
-  const categoryThresholds = {
-    high: 0.67,
-    medium: 0.33,
-  };
+    // Get container dimensions
+    const container = containerRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
 
-  const categoryColors = {
-    high: '#EF4444',
-    medium: '#F59E0B',
-    low: '#10B981',
-  };
+    // Clear previous content
+    const svgElement = d3.select(svgRef.current);
+    svgElement.selectAll("*").remove();
 
-  const transformData = () => ({
-    children: Object.entries(data || {}).map(([name, value]) => ({
-      name,
-      lines_of_code: value?.metrics?.lines_of_code || 0,
-      abc_size: value?.metrics?.abc_size || 0,
-      cyclomatic_complexity: value?.metrics?.cyclomatic_complexity || 0,
-      teams: value?.teams || []
-    }))
-  });
+    // Set up SVG with viewBox for proper scaling
+    svgElement
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
 
-  const getCategory = (value, data) => {
-    if (!data?.children?.length) return 'medium';
-    const allValues = data.children.map(item => item[activeMetric] || 0);
-    const max = Math.max(...allValues);
-    const min = Math.min(...allValues);
-    const range = max - min;
-    const normalizedValue = range ? (value - min) / range : 0.5;
+    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 
-    if (normalizedValue >= categoryThresholds.high) return 'high';
-    if (normalizedValue >= categoryThresholds.medium) return 'medium';
-    return 'low';
-  };
+    const buildHierarchy = () => {
+      const root = {
+        name: "root",
+        children: {}
+      };
 
-  const getCategoryLabel = (category) => {
-    switch (category) {
-      case 'high': return 'High';
-      case 'medium': return 'Medium';
-      case 'low': return 'Low';
-      default: return '';
-    }
-  };
+      files.forEach(path => {
+        const parts = path.split('/').filter(Boolean);
+        let current = root;
 
-  const calculateTotal = () => {
-    if (!data) return 0;
-    return Object.values(data).reduce((sum, feature) =>
-      sum + (feature?.metrics?.[activeMetric] || 0), 0);
-  };
+        parts.forEach((part, i) => {
+          if (i === parts.length - 1) {
+            if (!current.children[part]) {
+              current.children[part] = {
+                name: part,
+                value: 1,
+                type: 'file'
+              };
+            }
+          } else {
+            if (!current.children[part]) {
+              current.children[part] = {
+                name: part,
+                children: {},
+                type: 'directory'
+              };
+            }
+            current = current.children[part];
+          }
+        });
+      });
 
-  const getFontSize = (width, height) => {
-    const area = width * height;
-    return Math.min(Math.max(Math.sqrt(area) / 10, 8), 12);
-  };
+      const convert = (node) => {
+        if (node.type === 'file') {
+          return node;
+        }
+        return {
+          ...node,
+          children: Object.values(node.children).map(convert)
+        };
+      };
 
-  const splitText = (text = '', maxLength = 12) => {
-    if (!text) return [''];
-    const words = text.split(' ');
-    if (words.length === 1) return [text];
+      return convert(root);
+    };
 
-    const lines = [];
-    let currentLine = words[0];
+    const getColor = (d) => {
+      if (d.data.type === 'file') return '#eff6ff'; // Light gray for files
+      if (d.data.name === 'src') return '#3b82f6';  // Blue for src
+      if (d.depth === 1) return '#3b82f6';          // Lighter blue for feature level
+      if (d.depth === 2) return '#60a5fa';          // Lighter blue for feature level
+      return '#93c5fd';                             // Lightest blue for inner directories
+    };
 
-    for (let i = 1; i < words.length; i++) {
-      if ((currentLine + ' ' + words[i]).length <= maxLength) {
-        currentLine += ' ' + words[i];
-      } else {
-        lines.push(currentLine);
-        currentLine = words[i];
-      }
-    }
-    lines.push(currentLine);
-    return lines;
-  };
+    const treemap = d3.treemap()
+      .size([width, height])
+      .paddingOuter(8)
+      .paddingTop(24)
+      .paddingInner(4)
+      .round(true);
 
-  const treeMapData = transformData().children;
-  if (!treeMapData.length) return null;
+    const hierarchy = d3.hierarchy(buildHierarchy())
+      .sum(d => d.value || 0)
+      .sort((a, b) => b.value - a.value);
+
+    treemap(hierarchy);
+
+    const svg = svgElement
+      .append("g")
+
+    const validNodes = hierarchy.descendants().filter(d =>
+      d.data.name !== 'root' && (d.data.type === 'file' || d.children?.length > 0)
+    );
+
+    const cell = svg
+      .selectAll("g")
+      .data(validNodes)
+      .join("g")
+      .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+    cell.append("rect")
+      .attr("width", d => d.x1 - d.x0)
+      .attr("height", d => d.y1 - d.y0)
+      .attr("fill", getColor)
+      .attr("stroke", d => d.data.type === 'file' ? '#eff6ff' : 'transparent')
+      .attr("stroke-width", d => d.data.type === 'file' ? 1 : 2)
+      .attr("rx", 2)
+      .attr("ry", 2);
+
+    cell.filter(d => d.data.type === 'directory')
+      .append("text")
+      .attr("x", 4)
+      .attr("y", 16)
+      .attr("fill", "#37474f")
+      // .attr("fill", "#fff")
+      .attr("font-weight", 600)
+      .attr("font-size", "10px")
+      .text(d => {
+        const width = d.x1 - d.x0;
+        const name = d.data.name;
+        if (width < 40) return '';
+        return name.length > 12 ? name.slice(0, 10) + '...' : name;
+      });
+
+    cell.filter(d => d.data.type === 'file')
+      .append("text")
+      .attr("x", d => (d.x1 - d.x0) / 2)
+      .attr("y", d => (d.y1 - d.y0) / 2)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .attr("fill", "#666666")
+      .attr("font-size", "9px")
+      .text(d => {
+        const width = d.x1 - d.x0;
+        const height = d.y1 - d.y0;
+        if (width < 40 || height < 25) return '';
+        const name = d.data.name;
+        return name.length > 20 ? name.slice(0, 10) + '...' : name;
+      });
+
+    // Add resize handler
+    const handleResize = () => {
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+
+      svgElement.attr("viewBox", `0 0 ${newWidth} ${newHeight}`);
+
+      treemap.size([
+        newWidth - margin.left - margin.right,
+        newHeight - margin.top - margin.bottom
+      ]);
+
+      treemap(hierarchy);
+
+      cell.attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+      cell.select("rect")
+        .attr("width", d => d.x1 - d.x0)
+        .attr("height", d => d.y1 - d.y0);
+
+      cell.select("text")
+        .attr("x", d => {
+          if (d.data.type === 'file') {
+            return (d.x1 - d.x0) / 2;
+          }
+          return 4;
+        })
+        .attr("y", d => {
+          if (d.data.type === 'file') {
+            return (d.y1 - d.y0) / 2;
+          }
+          return 16;
+        })
+        .text(d => {
+          const width = d.x1 - d.x0;
+          const height = d.y1 - d.y0;
+          const name = d.data.name;
+          if (d.data.type === 'file') {
+            if (width < 40 || height < 25) return '';
+            return name.length > 12 ? name.slice(0, 10) + '...' : name;
+          } else {
+            if (width < 40) return '';
+            return name.length > 12 ? name.slice(0, 10) + '...' : name;
+          }
+        });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [files]);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="px-3 py-1 bg-gray-100 rounded-md">
-            <span className="text-sm text-gray-600 font-medium">
-              Total {metrics.find(m => m.id === activeMetric)?.label}: {calculateTotal().toLocaleString()}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {Object.entries(categoryColors).map(([category, color]) => (
-              <div key={category} className="flex items-center">
-                <div
-                  className="w-3 h-3 rounded-sm mr-1"
-                  style={{ backgroundColor: color }}
-                />
-                <span className="text-xs text-gray-600">
-                  {getCategoryLabel(category)}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex space-x-2">
-          {metrics.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveMetric(id)}
-              className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeMetric === id ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              <Icon className="w-4 h-4 mr-2" />
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="h-[550px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <Treemap
-            data={treeMapData}
-            dataKey={activeMetric}
-            stroke="#fff"
-            isAnimationActive={false}
-            content={({ x, y, width, height, name, value, root }) => {
-              if (!width || !height) return null;
-
-              const showText = width > 40 && height > 30;
-              const category = getCategory(value, root);
-              const backgroundColor = categoryColors[category];
-
-              if (!showText) return (
-                <rect
-                  x={x}
-                  y={y}
-                  width={width}
-                  height={height}
-                  style={{
-                    fill: backgroundColor,
-                    stroke: '#fff',
-                    strokeWidth: 2,
-                  }}
-                />
-              );
-
-              const fontSize = getFontSize(width, height);
-              const lines = splitText(name);
-              const lineHeight = fontSize * 1.2;
-              const totalTextHeight = lines.length * lineHeight;
-              const startY = y + (height - totalTextHeight) / 2;
-
-              return (
-                <g>
-                  <rect
-                    x={x}
-                    y={y}
-                    width={width}
-                    height={height}
-                    style={{
-                      fill: backgroundColor,
-                      stroke: '#fff',
-                      strokeWidth: 2,
-                    }}
-                  />
-                  {lines.map((line, i) => (
-                    <text
-                      key={i}
-                      x={x + width / 2}
-                      y={startY + (i * lineHeight)}
-                      textAnchor="middle"
-                      fill="#fff"
-                      fontSize={fontSize}
-                      style={{
-                        fontWeight: 500,
-                        textTransform: 'uppercase',
-                        textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
-                      }}
-                    >
-                      {line}
-                    </text>
-                  ))}
-                  <text
-                    x={x + width / 2}
-                    y={startY + totalTextHeight + 4}
-                    textAnchor="middle"
-                    fill="#fff"
-                    fontSize={fontSize * 0.9}
-                    fontWeight={500}
-                    style={{
-                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
-                    }}
-                  >
-                    {value.toLocaleString()}
-                  </text>
-                </g>
-              );
-            }}
-          />
-        </ResponsiveContainer>
+    <div className="flex flex-col h-full -mt-2 py-2 px-2">
+      <div className="flex-1 relative min-h-0" ref={containerRef}>
+        <svg
+          ref={svgRef}
+          className="absolute inset-0 w-full h-full"
+        />
       </div>
     </div>
   );
