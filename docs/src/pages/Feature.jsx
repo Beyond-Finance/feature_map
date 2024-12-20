@@ -127,11 +127,21 @@ export default function Feature({ features }) {
             </div>
           </div>
 
-          <div className="h-[600px] bg-white rounded-lg border border-gray-200 shadow-sm mb-8">
-            <FeatureTreemap files={feature.assignments.files} />
-          </div>
+          {feature.assignments.files.length > 0 ? (
+            <>
+              <div className="h-[600px] bg-white rounded-lg border border-gray-200 shadow-sm mb-8">
+                <FeatureTreemap files={feature.assignments.files} />
+              </div>
 
-          <FileExplorer files={feature.assignments.files} />
+              <FileExplorer files={feature.assignments.files} />
+            </>
+          ) : (
+            <div className="h-[300px] bg-white rounded-lg border border-gray-200 shadow-sm mb-8">
+              <div className="flex items-center justify-center h-full text-gray-500">
+                No files found for this feature
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
