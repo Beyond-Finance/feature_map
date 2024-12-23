@@ -8,7 +8,7 @@ import FeatureTreemap from '../components/FeatureTreemap';
 import {
   calculateHealthScore,
   getHealthScoreStatus,
-  getHealthScoreColor,
+  getHealthScoreHexColor,
   calculateSize,
   getSizeLabel,
   getFilledPills,
@@ -39,9 +39,6 @@ export default function Feature({ features }) {
   const coverageInfo = getTestCoverageInfo(feature);
   const filledPills = getFilledPills(sizeScore);
 
-  console.log('Health Score:', healthScore * 100);
-  console.log('Coverage:', coverageInfo.percent);
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
@@ -65,10 +62,10 @@ export default function Feature({ features }) {
               suffix="%"
               tooltip="Health score calculations are still a WIP"
               icon={<Gauge />}
-              color={getHealthScoreColor(healthScore)}
+              color={getHealthScoreHexColor(healthScore)}
               subtext={<span className="font-bold">{getHealthScoreStatus(healthScore)}</span>}
               secondaryText={<div className="text-[10px] text-gray-500">
-                {formatNumber(feature.metrics.lines_of_code)} lines • {feature.assignments.files.length} files
+                {formatNumber(feature.metrics.lines_of_code)} lines • {feature.assignments.files ? feature.assignments.files.length : 0} files
               </div>}
             />
 
@@ -120,14 +117,15 @@ export default function Feature({ features }) {
                 </div>
 
                 <div>
-                  <div className="text-[10px] text-gray-500">{feature.assignments.files.length} files</div>
+                  <div className="text-[10px] text-gray-500">{feature.assignments.files ? feature.assignments.files.length : 0} files</div>
                   <div className="text-[10px] text-gray-500">{formatNumber(feature.metrics.lines_of_code)} lines</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {feature.assignments.files.length > 0 ? (
+
+          {feature.assignments.files && feature.assignments.files.length > 0 ? (
             <>
               <div className="h-[600px] bg-white rounded-lg border border-gray-200 shadow-sm mb-8">
                 <FeatureTreemap files={feature.assignments.files} />

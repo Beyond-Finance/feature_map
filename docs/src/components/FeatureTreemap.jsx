@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { FolderTree } from 'lucide-react';
 
 const FeatureTreemap = ({ files }) => {
   const containerRef = useRef(null);

@@ -238,8 +238,8 @@ const features = {
   },
   "Cache Management": {
     "assignments": {
-      "files": [],
-      "teams": []
+      "files": null,
+      "teams": null
     },
     "description": null,
     "documentation_link": null,

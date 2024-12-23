@@ -1,11 +1,7 @@
 import React from 'react';
 
 // Constants
-export const SIZE_THRESHOLDS = {
-  XS: { loc: 300, files: 3 },
-  S: { loc: 600, files: 5 },
-  M: { loc: 1200, files: 10 },
-  L: { loc: 2000, files: 15 },
+export const MAX_SIZE_THRESHOLD = {
   XL: { loc: 3000, files: 20 }
 };
 
@@ -15,7 +11,7 @@ export function calculateHealthScore(data) {
     abc: data.metrics.abc_size / 2000,
     loc: data.metrics.lines_of_code / 3000,
     complexity: data.metrics.cyclomatic_complexity / 300,
-    files: data.assignments.files.length / 100
+    files: data.assignments.files ? data.assignments.files.length / 100 : 0
   };
 
   return (
@@ -35,7 +31,7 @@ export function getHealthScoreStatus(score) {
 // using HEX values here because this function is being used
 // to provide color to the circular progress bar SVG on the
 // feature page and the dot on the feature table.
-export function getHealthScoreColor(score) {
+export function getHealthScoreHexColor(score) {
   if (score < 0.33) return '#ef4444'; // red
   if (score < 0.66) return '#facc15'; // yellow
   return '#22c55e'; // green
@@ -49,8 +45,8 @@ export function getHealthScoreBackgroundColor(score) {
 
 // Size Calculations
 export function calculateSize(data) {
-  const normalizedLOC = data.metrics.lines_of_code / SIZE_THRESHOLDS.XL.loc;
-  const normalizedFiles = data.assignments.files.length / SIZE_THRESHOLDS.XL.files;
+  const normalizedLOC = data.metrics.lines_of_code / MAX_SIZE_THRESHOLD.XL.loc;
+  const normalizedFiles = data.assignments.files ? data.assignments.files.length / MAX_SIZE_THRESHOLD.XL.files : 0;
   return (normalizedLOC * 0.7 + normalizedFiles * 0.3);
 }
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import {
   calculateHealthScore,
-  getHealthScoreColor,
+  getHealthScoreHexColor,
   getHealthScoreBackgroundColor,
   calculateSize,
   getSizeLabel,
@@ -112,7 +112,7 @@ export default function FeaturesTable({ features }) {
                               <div className="flex items-center gap-1 lg:hidden">
                                 <p className="text-sm lg:text-xs font-normal text-gray-500">Team: </p>
                                 <div className="flex items-center gap-1">
-                                  {data.assignments.teams.map((team, index) => (
+                                  {data.assignments.teams && data.assignments.teams.map((team, index) => (
                                     <React.Fragment key={team}>
                                       <span className="text-sm lg:text-xs font-normal text-gray-500">{team}</span>
                                       {index < data.assignments.teams.length - 1 && (
@@ -157,7 +157,7 @@ export default function FeaturesTable({ features }) {
                             <div className={`w-4 h-4 rounded-full flex items-center justify-center ${getHealthScoreBackgroundColor(healthScore)}`}>
                               <div
                                 className="w-2 h-2 rounded-full"
-                                style={{ backgroundColor: getHealthScoreColor(healthScore) }}
+                                style={{ backgroundColor: getHealthScoreHexColor(healthScore) }}
                               />
                             </div>
                             <span className="text-gray-600">{(healthScore * 100).toFixed(0)}%</span>

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Treemap, ResponsiveContainer } from 'recharts';
-import { GitCommit, Activity, BarChart2 } from 'lucide-react';
+import { Shapes, FileCode, GitCompareArrows } from 'lucide-react';
 
 const FeaturesTreemap = ({ data = {} }) => {
   const [activeMetric, setActiveMetric] = useState('lines_of_code');
 
   const metrics = [
-    { id: 'lines_of_code', label: 'Lines of Code', icon: GitCommit },
-    { id: 'abc_size', label: 'ABC Size', icon: Activity },
-    { id: 'cyclomatic_complexity', label: 'Complexity', icon: BarChart2 }
+    { id: 'lines_of_code', label: 'Lines of Code', icon: FileCode },
+    { id: 'abc_size', label: 'ABC Size', icon: Shapes },
+    { id: 'cyclomatic_complexity', label: 'Complexity', icon: GitCompareArrows }
   ];
 
   const categoryThresholds = {

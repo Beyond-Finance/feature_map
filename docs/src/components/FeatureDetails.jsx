@@ -20,7 +20,7 @@ export default function FeatureDetails({name, feature}) {
           <div className="flex-shrink-0">
             <FolderTree className="size-4 text-gray-500" />
           </div>
-          <p className="text-sm text-gray-700">{feature.assignments.files.length} Total Files</p>
+          <p className="text-sm text-gray-700">{feature.assignments.files ? feature.assignments.files.length : 0} Total Files</p>
         </li>
 
         <li className="flex items-center gap-2">
