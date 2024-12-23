@@ -41,8 +41,8 @@ const features = {
     "description": "Payment processing system integrating with Stripe for charges, refunds and reconciliation",
     "documentation_link": "https://internal-docs.company.com/payments/overview",
     "metrics": {
-      "abc_size": 1202.78,
-      "lines_of_code": 2582,
+      "abc_size": 502.78,
+      "lines_of_code": 5582,
       "cyclomatic_complexity": 500
     },
     "test_coverage": {
@@ -230,8 +230,26 @@ const features = {
       "lines_of_code": 934,
       "cyclomatic_complexity": 76
     },
+    "test_coverage": {
+      "lines": 567,
+      "hits": 489,
+      "misses": 78
+    }
+  },
+  "Cache Management": {
+    "assignments": {
+      "files": null,
+      "teams": null
+    },
+    "description": null,
+    "documentation_link": null,
+    "metrics": {
+      "abc_size": null,
+      "lines_of_code": null,
+      "cyclomatic_complexity": null
+    },
     "test_coverage": null
-  }
+  },
 };
 
 export default features;
