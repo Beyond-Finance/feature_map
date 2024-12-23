@@ -1,11 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
 import sampleFeatures from './data/sample_features';
 import Dashboard from './pages/Dashboard';
 import Feature from './pages/Feature';
 
 export default function App() {
-  const features = window.FEATURES || useState(sampleFeatures)[0];
+  const features = window.FEATURES || sampleFeatures;
 
   return (
     <Routes>

@@ -7,8 +7,7 @@ const CircularProgress = ({
   subtext,
   secondaryText
 }) => {
-  const percentage = value <= 1 ? value * 100 : value;
-  const strokeColor = percentage === 0 ? 'transparent' : color;
+  const strokeColor = value === 0 ? 'transparent' : color;
 
   return (
     <div className="flex items-center gap-4">
@@ -25,7 +24,7 @@ const CircularProgress = ({
             fill="none"
             stroke={strokeColor}
             strokeWidth="2"
-            strokeDasharray={`${percentage}, 100`}
+            strokeDasharray={`${value}, 100`}
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">

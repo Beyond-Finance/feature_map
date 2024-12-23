@@ -71,7 +71,7 @@ const FeatureTreemap = ({ files }) => {
     };
 
     const getColor = (d) => {
-      if (d.data.type === 'file') return '#eff6ff'; // Light gray for files
+      if (d.data.type === 'file') return '#eff6ff'; // Light blue for files
       if (d.data.name === 'src') return '#3b82f6';  // Blue for src
       if (d.depth === 1) return '#3b82f6';          // Lighter blue for feature level
       if (d.depth === 2) return '#60a5fa';          // Lighter blue for feature level
@@ -118,7 +118,6 @@ const FeatureTreemap = ({ files }) => {
       .attr("x", 4)
       .attr("y", 16)
       .attr("fill", "#37474f")
-      // .attr("fill", "#fff")
       .attr("font-weight", 600)
       .attr("font-size", "10px")
       .text(d => {

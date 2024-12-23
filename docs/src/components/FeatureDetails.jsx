@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, FileCode, Gauge, Shapes, GitCompareArrows, ExternalLink, FlaskConical, Proportions } from 'lucide-react';
+import { Users, FileCode, FolderTree, Shapes, GitCompareArrows, ExternalLink } from 'lucide-react';
 import { renderTeams } from '../utils/feature-helpers';
 
 export default function FeatureDetails({name, feature}) {
@@ -18,7 +18,7 @@ export default function FeatureDetails({name, feature}) {
       <ul className="mb-6 space-y-2">
         <li className="flex items-center gap-2">
           <div className="flex-shrink-0">
-            <GitCompareArrows className="size-4 text-gray-500" />
+            <FolderTree className="size-4 text-gray-500" />
           </div>
           <p className="text-sm text-gray-700">{feature.assignments.files.length} Total Files</p>
         </li>
