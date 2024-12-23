@@ -132,7 +132,7 @@ bin/feature_map for_feature 'Onboarding' > tmp/onboarding_feature_report.md
 
 When you run `bin/featuremap validate`, the following files will automatically be generated:
  * `.feature_map/assignments.yml`: Captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files.
- * `.feature_map/metrics.yml`: cCaptures a set of metrics rolled up at the feature level (i.e. computed over all files assigned to the feature).
+ * `.feature_map/metrics.yml`: Captures a set of metrics rolled up at the feature level (i.e. computed over all files assigned to the feature).
 
 ## Usage: Generating Documentation
 
@@ -160,7 +160,7 @@ Test coverage statistics can be pulled for a specific commit (e.g. the latest co
 
 ### CodeCov API Token Generation
 
-Running the `bin/featuremap test_coverage` will prompt the user to provide an active CodeCov API access token. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
+Running the `bin/featuremap test_coverage` will prompt the user to provide an active CodeCov API access token unless one has been specified as the `CODECOV_API_TOKEN` environment variable in your shell's environment. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
 
 Use the following steps to generate a new CodeCov API token:
 
@@ -176,7 +176,17 @@ Use the following steps to generate a new CodeCov API token:
 1. __IMPORTANT__: Copy the access token value presented on the screen and store it in a secure location (e.g. 1Password entry, BitWarden entry, etc)
     ![CodeCov newly created API token modal](readme_assets/codeCov-newTokenModal.png)
 
-For security reasons, this gem does not store or record your CodeCov access token anywhere. As a result, you will need to provide the acess token value each time your run the `bin/featuremap test_coverage` command. For this reason, it is important to record the access token in a secure location that you can easily retrieve it from when you need to perform this action.
+#### __OPTIONAL__:  Store the token as an environment variable in your shell's environment:
+**ZSH**
+  ```shell
+  echo 'export CODECOV_API_TOKEN="YOUR_CODECOV_API_TOKEN"' >> ~/.zshrc
+  ```
+
+**Bash**
+  ```shell
+  # Bash
+  echo 'export CODECOV_API_TOKEN="YOUR_CODECOV_API_TOKEN"' >> ~/.bashrc
+  ```
 
 ## Proper Configuration & Validation
 
