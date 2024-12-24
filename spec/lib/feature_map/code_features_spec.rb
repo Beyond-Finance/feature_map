@@ -134,7 +134,7 @@ RSpec.describe FeatureMap::CodeFeatures do
         end
       end
 
-      context 'when features are missing some CSV file contains a Ruby-like comment' do
+      context 'when the CSV file contains a Ruby-like comment' do
         let(:features_csv) do
           <<~CSV.strip
             # Comment explaining the purpose of this file and how it should be managed.
@@ -145,6 +145,24 @@ RSpec.describe FeatureMap::CodeFeatures do
         end
 
         it 'ignores the comment entirely out a helpful error message' do
+          expect(FeatureMap::CodeFeatures.all.count).to eq 1
+          feature = FeatureMap::CodeFeatures.all.first
+          expect(feature.name).to eq 'First Feature'
+        end
+      end
+
+      context 'when the CSV file contains non-breaking space characters' do
+        let(:non_breaking_space) { 65_279.chr(Encoding::UTF_8) }
+        let(:features_csv) do
+          <<~CSV.strip
+            #{non_breaking_space}# Comment explaining the purpose of this file and how it should be managed.
+
+            #{non_breaking_space}Name,Description,Documentation#{non_breaking_space} Link,Dashboard Link,Custom Attribute
+            #{non_breaking_space}First Feature,A sample feature to test with.,https://www.notion.so/First-Feature-Docs-abc123,https://www.newrelic.com/firstFeatureDashboard
+          CSV
+        end
+
+        it 'strips all non-breaking space characters from the CSV file' do
           expect(FeatureMap::CodeFeatures.all.count).to eq 1
           feature = FeatureMap::CodeFeatures.all.first
           expect(feature.name).to eq 'First Feature'
