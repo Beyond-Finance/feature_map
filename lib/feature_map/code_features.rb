@@ -3,6 +3,7 @@
 # typed: strict
 
 require 'yaml'
+require 'csv'
 require 'set'
 require 'pathname'
 require 'feature_map/code_features/plugin'
@@ -17,6 +18,7 @@ module FeatureMap
     sig { returns(T::Array[Feature]) }
     def self.all
       @all = T.let(@all, T.nilable(T::Array[Feature]))
+      @all ||= from_csv('.feature_map/feature_definitions.csv')
       @all ||= for_directory('.feature_map/definitions')
     end
 
@@ -30,6 +32,19 @@ module FeatureMap
       end
 
       @index_by_name[name]
+    end
+
+    sig { params(file_path: String).returns(T.nilable(T::Array[Feature])) }
+    def self.from_csv(file_path)
+      return nil if !File.exist?(file_path)
+
+      file_lines = File.readlines(file_path)
+      csv_content = file_lines.reject { |line| line.start_with?('#') }.join.strip
+
+      CSV.parse(csv_content, headers: true).map do |csv_row|
+        feature_data = csv_row.to_h.transform_keys { |column_name| tag_value_for(column_name) }
+        Feature.from_hash(feature_data)
+      end
     end
 
     sig { params(dir: String).returns(T::Array[Feature]) }
