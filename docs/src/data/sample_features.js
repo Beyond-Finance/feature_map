@@ -221,7 +221,7 @@ const features = {
         "src/search/models/search_index.rb",
         "src/search/workers/indexing_worker.rb"
       ],
-      "teams": ["Search & Discovery", "Platform", "Communications", "Another one"]
+      "teams": ["Search & Discovery", "Platform", "Communications", "Admin"]
     },
     "description": "Elasticsearch-based full-text search engine",
     "documentation_link": "https://internal-docs.company.com/search/overview",
