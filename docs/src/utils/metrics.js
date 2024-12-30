@@ -26,7 +26,7 @@ const cyclomaticComplexityScoreFor = ({ metrics }) => {
   return metrics.lines_of_code / metrics.cyclomatic_complexity
 }
 
-const cyclomaticComplexityScores = ({ features }) => {
+const cyclomaticComplexityScoresFor = ({ features }) => {
   const featureScores = Object
     .entries(features)
     .map(([feature, { metrics }]) => {
@@ -51,13 +51,30 @@ const encapsulationScoreFor = ({ assignments, metrics }) => {
   return assignments.files.length / metrics.lines_of_code
 }
 
-const encapsulationScores = ({ features }) => {
+const encapsulationScoresFor = ({ features }) => {
   const featureScores = Object
     .entries(features)
     .map(([feature, { assignments, metrics }]) => {
       return {
         feature,
         score: encapsulationScoreFor({ assignments, metrics }),
+      }
+    })
+
+  return collect({ featureScores })
+}
+
+const featureSizeMetricFor = ({ assignments, metrics }) => {
+  return metrics.lines_of_code
+}
+
+const featureSizeMetricsFor = ({ features }) => {
+  const featureScores = Object
+    .entries(features)
+    .map(([feature, { assignments, metrics }]) => {
+      return {
+        feature,
+        score: featureSizeMetricFor({ assignments, metrics }),
       }
     })
 
@@ -81,7 +98,7 @@ const percentileOf = (arr, val) => {
   return (100 * belowOrEqualCount) / ensureArrayOfFloats.length
 }
 
-const testCoverageFor = ({ test_coverage }) => {
+const testCoverageScoreFor = ({ test_coverage }) => {
   if (test_coverage === null || test_coverage.hits === null || test_coverage.lines === null) {
     return null
   }
@@ -91,13 +108,13 @@ const testCoverageFor = ({ test_coverage }) => {
   return Math.round(test_coverage.hits / test_coverage.lines * 100)
 }
 
-const testCoverageScores = ({ features }) => {
+const testCoverageScoresFor = ({ features }) => {
   const featureScores = Object
     .entries(features)
     .map(([feature, { test_coverage }]) => {
       return {
         feature,
-        score: testCoverageFor({ test_coverage }),
+        score: testCoverageScoreFor({ test_coverage }),
       }
     })
 
@@ -122,8 +139,30 @@ export const averages = ({ features }) => {
   }
 }
 
-export const scores = ({ features }) => ({
-  encapsulationScores: encapsulationScores({ features }),
-  cyclomaticComplexityScores: cyclomaticComplexityScores({ features }),
-  testCoverageScores: testCoverageScores({ features }),
-})
+export const withMetrics = ({ features }) => {
+  const cyclomaticComplexityScores = cyclomaticComplexityScoresFor({ features })
+  const encapsulationScores = encapsulationScoresFor({ features })
+  const featureSizeMetrics = featureSizeMetricsFor({ features })
+  const testCoverageScores = testCoverageScoresFor({ features })
+
+  return Object.entries(features).reduce((accumulatingFeatures, [featureName, feature]) => {
+    const cyclomaticComplexity = cyclomaticComplexityScores[featureName]
+    const featureSize = featureSizeMetrics[featureName]
+    const encapsulation = encapsulationScores[featureName]
+    const testCoverage = testCoverageScores[featureName]
+
+    return {
+      ...accumulatingFeatures,
+      [featureName]: {
+        ...feature,
+        metrics: {
+          ...feature.metrics,
+          encapsulation,
+          featureSize,
+          cyclomaticComplexity,
+          testCoverage,
+        }
+      }
+    }
+  }, {})
+}

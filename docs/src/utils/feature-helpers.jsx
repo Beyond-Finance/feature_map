@@ -5,34 +5,34 @@ export const MAX_SIZE_THRESHOLD = {
   XL: { loc: 3000, files: 20 }
 };
 
-// Size Calculations
-export function calculateSize(data) {
-  const normalizedLOC = data.metrics.lines_of_code / MAX_SIZE_THRESHOLD.XL.loc;
-  const normalizedFiles = data.assignments.files ? data.assignments.files.length / MAX_SIZE_THRESHOLD.XL.files : 0;
-  return (normalizedLOC * 0.7 + normalizedFiles * 0.3);
+const sizes = {
+  xs: 5,
+  s: 20,
+  m: 70,
+  l: 95,
 }
 
 export function getSizeLabel(sizeScore) {
-  if (sizeScore <= 0.2) return 'XS';
-  if (sizeScore <= 0.4) return 'S';
-  if (sizeScore <= 0.6) return 'M';
-  if (sizeScore <= 0.8) return 'L';
+  if (sizeScore <= sizes.xs) return 'XS';
+  if (sizeScore <= sizes.s) return 'S';
+  if (sizeScore <= sizes.m) return 'M';
+  if (sizeScore <= sizes.l) return 'L';
   return 'XL';
 }
 
 export function getSizeColor(sizeScore) {
-  if (sizeScore <= 0.2) return 'bg-green-100 text-green-800';
-  if (sizeScore <= 0.4) return 'bg-blue-100 text-blue-800';
-  if (sizeScore <= 0.6) return 'bg-violet-100 text-violet-800';
-  if (sizeScore <= 0.8) return 'bg-amber-100 text-amber-800';
+  if (sizeScore <= sizes.xs) return 'bg-green-100 text-green-800';
+  if (sizeScore <= sizes.s) return 'bg-blue-100 text-blue-800';
+  if (sizeScore <= sizes.m) return 'bg-violet-100 text-violet-800';
+  if (sizeScore <= sizes.l) return 'bg-amber-100 text-amber-800';
   return 'bg-red-100 text-red-800';
 }
 
 export function getFilledPills(sizeScore) {
-  if (sizeScore <= 0.2) return 1;
-  if (sizeScore <= 0.4) return 2;
-  if (sizeScore <= 0.6) return 3;
-  if (sizeScore <= 0.8) return 4;
+  if (sizeScore <= sizes.xs) return 1;
+  if (sizeScore <= sizes.s) return 2;
+  if (sizeScore <= sizes.m) return 3;
+  if (sizeScore <= sizes.l) return 4;
   return 5;
 }
 

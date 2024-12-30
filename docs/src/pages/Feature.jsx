@@ -6,7 +6,6 @@ import FeatureDetails from '../components/FeatureDetails';
 import FeatureCard from '../components/FeatureCard';
 import FeatureTreemap from '../components/FeatureTreemap';
 import {
-  calculateSize,
   getSizeLabel,
   getFilledPills,
   formatNumber,
@@ -35,8 +34,8 @@ export default function Feature({ features }) {
     );
   }
 
-  const healthScore = feature.scores.health.overall;
-  const sizeScore = calculateSize(feature);
+  const healthScore = feature.health.overall;
+  const sizeScore = feature.metrics.featureSize.percentOfMax;
   const coverageInfo = getTestCoverageInfo(feature);
   const filledPills = getFilledPills(sizeScore);
 
@@ -67,13 +66,13 @@ export default function Feature({ features }) {
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">
-                  Coverage: {feature.scores.health.testCoverageComponent.healthScore.toFixed(0)} / {feature.scores.health.testCoverageComponent.awardablePoints}
+                  Coverage: {feature.health.testCoverageComponent.healthScore.toFixed(0)} / {feature.health.testCoverageComponent.awardablePoints}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Complexity: {feature.scores.health.cyclomaticComplexityComponent.healthScore.toFixed(0)} / {feature.scores.health.cyclomaticComplexityComponent.awardablePoints}
+                  Complexity: {feature.health.cyclomaticComplexityComponent.healthScore.toFixed(0)} / {feature.health.cyclomaticComplexityComponent.awardablePoints}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Encapsulation: {feature.scores.health.encapsulationComponent.healthScore.toFixed(0)} / {feature.scores.health.encapsulationComponent.awardablePoints}
+                  Encapsulation: {feature.health.encapsulationComponent.healthScore.toFixed(0)} / {feature.health.encapsulationComponent.awardablePoints}
                 </li>
               </ul>
             </FeatureCard>

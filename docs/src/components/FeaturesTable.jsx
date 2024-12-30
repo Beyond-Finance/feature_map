@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import {
-  calculateSize,
   getSizeLabel,
   getFilledPills,
   renderTeams
@@ -33,16 +32,16 @@ export default function FeaturesTable({ features }) {
           bValue = featureDataB.assignments.teams[0];
           break;
         case 'size':
-          aValue = calculateSize(featureDataA);
-          bValue = calculateSize(featureDataB);
+          aValue = featureDataA.metrics.featureSize.percentOfMax;
+          bValue = featureDataB.metrics.featureSize.percentOfMax;
           break;
         case 'health_score':
-          aValue = featureDataA.scores.health.overall;
-          bValue = featureDataB.scores.health.overall;
+          aValue = featureDataA.health.overall;
+          bValue = featureDataB.health.overall;
           break;
         case 'test_coverage':
-          aValue = featureDataA.scores.testCoverage.score ? featureDataA.scores.testCoverage.score : -1;
-          bValue = featureDataB.scores.testCoverage.score ? featureDataB.scores.testCoverage.score : -1;
+          aValue = featureDataA.metrics.testCoverage.score ? featureDataA.metrics.testCoverage.score : -1;
+          bValue = featureDataB.metrics.testCoverage.score ? featureDataB.metrics.testCoverage.score : -1;
           break;
         default:
           aValue = a[0];
@@ -102,10 +101,10 @@ export default function FeaturesTable({ features }) {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {sortedFeatures.map(([name, data]) => {
-                    const sizeScore = calculateSize(data);
+                    const sizeScore = data.metrics.featureSize.percentOfMax
                     const sizeLabel = getSizeLabel(sizeScore);
-                    const healthScore = data.scores.health.overall
-                    const coveragePercent = data.scores.testCoverage.score
+                    const healthScore = data.health.overall
+                    const coveragePercent = data.metrics.testCoverage.score
 
                     return (
                       <tr key={name}>
