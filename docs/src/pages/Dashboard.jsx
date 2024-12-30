@@ -5,32 +5,16 @@ import FeaturesTreeMap from '../components/FeaturesTreemap';
 import { FileJson, GitGraphIcon, ShapesIcon } from 'lucide-react';
 
 export default function Dashboard({ features }) {
-  const [metrics, setMetrics] = useState({
-    abcSize: 0,
-    linesOfCode: 0,
-    complexity: 0
-  });
+  const totals = Object.values(features).reduce((acc, feature) => {
+    const { abcSize, linesOfCode, cyclomaticComplexity } = acc
+    return {
+      abcSize: abcSize + feature.metrics.abc_size,
+      linesOfCode: linesOfCode + feature.metrics.lines_of_code,
+      cyclomaticComplexity: cyclomaticComplexity + feature.metrics.cyclomatic_complexity,
+    }
+  }, { abcSize: 0, linesOfCode: 0, cyclomaticComplexity: 0})
 
-  useEffect(() => {
-    const calculateAverages = () => {
-      const values = Object.values(features).reduce((acc, feature) => {
-        acc.abcSize.push(feature.metrics.abc_size);
-        acc.linesOfCode.push(feature.metrics.lines_of_code);
-        acc.complexity.push(feature.metrics.cyclomatic_complexity);
-        return acc;
-      }, { abcSize: [], linesOfCode: [], complexity: [] });
-
-      const average = arr => Math.round((arr.reduce((a, b) => a + b, 0) / arr.length) * 100) / 100;
-
-      setMetrics({
-        abcSize: average(values.abcSize),
-        linesOfCode: average(values.linesOfCode),
-        complexity: average(values.complexity)
-      });
-    };
-
-    calculateAverages();
-  }, [features]);
+  const totalFeatures = Object.keys(features).length
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8">
@@ -43,7 +27,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="ABC Size"
-              value={metrics.abcSize}
+              value={(totals.abcSize / totalFeatures).toFixed(2)}
               tooltip="Average abc size across all features"
               icon={<ShapesIcon className="size-5" />  }
             />
@@ -52,7 +36,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="Lines of Code"
-              value={metrics.linesOfCode}
+              value={(totals.linesOfCode / totalFeatures).toFixed(2)}
               tooltip="Average lines of code across all features"
               icon={<FileJson className="size-5" />}
             />
@@ -61,7 +45,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="Complexity"
-              value={metrics.complexity}
+              value={(totals.cyclomaticComplexity / totalFeatures).toFixed(2)}
               tooltip="Average cyclomatic complexity across all features"
               icon={<GitGraphIcon className="size-5"/>}
             />
