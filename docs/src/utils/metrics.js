@@ -23,7 +23,7 @@ const cyclomaticComplexityScoreFor = ({ metrics }) => {
   }
 
   // Lines of Code per Cyclomatic Complexity (Bigger -> Better)
-  return (metrics.lines_of_code / metrics.cyclomatic_complexity).toFixed(2)
+  return metrics.lines_of_code / metrics.cyclomatic_complexity
 }
 
 const cyclomaticComplexityScores = ({ features }) => {
@@ -48,7 +48,7 @@ const encapsulationScoreFor = ({ assignments, metrics }) => {
   // Score approaches 1 (when every file has exactly one line of code)
   // Naively we assume closer to 1 is better, but this definitely falls
   // apart if functionality is _too_ encapsulated.
-  return (assignments.files.length / metrics.lines_of_code).toFixed(8)
+  return assignments.files.length / metrics.lines_of_code
 }
 
 const encapsulationScores = ({ features }) => {
@@ -116,9 +116,9 @@ export const averages = ({ features }) => {
   }, { abcSize: 0, linesOfCode: 0, cyclomaticComplexity: 0 })
 
   return {
-    abcSize: (totals.abcSize / totalFeatures).toFixed(2),
-    linesOfCode: (totals.linesOfCode / totalFeatures).toFixed(2),
-    cyclomaticComplexity: (totals.cyclomaticComplexity / totalFeatures).toFixed(2),
+    abcSize: totals.abcSize / totalFeatures,
+    linesOfCode: totals.linesOfCode / totalFeatures,
+    cyclomaticComplexity: totals.cyclomaticComplexity / totalFeatures,
   }
 }
 

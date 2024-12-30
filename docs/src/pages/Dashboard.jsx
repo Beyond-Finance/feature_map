@@ -45,7 +45,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="ABC Size"
-              value={averageAbcSize}
+              value={averageAbcSize.toFixed(2)}
               tooltip="Average abc size across all features"
               icon={<ShapesIcon className="size-5" />  }
             />
@@ -54,7 +54,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="Lines of Code"
-              value={averageLinesOfCode}
+              value={averageLinesOfCode.toFixed(2)}
               tooltip="Average lines of code across all features"
               icon={<FileJson className="size-5" />}
             />
@@ -63,7 +63,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="Complexity"
-              value={averageCyclomaticComplexity}
+              value={averageCyclomaticComplexity.toFixed(2)}
               tooltip="Average cyclomatic complexity across all features"
               icon={<GitGraphIcon className="size-5"/>}
             />
@@ -72,10 +72,10 @@ export default function Dashboard({ features }) {
       </div>
 
       <div className="mb-8 bg-white p-4 rounded-lg shadow w-full">
-        <FeaturesTreeMap data={features} />
+        <FeaturesTreeMap data={annotatedFeatures} />
       </div>
 
-      <FeaturesTable features={features} />
+      <FeaturesTable features={annotatedFeatures} />
     </div>
   );
 }
