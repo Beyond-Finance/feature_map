@@ -20,12 +20,21 @@ unassigned_globs:
   - app/services/some_file2.rb
   - frontend/javascripts/**/__generated__/**/*
 ```
-2) Declare some features. Here's an example, that would live at `.feature_map/definitions/onboarding.yml`:
-```yml
-name: Onboarding
-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-documentation_link: https://www.notion.so/onboarding-feature-abcd1234
-```
+2) Define the features of our your application. There are two methods for defining features:
+    * YAML Definitions: Each feature can be defined in a separate YAML file within the `.feature_map/definitions` directory. Here's an example, that would live at `.feature_map/definitions/onboarding.yml`:
+        ```yml
+        name: Onboarding
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+        documentation_link: https://www.notion.so/onboarding-feature-abcd1234
+        ```
+    * CSV Definitions: All features can be defined within a single CSV file located at `.feature_map/feature_definitions.csv`. Here's an example of what that file might look like:
+        ```
+        # Comment explaining the purpose of this file and how it should be managed.
+
+        Name,Description,Documentation Link,Custom Attribute
+        Onboarding,Lorem ipsum dolor sit amet, consectetur adipiscing elit.,https://www.notion.so/onboarding-feature-abcd1234,Test 123
+        User Management,Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation,,
+        ``` 
 3) Declare feature assignments. You can do this at a directory level or at a file level. All of the files within the `assigned_globs` you declared in step 1 will need to have a feature assigned (or be opted out via `unassigned_globs`). See the next section for more detail.
 4) Run validations when you commit, and/or in CI. If you run validations in CI, ensure that if your `assignments.yml` file gets changed, that gets pushed to the PR. A `metrics.yml` file will also be generated but we recommend NOT commiting that file because it changes very frequently.
 
@@ -55,7 +64,7 @@ assigned_globs:
 ```
 
 ### Feature Definition File Assignment
-By default all feature definition YML files, located in the `.feature_map/definitions' directory, are assigned to their corresponding feature.
+By default any feature definition YML files, located in the `.feature_map/definitions' directory, are assigned to their corresponding feature.
 
 The leading `.` in the path for these files results in them being quoted within the resulting `.feature_map/assignments` file. The following is an example of this content:
 ```yml

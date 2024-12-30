@@ -3,6 +3,7 @@
 # typed: strict
 
 require 'yaml'
+require 'csv'
 require 'set'
 require 'pathname'
 require 'feature_map/code_features/plugin'
@@ -12,11 +13,14 @@ module FeatureMap
   module CodeFeatures
     extend T::Sig
 
+    NON_BREAKING_SPACE = T.let(65_279.chr(Encoding::UTF_8), String)
+
     class IncorrectPublicApiUsageError < StandardError; end
 
     sig { returns(T::Array[Feature]) }
     def self.all
       @all = T.let(@all, T.nilable(T::Array[Feature]))
+      @all ||= from_csv('.feature_map/feature_definitions.csv')
       @all ||= for_directory('.feature_map/definitions')
     end
 
@@ -30,6 +34,23 @@ module FeatureMap
       end
 
       @index_by_name[name]
+    end
+
+    sig { params(file_path: String).returns(T.nilable(T::Array[Feature])) }
+    def self.from_csv(file_path)
+      return nil if !File.exist?(file_path)
+
+      file_lines = File.readlines(file_path)
+      # Remove any non-breaking space characters, as these can throw off the comment handling
+      # and/or attribute key values.
+      csv_content = file_lines.map { |line| line.gsub(NON_BREAKING_SPACE, '') }
+                              .reject { |line| line.start_with?('#') }
+                              .join.strip
+
+      CSV.parse(csv_content, headers: true).map do |csv_row|
+        feature_data = csv_row.to_h.transform_keys { |column_name| tag_value_for(column_name) }
+        Feature.from_hash(feature_data)
+      end
     end
 
     sig { params(dir: String).returns(T::Array[Feature]) }
