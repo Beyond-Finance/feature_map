@@ -1,20 +1,38 @@
 import { useState, useEffect } from 'react';
+import { averages, scores } from '../utils/metrics';
+import { healthScore } from '../utils/health-score';
 import FeaturesTable from '../components/FeaturesTable';
 import MetricCard from '../components/MetricCard';
 import FeaturesTreeMap from '../components/FeaturesTreemap';
 import { FileJson, GitGraphIcon, ShapesIcon } from 'lucide-react';
 
 export default function Dashboard({ features }) {
-  const totals = Object.values(features).reduce((acc, feature) => {
-    const { abcSize, linesOfCode, cyclomaticComplexity } = acc
-    return {
-      abcSize: abcSize + feature.metrics.abc_size,
-      linesOfCode: linesOfCode + feature.metrics.lines_of_code,
-      cyclomaticComplexity: cyclomaticComplexity + feature.metrics.cyclomatic_complexity,
-    }
-  }, { abcSize: 0, linesOfCode: 0, cyclomaticComplexity: 0})
+  const {
+    abcSize: averageAbcSize,
+    linesOfCode: averageLinesOfCode,
+    cyclomaticComplexity: averageCyclomaticComplexity,
+  } = averages({ features })
 
-  const totalFeatures = Object.keys(features).length
+  const { cyclomaticComplexityScores, encapsulationScores, testCoverageScores } = scores({ features })
+
+  const annotatedFeatures = Object.entries(features).reduce((accumulatingFeatures, [featureName, feature]) => {
+    const cyclomaticComplexity = cyclomaticComplexityScores[featureName]
+    const encapsulation = encapsulationScores[featureName]
+    const testCoverage = testCoverageScores[featureName]
+
+    return {
+      ...accumulatingFeatures,
+      [featureName]: {
+        ...feature,
+        scores: {
+          encapsulation,
+          health: healthScore({ cyclomaticComplexity, encapsulation, testCoverage }),
+          cyclomaticComplexity,
+          testCoverage,
+        }
+      }
+    }
+  }, {})
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8">
@@ -27,7 +45,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="ABC Size"
-              value={(totals.abcSize / totalFeatures).toFixed(2)}
+              value={averageAbcSize}
               tooltip="Average abc size across all features"
               icon={<ShapesIcon className="size-5" />  }
             />
@@ -36,7 +54,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="Lines of Code"
-              value={(totals.linesOfCode / totalFeatures).toFixed(2)}
+              value={averageLinesOfCode}
               tooltip="Average lines of code across all features"
               icon={<FileJson className="size-5" />}
             />
@@ -45,7 +63,7 @@ export default function Dashboard({ features }) {
           <li>
             <MetricCard
               title="Complexity"
-              value={(totals.cyclomaticComplexity / totalFeatures).toFixed(2)}
+              value={averageCyclomaticComplexity}
               tooltip="Average cyclomatic complexity across all features"
               icon={<GitGraphIcon className="size-5"/>}
             />
