@@ -60,26 +60,10 @@ export function renderTeams(teams) {
 }
 
 // Test Coverage Helpers
-export function getTestCoverageInfo(data) {
-  if (!data.test_coverage) return { percent: 0, status: 'Missing Coverage', color: 'transparent' };
+export function getTestCoverageColor(coverageScore) {
+  if (!coverageScore) return 'transparent'
+  if (coverageScore >= 98) return '#22c55e'
+  if (coverageScore >= 95) return '#facc15'
 
-  const percent = (data.test_coverage.hits / data.test_coverage.lines) * 100;
-
-  if (percent >= 98) return {
-    percent,
-    status: 'High Coverage',
-    color: '#22c55e'
-  };
-
-  if (percent >= 95) return {
-    percent,
-    status: 'Medium Coverage',
-    color: '#facc15'
-  };
-
-  return {
-    percent,
-    status: 'Low Coverage',
-    color: '#ef4444'
-  };
+  return '#ef4444'
 }

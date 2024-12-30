@@ -9,7 +9,7 @@ import {
   getSizeLabel,
   getFilledPills,
   formatNumber,
-  getTestCoverageInfo
+  getTestCoverageColor
 } from '../utils/feature-helpers';
 import {
   healthScoreHexColor,
@@ -36,7 +36,6 @@ export default function Feature({ features }) {
 
   const healthScore = feature.health.overall;
   const sizeScore = feature.metrics.featureSize.percentOfMax;
-  const coverageInfo = getTestCoverageInfo(feature);
   const filledPills = getFilledPills(sizeScore);
 
   return (
@@ -79,21 +78,21 @@ export default function Feature({ features }) {
 
             <FeatureCard
               title="Test Coverage"
-              value={coverageInfo.percent}
+              value={feature.metrics.testCoverage.score}
               suffix="%"
               tooltip="Test coverage is pulled from CodeCov"
               icon={<FlaskConical />}
-              color={coverageInfo.color}
+              color={getTestCoverageColor(feature.metrics.testCoverage.score)}
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">
-                  Hits: {feature.test_coverage.hits}
+                  Hits: {feature.test_coverage ? feature.test_coverage.hits : 0}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Lines: {feature.test_coverage.lines}
+                  Lines: {feature.test_coverage ? feature.test_coverage.lines : 0}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Misses: {feature.test_coverage.misses}
+                  Misses: {feature.test_coverage ? feature.test_coverage.misses : 0}
                 </li>
               </ul>
             </FeatureCard>
