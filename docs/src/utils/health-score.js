@@ -20,6 +20,7 @@ const healthScoreComponent = ({
 
   if (closeToMaximumScore || exceedsScoreThreshold) {
     return {
+      awardablePoints,
       healthScore: awardablePoints,
       closeToMaximumScore,
       exceedsScoreThreshold,
@@ -27,10 +28,17 @@ const healthScoreComponent = ({
   }
 
   return {
+    awardablePoints,
     healthScore: (score / scoreThreshold) * awardablePoints,
     closeToMaximumScore,
     exceedsScoreThreshold,
   }
+}
+
+export function healthScoreStatus(score) {
+  if (score < 50) return "Needs Attention";
+  if (score < 80) return "Needs Improvement";
+  return "Healthy Feature";
 }
 
 export const healthScoreHexColor = (score) => {

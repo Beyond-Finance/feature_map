@@ -5,44 +5,6 @@ export const MAX_SIZE_THRESHOLD = {
   XL: { loc: 3000, files: 20 }
 };
 
-// Health Score Calculations
-export function calculateHealthScore(data) {
-  const normalized = {
-    abc: data.metrics.abc_size / 2000,
-    loc: data.metrics.lines_of_code / 3000,
-    complexity: data.metrics.cyclomatic_complexity / 300,
-    files: data.assignments.files ? data.assignments.files.length / 100 : 0
-  };
-
-  return (
-    normalized.abc * 0.3 +
-    normalized.loc * 0.2 +
-    normalized.complexity * 0.3 +
-    normalized.files * 0.2
-  );
-}
-
-export function getHealthScoreStatus(score) {
-  if (score < 0.5) return "Needs Attention";
-  if (score < 0.8) return "Needs Improvement";
-  return "Healthy Feature";
-}
-
-// using HEX values here because this function is being used
-// to provide color to the circular progress bar SVG on the
-// feature page and the dot on the feature table.
-export function getHealthScoreHexColor(score) {
-  if (score < 0.33) return '#ef4444'; // red
-  if (score < 0.66) return '#facc15'; // yellow
-  return '#22c55e'; // green
-}
-
-export function getHealthScoreBackgroundColor(score) {
-  if (score < 0.33) return 'bg-red-100/60';
-  if (score < 0.66) return 'bg-yellow-100/60';
-  return 'bg-green-100/60';
-}
-
 // Size Calculations
 export function calculateSize(data) {
   const normalizedLOC = data.metrics.lines_of_code / MAX_SIZE_THRESHOLD.XL.loc;

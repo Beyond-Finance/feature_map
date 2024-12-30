@@ -6,15 +6,16 @@ import FeatureDetails from '../components/FeatureDetails';
 import FeatureCard from '../components/FeatureCard';
 import FeatureTreemap from '../components/FeatureTreemap';
 import {
-  calculateHealthScore,
-  getHealthScoreStatus,
-  getHealthScoreHexColor,
   calculateSize,
   getSizeLabel,
   getFilledPills,
   formatNumber,
   getTestCoverageInfo
 } from '../utils/feature-helpers';
+import {
+  healthScoreHexColor,
+  healthScoreStatus,
+} from '../utils/health-score';
 
 export default function Feature({ features }) {
   const { name } = useParams();
@@ -34,7 +35,7 @@ export default function Feature({ features }) {
     );
   }
 
-  const healthScore = calculateHealthScore(feature);
+  const healthScore = feature.scores.health.overall;
   const sizeScore = calculateSize(feature);
   const coverageInfo = getTestCoverageInfo(feature);
   const filledPills = getFilledPills(sizeScore);
@@ -58,16 +59,24 @@ export default function Feature({ features }) {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             <FeatureCard
               title="Health Score"
-              value={(healthScore * 100)}
+              value={healthScore.toFixed(0)}
               suffix="%"
               tooltip="Health score calculations are still a WIP"
               icon={<Gauge />}
-              color={getHealthScoreHexColor(healthScore)}
-              subtext={<span className="font-bold">{getHealthScoreStatus(healthScore)}</span>}
-              secondaryText={<div className="text-[10px] text-gray-500">
-                {formatNumber(feature.metrics.lines_of_code)} lines • {feature.assignments.files ? feature.assignments.files.length : 0} files
-              </div>}
-            />
+              color={healthScoreHexColor(healthScore)}
+            >
+              <ul className="flex flex-col gap-y-1">
+                <li className="text-xs text-gray-500">
+                  Coverage: {feature.scores.health.testCoverageComponent.healthScore.toFixed(0)} / {feature.scores.health.testCoverageComponent.awardablePoints}
+                </li>
+                <li className="text-xs text-gray-500">
+                  Complexity: {feature.scores.health.cyclomaticComplexityComponent.healthScore.toFixed(0)} / {feature.scores.health.cyclomaticComplexityComponent.awardablePoints}
+                </li>
+                <li className="text-xs text-gray-500">
+                  Encapsulation: {feature.scores.health.encapsulationComponent.healthScore.toFixed(0)} / {feature.scores.health.encapsulationComponent.awardablePoints}
+                </li>
+              </ul>
+            </FeatureCard>
 
             <FeatureCard
               title="Test Coverage"
@@ -76,12 +85,19 @@ export default function Feature({ features }) {
               tooltip="Test coverage is pulled from CodeCov"
               icon={<FlaskConical />}
               color={coverageInfo.color}
-              subtext={<span className="font-bold">{coverageInfo.status}</span>}
-              secondaryText={feature.test_coverage ?
-                <><span className="font-bold">{feature.test_coverage.hits}</span> / <span className="font-bold">{feature.test_coverage.lines}</span> lines covered</> :
-                'Test coverage data not available for this particular feature'
-              }
-            />
+            >
+              <ul className="flex flex-col gap-y-1">
+                <li className="text-xs text-gray-500">
+                  Hits: {feature.test_coverage.hits}
+                </li>
+                <li className="text-xs text-gray-500">
+                  Lines: {feature.test_coverage.lines}
+                </li>
+                <li className="text-xs text-gray-500">
+                  Misses: {feature.test_coverage.misses}
+                </li>
+              </ul>
+            </FeatureCard>
 
             <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
               <div className="flex items-center justify-between">
