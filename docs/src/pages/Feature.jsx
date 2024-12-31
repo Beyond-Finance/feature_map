@@ -34,7 +34,7 @@ export default function Feature({ features }) {
     );
   }
 
-  const healthScore = feature.health.overall;
+  const healthScore = feature.metrics.health.overall;
   const sizeScore = feature.metrics.featureSize.percentOfMax;
   const filledPills = getFilledPills(sizeScore);
 
@@ -65,13 +65,13 @@ export default function Feature({ features }) {
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">
-                  Coverage: {feature.health.testCoverageComponent.healthScore.toFixed(0)} / {feature.health.testCoverageComponent.awardablePoints}
+                  Coverage: {feature.metrics.health.testCoverageComponent.healthScore.toFixed(0)} / {feature.metrics.health.testCoverageComponent.awardablePoints}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Complexity: {feature.health.cyclomaticComplexityComponent.healthScore.toFixed(0)} / {feature.health.cyclomaticComplexityComponent.awardablePoints}
+                  Complexity: {feature.metrics.health.cyclomaticComplexityComponent.healthScore.toFixed(0)} / {feature.metrics.health.cyclomaticComplexityComponent.awardablePoints}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Encapsulation: {feature.health.encapsulationComponent.healthScore.toFixed(0)} / {feature.health.encapsulationComponent.awardablePoints}
+                  Encapsulation: {feature.metrics.health.encapsulationComponent.healthScore.toFixed(0)} / {feature.metrics.health.encapsulationComponent.awardablePoints}
                 </li>
               </ul>
             </FeatureCard>

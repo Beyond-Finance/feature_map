@@ -36,8 +36,8 @@ export default function FeaturesTable({ features }) {
           bValue = featureDataB.metrics.featureSize.percentOfMax;
           break;
         case 'health_score':
-          aValue = featureDataA.health.overall;
-          bValue = featureDataB.health.overall;
+          aValue = featureDataA.metrics.health.overall;
+          bValue = featureDataB.metrics.health.overall;
           break;
         case 'test_coverage':
           aValue = featureDataA.metrics.testCoverage.score ? featureDataA.metrics.testCoverage.score : -1;
@@ -103,7 +103,7 @@ export default function FeaturesTable({ features }) {
                   {sortedFeatures.map(([name, data]) => {
                     const sizeScore = data.metrics.featureSize.percentOfMax
                     const sizeLabel = getSizeLabel(sizeScore);
-                    const healthScore = data.health.overall
+                    const healthScore = data.metrics.health.overall
                     const coveragePercent = data.metrics.testCoverage.score
 
                     return (

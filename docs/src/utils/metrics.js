@@ -1,23 +1,16 @@
-const collect = ({ featureScores }) => {
-  const allScores = featureScores.map(({ score }) => score).filter(score => !!score)
-  const maxScore = allScores.reduce((a, b) => Math.max(a, b), -Infinity)
+const calculate = ({ collection, score }) => {
+  const max = Math.max(...collection)
+  const percentile = percentileOf(collection, score)
+  const percentOfMax = Math.round(score / max * 100)
 
-  return featureScores.reduce((annotatedFeatures, featureScore) => {
-    const percentile = percentileOf(allScores, featureScore.score)
-    const percentOfMax = Math.round(featureScore.score / maxScore * 100)
-
-    return {
-      ...annotatedFeatures,
-      [featureScore.feature]: {
-        percentile,
-        percentOfMax,
-        score: featureScore.score
-      }
-    }
-  }, {})
+  return {
+    percentile,
+    percentOfMax,
+    score,
+  }
 }
 
-const cyclomaticComplexityScoreFor = ({ metrics }) => {
+const cyclomaticComplexityFor = ({ metrics }) => {
   if (metrics.lines_of_code === null || metrics.cyclomatic_complexity === null) {
     return null
   }
@@ -26,20 +19,7 @@ const cyclomaticComplexityScoreFor = ({ metrics }) => {
   return metrics.lines_of_code / metrics.cyclomatic_complexity
 }
 
-const cyclomaticComplexityScoresFor = ({ features }) => {
-  const featureScores = Object
-    .entries(features)
-    .map(([feature, { metrics }]) => {
-      return {
-        feature,
-        score: cyclomaticComplexityScoreFor({ metrics }),
-      }
-    })
-
-  return collect({ featureScores })
-}
-
-const encapsulationScoreFor = ({ assignments, metrics }) => {
+const encapsulationFor = ({ assignments, metrics }) => {
   if (assignments.files === null || metrics.lines_of_code === null) {
     return null
   }
@@ -51,34 +31,118 @@ const encapsulationScoreFor = ({ assignments, metrics }) => {
   return assignments.files.length / metrics.lines_of_code
 }
 
-const encapsulationScoresFor = ({ features }) => {
-  const featureScores = Object
-    .entries(features)
-    .map(([feature, { assignments, metrics }]) => {
-      return {
-        feature,
-        score: encapsulationScoreFor({ assignments, metrics }),
-      }
-    })
-
-  return collect({ featureScores })
-}
-
-const featureSizeMetricFor = ({ assignments, metrics }) => {
+const featureSizeFor = ({ assignments, metrics }) => {
   return metrics.lines_of_code
 }
 
-const featureSizeMetricsFor = ({ features }) => {
-  const featureScores = Object
-    .entries(features)
-    .map(([feature, { assignments, metrics }]) => {
-      return {
-        feature,
-        score: featureSizeMetricFor({ assignments, metrics }),
-      }
-    })
+const healthScoreComponent = ({
+  awardablePoints,
+  score,
+  scoreThreshold,
+  percentOfMax = 0,
+  percentOfMaxThreshold = 100,
+}) => {
+  // NOTE:  If this feature's absolute component score is close to the best
+  //        component score across the codebase, regardless of its percentile,
+  //        award it full points.
+  //        EX:  If the variance between the "best" and "worst" cyclomatic complexity
+  //             is only 10%, it's not meaningful to award points for this metric.
+  const closeToMaximumScore = percentOfMax >= percentOfMaxThreshold
 
-  return collect({ featureScores })
+  // NOTE:  If this feature's component score is above the minimum ideal score,
+  //        award it full points.
+  //        EX:  Shooting for 100% test coverage may not be very useful, so
+  //             award full points if test coverage is at least 95%
+  const exceedsScoreThreshold = score >= scoreThreshold
+
+  if (closeToMaximumScore || exceedsScoreThreshold) {
+    return {
+      awardablePoints,
+      healthScore: awardablePoints,
+      closeToMaximumScore,
+      exceedsScoreThreshold,
+    }
+  }
+
+  return {
+    awardablePoints,
+    healthScore: (score / scoreThreshold) * awardablePoints,
+    closeToMaximumScore,
+    exceedsScoreThreshold,
+  }
+}
+
+const healthScoreFor = ({
+  encapsulation,
+  cyclomaticComplexity,
+  testCoverage
+}) => {
+  const testCoverageComponent = healthScoreComponent({
+    awardablePoints: 70,
+    score: testCoverage.score,
+    scoreThreshold: 95,
+  })
+
+  const cyclomaticComplexityComponent = healthScoreComponent({
+    awardablePoints: 15,
+    score: cyclomaticComplexity.percentile,
+    scoreThreshold: 100,
+    percentOfMax: cyclomaticComplexity.percentOfMax,
+    percentOfMaxThreshold: 95,
+  })
+
+  const encapsulationComponent = healthScoreComponent({
+    awardablePoints: 15,
+    score: encapsulation.percentile,
+    scoreThreshold: 100,
+    percentOfMax: encapsulation.percentOfMax,
+    percentOfMaxThreshold: 95,
+  })
+
+  const overall =
+    testCoverageComponent.healthScore
+      + cyclomaticComplexityComponent.healthScore
+      + encapsulationComponent.healthScore
+
+  return {
+    testCoverageComponent,
+    cyclomaticComplexityComponent,
+    encapsulationComponent,
+    overall,
+  }
+}
+
+const metricsFor = ({ features }) => {
+  const featureMetrics = Object
+    .entries(features)
+    .map(([featureName, feature]) => {
+      const { assignments, metrics, test_coverage } = feature
+
+      return {
+        featureName,
+        cyclomaticComplexity: cyclomaticComplexityFor({ metrics }),
+        encapsulation: encapsulationFor({ assignments, metrics }),
+        featureSize: featureSizeFor({ assignments, metrics }),
+        testCoverage: testCoverageFor({ test_coverage }),
+      }
+    }, {})
+
+  const cyclomaticComplexities = featureMetrics.map(({ cyclomaticComplexity }) => cyclomaticComplexity).filter(v => !!v)
+  const encapsulations = featureMetrics.map(({ encapsulation }) => encapsulation).filter(v => !!v)
+  const featureSizes = featureMetrics.map(({ featureSize }) => featureSize).filter(v => !!v)
+  const testCoverages = featureMetrics.map(({ testCoverage }) => testCoverage).filter(v => !!v)
+
+  return featureMetrics.reduce((accumulatingFeatureMetrics, featureMetric) => {
+    return {
+      ...accumulatingFeatureMetrics,
+      [featureMetric.featureName]: {
+        cyclomaticComplexity: calculate({ collection: cyclomaticComplexities, score: featureMetric.cyclomaticComplexity }),
+        encapsulation: calculate({ collection: encapsulations, score: featureMetric.encapsulation }),
+        featureSize: calculate({ collection: featureSizes, score: featureMetric.featureSize }),
+        testCoverage: calculate({ collection: testCoverages, score: featureMetric.testCoverage }),
+      }
+    }
+  }, {})
 }
 
 const percentileOf = (arr, val) => {
@@ -98,7 +162,7 @@ const percentileOf = (arr, val) => {
   return (100 * belowOrEqualCount) / ensureArrayOfFloats.length
 }
 
-const testCoverageScoreFor = ({ test_coverage }) => {
+const testCoverageFor = ({ test_coverage }) => {
   if (test_coverage === null || test_coverage.hits === null || test_coverage.lines === null) {
     return null
   }
@@ -106,19 +170,6 @@ const testCoverageScoreFor = ({ test_coverage }) => {
   // Percentage of coverage
   // Score approaches 100 (when all lines are covered)
   return Math.round(test_coverage.hits / test_coverage.lines * 100)
-}
-
-const testCoverageScoresFor = ({ features }) => {
-  const featureScores = Object
-    .entries(features)
-    .map(([feature, { test_coverage }]) => {
-      return {
-        feature,
-        score: testCoverageScoreFor({ test_coverage }),
-      }
-    })
-
-  return collect({ featureScores })
 }
 
 export const averages = ({ features }) => {
@@ -139,26 +190,22 @@ export const averages = ({ features }) => {
   }
 }
 
-export const withMetrics = ({ features }) => {
-  const cyclomaticComplexityScores = cyclomaticComplexityScoresFor({ features })
-  const encapsulationScores = encapsulationScoresFor({ features })
-  const featureSizeMetrics = featureSizeMetricsFor({ features })
-  const testCoverageScores = testCoverageScoresFor({ features })
+export const annotate = ({ features }) => {
+  const metrics = metricsFor({ features })
 
-  return Object.entries(features).reduce((accumulatingFeatures, [featureName, feature]) => {
-    const cyclomaticComplexity = cyclomaticComplexityScores[featureName]
-    const featureSize = featureSizeMetrics[featureName]
-    const encapsulation = encapsulationScores[featureName]
-    const testCoverage = testCoverageScores[featureName]
+  return Object.entries(features).reduce((annotatedFeatures, [featureName, feature]) => {
+    const { cyclomaticComplexity, encapsulation, featureSize, testCoverage } = metrics[featureName]
+    const health = healthScoreFor({ cyclomaticComplexity, encapsulation, testCoverage })
 
     return {
-      ...accumulatingFeatures,
+      ...annotatedFeatures,
       [featureName]: {
         ...feature,
         metrics: {
           ...feature.metrics,
           encapsulation,
           featureSize,
+          health,
           cyclomaticComplexity,
           testCoverage,
         }
