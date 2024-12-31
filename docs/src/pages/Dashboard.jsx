@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import FeaturesTable from '../components/FeaturesTable';
 import MetricCard from '../components/MetricCard';
-import FeaturesTreeMap from '../components/FeaturesTreemap';
+import FeaturesTreemap from '../components/FeaturesTreemap';
 import { FileJson, GitGraphIcon, ShapesIcon } from 'lucide-react';
 
 export default function Dashboard({ features }) {
@@ -70,7 +70,7 @@ export default function Dashboard({ features }) {
       </div>
 
       <div className="mb-8 bg-white p-4 rounded-lg shadow w-full">
-        <FeaturesTreeMap data={features} />
+        <FeaturesTreemap data={features} />
       </div>
 
       <FeaturesTable features={features} />
