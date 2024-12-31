@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import {
-  calculateHealthScore,
-  getHealthScoreHexColor,
-  getHealthScoreBackgroundColor,
-  calculateSize,
   getSizeLabel,
   getFilledPills,
   renderTeams
 } from '../utils/feature-helpers';
+import {
+  healthScoreHexColor,
+  healthScoreBackgroundColor,
+} from '../utils/health-score';
 
 export default function FeaturesTable({ features }) {
   const [sortConfig, setSortConfig] = useState({
@@ -19,26 +19,29 @@ export default function FeaturesTable({ features }) {
 
   const sortedFeatures = React.useMemo(() => {
     const sorted = Object.entries(features).sort((a, b) => {
+      const [featureNameA, featureDataA] = a
+      const [featureNameB, featureDataB] = b
+
       if (!sortConfig.key) return 0;
 
       let aValue, bValue;
 
       switch(sortConfig.key) {
         case 'team':
-          aValue = a[1].assignments.teams[0];
-          bValue = b[1].assignments.teams[0];
+          aValue = featureDataA.assignments.teams[0];
+          bValue = featureDataB.assignments.teams[0];
           break;
         case 'size':
-          aValue = calculateSize(a[1]);
-          bValue = calculateSize(b[1]);
+          aValue = featureDataA.metrics.featureSize.percentOfMax;
+          bValue = featureDataB.metrics.featureSize.percentOfMax;
           break;
         case 'health_score':
-          aValue = calculateHealthScore(a[1]);
-          bValue = calculateHealthScore(b[1]);
+          aValue = featureDataA.metrics.health.overall;
+          bValue = featureDataB.metrics.health.overall;
           break;
         case 'test_coverage':
-          aValue = a[1].test_coverage ? a[1].test_coverage.hits / a[1].test_coverage.lines : -1;
-          bValue = b[1].test_coverage ? b[1].test_coverage.hits / b[1].test_coverage.lines : -1;
+          aValue = featureDataA.metrics.testCoverage.score ? featureDataA.metrics.testCoverage.score : -1;
+          bValue = featureDataB.metrics.testCoverage.score ? featureDataB.metrics.testCoverage.score : -1;
           break;
         default:
           aValue = a[0];
@@ -98,10 +101,10 @@ export default function FeaturesTable({ features }) {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {sortedFeatures.map(([name, data]) => {
-                    const sizeScore = calculateSize(data);
+                    const sizeScore = data.metrics.featureSize.percentOfMax
                     const sizeLabel = getSizeLabel(sizeScore);
-                    const healthScore = calculateHealthScore(data);
-                    const coveragePercent = data.test_coverage && (data.test_coverage.hits / data.test_coverage.lines * 100).toFixed(1);
+                    const healthScore = data.metrics.health.overall
+                    const coveragePercent = data.metrics.testCoverage.score
 
                     return (
                       <tr key={name}>
@@ -154,13 +157,13 @@ export default function FeaturesTable({ features }) {
                         </td>
                         <td className="hidden px-4 py-4 text-sm text-gray-500 lg:table-cell">
                           <div className="flex items-center gap-x-2">
-                            <div className={`w-4 h-4 rounded-full flex items-center justify-center ${getHealthScoreBackgroundColor(healthScore)}`}>
+                            <div className={`w-4 h-4 rounded-full flex items-center justify-center ${healthScoreBackgroundColor(healthScore)}`}>
                               <div
                                 className="w-2 h-2 rounded-full"
-                                style={{ backgroundColor: getHealthScoreHexColor(healthScore) }}
+                                style={{ backgroundColor: healthScoreHexColor(healthScore) }}
                               />
                             </div>
-                            <span className="text-gray-600">{(healthScore * 100).toFixed(0)}%</span>
+                            <span className="text-gray-600">{healthScore.toFixed(0)}%</span>
                           </div>
                         </td>
                         <td className="hidden px-4 py-4 text-sm md:table-cell">
@@ -177,7 +180,7 @@ export default function FeaturesTable({ features }) {
                               />
                             </div>
                             <span className="text-sm text-gray-500">
-                              {coveragePercent ? `${coveragePercent}%` : 'No Data'}
+                              {coveragePercent ? `${coveragePercent.toFixed(0)}%` : 'No Data'}
                             </span>
                           </div>
                         </td>

@@ -3,14 +3,13 @@ import { Info } from 'lucide-react';
 import CircularProgress from './CircularProgress';
 
 const FeatureCard = ({
+  children,
   title,
   value,
   suffix = '',
   icon,
   tooltip,
   color,
-  subtext,
-  secondaryText
 }) => {
   return (
     <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
@@ -32,13 +31,17 @@ const FeatureCard = ({
         </div>
       </div>
 
-      <CircularProgress
-        value={value}
-        suffix={suffix}
-        color={color}
-        subtext={subtext}
-        secondaryText={secondaryText}
-      />
+      <div className="flex items-center gap-4">
+        <CircularProgress
+          value={value}
+          suffix={suffix}
+          color={color}
+        />
+
+        <div className="flex flex-col flex-1">
+          {children}
+        </div>
+      </div>
     </div>
   );
 };
