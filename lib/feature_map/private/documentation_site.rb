@@ -48,11 +48,11 @@ module FeatureMap
       def self.generate(feature_assignments, feature_metrics, feature_test_coverage)
         FileUtils.mkdir_p(output_directory) if !output_directory.exist?
 
-        features = CodeFeatures.all.each_with_object({}) do |feature, hash|
-          hash[feature.name] = {
-            assignments: feature_assignments[feature.name],
-            metrics: feature_metrics[feature.name],
-            test_coverage: feature_test_coverage[feature.name]
+        features = feature_assignments.keys.each_with_object({}) do |feature_name, hash|
+          hash[feature_name] = {
+            assignments: feature_assignments[feature_name],
+            metrics: feature_metrics[feature_name],
+            test_coverage: feature_test_coverage[feature_name]
           }
         end
 
