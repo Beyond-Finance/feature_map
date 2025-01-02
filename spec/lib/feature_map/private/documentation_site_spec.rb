@@ -40,6 +40,15 @@ module FeatureMap
           expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).to eq('window.FEATURES = {"Bar":{"assignments":["app/lib/some_file.rb"],"metrics":{"abc_size":12.34,"lines_of_code":56,"cyclomatic_complexity":7},"test_coverage":{"lines":12,"hits":243,"misses":240}},"Foo":{"assignments":["app/lib/some_other_file.rb"],"metrics":{"abc_size":98.76,"lines_of_code":543,"cyclomatic_complexity":21},"test_coverage":0.0}};')
         end
       end
+
+      context 'when features exist that are not relevant to the current application' do
+        before { write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n") }
+
+        it 'ignores the unrelated features and excludes them from the features.js file' do
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
+          expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).not_to include('Unrelated Feature')
+        end
+      end
     end
   end
 end
