@@ -68,11 +68,11 @@ module FeatureMap
         end
 
         it 'includes environment variables when available' do
-          stub_const('ENV', ENV.to_h.merge('CIRCLE_REPOSITORY_URL' => 'https://example.com///', 'CIRCLE_SHA1' => 'abcd'))
+          stub_const('ENV', ENV.to_h.merge('CIRCLE_REPOSITORY_URL' => 'git@github.com:Beyond-Finance/glue.git', 'CIRCLE_SHA1' => 'abcd'))
 
           Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
 
-          expected_feature_map_config[:environment][:GITHUB_SHA_URL] = 'https://example.com/blob/abcd'
+          expected_feature_map_config[:environment][:GITHUB_SHA_URL] = 'https://github.com/Beyond-Finance/glue/blob/abcd'
 
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
         end
@@ -95,11 +95,11 @@ module FeatureMap
         end
 
         it 'includes environment variables when available' do
-          stub_const('ENV', ENV.to_h.merge('CIRCLE_REPOSITORY_URL' => 'https://example.com///', 'CIRCLE_SHA1' => 'abcd'))
+          stub_const('ENV', ENV.to_h.merge('CIRCLE_REPOSITORY_URL' => 'https://github.com/Beyond-Finance/glue.git', 'CIRCLE_SHA1' => 'abcd'))
 
           Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
 
-          expected_feature_map_config[:environment][:GITHUB_SHA_URL] = 'https://example.com/blob/abcd'
+          expected_feature_map_config[:environment][:GITHUB_SHA_URL] = 'https://github.com/Beyond-Finance/glue/blob/abcd'
 
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
         end

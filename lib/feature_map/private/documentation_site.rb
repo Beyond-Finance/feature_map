@@ -81,6 +81,12 @@ module FeatureMap
         git_sha = ENV.fetch('CIRCLE_SHA1', nil)
         return if repository_url.nil? || git_sha.nil?
 
+        # NOTE:  CIRCLE_REPOSITORY_URL returns the git _clone_ url of a repository
+        #        We need to coerce either the https or ssh versions into the browser URL
+        repository_url = repository_url.gsub('.git', '').gsub(/git@github.com:/, '')
+        github_prefix = 'https://github.com/'
+        repository_url.prepend(github_prefix) unless repository_url.start_with?(github_prefix)
+
         "#{repository_url}/blob/#{git_sha}"
       end
 
