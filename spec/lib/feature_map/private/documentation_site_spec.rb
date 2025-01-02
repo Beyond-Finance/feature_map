@@ -42,9 +42,7 @@ module FeatureMap
       end
 
       context 'when features exist that are not relevant to the current application' do
-        before do
-          write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n")
-        end
+        before { write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n") }
 
         it 'ignores the unrelated features and excludes them from the features.js file' do
           Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)

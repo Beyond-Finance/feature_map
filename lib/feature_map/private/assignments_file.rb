@@ -105,6 +105,10 @@ module FeatureMap
           files = files_by_feature[feature.name] || []
           expanded_files = files.flat_map { |file| Dir.glob(file) }.reject { |path| File.directory?(path) }
 
+          # Exclude features that have no releated files. These features are presumably irrelevant to the current
+          # repo/application.
+          next if expanded_files.empty?
+
           features_content[feature.name] = T.let({ 'files' => expanded_files.sort }, FeatureDetails)
 
           if !Private.configuration.skip_code_ownership
