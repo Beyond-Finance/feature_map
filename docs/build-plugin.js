@@ -30,10 +30,10 @@ export default function inlinePlugin() {
               <title>Feature Map Dashboard</title>
               <style>${cssCode}</style>
               <!--
-                Running the \`bin/featuremap docs\` command within a particular codebase will generate a \`features.js\` file in the \`.featuremap/docs/\` directory and
-                load the \`window.FEATURES\` global variable with the information necessary to populate feature data in the documentation site.
+                Running the \`bin/featuremap docs\` command within a particular codebase will generate a \`feature-map-config.js\` file in the \`.featuremap/docs/\` directory and
+                load the \`window.FEATURE_MAP_CONFIG\` global variable with the information necessary to populate feature data in the documentation site.
               -->
-              <script src="./features.js" type="text/javascript"></script>
+              <script src="./feature-map-config.js" type="text/javascript"></script>
             </head>
             <body class="bg-gray-100">
               <div id="root"></div>

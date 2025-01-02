@@ -10,29 +10,31 @@ module FeatureMap
     # features.
     #
     # The code within the `docs` directory is directly copied into an output directory and combined
-    # with a single `features.js` file containing content like the following:
+    # with a single `feature-map-config.js` file containing content like the following:
     #   ```
-    #   window.FEATURES = {
-    #     "Foo": {
-    #       "assignments": {
-    #         "files": ["app/jobs/foo_job.rb", "app/lib/foo_service.rb"],
-    #         "teams": ["team_a", "team_b"]
+    #   window.FEATURE_MAP_CONFIG = {
+    #     features: {
+    #       "Foo": {
+    #         "assignments": {
+    #           "files": ["app/jobs/foo_job.rb", "app/lib/foo_service.rb"],
+    #           "teams": ["team_a", "team_b"]
+    #         },
+    #         "metrics": {
+    #           "abc_size": 12.34,
+    #           "lines_of_code": 56,
+    #           "cyclomatic_complexity": 7
+    #         }
     #       },
-    #       "metrics": {
-    #         "abc_size": 12.34,
-    #         "lines_of_code": 56,
-    #         "cyclomatic_complexity": 7
-    #       }
-    #     },
-    #     "Bar": {
-    #       "assignments":{
-    #         "files": ["app/controllers/bar_controller.rb", "app/lib/bar_service.rb"],
-    #         "teams": ["team_a"]
-    #       },
-    #       "metrics": {
-    #         "abc_size": 98.76,
-    #         "lines_of_code": 54,
-    #         "cyclomatic_complexity": 32
+    #       "Bar": {
+    #         "assignments":{
+    #           "files": ["app/controllers/bar_controller.rb", "app/lib/bar_service.rb"],
+    #           "teams": ["team_a"]
+    #         },
+    #         "metrics": {
+    #           "abc_size": 98.76,
+    #           "lines_of_code": 54,
+    #           "cyclomatic_complexity": 32
+    #         }
     #       }
     #     }
     #   };
@@ -56,7 +58,10 @@ module FeatureMap
           }
         end
 
-        output_directory.join('features.js').write("window.FEATURES = #{features.to_json};")
+        feature_map_config = {
+          features:
+        }.to_json
+        output_directory.join('feature-map-config.js').write("window.FEATURE_MAP_CONFIG = #{feature_map_config};")
 
         Dir.each_child(assets_directory) do |file_name|
           FileUtils.cp(File.join(assets_directory, file_name), output_directory.join(file_name))
