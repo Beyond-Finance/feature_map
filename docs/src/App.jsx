@@ -1,13 +1,13 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { annotate } from './utils/metrics';
-import sampleConfig from './data/sample_config';
+import { getConfig } from './utils/config';
 import Dashboard from './pages/Dashboard';
 import Feature from './pages/Feature';
 
 export default function App() {
-  const config = window.FEATURE_MAP_CONFIG || sampleConfig;
-  const annotatedFeatures = annotate({ features: config.features })
+  const { features } = getConfig()
+  const annotatedFeatures = annotate({ features })
 
   const location = useLocation();
 

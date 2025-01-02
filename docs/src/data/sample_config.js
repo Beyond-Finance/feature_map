@@ -1,6 +1,9 @@
 // This file contains fake/generic data to obuscates company and/or product specific feature data from the gem itself.
 // Also, this is meant to make local development easier.
 const config = {
+  environment: {
+    GITHUB_SHA_URL: 'https://example.com/blob/abcd'
+  },
   features: {
     "Authentication": {
       "assignments": {
