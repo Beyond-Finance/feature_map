@@ -13,6 +13,9 @@ module FeatureMap
     # with a single `feature-map-config.js` file containing content like the following:
     #   ```
     #   window.FEATURE_MAP_CONFIG = {
+    #     environment: {
+    #       "GIT_SHA_URL": "https://github.com/REPO/blog/GIT_SHA"
+    #     },
     #     features: {
     #       "Foo": {
     #         "assignments": {
@@ -58,14 +61,27 @@ module FeatureMap
           }
         end
 
+        environment = {
+          GITHUB_SHA_URL: github_sha_url
+        }
         feature_map_config = {
-          features:
+          features: features,
+          environment: environment
         }.to_json
         output_directory.join('feature-map-config.js').write("window.FEATURE_MAP_CONFIG = #{feature_map_config};")
 
         Dir.each_child(assets_directory) do |file_name|
           FileUtils.cp(File.join(assets_directory, file_name), output_directory.join(file_name))
         end
+      end
+
+      sig { returns(T.nilable(String)) }
+      def self.github_sha_url
+        repository_url = ENV.fetch('CIRCLE_REPOSITORY_URL', nil)&.sub(%r{(/)+$}, '')
+        git_sha = ENV.fetch('CIRCLE_SHA1', nil)
+        return if repository_url.nil? || git_sha.nil?
+
+        "#{repository_url}/blob/#{git_sha}"
       end
 
       sig { returns(Pathname) }
