@@ -83,7 +83,7 @@ module FeatureMap
       options = {}
 
       parser = OptionParser.new do |opts|
-        opts.banner = 'Usage: bin/featuremap docs [options]'
+        opts.banner = 'Usage: bin/featuremap docs [options] [target_commit_sha]'
 
         opts.on('-s', '--skip-stage', 'Skips staging the .feature_map/assignments.yml file') do
           options[:skip_stage] = true
@@ -101,9 +101,12 @@ module FeatureMap
       args = parser.order!(argv)
       parser.parse!(args)
 
+      non_flag_args = argv.reject { |arg| arg.start_with?('--') }
+      custom_git_ref = non_flag_args[0]
+
       FeatureMap.validate!(stage_changes: !options[:skip_stage]) unless options[:skip_validate]
 
-      FeatureMap.generate_docs!
+      FeatureMap.generate_docs!(custom_git_ref)
 
       puts OutputColor.green('FeatureMap documentaiton site generated.')
       puts 'Open .feature_map/docs/index.html in a browser to view the documentation site.'

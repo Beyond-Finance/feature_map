@@ -101,9 +101,9 @@ module FeatureMap
     Private.validate!(files: tracked_file_subset, autocorrect: autocorrect, stage_changes: stage_changes)
   end
 
-  sig { void }
-  def generate_docs!
-    Private.generate_docs!
+  sig { params(git_ref: T.nilable(String)).void }
+  def generate_docs!(git_ref)
+    Private.generate_docs!(git_ref || configuration.repository['main_branch'])
   end
 
   sig { params(commit_sha: String, code_cov_token: String).void }
