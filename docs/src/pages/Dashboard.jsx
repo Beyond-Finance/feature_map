@@ -22,7 +22,7 @@ export default function Dashboard({ features }) {
         <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <li>
             <MetricCard
-              title="ABC Size"
+              title="ABC Size!"
               value={averageAbcSize.toFixed(2)}
               tooltip="Average abc size across all features"
               icon={<ShapesIcon className="size-5" />  }
