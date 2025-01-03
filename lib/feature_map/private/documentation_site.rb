@@ -14,7 +14,7 @@ module FeatureMap
     #   ```
     #   window.FEATURE_MAP_CONFIG = {
     #     environment: {
-    #       "GIT_SHA_URL": "https://github.com/REPO/blog/GIT_SHA"
+    #       "GIT_SHA_URL": "https://github.com/REPO/blob/GIT_SHA"
     #     },
     #     features: {
     #       "Foo": {
