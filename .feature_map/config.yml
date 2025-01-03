@@ -1,0 +1,51 @@
+assigned_globs:
+  - app/**/*.rb
+unassigned_globs:
+  - app/models/**/*
+  - app/controllers/admin/**/*
+# The `# @feature ...` annotiation at the top of source files is only required for files assigned
+# to the following teams.
+require_assignment_for_teams:
+  - Settlements
+# Excludes the `.feature_map/definitions` configuration files from the set of files recorded in
+# the file assignments for each feature.
+ignore_feature_definitions: true
+# Enables the identification of teams responsible for each feature based on the CodeOwnership
+# team assignments.
+skip_code_ownership: false
+# Skips validation of the associated assignments file
+skip_features_validation: false
+# Supports the retrieval of rolled up test coverage statistics from CodeCov.
+code_cov:
+  service: github
+  owner: Example
+  repo: example
+repository:
+  main_branch: 'main'
+  url: https://example.com
+documentation_site:
+  test_coverage:
+    minimum_thresholds:
+      good: 98
+      fair: 95
+      poor: 0
+  health:
+    minimum_thresholds:
+      good: 95
+      fair: 80
+      poor: 0
+    components:
+      test_coverage:
+        weight: 70
+      cyclomatic_complexity:
+        weight: 15
+        minimum_variance: 10
+      encapsulation:
+        weight: 15
+        minimum_variance: 10
+  size_percentile_minimum_thresholds:
+    xl: 95
+    l: 75
+    m: 25
+    s: 5
+    xs: 0

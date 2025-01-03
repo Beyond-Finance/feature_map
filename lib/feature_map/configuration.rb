@@ -13,6 +13,8 @@ module FeatureMap
     const :require_assignment_for_teams, T.nilable(T::Array[String])
     const :ignore_feature_definitions, T::Boolean
     const :code_cov, T::Hash[String, T.nilable(String)]
+    const :repository, T::Hash[String, T.nilable(String)]
+    const :documentation_site, T::Hash[String, T.untyped]
 
     sig { returns(Configuration) }
     def self.fetch
@@ -32,7 +34,9 @@ module FeatureMap
         skip_code_ownership: config_hash.fetch('skip_code_ownership', true),
         require_assignment_for_teams: config_hash.fetch('require_assignment_for_teams', nil),
         ignore_feature_definitions: config_hash.fetch('ignore_feature_definitions', false),
-        code_cov: config_hash.fetch('code_cov', {})
+        code_cov: config_hash.fetch('code_cov', {}),
+        repository: config_hash.fetch('repository', {}),
+        documentation_site: config_hash.fetch('documentation_site', {})
       )
     end
   end

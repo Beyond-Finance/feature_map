@@ -20,6 +20,8 @@ unassigned_globs:
   - app/services/some_file2.rb
   - frontend/javascripts/**/__generated__/**/*
 ```
+You may find a more comprehensive example in this repository's `.feature_map/config.yml`.
+
 2) Define the features of our your application. There are two methods for defining features:
     * YAML Definitions: Each feature can be defined in a separate YAML file within the `.feature_map/definitions` directory. Here's an example, that would live at `.feature_map/definitions/onboarding.yml`:
         ```yml
