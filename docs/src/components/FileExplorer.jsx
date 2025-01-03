@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronRight, ChevronDown, Folder, FileCode, List, FolderTree } from 'lucide-react';
-import { getConfig } from '../utils/config'
+import { config } from '../utils/config'
 
 const FileExplorer = ({ files }) => {
-  const { project, environment } = getConfig();
+  const { project, environment } = config;
   const baseUrl = `${project.repository.url}/blob/${environment.git_ref}`
 
   const initialExpandedDirs = useMemo(() => {

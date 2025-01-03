@@ -1,3 +1,5 @@
+import { config } from './config'
+
 const calculate = ({ collection, score }) => {
   const max = Math.max(...collection)
   const percentile = percentileOf(collection, score)
@@ -77,26 +79,32 @@ const healthScoreFor = ({
   cyclomaticComplexity,
   testCoverage
 }) => {
+  const {
+    cyclomatic_complexity: cyclomaticComplexityConfig,
+    encapsulation: encapsulationConfig,
+    test_coverage: testCoverageConfig
+  } = config.project.documentation_site.health.components
+
   const testCoverageComponent = healthScoreComponent({
-    awardablePoints: 70,
+    awardablePoints: testCoverageConfig.weight,
     score: testCoverage.score,
-    scoreThreshold: 95,
+    scoreThreshold: testCoverageConfig.score_threshold,
   })
 
   const cyclomaticComplexityComponent = healthScoreComponent({
-    awardablePoints: 15,
+    awardablePoints: cyclomaticComplexityConfig.weight,
     score: cyclomaticComplexity.percentile,
-    scoreThreshold: 100,
+    scoreThreshold: cyclomaticComplexityConfig.score_threshold,
     percentOfMax: cyclomaticComplexity.percentOfMax,
-    percentOfMaxThreshold: 95,
+    percentOfMaxThreshold: 100 - cyclomaticComplexityConfig.minimum_variance,
   })
 
   const encapsulationComponent = healthScoreComponent({
-    awardablePoints: 15,
+    awardablePoints: encapsulationConfig.weight,
     score: encapsulation.percentile,
-    scoreThreshold: 100,
+    scoreThreshold: encapsulationConfig.score_threshold,
     percentOfMax: encapsulation.percentOfMax,
-    percentOfMaxThreshold: 95,
+    percentOfMaxThreshold: 100 - encapsulationConfig.minimum_variance,
   })
 
   const overall =

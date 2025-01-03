@@ -6,7 +6,7 @@ import FeatureDetails from '../components/FeatureDetails';
 import FeatureCard from '../components/FeatureCard';
 import FeatureTreemap from '../components/FeatureTreemap';
 import {
-  getSizeLabel,
+  getFeatureSizeLabel,
   getFilledPills,
   formatNumber,
   getTestCoverageColor
@@ -115,7 +115,7 @@ export default function Feature({ features }) {
 
               <div className="flex items-center gap-4">
                 <div className="relative h-20 flex items-center">
-                  <div className="text-2xl font-bold uppercase">{getSizeLabel(sizeScore)}</div>
+                  <div className="text-2xl font-bold uppercase">{getFeatureSizeLabel(sizeScore)}</div>
                 </div>
 
                 <div className="flex flex-col gap-y-2">

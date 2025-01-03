@@ -24,28 +24,32 @@ repository:
   main_branch: 'main'
   url: https://example.com
 documentation_site:
-  test_coverage:
-    minimum_thresholds:
-      good: 98
-      fair: 95
-      poor: 0
   health:
     minimum_thresholds:
       good: 95
       fair: 80
       poor: 0
     components:
-      test_coverage:
-        weight: 70
       cyclomatic_complexity:
         weight: 15
         minimum_variance: 10
+        score_threshold: 100
       encapsulation:
         weight: 15
         minimum_variance: 10
-  size_percentile_minimum_thresholds:
-    xl: 95
-    l: 75
-    m: 25
-    s: 5
-    xs: 0
+        score_threshold: 100
+      test_coverage:
+        weight: 70
+        score_threshold: 98
+  size_percentile:
+    minimum_thresholds:
+      xl: 95
+      l: 75
+      m: 25
+      s: 5
+      xs: 0
+  test_coverage:
+    minimum_thresholds:
+      good: 98
+      fair: 95
+      poor: 0
