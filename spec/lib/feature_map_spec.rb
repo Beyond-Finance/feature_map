@@ -246,7 +246,7 @@ RSpec.describe FeatureMap do
 
         it 'captures the feature details for the current application within a feature-map-config.js file that includes feature metrics and test coverage data' do
           FeatureMap.generate_docs!
- 
+
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to match('window.FEATURE_MAP_CONFIG')
         end

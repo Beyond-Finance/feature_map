@@ -110,7 +110,7 @@ module FeatureMap
 
         it 'ignores the unrelated features and excludes them from the features.js file' do
           Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
-          expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).not_to include('Unrelated Feature')
+          expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).not_to include('Unrelated Feature')
         end
       end
     end
