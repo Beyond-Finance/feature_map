@@ -33,7 +33,7 @@ const FeatureSizeDataCard = ({ features }) => {
           <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             <Proportions className="size-5" />
           </div>
-          <span className="flex pl-2">Total Features</span>
+          <span className="flex pl-2">Feature Size</span>
         </h3>
 
         <div className="relative flex-shrink-0 group">
