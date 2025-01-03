@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronRight, ChevronDown, Folder, FileCode, List, FolderTree } from 'lucide-react';
+import { getConfig } from '../utils/config'
 
 const FileExplorer = ({ files }) => {
+  const { environment } = getConfig();
   const initialExpandedDirs = useMemo(() => {
     const dirs = new Set();
     files.forEach(filePath => {
@@ -182,7 +184,13 @@ const FileExplorer = ({ files }) => {
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 flex-1">
                     <div className="flex items-center">
                       <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
-                      <span className="truncate">{file}</span>
+                      { environment.GITHUB_SHA_URL ? (
+                        <a href={`${environment.GITHUB_SHA_URL}/${file}`} className="truncate underline" target="_blank">
+                          {file}
+                        </a>
+                      ) : (
+                        <span className="truncate">{file}</span>
+                      )}
                     </div>
                   </td>
                 </tr>
