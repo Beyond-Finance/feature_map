@@ -1,6 +1,5 @@
 import React from 'react';
 import { Users, FileCode, FolderTree, Shapes, GitCompareArrows, ExternalLink } from 'lucide-react';
-import { renderTeams } from '../utils/feature-helpers';
 
 export default function FeatureDetails({name, feature}) {
   return(
@@ -49,13 +48,18 @@ export default function FeatureDetails({name, feature}) {
         <div>
           <h3 className="text-sm font-medium text-gray-900 mb-3">Teams</h3>
 
-          <div className="flex gap-2">
-            <div className="flex items-center justify-center flex-shrink-0">
-              <Users className="size-4 text-gray-500" />
-            </div>
-
-            {renderTeams(feature.assignments.teams)}
-          </div>
+          <ul className="flex flex-col gap-y-1">
+            {feature.assignments.teams.map((team) => {
+              return (
+                <li className="text-sm text-gray-700 flex gap-2">
+                  <div className="flex items-center justify-center flex-shrink-0">
+                    <Users className="size-4 text-gray-500" />
+                  </div>
+                  {team}
+                </li>
+              )
+            })}
+          </ul>
         </div>
       </div>
 

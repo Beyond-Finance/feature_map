@@ -12,8 +12,7 @@ import {
   getTestCoverageColor
 } from '../utils/feature-helpers';
 import {
-  healthScoreHexColor,
-  healthScoreStatus,
+  getHealthScoreColor,
 } from '../utils/health-score';
 
 export default function Feature({ features }) {
@@ -61,7 +60,7 @@ export default function Feature({ features }) {
               suffix="%"
               tooltip="Health score calculations are still a WIP"
               icon={<Gauge />}
-              color={healthScoreHexColor(healthScore)}
+              color={getHealthScoreColor(healthScore).hex}
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">
@@ -82,7 +81,7 @@ export default function Feature({ features }) {
               suffix="%"
               tooltip="Test coverage is pulled from CodeCov"
               icon={<FlaskConical />}
-              color={getTestCoverageColor(feature.metrics.testCoverage.score)}
+              color={getTestCoverageColor(feature.metrics.testCoverage.score).hex}
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">
@@ -116,7 +115,7 @@ export default function Feature({ features }) {
 
               <div className="flex items-center gap-4">
                 <div className="relative h-20 flex items-center">
-                  <div className="text-2xl font-bold">{getSizeLabel(sizeScore)}</div>
+                  <div className="text-2xl font-bold uppercase">{getSizeLabel(sizeScore)}</div>
                 </div>
 
                 <div className="flex flex-col gap-y-2">

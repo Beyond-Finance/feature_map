@@ -4,11 +4,12 @@ import { Users } from 'lucide-react';
 import {
   getSizeLabel,
   getFilledPills,
-  renderTeams
+  renderTeams,
+  getTestCoverageColor
 } from '../utils/feature-helpers';
 import {
-  healthScoreHexColor,
   healthScoreBackgroundColor,
+  getHealthScoreColor,
 } from '../utils/health-score';
 
 export default function FeaturesTable({ features }) {
@@ -150,7 +151,7 @@ export default function FeaturesTable({ features }) {
                                 ></div>
                               ))}
                             </div>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-gray-500 uppercase">
                               {sizeLabel}
                             </span>
                           </div>
@@ -158,10 +159,7 @@ export default function FeaturesTable({ features }) {
                         <td className="hidden px-4 py-4 text-sm text-gray-500 lg:table-cell">
                           <div className="flex items-center gap-x-2">
                             <div className={`w-4 h-4 rounded-full flex items-center justify-center ${healthScoreBackgroundColor(healthScore)}`}>
-                              <div
-                                className="w-2 h-2 rounded-full"
-                                style={{ backgroundColor: healthScoreHexColor(healthScore) }}
-                              />
+                              <div className={`w-2 h-2 rounded-full ${getHealthScoreColor(healthScore).class}`} />
                             </div>
                             <span className="text-gray-600">{healthScore.toFixed(0)}%</span>
                           </div>
@@ -170,12 +168,7 @@ export default function FeaturesTable({ features }) {
                           <div className="flex items-center gap-x-2">
                             <div className="flex-grow h-2 rounded-full bg-gray-100 overflow-hidden">
                               <div
-                                className={`h-full rounded-full ${
-                                  !coveragePercent ? 'bg-grey-500' :
-                                  coveragePercent >= 99 ? 'bg-green-500' :
-                                  coveragePercent >= 95 ? 'bg-yellow-500' :
-                                  'bg-red-500'
-                                }`}
+                                className={`h-full rounded-full ${getTestCoverageColor(coveragePercent).class}`}
                                 style={{ width: `${coveragePercent}%` }}
                               />
                             </div>

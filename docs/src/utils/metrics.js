@@ -187,6 +187,7 @@ export const averages = ({ features }) => {
     abcSize: totals.abcSize / totalFeatures,
     linesOfCode: totals.linesOfCode / totalFeatures,
     cyclomaticComplexity: totals.cyclomaticComplexity / totalFeatures,
+    totalFeatures: totalFeatures
   }
 }
 
