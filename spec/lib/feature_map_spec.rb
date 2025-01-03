@@ -237,15 +237,22 @@ RSpec.describe FeatureMap do
       before { create_validation_artifacts }
 
       it 'generates a static documentation site within the .feature_map directory' do
-        FeatureMap.generate_docs!
+        FeatureMap.generate_docs!('some_feature_branch_or_git_sha')
         expect(File.exist?(Pathname.pwd.join('.feature_map/docs/index.html'))).to be_truthy
+      end
+
+      it 'defaults git ref when not passed' do
+        write_configuration('repository' => { 'main_branch' => 'main' })
+        FeatureMap.generate_docs!(nil)
+
+        expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to match('"git_ref":"main"')
       end
 
       context 'when test coverage artifacts are present' do
         before { create_test_coverage_artifacts }
 
         it 'captures the feature details for the current application within a feature-map-config.js file that includes feature metrics and test coverage data' do
-          FeatureMap.generate_docs!
+          FeatureMap.generate_docs!('some_feature_branch_or_git_sha')
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to match('window.FEATURE_MAP_CONFIG')
@@ -254,7 +261,7 @@ RSpec.describe FeatureMap do
 
       context 'when test coverage artifacts are NOT present' do
         it 'captures the feature details for the current application within a feature-map-config.js file that includes ONLY feature metrics data' do
-          FeatureMap.generate_docs!
+          FeatureMap.generate_docs!('some_feature_branch_or_git_sha')
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to match('window.FEATURE_MAP_CONFIG')
@@ -264,7 +271,7 @@ RSpec.describe FeatureMap do
 
     context 'when validation artifacts are NOT present' do
       it 'raises an error indicating that this data is required' do
-        expect { FeatureMap.generate_docs! }.to raise_error(/No feature assignments file found/i)
+        expect { FeatureMap.generate_docs!('some_feature_branch_or_git_sha') }.to raise_error(/No feature assignments file found/i)
       end
     end
   end

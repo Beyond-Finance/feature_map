@@ -76,15 +76,21 @@ module FeatureMap
       MetricsFile.write!
     end
 
-    sig { void }
-    def self.generate_docs!
+    sig { params(git_ref: String).void }
+    def self.generate_docs!(git_ref)
       feature_assignments = AssignmentsFile.load_features!
       feature_metrics = MetricsFile.load_features!
       # Test coverage data can be onerous to load (e.g. generating a CodeCov token, etc). Allow engineers to generate
       # and review the feature documentation without this data.
       feature_test_coverage = TestCoverageFile.path.exist? ? TestCoverageFile.load_features! : {}
 
-      DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
+      DocumentationSite.generate(
+        feature_assignments,
+        feature_metrics,
+        feature_test_coverage,
+        configuration.raw_hash,
+        git_ref
+      )
     end
 
     sig { params(commit_sha: String, code_cov_token: String).void }
