@@ -104,6 +104,15 @@ module FeatureMap
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
         end
       end
+
+      context 'when features exist that are not relevant to the current application' do
+        before { write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n") }
+
+        it 'ignores the unrelated features and excludes them from the features.js file' do
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
+          expect(File.read(Pathname.pwd.join('.feature_map/docs/features.js'))).not_to include('Unrelated Feature')
+        end
+      end
     end
   end
 end
