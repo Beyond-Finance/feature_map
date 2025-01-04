@@ -105,6 +105,36 @@ module FeatureMap
         end
       end
 
+      context 'when features have additional details within their feature definitions' do
+        before do
+          description = 'The foo feature in all its glory!'
+          dashboard_link = 'https://example.com/dashbords/foo'
+          documentation_link = 'https://example.com/docs/foo'
+
+          write_file('.feature_map/definitions/foo.yml', <<~CONTENTS)
+            name: Foo
+            description: #{description}
+            dashboard_link: #{dashboard_link}
+            documentation_link: #{documentation_link}
+            other: abc 123
+          CONTENTS
+
+          # The order of keys in this has must match the ordering of the source code to ensure identical JSON output is produced.
+          expected_features[:Foo] = {
+            description: description,
+            dashboard_link: dashboard_link,
+            documentation_link: documentation_link
+          }.merge(expected_features[:Foo])
+        end
+
+        it 'ignores the unrelated features and excludes them from the features.js file' do
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
+
+          expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
+          expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
+        end
+      end
+
       context 'when features exist that are not relevant to the current application' do
         before { write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n") }
 

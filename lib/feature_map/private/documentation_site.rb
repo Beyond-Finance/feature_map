@@ -18,6 +18,9 @@ module FeatureMap
     #     },
     #     features: {
     #       "Foo": {
+    #         "description": "The Foo feature with this sample application.",
+    #         "dashboard_link": "https://example.com/dashbords/foo",
+    #         "documentation_link": "https://example.com/docs/foo",
     #         "assignments": {
     #           "files": ["app/jobs/foo_job.rb", "app/lib/foo_service.rb"],
     #           "teams": ["team_a", "team_b"]
@@ -29,6 +32,9 @@ module FeatureMap
     #         }
     #       },
     #       "Bar": {
+    #         "description": "Another feature within the application.",
+    #         "dashboard_link": "https://example.com/docs/bar",
+    #         "documentation_link": "https://example.com/dashbords/bar",
     #         "assignments":{
     #           "files": ["app/controllers/bar_controller.rb", "app/lib/bar_service.rb"],
     #           "teams": ["team_a"]
@@ -48,17 +54,20 @@ module FeatureMap
       extend T::Sig
 
       ASSETS_DIRECTORY = 'docs'
+      FETAURE_DEFINITION_KEYS_TO_INCLUDE = %w[description dashboard_link documentation_link].freeze
 
       sig { params(feature_assignments: AssignmentsFile::FeaturesContent, feature_metrics: MetricsFile::FeaturesContent, feature_test_coverage: TestCoverageFile::FeaturesContent).void }
       def self.generate(feature_assignments, feature_metrics, feature_test_coverage)
         FileUtils.mkdir_p(output_directory) if !output_directory.exist?
 
         features = feature_assignments.keys.each_with_object({}) do |feature_name, hash|
-          hash[feature_name] = {
+          feature_definition = CodeFeatures.find(feature_name)
+          hash[feature_name] = feature_definition&.raw_hash&.slice(*FETAURE_DEFINITION_KEYS_TO_INCLUDE) || {}
+          hash[feature_name].merge!(
             assignments: feature_assignments[feature_name],
             metrics: feature_metrics[feature_name],
             test_coverage: feature_test_coverage[feature_name]
-          }
+          )
         end
 
         environment = {
