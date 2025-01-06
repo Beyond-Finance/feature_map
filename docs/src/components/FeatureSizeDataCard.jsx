@@ -1,28 +1,30 @@
 import React from 'react';
 import { Info, Proportions } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie } from 'recharts';
-import { getSizeLabel, getFeatureSizeColor, featureSizes } from '../utils/feature-helpers';
+import { config } from '../utils/config'
+import { getFeatureSizeLabel, getFeatureSizeColor } from '../utils/feature-helpers';
 
 const FeatureSizeDataCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
     const sizeScore = currentFeature.metrics.featureSize.percentOfMax;
 
     if (sizeScore !== undefined && sizeScore !== null) {
-      const category = getSizeLabel(sizeScore);
+      const category = getFeatureSizeLabel(sizeScore);
       distribution[category]++;
     }
     return distribution;
   }, { xs: 0, s: 0, m: 0, l: 0, xl: 0 } );
 
+  const { minimum_thresholds: sizePercentileThresholds } = config.project.documentation_site.size_percentile
   const sizeDistribution = Object.entries(distribution).map(([name, value], index) => ({
     name,
     value,
     fill: [
-      getFeatureSizeColor(featureSizes.xs).hex,
-      getFeatureSizeColor(featureSizes.s).hex,
-      getFeatureSizeColor(featureSizes.m).hex,
-      getFeatureSizeColor(featureSizes.l).hex,
-      getFeatureSizeColor(featureSizes.xl).hex,
+      getFeatureSizeColor(sizePercentileThresholds.xs).hex,
+      getFeatureSizeColor(sizePercentileThresholds.s).hex,
+      getFeatureSizeColor(sizePercentileThresholds.m).hex,
+      getFeatureSizeColor(sizePercentileThresholds.l).hex,
+      getFeatureSizeColor(sizePercentileThresholds.xl).hex,
     ][index]
   })).filter(({ value }) => value > 0);
 
@@ -63,7 +65,7 @@ const FeatureSizeDataCard = ({ features }) => {
 
         <ul className="flex flex-col flex-1 gap-y-1">
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(featureSizes.xs).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.xs).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.xs}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -71,7 +73,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(featureSizes.s).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.s).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.s}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -79,7 +81,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(featureSizes.m).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.m).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.m}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -87,7 +89,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(featureSizes.l).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.l).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.l}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -95,7 +97,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(featureSizes.xl).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.xl).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.xl}</span>
             </div>
             <p className="text-xs text-gray-500">

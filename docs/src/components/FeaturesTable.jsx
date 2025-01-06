@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import {
-  getSizeLabel,
+  getFeatureSizeLabel,
   getFilledPills,
   renderTeams,
   getTestCoverageColor
@@ -103,7 +103,7 @@ export default function FeaturesTable({ features }) {
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {sortedFeatures.map(([name, data]) => {
                     const sizeScore = data.metrics.featureSize.percentOfMax
-                    const sizeLabel = getSizeLabel(sizeScore);
+                    const sizeLabel = getFeatureSizeLabel(sizeScore);
                     const healthScore = data.metrics.health.overall
                     const coveragePercent = data.metrics.testCoverage.score
 

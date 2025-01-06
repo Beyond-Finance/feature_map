@@ -1,12 +1,12 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { annotate } from './utils/metrics';
-import { getConfig } from './utils/config';
+import { config } from './utils/config';
 import Dashboard from './pages/Dashboard';
 import Feature from './pages/Feature';
 
 export default function App() {
-  const { features } = getConfig()
+  const { features } = config
   const annotatedFeatures = annotate({ features })
 
   const location = useLocation();

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Info, FlaskConical } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie } from 'recharts';
-import { getTestCoverageLabel, coverageScores, getTestCoverageColor} from '../utils/feature-helpers';
+import { config } from '../utils/config'
+import { getTestCoverageLabel, getTestCoverageColor} from '../utils/feature-helpers';
 
 const TestCoverageDataCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
@@ -14,13 +15,14 @@ const TestCoverageDataCard = ({ features }) => {
     return distribution;
   }, { poor: 0, fair: 0, good: 0 });
 
+  const { minimum_thresholds: sizePercentileThresholds } = config.project.documentation_site.test_coverage
   const sizeDistribution = Object.entries(distribution).map(([name, value], index) => ({
     name,
     value,
     fill: [
-      getTestCoverageColor(coverageScores.poor).hex,
-      getTestCoverageColor(coverageScores.fair).hex,
-      getTestCoverageColor(coverageScores.good).hex,
+      getTestCoverageColor(sizePercentileThresholds.poor).hex,
+      getTestCoverageColor(sizePercentileThresholds.fair).hex,
+      getTestCoverageColor(sizePercentileThresholds.good).hex,
     ][index]
   })).filter(({ value }) => value > 0);
 
@@ -62,7 +64,7 @@ const TestCoverageDataCard = ({ features }) => {
 
         <ul className="flex flex-col flex-1 gap-y-1">
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.poor).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getTestCoverageColor(sizePercentileThresholds.poor).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.poor}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -70,7 +72,7 @@ const TestCoverageDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.fair).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getTestCoverageColor(sizePercentileThresholds.fair).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.fair}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -78,7 +80,7 @@ const TestCoverageDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.good).class}`}>
+            <div className={`rounded size-5 flex items-center justify-center ${getTestCoverageColor(sizePercentileThresholds.good).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.good}</span>
             </div>
             <p className="text-xs text-gray-500">
