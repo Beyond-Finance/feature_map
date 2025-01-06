@@ -76,7 +76,7 @@ module FeatureMap
       MetricsFile.write!
     end
 
-    sig { params(git_ref: String).void }
+    sig { params(git_ref: T.nilable(String)).void }
     def self.generate_docs!(git_ref)
       feature_assignments = AssignmentsFile.load_features!
       feature_metrics = MetricsFile.load_features!
@@ -89,7 +89,7 @@ module FeatureMap
         feature_metrics,
         feature_test_coverage,
         configuration.raw_hash,
-        git_ref
+        T.must(git_ref || configuration.repository['main_branch'])
       )
     end
 

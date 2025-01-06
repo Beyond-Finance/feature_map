@@ -103,7 +103,7 @@ module FeatureMap
 
   sig { params(git_ref: T.nilable(String)).void }
   def generate_docs!(git_ref)
-    Private.generate_docs!(git_ref || configuration.repository['main_branch'])
+    Private.generate_docs!(git_ref)
   end
 
   sig { params(commit_sha: String, code_cov_token: String).void }
