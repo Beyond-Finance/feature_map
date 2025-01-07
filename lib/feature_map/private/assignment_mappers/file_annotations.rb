@@ -19,7 +19,7 @@ module FeatureMap
         include Mapper
 
         # FEATURE_PATTERN = T.let(%r{\A(?:#|//) @feature (?<feature>.*)\Z}.freeze, Regexp)
-        FEATURE_PATTERN = T.let(%r{\A @feature (?<feature>.*)\Z}.freeze, Regexp)
+        FEATURE_PATTERN = T.let(%r{\A(?:.*)@feature (?<feature>.*)\Z}.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
