@@ -18,7 +18,8 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        FEATURE_PATTERN = T.let(%r{\A(?:#|//) @feature (?<feature>.*)\Z}.freeze, Regexp)
+        # FEATURE_PATTERN = T.let(%r{\A(?:#|//) @feature (?<feature>.*)\Z}.freeze, Regexp)
+        FEATURE_PATTERN = T.let(%r{\A @feature (?<feature>.*)\Z}.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
@@ -83,7 +84,7 @@ module FeatureMap
           # If the annotation isn't in the first three lines we assume it
           # doesn't exist.
 
-          lines = File.foreach(filename).first(3)
+          lines = File.foreach(filename).first(10)
 
           return if lines.empty?
 
