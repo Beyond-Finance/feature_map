@@ -1,23 +1,26 @@
 module FeatureMap
-  RSpec.describe Private::AssignmentMappers::FileAnnotations do
-    describe '.for_feature' do
-      context 'when the feature assignment comment is on one of the first three lines' do
-        before do
-          write_configuration
-          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
-            name: Bar
-          CONTENTS
+  RSpec.shared_examples 'an identifiable feature' do
+    let(:feature_filepath) { feature.gsub(/ /, '_').downcase }
+    let(:feature_annotation) { annotation.gsub(/__FEATURE__/, feature) }
 
-          preceding_lines = ['# @team My Team', '# Test Comment'].take(rand(0..2))
-          write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
-            #{preceding_lines.join("\n")}
-            # @feature Bar
-          CONTENTS
-        end
+    context 'when the feature assignment comment is on one of the first three lines' do
+      before do
+        write_configuration
+        write_file(".feature_map/definitions/#{feature_filepath}.yml", <<~CONTENTS)
+          name: #{feature}
+        CONTENTS
 
+        preceding_lines = ['# @team My Team', '# Test Comment'].take(rand(0..2))
+        write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
+          #{preceding_lines.join("\n")}
+          #{feature_annotation}
+        CONTENTS
+      end
+
+      describe '.for_feature' do
         it 'prints out feature report for the given feature' do
-          expect(FeatureMap.for_feature('Bar')).to eq <<~FEATURE_REPORT
-            # Report for `Bar` Feature
+          expect(FeatureMap.for_feature(feature)).to eq <<~FEATURE_REPORT
+            # Report for `#{feature}` Feature
             ## Annotations at the top of file
             - packs/my_pack/assigned_file.rb
 
@@ -28,29 +31,37 @@ module FeatureMap
             This feature does not have any files in this category.
 
             ## Feature definition file assignment
-            - .feature_map/definitions/bar.yml
+            - .feature_map/definitions/#{feature_filepath}.yml
           FEATURE_REPORT
         end
       end
 
-      context 'when the feature assignment comment is on the fourth lines' do
-        before do
-          write_configuration
-          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
-            name: Bar
-          CONTENTS
-
-          write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
-            # @team My Team
-            # Test Comment
-            # Another Test Comment
-            # @feature Bar
-          CONTENTS
+      describe '.for_file' do
+        it 'can find the assigned feature of a ruby file with file annotations' do
+          expect(FeatureMap.for_file('packs/my_pack/assigned_file.rb').name).to eq(feature)
         end
+      end
+    end
 
+    context 'when the feature assignment comment is on the fourth lines' do
+      before do
+        write_configuration
+        write_file(".feature_map/definitions/#{feature_filepath}.yml", <<~CONTENTS)
+          name: #{feature}
+        CONTENTS
+
+        write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
+          # @team My Team
+          # Test Comment
+          # Another Test Comment
+          #{feature_annotation}
+        CONTENTS
+      end
+
+      describe '.for_feature' do
         it 'does not detect the feature assignment' do
-          expect(FeatureMap.for_feature('Bar')).to eq <<~FEATURE_REPORT
-            # Report for `Bar` Feature
+          expect(FeatureMap.for_feature(feature)).to eq <<~FEATURE_REPORT
+            # Report for `#{feature}` Feature
             ## Annotations at the top of file
             This feature does not have any files in this category.
 
@@ -61,49 +72,28 @@ module FeatureMap
             This feature does not have any files in this category.
 
             ## Feature definition file assignment
-            - .feature_map/definitions/bar.yml
+            - .feature_map/definitions/#{feature_filepath}.yml
           FEATURE_REPORT
         end
       end
-    end
 
-    describe '.for_file' do
-      context 'when the feature assignment comment is on one of the first three lines' do
-        before do
-          write_configuration
-          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
-            name: Bar
-          CONTENTS
-
-          preceding_lines = ['# @team My Team', '# Test Comment'].take(rand(0..2))
-          write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
-            #{preceding_lines.join("\n")}
-            # @feature Bar
-          CONTENTS
-        end
-
-        it 'can find the assigned feature of a ruby file with file annotations' do
-          expect(FeatureMap.for_file('packs/my_pack/assigned_file.rb').name).to eq 'Bar'
-        end
-      end
-
-      context 'when the feature assignment comment is on the fourth lines' do
-        before do
-          write_configuration
-          write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
-            name: Bar
-          CONTENTS
-
-          write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
-            # @team My Team
-            # Test Comment
-            # Another Test Comment
-            # @feature Bar
-          CONTENTS
-        end
-
+      describe '.for_file' do
         it 'does NOT find the assigned feature' do
           expect(FeatureMap.for_file('packs/my_pack/assigned_file.rb')).to be_nil
+        end
+      end
+    end
+  end
+
+  RSpec.describe Private::AssignmentMappers::FileAnnotations do
+    {
+      ruby_inline: '# @feature __FEATURE__',
+      javascript_inline: '// @feature __FEATURE__',
+    }.each do |comment_language, language_annotation|
+      context "with comments in #{comment_language}" do
+        it_behaves_like 'an identifiable feature' do
+          let(:annotation) { language_annotation }
+          let(:feature) { 'Bar' }
         end
       end
     end
