@@ -116,8 +116,8 @@ module FeatureMap
           }.merge(expected_features[:Foo])
         end
 
-        it 'ignores the unrelated features and excludes them from the features.js file' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage)
+        it 'ignores the unrelated features and excludes them from the features-map-config.js file' do
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
@@ -127,7 +127,7 @@ module FeatureMap
       context 'when features exist that are not relevant to the current application' do
         before { write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n") }
 
-        it 'ignores the unrelated features and excludes them from the features.js file' do
+        it 'ignores the unrelated features and excludes them from the features-map-config.js file' do
           Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).not_to include('Unrelated Feature')
         end

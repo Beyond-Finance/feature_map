@@ -18,7 +18,13 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        FEATURE_PATTERN = T.let(%r{\A(?:#|//) @feature (?<feature>.*)\Z}.freeze, Regexp)
+        COMMENT_PATTERNS = T.let(['#', '//'].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
+        MULTILINE_COMMENT_START_PATTERNS = T.let(['/*', '<!--', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
+        MULTILINE_COMMENT_END_PATTERNS = T.let(['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
+
+        COMMENT_START_PATTERNS = T.let(COMMENT_PATTERNS + MULTILINE_COMMENT_START_PATTERNS, T::Array[String])
+
+        FEATURE_PATTERN = T.let(/(?:#{COMMENT_START_PATTERNS.join('|')}).*@feature (?<feature>.*?(?=\n|$))/m.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
@@ -69,6 +75,20 @@ module FeatureMap
           cache
         end
 
+        sig { params(lines: T::Array[String]).returns(T.nilable(String)) }
+        def identify_feature_from(lines)
+          matched_feature = lines.join("\n").match(FEATURE_PATTERN)
+          return if matched_feature.nil?
+
+          T.must(matched_feature
+           .values_at(:feature)
+           .first)
+           .gsub(/#{MULTILINE_COMMENT_END_PATTERNS.join('|')}/, '')
+           .strip
+        rescue ArgumentError => e
+          raise unless e.message.include?('invalid byte sequence')
+        end
+
         sig { params(filename: String).returns(T.nilable(CodeFeatures::Feature)) }
         def file_annotation_based_feature(filename)
           # Not too sure what the following comment means but it was carried over from the code_ownership repo, so
@@ -79,24 +99,14 @@ module FeatureMap
           return if File.directory?(filename)
           return unless File.file?(filename)
 
-          # The annotation should be on one of the first three lines.
-          # If the annotation isn't in the first three lines we assume it
+          # The annotation should be on one of the first ten lines.
+          # If the annotation isn't in the first ten lines we assume it
           # doesn't exist.
 
-          lines = File.foreach(filename).first(3)
-
+          lines = File.foreach(filename).first(10)
           return if lines.empty?
 
-          begin
-            feature = lines.map { |line| line[FEATURE_PATTERN, :feature] }.compact.first
-          rescue ArgumentError => e
-            if e.message.include?('invalid byte sequence')
-              feature = nil
-            else
-              raise
-            end
-          end
-
+          feature = identify_feature_from(lines)
           return unless feature
 
           Private.find_feature!(
