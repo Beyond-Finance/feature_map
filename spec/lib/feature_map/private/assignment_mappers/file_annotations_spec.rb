@@ -1,7 +1,7 @@
 module FeatureMap
   RSpec.shared_examples 'an identifiable feature' do
     let(:feature_filepath) { feature.gsub(/ /, '_').downcase }
-    let(:feature_annotation) { annotation.gsub(/__FEATURE__/, feature) }
+    let(:feature_annotation) { annotation.gsub('__FEATURE__', feature) }
 
     context 'when the feature assignment comment is on one of the first three lines' do
       before do
@@ -13,6 +13,7 @@ module FeatureMap
         preceding_lines = ['# @team My Team', '# Test Comment'].take(rand(0..2))
         write_file('packs/my_pack/assigned_file.rb', <<~CONTENTS)
           #{preceding_lines.join("\n")}
+          @feature Feature Without Comment - Should Be Skipped
           #{feature_annotation}
         CONTENTS
       end
@@ -43,7 +44,7 @@ module FeatureMap
       end
     end
 
-    context 'when the feature assignment comment is on the fourth lines' do
+    context 'when the feature assignment comment is on the eleventh lines' do
       before do
         write_configuration
         write_file(".feature_map/definitions/#{feature_filepath}.yml", <<~CONTENTS)
@@ -54,6 +55,14 @@ module FeatureMap
           # @team My Team
           # Test Comment
           # Another Test Comment
+          # @team My Team
+          # Test Comment
+          # Another Test Comment
+          # @team My Team
+          # Test Comment
+          # Another Test Comment
+          # @team My Team
+          # Test Comment
           #{feature_annotation}
         CONTENTS
       end

@@ -79,11 +79,11 @@ module FeatureMap
           return if File.directory?(filename)
           return unless File.file?(filename)
 
-          # The annotation should be on one of the first three lines.
-          # If the annotation isn't in the first three lines we assume it
+          # The annotation should be on one of the first ten lines.
+          # If the annotation isn't in the first ten lines we assume it
           # doesn't exist.
 
-          lines = File.foreach(filename).first(3)
+          lines = File.foreach(filename).first(10)
 
           return if lines.empty?
 
