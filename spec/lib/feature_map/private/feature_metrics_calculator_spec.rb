@@ -59,6 +59,37 @@ module FeatureMap
           expect(metrics['lines_of_code']).to eq(16) # Counts all non-whitespace, non-comment lines
         end
       end
+
+      it 'calculates lines of code for non-ruby files' do
+        Dir.mktmpdir do |dir|
+          file_path = File.join(dir, 'layout.html.erb')
+          content = <<~HTML
+            <!--
+            @feature Doc Send
+            -->
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <style>
+
+                </style>
+              </head>
+
+              <body>
+                <%= yield %>
+              </body>
+            </html>
+          HTML
+
+          File.write(file_path, content)
+
+          metrics = described_class.calculate_for_file(file_path)
+          expect(metrics['abc_size']).to be_nil
+          expect(metrics['cyclomatic_complexity']).to be_nil
+          expect(metrics['lines_of_code']).to eq(11) # Counts all non-whitespace, non-comment lines
+        end
+      end
     end
 
     describe '.calculate_for_feature' do
