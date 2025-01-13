@@ -18,9 +18,15 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        ESCAPED_COMMENT_START_PATTERNS = ['#', '//', '/\*', '<!--', '"""', "'''"].freeze
-        ESCAPED_COMMENT_END_PATTERNS = ['\*/', '-->', '"""', "'''"].freeze
-        FEATURE_PATTERN = T.let(/\A(?:#{ESCAPED_COMMENT_START_PATTERNS.join('|')}) @feature (?<feature>.*)\Z/m.freeze, Regexp)
+        SINGLE_COMMENT_START_PATTERNS = ['#', '//'].map { |r| Regexp.escape(r) }.freeze
+        SINGLE_COMMENT_END_PATTERNS = ['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
+        MULTI_COMMENT_START_PATTERNS = ['/*', '<!--', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
+        MULTI_COMMENT_END_PATTERNS = ['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
+
+        COMMENT_START_PATTERNS = SINGLE_COMMENT_START_PATTERNS + MULTI_COMMENT_START_PATTERNS
+        COMMENT_END_PATTERNS = SINGLE_COMMENT_END_PATTERNS + MULTI_COMMENT_END_PATTERNS
+
+        FEATURE_PATTERN = T.let(/\A(?:#{COMMENT_START_PATTERNS.join('|')}) @feature (?<feature>.*)\Z/.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
@@ -71,6 +77,18 @@ module FeatureMap
           cache
         end
 
+        sig { params(lines: T::Array[String]).returns(T.nilable(String)) }
+        def identify_feature_from(lines)
+          lines
+            .map { |line| line[FEATURE_PATTERN, :feature] }
+            .compact
+            .first
+            &.gsub(/#{COMMENT_END_PATTERNS.join('|')}/, '')
+            &.strip
+        rescue ArgumentError => e
+          raise unless e.message.include?('invalid byte sequence')
+        end
+
         sig { params(filename: String).returns(T.nilable(CodeFeatures::Feature)) }
         def file_annotation_based_feature(filename)
           # Not too sure what the following comment means but it was carried over from the code_ownership repo, so
@@ -86,24 +104,9 @@ module FeatureMap
           # doesn't exist.
 
           lines = File.foreach(filename).first(10)
-
           return if lines.empty?
 
-          begin
-            feature = lines
-                        .map { |line| line[FEATURE_PATTERN, :feature] }
-                        .compact
-                        .first
-                        &.gsub(/#{ESCAPED_COMMENT_END_PATTERNS.join('|')}/, '')
-                        &.strip
-          rescue ArgumentError => e
-            if e.message.include?('invalid byte sequence')
-              feature = nil
-            else
-              raise
-            end
-          end
-
+          feature = identify_feature_from(lines)
           return unless feature
 
           Private.find_feature!(
