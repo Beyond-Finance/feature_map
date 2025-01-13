@@ -24,7 +24,7 @@ module FeatureMap
         COMMENT_END_PATTERNS = ['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
         COMMENT_START_PATTERNS = SINGLE_COMMENT_PATTERNS + MULTI_COMMENT_START_PATTERNS
 
-        FEATURE_PATTERN = T.let(/(?:#{COMMENT_START_PATTERNS.join('|')}).*@feature (?<feature>(?:\w| )*)/m.freeze, Regexp)
+        FEATURE_PATTERN = T.let(/(?:#{COMMENT_START_PATTERNS.join('|')}).*@feature (?<feature>.*?(?=\n|$))/m.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
