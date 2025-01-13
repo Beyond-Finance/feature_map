@@ -18,11 +18,11 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        SINGLE_COMMENT_PATTERNS = ['#', '//'].map { |r| Regexp.escape(r) }.freeze
-        MULTI_COMMENT_START_PATTERNS = ['/*', '<!--', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
+        SINGLE_COMMENT_PATTERNS = T.let(['#', '//'].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
+        MULTI_COMMENT_START_PATTERNS = T.let(['/*', '<!--', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
 
-        COMMENT_END_PATTERNS = ['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
-        COMMENT_START_PATTERNS = SINGLE_COMMENT_PATTERNS + MULTI_COMMENT_START_PATTERNS
+        COMMENT_END_PATTERNS = T.let(['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
+        COMMENT_START_PATTERNS = T.let(SINGLE_COMMENT_PATTERNS + MULTI_COMMENT_START_PATTERNS, T::Array[String])
 
         FEATURE_PATTERN = T.let(/(?:#{COMMENT_START_PATTERNS.join('|')}).*@feature (?<feature>.*?(?=\n|$))/m.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
@@ -80,9 +80,9 @@ module FeatureMap
           matched_feature = lines.join("\n").match(FEATURE_PATTERN)
           return if matched_feature.nil?
 
-          matched_feature
+          T.must(matched_feature
            .values_at(:feature)
-           .first
+           .first)
            .gsub(/#{COMMENT_END_PATTERNS.join('|')}/, '')
            .strip
         rescue ArgumentError => e
