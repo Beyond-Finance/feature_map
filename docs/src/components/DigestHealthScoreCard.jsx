@@ -3,7 +3,7 @@ import { Info, Gauge } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie } from 'recharts';
 import { getHealthScoreLabel, getHealthScoreColor, healthScores } from '../utils/health-score';
 
-const HealthScoreDataCard = ({ features }) => {
+const DigestHealthScoreCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
     const sizeScore = currentFeature.metrics.health.overall;
 
@@ -43,8 +43,8 @@ const HealthScoreDataCard = ({ features }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="relative h-28 w-28">
+      <div className="flex flex-col items-center gap-6">
+        <div className="relative size-48">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -60,28 +60,28 @@ const HealthScoreDataCard = ({ features }) => {
           </ResponsiveContainer>
         </div>
 
-        <ul className="flex flex-col flex-1 gap-y-1">
+        <ul className="flex flex-col flex-1 gap-y-2">
           <li className="flex items-center gap-x-2">
-            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.needsAttention).class}`}>
-              <span className="font-semibold text-white text-xs">{distribution.needsAttention}</span>
+            <div className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.needsAttention).class}`}>
+              <span className="font-semibold text-white text-sm">{distribution.needsAttention}</span>
             </div>
-            <p className="text-xs text-gray-500">
-              <span className="lg:hidden xl:inline-block">Features</span> need attention
+            <p className="text-sm text-gray-500">
+              Features needing attention
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.needsImprovement).class}`}>
-              <span className="font-semibold text-white text-xs">{distribution.needsImprovement}</span>
+            <div className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.needsImprovement).class}`}>
+              <span className="font-semibold text-white text-sm">{distribution.needsImprovement}</span>
             </div>
-            <p className="text-xs text-gray-500">
-              <span className="lg:hidden xl:inline-block">Features</span> need improvement
+            <p className="text-sm text-gray-500">
+              Features needing improvement
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.healthy).class}`}>
-              <span className="font-semibold text-white text-xs">{distribution.healthy}</span>
+            <div className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.healthy).class}`}>
+              <span className="font-semibold text-white text-sm">{distribution.healthy}</span>
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-sm text-gray-500">
               Healthy Features
             </p>
           </li>
@@ -91,4 +91,4 @@ const HealthScoreDataCard = ({ features }) => {
   );
 };
 
-export default HealthScoreDataCard;
+export default DigestHealthScoreCard;

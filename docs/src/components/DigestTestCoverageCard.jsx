@@ -4,7 +4,7 @@ import { ResponsiveContainer, PieChart, Pie } from 'recharts';
 import { config } from '../utils/config'
 import { getTestCoverageLabel, getTestCoverageColor} from '../utils/feature-helpers';
 
-const TestCoverageDataCard = ({ features }) => {
+const DigestTestCoverageCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
     const sizeScore = currentFeature.metrics.testCoverage.score;
 
@@ -45,8 +45,8 @@ const TestCoverageDataCard = ({ features }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="relative h-28 w-28">
+      <div className="flex flex-col items-center gap-6">
+        <div className="relative size-48">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -62,29 +62,29 @@ const TestCoverageDataCard = ({ features }) => {
           </ResponsiveContainer>
         </div>
 
-        <ul className="flex flex-col flex-1 gap-y-1">
+        <ul className="flex flex-col flex-1 gap-y-2">
           <li className="flex items-center gap-x-2">
-            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.poor).class}`}>
-              <span className="font-semibold text-white text-xs">{distribution.poor}</span>
+            <div className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.poor).class}`}>
+              <span className="font-semibold text-white text-sm">{distribution.poor}</span>
             </div>
-            <p className="text-xs text-gray-500">
-              Features with poor test coverage
+            <p className="text-sm text-gray-500">
+              <span className="">Features with</span> poor coverage
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.fair).class}`}>
-              <span className="font-semibold text-white text-xs">{distribution.fair}</span>
+            <div className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.fair).class}`}>
+              <span className="font-semibold text-white text-sm">{distribution.fair}</span>
             </div>
-            <p className="text-xs text-gray-500">
-              Features with acceptable test coverage
+            <p className="text-sm text-gray-500">
+              <span className="">Features with</span> fair coverage
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.good).class}`}>
-              <span className="font-semibold text-white text-xs">{distribution.good}</span>
+            <div className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.good).class}`}>
+              <span className="font-semibold text-white text-sm">{distribution.good}</span>
             </div>
-            <p className="text-xs text-gray-500">
-              Features with great test coverage
+            <p className="text-sm text-gray-500">
+              <span className="">Features with</span> good coverage
             </p>
           </li>
         </ul>
@@ -93,4 +93,4 @@ const TestCoverageDataCard = ({ features }) => {
   );
 };
 
-export default TestCoverageDataCard;
+export default DigestTestCoverageCard;
