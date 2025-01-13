@@ -18,9 +18,9 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        ESCAPED_COMMENT_START_PATTERNS = ['#', '//', '/\*', '<!--'].freeze
-        ESCAPED_COMMENT_END_PATTERNS = ['\*/', '-->'].freeze
-        FEATURE_PATTERN = T.let(/\A(?:#{ESCAPED_COMMENT_START_PATTERNS.join('|')}) @feature (?<feature>.*)\Z/.freeze, Regexp)
+        ESCAPED_COMMENT_START_PATTERNS = ['#', '//', '/\*', '<!--', '"""', "'''"].freeze
+        ESCAPED_COMMENT_END_PATTERNS = ['\*/', '-->', '"""', "'''"].freeze
+        FEATURE_PATTERN = T.let(/\A(?:#{ESCAPED_COMMENT_START_PATTERNS.join('|')}) @feature (?<feature>.*)\Z/m.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
