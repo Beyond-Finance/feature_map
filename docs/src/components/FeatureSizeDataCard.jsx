@@ -65,7 +65,7 @@ const FeatureSizeDataCard = ({ features }) => {
 
         <ul className="flex flex-col flex-1 gap-y-1">
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.xs).class}`}>
+            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.xs).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.xs}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -73,7 +73,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.s).class}`}>
+            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.s).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.s}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -81,7 +81,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.m).class}`}>
+            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.m).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.m}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -89,7 +89,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.l).class}`}>
+            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.l).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.l}</span>
             </div>
             <p className="text-xs text-gray-500">
@@ -97,7 +97,7 @@ const FeatureSizeDataCard = ({ features }) => {
             </p>
           </li>
           <li className="flex items-center gap-x-2">
-            <div className={`rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.xl).class}`}>
+            <div className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getFeatureSizeColor(sizePercentileThresholds.xl).class}`}>
               <span className="font-semibold text-white text-xs">{distribution.xl}</span>
             </div>
             <p className="text-xs text-gray-500">

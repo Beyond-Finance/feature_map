@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { annotate } from './utils/metrics';
 import { config } from './utils/config';
 import Dashboard from './pages/Dashboard';
+import Digest from './pages/Digest';
 import Feature from './pages/Feature';
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="" element={<Dashboard features={annotatedFeatures} />} />
+      <Route path="/digest" element={<Digest features={annotatedFeatures} />} />
       <Route path=":name" element={<Feature features={annotatedFeatures} />} />
     </Routes>
   );

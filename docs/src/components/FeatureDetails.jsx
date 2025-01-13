@@ -49,16 +49,23 @@ export default function FeatureDetails({name, feature}) {
           <h3 className="text-sm font-medium text-gray-900 mb-3">Teams</h3>
 
           <ul className="flex flex-col gap-y-1">
-            {feature.assignments.teams.map((team) => {
+            {feature.assignments.teams ? feature.assignments.teams.map((team) => {
               return (
-                <li className="text-sm text-gray-700 flex gap-2">
+                <li key={team} className="text-sm text-gray-700 flex gap-2">
                   <div className="flex items-center justify-center flex-shrink-0">
                     <Users className="size-4 text-gray-500" />
                   </div>
                   {team}
                 </li>
               )
-            })}
+            }) : (
+              <li className="text-sm text-gray-700 flex gap-2">
+                <div className="flex items-center justify-center flex-shrink-0">
+                  <Users className="size-4 text-gray-500" />
+                </div>
+                <span className="text-gray-400 italic text-sm">No teams assigned</span>
+              </li>
+            )}
           </ul>
         </div>
       </div>
