@@ -18,7 +18,9 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        FEATURE_PATTERN = T.let(%r{\A(?:#|//) @feature (?<feature>.*)\Z}.freeze, Regexp)
+        ESCAPED_COMMENT_START_PATTERNS = ['#', '//', '/\*', '<!--'].freeze
+        ESCAPED_COMMENT_END_PATTERNS = ['\*/', '-->'].freeze
+        FEATURE_PATTERN = T.let(/\A(?:#{ESCAPED_COMMENT_START_PATTERNS.join('|')}) @feature (?<feature>.*)\Z/.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
@@ -88,7 +90,12 @@ module FeatureMap
           return if lines.empty?
 
           begin
-            feature = lines.map { |line| line[FEATURE_PATTERN, :feature] }.compact.first
+            feature = lines
+                        .map { |line| line[FEATURE_PATTERN, :feature] }
+                        .compact
+                        .first
+                        &.gsub(/#{ESCAPED_COMMENT_END_PATTERNS.join('|')}/, '')
+                        &.strip
           rescue ArgumentError => e
             if e.message.include?('invalid byte sequence')
               feature = nil

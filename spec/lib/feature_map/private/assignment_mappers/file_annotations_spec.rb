@@ -98,7 +98,7 @@ module FeatureMap
     {
       ruby_inline: '# @feature __FEATURE__',
       javascript_inline: '// @feature __FEATURE__',
-      javascript_multiline_single: ' /* @feature __FEATURE__ */',
+      javascript_multiline_single: '/* @feature __FEATURE__ */',
       javascript_multiline_multiple: "/*\n  @feature __FEATURE__\n*/",
       html_multiline_single: '<!-- @feature __FEATURE__ -->',
       html_multiline_multiple: "<!--\n @feature __FEATURE__ \n-->"
