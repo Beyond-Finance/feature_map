@@ -101,13 +101,11 @@ module FeatureMap
       javascript_multiline_single: '/* @feature __FEATURE__ */',
       html_multiline_single: '<!-- @feature __FEATURE__ -->',
       python_double_quote_single: '""" @feature __FEATURE__ """',
-      python_single_quote_single: "''' @feature __FEATURE__ '''"
-      # TODO:  Consider adding support for feature assignment
-      #        multiline comment blocks.
-      # html_multiline_multiple: "<!--\n@feature __FEATURE__\n-->",
-      # javascript_multiline_multiple: "/*\n@feature __FEATURE__\n*/",
-      # python_double_quote_single: '"""\n@feature __FEATURE__\n"""',
-      # python_single_quote_single: "'''\n@feature __FEATURE__\n'''"
+      python_single_quote_single: "''' @feature __FEATURE__ '''",
+      html_multiline_multiple: "<!--\n@feature __FEATURE__\n-->",
+      javascript_multiline_multiple: "/*\n@feature __FEATURE__\n*/",
+      python_double_quote_multiple: "\"\"\"\n@feature __FEATURE__\n\"\"\"",
+      python_single_quote_multiple: "'''\n@feature __FEATURE__\n'''"
     }.each do |comment_language, language_annotation|
       context "with comments in #{comment_language}" do
         it_behaves_like 'an identifiable feature' do

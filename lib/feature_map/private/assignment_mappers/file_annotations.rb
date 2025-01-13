@@ -18,15 +18,13 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        SINGLE_COMMENT_START_PATTERNS = ['#', '//'].map { |r| Regexp.escape(r) }.freeze
-        SINGLE_COMMENT_END_PATTERNS = ['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
+        SINGLE_COMMENT_PATTERNS = ['#', '//'].map { |r| Regexp.escape(r) }.freeze
         MULTI_COMMENT_START_PATTERNS = ['/*', '<!--', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
-        MULTI_COMMENT_END_PATTERNS = ['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
 
-        COMMENT_START_PATTERNS = SINGLE_COMMENT_START_PATTERNS + MULTI_COMMENT_START_PATTERNS
-        COMMENT_END_PATTERNS = SINGLE_COMMENT_END_PATTERNS + MULTI_COMMENT_END_PATTERNS
+        COMMENT_END_PATTERNS = ['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze
+        COMMENT_START_PATTERNS = SINGLE_COMMENT_PATTERNS + MULTI_COMMENT_START_PATTERNS
 
-        FEATURE_PATTERN = T.let(/\A(?:#{COMMENT_START_PATTERNS.join('|')}) @feature (?<feature>.*)\Z/.freeze, Regexp)
+        FEATURE_PATTERN = T.let(/(?:#{COMMENT_START_PATTERNS.join('|')}).*@feature (?<feature>(?:\w| )*)/m.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
@@ -79,12 +77,14 @@ module FeatureMap
 
         sig { params(lines: T::Array[String]).returns(T.nilable(String)) }
         def identify_feature_from(lines)
-          lines
-            .map { |line| line[FEATURE_PATTERN, :feature] }
-            .compact
-            .first
-            &.gsub(/#{COMMENT_END_PATTERNS.join('|')}/, '')
-            &.strip
+          matched_feature = lines.join("\n").match(FEATURE_PATTERN)
+          return if matched_feature.nil?
+
+          matched_feature
+           .values_at(:feature)
+           .first
+           .gsub(/#{COMMENT_END_PATTERNS.join('|')}/, '')
+           .strip
         rescue ArgumentError => e
           raise unless e.message.include?('invalid byte sequence')
         end
