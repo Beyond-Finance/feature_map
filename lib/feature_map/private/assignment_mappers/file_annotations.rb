@@ -20,12 +20,25 @@ module FeatureMap
 
         # NOTE:  regex 'x' arg ignores whitespace within the _construction_ of the regex.
         #        regex 'm' arg allows the regex to _execute_ on multiline strings.
-        FEATURE_PATTERN = T.let(/
-          (?:#{Constants::ALL_COMMENT_START_PATTERNS.join('|')}) # Any comment start
-          .* # Followed by any characters, including newlines, until...
-          @feature\s # We find the feature annotation followed by one space
-          (?<feature>.*?$) # A named capture grabs the rest as the feature until the line ends
-        /xm.freeze, Regexp)
+        SINGLE_LINE_ANNOTATION_PATTERN = T.let(
+          /
+            \s* # Any amount of whitespace
+            (#{Constants::SINGLE_LINE_COMMENT_PATTERNS.join('|')}) # Single line comment start
+            \s* # Any amount of whitespace, not including newlines
+            @feature\s # We find the feature annotation followed by one space
+            (?<feature>.*?$) # A named capture grabs the rest as the feature until the line ends
+          /x.freeze,
+          Regexp
+        )
+        MULTILINE_ANNOTATION_PATTERN = T.let(
+          /
+            (?:#{Constants::MULTILINE_COMMENT_START_PATTERNS.join('|')}) # Any comment start
+            .*? # Followed by any characters, including newlines, until...
+            @feature\s # We find the feature annotation followed by one space
+            (?<feature>.*?$) # A named capture grabs the rest as the feature until the line ends
+          /xm.freeze,
+          Regexp
+        )
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
@@ -78,7 +91,9 @@ module FeatureMap
 
         sig { params(lines: T::Array[String]).returns(T.nilable(String)) }
         def identify_feature_from(lines)
-          matched_feature = lines.join("\n").match(FEATURE_PATTERN)
+          matched_single_line_feature = lines.join("\n").match(SINGLE_LINE_ANNOTATION_PATTERN)
+          matched_multiline_feature = lines.join("\n").match(MULTILINE_ANNOTATION_PATTERN)
+          matched_feature = matched_single_line_feature || matched_multiline_feature
           return if matched_feature.nil?
 
           T.must(matched_feature
@@ -121,7 +136,7 @@ module FeatureMap
           if file_annotation_based_feature(filename)
             filepath = Pathname.new(filename)
             lines = filepath.read.split("\n")
-            new_lines = lines.reject { |line| line[FEATURE_PATTERN] }
+            new_lines = lines.reject { |line| line[SINGLE_LINE_ANNOTATION_PATTERN] }
             # We explicitly add a final new line since splitting by new line when reading the file lines
             # ignores new lines at the ends of files
             # We also remove leading new lines, since there is after a new line after an annotation

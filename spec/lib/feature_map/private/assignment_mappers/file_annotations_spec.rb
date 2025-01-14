@@ -15,6 +15,7 @@ module FeatureMap
           #{preceding_lines.join("\n")}
           @feature Feature Without Comment - Should Be Skipped
           #{feature_annotation}
+          @feature Feature Without Comment - Should Be Skipped
         CONTENTS
       end
 
