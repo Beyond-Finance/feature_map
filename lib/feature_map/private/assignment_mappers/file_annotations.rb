@@ -18,13 +18,14 @@ module FeatureMap
         extend T::Sig
         include Mapper
 
-        COMMENT_PATTERNS = T.let(['#', '//'].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
-        MULTILINE_COMMENT_START_PATTERNS = T.let(['/*', '<!--', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
-        MULTILINE_COMMENT_END_PATTERNS = T.let(['*/', '-->', '"""', "'''"].map { |r| Regexp.escape(r) }.freeze, T::Array[String])
-
-        COMMENT_START_PATTERNS = T.let(COMMENT_PATTERNS + MULTILINE_COMMENT_START_PATTERNS, T::Array[String])
-
-        FEATURE_PATTERN = T.let(/(?:#{COMMENT_START_PATTERNS.join('|')}).*@feature (?<feature>.*?(?=\n|$))/m.freeze, Regexp)
+        # NOTE:  regex 'x' arg ignores whitespace within the _construction_ of the regex.
+        #        regex 'm' arg allows the regex to _execute_ on multiline strings.
+        FEATURE_PATTERN = T.let(/
+          (?:#{Constants::ALL_COMMENT_START_PATTERNS.join('|')}) # Any comment start
+          .* # Followed by any characters, including newlines, until...
+          @feature\s # We find the feature annotation followed by one space
+          (?<feature>.*?$) # A named capture grabs the rest as the feature until the line ends
+        /xm.freeze, Regexp)
         DESCRIPTION = 'Annotations at the top of file'
 
         sig do
@@ -83,7 +84,7 @@ module FeatureMap
           T.must(matched_feature
            .values_at(:feature)
            .first)
-           .gsub(/#{MULTILINE_COMMENT_END_PATTERNS.join('|')}/, '')
+           .gsub(/#{Constants::MULTILINE_COMMENT_END_PATTERNS.join('|')}/, '')
            .strip
         rescue ArgumentError => e
           raise unless e.message.include?('invalid byte sequence')
