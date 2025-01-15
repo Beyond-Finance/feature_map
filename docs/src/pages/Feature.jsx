@@ -45,15 +45,15 @@ export default function Feature({ features }) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column */}
-        <div className="col-span-12 md:col-span-3">
+        <div className="col-span-1 lg:col-span-3">
           <FeatureDetails name={name} feature={feature} />
         </div>
 
         {/* Right Column */}
-        <div className="col-span-12 md:col-span-9">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div className="col-span-1 lg:col-span-9">
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
             <FeatureCard
               title="Health Score"
               value={healthScore.toFixed(0)}

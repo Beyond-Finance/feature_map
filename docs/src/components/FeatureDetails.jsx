@@ -1,7 +1,14 @@
 import React from 'react';
 import { Users, FileCode, FolderTree, Shapes, GitCompareArrows, ExternalLink } from 'lucide-react';
+import { config } from '../utils/config'
 
 export default function FeatureDetails({name, feature}) {
+  const { project } = config;
+  const featureLabel = `Feature ${name}`;
+  const featureFilters = `is:pr label:"${featureLabel}"`;
+  const encodedQuery = encodeURIComponent(featureFilters);
+  const filteredPullRequestUrl = `${project.repository.url}/pulls?q=${encodedQuery}`;
+
   return(
     <div className="bg-white p-4 rounded-lg border border-gray-200 h-fit">
       <div className="mb-6">
@@ -74,6 +81,13 @@ export default function FeatureDetails({name, feature}) {
         <h3 className="text-sm font-medium text-gray-900 mb-3">Resources</h3>
 
         <ul className="mb-6 space-y-2">
+          <li className="flex items-center gap-2">
+            <div className="flex-shrink-0">
+              <ExternalLink className="size-4 text-gray-500" />
+            </div>
+            <a href={filteredPullRequestUrl} target="_blank" className="text-sm text-gray-700 hover:underline">Feature Pull Requests</a>
+          </li>
+
           <li className="flex items-center gap-2">
             <div className="flex-shrink-0">
               <ExternalLink className="size-4 text-gray-500" />
