@@ -4,8 +4,10 @@ import { config } from '../utils/config'
 
 export default function FeatureDetails({name, feature}) {
   const { project } = config;
-  const featureLabel = encodeURIComponent(`Feature ${name}`);
-  const filteredPullRequestUrl = `${project.repository.url}/pulls?q=is%3Apr+label%3A%22${featureLabel}%22`;
+  const featureLabel = `Feature ${name}`;
+  const featureFilters = `is:pr label:"${featureLabel}"`;
+  const encodedQuery = encodeURIComponent(featureFilters);
+  const filteredPullRequestUrl = `${project.repository.url}/pulls?q=${encodedQuery}`;
 
   return(
     <div className="bg-white p-4 rounded-lg border border-gray-200 h-fit">

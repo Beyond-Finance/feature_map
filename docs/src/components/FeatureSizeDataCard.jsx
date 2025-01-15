@@ -31,7 +31,7 @@ const FeatureSizeDataCard = ({ features }) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
+        <h3 className="flex items-center text-xs font-medium text-gpray-600 uppercase">
           <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             <Proportions className="size-5" />
           </div>
