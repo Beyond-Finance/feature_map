@@ -2,6 +2,7 @@
 
 # typed: strict
 
+require 'feature_map/constants'
 require 'feature_map/private/extension_loader'
 require 'feature_map/private/cyclomatic_complexity_calculator'
 require 'feature_map/private/lines_of_code_calculator'
