@@ -7,9 +7,8 @@ import Digest from './pages/Digest';
 import Feature from './pages/Feature';
 
 export default function App() {
-  const { features } = config
-  const annotatedFeatures = annotate({ features })
-
+  const { features } = config;
+  const annotatedFeatures = annotate({ features });
   const location = useLocation();
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="" element={<Dashboard features={annotatedFeatures} />} />
-      <Route path="/digest" element={<Digest features={annotatedFeatures} />} />
+      <Route path="digest" element={<Digest features={annotatedFeatures} />} />
       <Route path=":name" element={<Feature features={annotatedFeatures} />} />
     </Routes>
   );
