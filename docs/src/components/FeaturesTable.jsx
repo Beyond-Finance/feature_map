@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import {
   getFeatureSizeLabel,
@@ -13,7 +13,6 @@ import {
 } from '../utils/health-score';
 
 export default function FeaturesTable({ features, searchTerm = '' }) {
-  const { teamName } = useParams();
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: 'asc'
@@ -68,13 +67,6 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
     });
   }, [features, sortConfig, searchTerm]);
 
-  const getLinkUrl = (featureName) => {
-    if (teamName) {
-      return `#/teams/${encodeURIComponent(teamName)}/${encodeURIComponent(featureName)}`;
-    }
-    return `#/${encodeURIComponent(featureName)}`;
-  };
-
   const requestSort = (key) => {
     setSortConfig((prevConfig) => ({
       key,
@@ -98,7 +90,7 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
   );
 
   return (
-    <div className="overflow-scroll shadow-sm border border-gray-200 rounded-lg">
+    <div className="overflow-scroll shadow-sm border border-gray-200 rounded-lg relative">
       <table className="min-w-full">
         <thead className="bg-gray-50 border-b border-gray-200 sticky top-0">
           <tr>
@@ -120,8 +112,6 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
             const sizeLabel = getFeatureSizeLabel(sizeScore);
             const healthScore = data.metrics.health.overall;
             const coveragePercent = data.metrics.testCoverage.score;
-            console.log('data', data.name)
-            console.log('name', name)
 
             return (
               <tr key={name}>
@@ -195,14 +185,16 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-500">
                   <div className="flex items-center gap-x-3">
-                    <a
-                      href={getLinkUrl(name)}
-                      className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
-                        <path fillRule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-                      </svg>
-                    </a>
+                    <div>
+                      <Link
+                        to={`/${encodeURIComponent(name)}`}
+                        className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
+                          <path fillRule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                        </svg>
+                      </Link>
+                    </div>
                   </div>
                 </td>
               </tr>
