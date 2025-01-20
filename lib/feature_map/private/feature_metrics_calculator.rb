@@ -36,26 +36,27 @@ module FeatureMap
 
       sig { params(file_path: String).returns(FeatureMetrics) }
       def self.calculate_for_file(file_path)
-        return {} unless file_path.end_with?('.rb')
+        metrics = {
+          LINES_OF_CODE_METRIC => LinesOfCodeCalculator.new(file_path).calculate
+        }
+        return metrics unless file_path.end_with?('.rb')
 
         file_content = File.read(file_path)
         source = RuboCop::ProcessedSource.new(file_content, RUBY_VERSION.to_f)
-        return {} unless source.ast
+        return metrics unless source.ast
 
         # NOTE: We're using some internal RuboCop classes to calculate complexity metrics
         # for each file. Doing this tightly couples our functionality with RuboCop,
         # which does introduce some risk, should RuboCop decide to change the interface
         # of these classes. That being said, this is a tradeoff we're willing to
         # make right now.
-        lines_of_code_calculator = LinesOfCodeCalculator.new(file_path)
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
 
-        {
+        metrics.merge(
           ABC_SIZE_METRIC => abc_calculator.calculate.first.round(2),
-          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
-          LINES_OF_CODE_METRIC => lines_of_code_calculator.calculate
-        }
+          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate
+        )
       end
     end
   end

@@ -9,6 +9,50 @@ module FeatureMap
     let(:file_path) { 'app/lines_of_code_test.rb' }
 
     describe '#calculate' do
+      it 'ignores single line and multiline comments' do
+        comments = [
+          '# Ruby single line comment',
+          '// Javascript single line comment',
+          '/* Javascript multi line comment on one line */',
+          "/*\nJavascript multiline comment\non several\nlines\n*/",
+          '<!-- html comment on one line -->',
+          "<!--\nhtml comment\non two ish lines\n-->",
+          "'''python uses big strings for comments'''",
+          '"""python uses big strings for comments"""',
+          "'''\npython uses big strings\n for comments\n'''",
+          "\"\"\"\npython uses big strings\n for comments\n\"\"\""
+        ]
+
+        code_block = <<~CONTENTS
+
+          class LinesOfCodeTest
+            SOME_CONSTANT_ARRAY = [ # Inline comments should not cause a line to skip
+              1,
+              2,
+              3
+            ].freeze // No matter what language
+            \t
+            ANOTHER_CONSTANT_HASH = {
+              a: 1, /* Even like this */
+              b: 2, <!-- Or this -->
+              c: 3 '''or this'''
+            }.freeze """OR THIS!"""
+
+          end
+        CONTENTS
+
+        file_contents = comments.map do |comment|
+          <<~CONTENTS
+            #{comment}
+            #{code_block}
+          CONTENTS
+        end.join("\n")
+
+        write_file(file_path, file_contents)
+        # Twelve lines of "code" once per comment
+        expect(calculator.calculate).to eq(12 * comments.size)
+      end
+
       it 'returns 0 for a file with only comments and whitespace' do
         # rubocop:disable Layout/TrailingWhitespace
         write_file(file_path, <<~CONTENTS)
