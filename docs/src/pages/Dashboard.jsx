@@ -38,16 +38,14 @@ const Dashboard = ({ features }) => {
   const totalTeams = teams.length - 1 // This array returns 1 extra item to support the All Teams dropdown
 
   return (
-    <div className="h-screen   max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
+    <div className="h-screen max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <div className="relative">
-          <Dropdown
-            items={teams}
-            selectedItem={selectedTeam}
-            onItemSelect={setSelectedTeam}
-          />
-        </div>
+        <Dropdown
+          items={teams}
+          selectedItem={selectedTeam}
+          onItemSelect={setSelectedTeam}
+        />
       </div>
 
       <div>

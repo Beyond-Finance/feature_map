@@ -33,17 +33,14 @@ const DigestTestPyramidCard = ({ features }) => {
 
   const data = [
     {
-      // "value": 100, //Math.log(pyramid.unit + pyramid.unit_pending),
       "value": Math.log(pyramid.unit_count + pyramid.unit_pending),
       "fill": "#1d4ed8"
     },
     {
-      // "value": 66, //Math.log(pyramid.integration + pyramid.integration_pending),
       "value": Math.log(pyramid.integration_count + pyramid.integration_pending),
       "fill": "#2563eb"
     },
     {
-      // "value": 33, //Math.log(pyramid.regression + pyramid.regression_pending),
       "value": Math.log(pyramid.regression_count + pyramid.regression_pending),
       "fill": "#3b82f6"
     },

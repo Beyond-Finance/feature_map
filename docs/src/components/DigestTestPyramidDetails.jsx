@@ -5,6 +5,7 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headless
 import { ResponsiveContainer, FunnelChart, Funnel, LabelList } from 'recharts';
 import { config } from '../utils/config'
 import { getTestCoverageLabel, getTestCoverageColor} from '../utils/feature-helpers';
+import { Dropdown, Switcher } from './ui'
 import {
   getFeatureSizeLabel,
   getFilledPills,
@@ -22,98 +23,27 @@ const TableHeader = ({ title }) => (
   </th>
 );
 
-const ViewSwitcher = ({ isChecked, handleCheckboxChange }) => {
-  return (
-    <>
-      <label className='relative inline-flex cursor-pointer select-none items-center'>
-        <input
-          type='checkbox'
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-          className='sr-only'
-        />
-        <div className='shadow-card flex items-center justify-center rounded-md bg-white px-4'>
-          <span
-            className={`flex h-9 items-center justify-center rounded mr-2 ${
-              !isChecked ? 'bg-primary text-gray-500' : 'text-body-color'
-            }`}
-          >
-            Missing
-          </span>
-          <span
-            className={`flex h-9 items-center justify-center rounded ${
-              isChecked ? 'bg-primary text-gray-500' : 'text-body-color'
-            }`}
-          >
-            Pending
-          </span>
-        </div>
-      </label>
-    </>
-  )
-}
-
-const TestTypeSwitcher = ({ testType, testTypes, setTestType}) => (
-  <Listbox value={testType} onChange={setTestType}>
-    <ListboxButton className="w-24 bg-white">{testType.name}</ListboxButton>
-    <ListboxOptions anchor="bottom" className="bg-white p-2">
-      {testTypes.map((testType) => (
-        <ListboxOption key={testType.id} value={testType} className="px-2 cursor-pointer hover:bg-gray-100">
-          {testType.name}
-        </ListboxOption>
-      ))}
-    </ListboxOptions>
-  </Listbox>
-)
-
-const ratio = (feature, metric) => {
-  return feature.metrics[metric] / feature.metrics.featureSize.score
-}
-
-const fewestTests = (features, metric) => {
+const highlightFeatures = ({ features, metric, sortDirection = 'ASC' }) => {
   return Object
     .entries(features)
     .sort(([featureNameA, featureA], [featureNameB, featureB]) => {
       const metricA = featureA.metrics[metric]
       const metricB = featureB.metrics[metric]
 
+      // If the metric is the same, return the large feature
       if (metricA === metricB) {
-        // If the test ratio is the same, return the larger feature
         return featureB.metrics.featureSize.score - featureA.metrics.featureSize.score
       }
 
-      // // Otherwise return the lower ratio of tests to lines of code
-      return metricA - metricB
+      if (sortDirection === 'ASC') return metricA - metricB
+      return metricB - metricA
     })
     .slice(0, 5)
     .map(([featureName, feature]) => ({ featureName, score: feature.metrics[metric], feature }))
 }
 
-const mostPending = (features, metric) => {
-  return Object
-    .entries(features)
-    .sort(([featureNameA, featureA], [featureNameB, featureB]) => {
-      const metricA = featureA.metrics[metric]
-      const metricB = featureB.metrics[metric]
-
-      if (metricA === metricB) {
-        // If the test ratio is the same, return the larger feature
-        return featureB.metrics.featureSize.score - featureA.metrics.featureSize.score
-      }
-
-      // // Otherwise return the higher ratio of pending tests to lines of code
-      return  metricB - metricA
-    })
-    .slice(0, 5)
-    .map(([featureName, feature]) => ({ featureName, score: feature.metrics[metric], feature }))
-}
-
-const testTypes = [
-  { id: 1,  name: 'Regression' },
-  { id: 2,  name: 'Integration' },
-  { id: 3,  name: 'Unit' },
-]
-
+const testTypes = ['Regression', 'Integration', 'Unit']
+const viewTypes = ['Missing', 'Pending']
 const metrics = {
   Pending: {
     Unit: 'unit_pending',
@@ -141,37 +71,35 @@ const titles = {
 }
 
 const DigestTestPyramidDetails = ({ features }) => {
-  const [view, setView] = useState('Missing')
+  const [viewType, setViewType] = useState(viewTypes[0])
   const [testType, setTestType] = useState(testTypes[0])
   const [pyramidDetails, setPyramidDetails] = useState(
-    fewestTests(features, metrics[view][testType])
+    highlightFeatures({
+      features,
+      metric: metrics[viewType][testType],
+      sortDirection: viewType === 'Missing' ? 'ASC' : ''
+    })
   )
 
-  const handleViewChange = () => {
-    if (view === 'Missing') {
-      setView('Pending')
-    } else {
-      setView('Missing')
-    }
-  }
-
   useEffect(() => {
-    if (view === 'Missing') {
-      setPyramidDetails(fewestTests(features, metrics[view][testType.name]))
-    } else {
-      setPyramidDetails(mostPending(features, metrics[view][testType.name]))
-    }
-  }, [features, view, testType])
+    setPyramidDetails(
+      highlightFeatures({
+        features,
+        metric: metrics[viewType][testType],
+        sortDirection: viewType === 'Missing' ? 'ASC' : ''
+      })
+    )
+  }, [features, viewType, testType])
 
   return <>
     <div className="flex items-center justify-between px-4 py-6 bg-gray-50 rounded-md">
       <h3 className="flex items-center text-xs font-semibold text-gray-800 uppercase h-8">
-        {titles[view][testType.name]}
+        {titles[viewType][testType]}
       </h3>
-      <div>
-        <ViewSwitcher isChecked={view === 'Missing'} handleCheckboxChange={handleViewChange} />
+      <div className="flex h-8">
+        <Switcher items={viewTypes} selectedItem={viewType} onItemSelect={setViewType} size="xs" />
         <span className="mx-2" />
-        <TestTypeSwitcher testType={testType} testTypes={testTypes} setTestType={setTestType} />
+        <Dropdown items={testTypes} selectedItem={testType} onItemSelect={setTestType} size="xs" />
       </div>
     </div>
 
@@ -184,7 +112,7 @@ const DigestTestPyramidDetails = ({ features }) => {
                 <TableHeader title="Feature" />
                 <TableHeader title="Team" />
                 <TableHeader title="Size" />
-                <TableHeader title={view === 'Missing' ? `${testType.name} Test Count` : 'Pending Test Count'} />
+                <TableHeader title={viewType === 'Missing' ? `${testType} Test Count` : 'Pending Test Count'} />
                 <th
                   scope="col"
                   className="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider"
