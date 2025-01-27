@@ -41,15 +41,16 @@ module FeatureMap
         todos = {}
         content = File.read(@file_path)
 
-        # NOTE: This does not currently support detecting Python-style mult-line TODO comments
-        # because the ending comment declaration is the same as the start. So, we'd have to
-        # rewrite this to match againt the whole file instead of individual lines.
-        in_comment = false
+        # Explicitly type in_comment as T::Boolean
+        in_comment = T.let(false, T::Boolean)
+
         content.each_line.with_index do |line, index|
+          # Create a new boolean instead of modifying
           in_comment ||= line.match?(ENTERING_COMMENT)
 
           if in_comment && (match = line.match(TODO_PATTERN))
-            todos["#{@file_path}:#{index + 1}"] = match[:content].strip
+            # Use T.must to handle potential nil
+            todos["#{@file_path}:#{index + 1}"] = T.must(match[:content]).strip
           end
 
           in_comment &&= !line.match?(EXITING_COMMENT)
