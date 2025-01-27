@@ -252,7 +252,6 @@ module FeatureMap
                                           'todo_locations' => {}
                                         })
         end
-        
       end
     end
   end
