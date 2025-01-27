@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'tmpdir'
+require_relative '../../../../lib/feature_map/private/todo_inspector'
 
 module FeatureMap
   RSpec.describe Private::FeatureMetricsCalculator do
@@ -90,11 +91,41 @@ module FeatureMap
           expect(metrics['lines_of_code']).to eq(11) # Counts all non-whitespace, non-comment lines
         end
       end
+
+      it 'aggregates TODO counts across files' do
+        Dir.mktmpdir do |dir|
+          file1_path = File.join(dir, 'file1.rb')
+          File.write(file1_path, <<~RUBY)
+            # TODO: Fix this method
+            def method1
+              puts "hello"
+            end
+          RUBY
+
+          file2_path = File.join(dir, 'file2.rb')
+          File.write(file2_path, <<~RUBY)
+            # TODO: Refactor later
+            # TODO: Add error handling
+            def method2
+              raise "Not implemented"
+            end
+          RUBY
+
+          metrics = described_class.calculate_for_feature([file1_path, file2_path])
+          expect(metrics['todo_count']).to eq(3)
+        end
+      end
     end
 
     describe '.calculate_for_feature' do
       it 'returns 0 for empty file list' do
-        expect(described_class.calculate_for_feature([])).to eq({ 'abc_size' => 0, 'lines_of_code' => 0, 'cyclomatic_complexity' => 0 })
+        expect(described_class.calculate_for_feature([])).to eq({
+                                                                  'abc_size' => 0,
+                                                                  'lines_of_code' => 0,
+                                                                  'cyclomatic_complexity' => 0,
+                                                                  'todo_count' => 0,
+                                                                  'todo_locations' => {}
+                                                                })
       end
 
       it 'calculates abc_size for a feature with files of varying ABC size' do
@@ -200,21 +231,28 @@ module FeatureMap
           expect(simple_feature).to eq({
                                          'abc_size' => 1.41,
                                          'lines_of_code' => 4,
-                                         'cyclomatic_complexity' => 1
+                                         'cyclomatic_complexity' => 1,
+                                         'todo_count' => 0,
+                                         'todo_locations' => {}
                                        })
 
           expect(moderate_feature).to eq({
                                            'abc_size' => 9.6,
                                            'lines_of_code' => 15,
-                                           'cyclomatic_complexity' => 3
+                                           'cyclomatic_complexity' => 3,
+                                           'todo_count' => 0,
+                                           'todo_locations' => {}
                                          })
 
           expect(complex_feature).to eq({
                                           'abc_size' => 26.83,
                                           'lines_of_code' => 35,
-                                          'cyclomatic_complexity' => 7
+                                          'cyclomatic_complexity' => 7,
+                                          'todo_count' => 0,
+                                          'todo_locations' => {}
                                         })
         end
+        
       end
     end
   end

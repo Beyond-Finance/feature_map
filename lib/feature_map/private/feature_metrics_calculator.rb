@@ -2,26 +2,30 @@
 # frozen_string_literal: true
 
 require 'rubocop'
-
+require_relative 'todo_inspector'
 module FeatureMap
   module Private
     class FeatureMetricsCalculator
       extend T::Sig
 
       ABC_SIZE_METRIC = 'abc_size'
-      LINES_OF_CODE_METRIC = 'lines_of_code'
       CYCLOMATIC_COMPLEXITY_METRIC = 'cyclomatic_complexity'
+      LINES_OF_CODE_METRIC = 'lines_of_code'
+      TODO_COUNT_METRIC = 'todo_count'
+      TODO_LOCATIONS_METRIC = 'todo_locations'
 
       SUPPORTED_METRICS = T.let([
         ABC_SIZE_METRIC,
+        CYCLOMATIC_COMPLEXITY_METRIC,
         LINES_OF_CODE_METRIC,
-        CYCLOMATIC_COMPLEXITY_METRIC
+        TODO_COUNT_METRIC,
+        TODO_LOCATIONS_METRIC
       ].freeze, T::Array[String])
 
       FeatureMetrics = T.type_alias do
         T::Hash[
           String, # metric name
-          Integer # score
+          T.any(Integer, Float, T::Hash[String, String]) # score or todo locations with messages
         ]
       end
 
@@ -29,9 +33,18 @@ module FeatureMap
       def self.calculate_for_feature(file_paths)
         metrics = file_paths.map { |file| calculate_for_file(file) }
 
-        SUPPORTED_METRICS.each_with_object({}) do |metric_key, aggregate_metrics|
-          aggregate_metrics[metric_key] = metrics.sum { |m| m[metric_key] || 0 }
+        # Handle numeric metrics
+        aggregate_metrics = SUPPORTED_METRICS.each_with_object({}) do |metric_key, agg|
+          next if metric_key == TODO_LOCATIONS_METRIC
+
+          agg[metric_key] = metrics.sum { |m| m[metric_key] || 0 }
         end
+
+        # Merge all todo locations
+        todo_locations = metrics.map { |m| m[TODO_LOCATIONS_METRIC] }.compact.reduce({}, :merge)
+        aggregate_metrics[TODO_LOCATIONS_METRIC] = todo_locations
+
+        aggregate_metrics
       end
 
       sig { params(file_path: String).returns(FeatureMetrics) }
@@ -39,6 +52,7 @@ module FeatureMap
         metrics = {
           LINES_OF_CODE_METRIC => LinesOfCodeCalculator.new(file_path).calculate
         }
+
         return metrics unless file_path.end_with?('.rb')
 
         file_content = File.read(file_path)
@@ -52,10 +66,13 @@ module FeatureMap
         # make right now.
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
+        todo_count, todo_locations = TodoInspector.new(file_path).calculate
 
         metrics.merge(
           ABC_SIZE_METRIC => abc_calculator.calculate.first.round(2),
-          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate
+          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
+          TODO_COUNT_METRIC => todo_count,
+          TODO_LOCATIONS_METRIC => todo_locations
         )
       end
     end

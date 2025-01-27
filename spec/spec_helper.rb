@@ -6,6 +6,7 @@ require 'feature_map'
 require 'packs-specification'
 require 'packs/rspec/support' # Provides Rspec wrappers that support and isolate test files setup.
 require_relative 'support/application_fixtures'
+require_relative 'support/temp_file_helpers'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -19,6 +20,7 @@ RSpec.configure do |config|
   end
 
   config.include_context 'application fixtures'
+  config.include FeatureMap::TempFileHelpers
 
   config.before do |c|
     allow_any_instance_of(FeatureMap.const_get(:Private)::Validations::FeaturesUpToDate).to receive(:`)
