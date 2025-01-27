@@ -4,7 +4,7 @@ import FeatureSizeDataCard from '../components/FeatureSizeDataCard';
 import HealthScoreDataCard from '../components/HealthScoreDataCard';
 import TestCoverageDataCard from '../components/TestCoverageDataCard';
 import FeaturesTable from '../components/FeaturesTable';
-import TeamSelector from '../components/TeamSelector';
+import { Dropdown } from '../components/ui';
 import SearchBox from '../components/SearchBox';
 
 const Dashboard = ({ features }) => {
@@ -42,10 +42,10 @@ const Dashboard = ({ features }) => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
         <div className="relative">
-          <TeamSelector
-            teams={teams}
-            selectedTeam={selectedTeam}
-            onTeamSelect={setSelectedTeam}
+          <Dropdown
+            items={teams}
+            selectedItem={selectedTeam}
+            onItemSelect={setSelectedTeam}
           />
         </div>
       </div>
