@@ -13,14 +13,14 @@ const DigestTestPyramidCard = ({ features }) => {
       regression_pending,
       unit_count,
       unit_pending,
-    } = feature.metrics
+    } = feature.test_pyramid || {}
     return {
-      unit_count: acc.unit_count + unit_count,
-      unit_pending: acc.unit_pending + unit_pending,
-      integration_count: acc.integration_count + integration_count,
-      integration_pending: acc.integration_pending + integration_pending,
-      regression_count: acc.regression_count + regression_count,
-      regression_pending: acc.regression_pending + regression_pending,
+      unit_count: acc.unit_count + (unit_count || 0),
+      unit_pending: acc.unit_pending + (unit_pending || 0),
+      integration_count: acc.integration_count + (integration_count || 0),
+      integration_pending: acc.integration_pending + (integration_pending || 0),
+      regression_count: acc.regression_count + (regression_count || 0),
+      regression_pending: acc.regression_pending + (regression_pending || 0),
     }
   }, {
     unit_count: 0,

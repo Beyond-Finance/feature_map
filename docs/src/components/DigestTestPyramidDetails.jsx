@@ -27,8 +27,8 @@ const highlightFeatures = ({ features, metric, sortDirection = 'ASC' }) => {
   return Object
     .entries(features)
     .sort(([featureNameA, featureA], [featureNameB, featureB]) => {
-      const metricA = featureA.metrics[metric]
-      const metricB = featureB.metrics[metric]
+      const metricA = featureA.test_pyramid ? featureA.test_pyramid[metric] || 0 : 0
+      const metricB = featureB.test_pyramid ? featureB.test_pyramid[metric] || 0 : 0
 
       // If the metric is the same, return the large feature
       if (metricA === metricB) {
@@ -39,7 +39,11 @@ const highlightFeatures = ({ features, metric, sortDirection = 'ASC' }) => {
       return metricB - metricA
     })
     .slice(0, 5)
-    .map(([featureName, feature]) => ({ featureName, score: feature.metrics[metric], feature }))
+    .map(([featureName, feature]) => ({
+      featureName,
+      score: feature.test_pyramid ? feature.test_pyramid[metric] || 0 : 0,
+      feature,
+    }))
 }
 
 const testTypes = ['Regression', 'Integration', 'Unit']

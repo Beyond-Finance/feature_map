@@ -27,6 +27,14 @@ const config = {
         "lines": 1200,
         "hits": 1140,
         "misses": 60
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "Payment Processing": {
@@ -53,6 +61,14 @@ const config = {
         "lines": 2582,
         "hits": 2530,
         "misses": 52
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "User Management": {
@@ -77,6 +93,14 @@ const config = {
         "lines": 1582,
         "hits": 1108,
         "misses": 474
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "Email Service": {
@@ -100,6 +124,14 @@ const config = {
         "lines": 289,
         "hits": 286,
         "misses": 3
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "Data Sync": {
@@ -144,6 +176,14 @@ const config = {
         "lines": 412,
         "hits": 324,
         "misses": 88
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "API Gateway": {
@@ -167,6 +207,14 @@ const config = {
         "lines": 678,
         "hits": 671,
         "misses": 7
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "Document Processing": {
@@ -191,6 +239,14 @@ const config = {
         "lines": 892,
         "hits": 534,
         "misses": 358
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "Notification System": {
@@ -214,6 +270,14 @@ const config = {
         "lines": 1456,
         "hits": 998,
         "misses": 458
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "Search Engine": {
@@ -238,6 +302,14 @@ const config = {
         "lines": 567,
         "hits": 489,
         "misses": 78
+      },
+      "test_pyramid": {
+        "unit_count": 100,
+        "unit_pending": 5,
+        "integration_count": 20,
+        "integration_pending": 2,
+        "regression_count": 5,
+        "regression_pending": 1
       }
     },
     "Cache Management": {
