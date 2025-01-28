@@ -19,7 +19,7 @@ const config = {
       "description": "Core authentication system handling user login, OAuth integration, and session management",
       "documentation_link": "https://internal-docs.company.com/auth/overview",
       "metrics": {
-        "abc_size": 890.32,
+        "abc_size": 890.8100000000001,
         "lines_of_code": 1200,
         "cyclomatic_complexity": 400
       },

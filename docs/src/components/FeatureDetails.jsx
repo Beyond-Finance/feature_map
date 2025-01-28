@@ -33,7 +33,7 @@ export default function FeatureDetails({name, feature}) {
           <div className="flex-shrink-0">
             <Shapes className="size-4 text-gray-500" />
           </div>
-          <p className="text-sm text-gray-700">{feature.metrics.abc_size || 0} ABC Size</p>
+          <p className="text-sm text-gray-700">{(feature.metrics.abc_size || 0).toFixed(2)} ABC Size</p>
         </li>
 
         <li className="flex items-center gap-2">
