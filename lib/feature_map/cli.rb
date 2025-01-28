@@ -15,6 +15,8 @@ module FeatureMap
         docs!(argv)
       elsif command == 'test_coverage'
         test_coverage!(argv)
+      elsif command == 'test_pyramid'
+        test_pyramid!(argv)
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -140,6 +142,32 @@ module FeatureMap
 
       puts OutputColor.green('FeatureMap test coverage statistics collected.')
       puts 'View the resulting test coverage for each feature in .feature_map/test-coverage.yml'
+    end
+
+    def self.test_pyramid!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = <<~MSG
+          Usage: bin/featuremap test_pyramid [unit_path] [integration_path] [regression_path] [regression_assignments_path].
+          Paths should point to files containing json-formatted rspec test summaries.
+          These can be generated via rspec's `-f j` flag.
+        MSG
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      args = parser.order!(argv)
+      parser.parse!(args)
+      non_flag_args = argv.reject { |arg| arg.start_with?('--') }
+
+      unit_path, integration_path, regression_path, regression_assignments_path = non_flag_args.first(4)
+      raise 'Please specify a path to a unit test summary' if unit_path.empty?
+      raise 'Please specify a path to a integration test summary' if integration_path.empty?
+      raise 'Please specify a path to a regression test summary' if regression_path.empty?
+      raise 'Please specify a path to regression assignments' if regression_assignments_path.empty?
+
+      FeatureMap.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
     end
 
     # For now, this just returns feature assignment
