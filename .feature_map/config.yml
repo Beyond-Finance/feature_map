@@ -6,7 +6,7 @@ unassigned_globs:
 # The `# @feature ...` annotiation at the top of source files is only required for files assigned
 # to the following teams.
 require_assignment_for_teams:
-  - Settlements
+  - Onboarding
 # Excludes the `.feature_map/definitions` configuration files from the set of files recorded in
 # the file assignments for each feature.
 ignore_feature_definitions: true

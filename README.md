@@ -2,25 +2,21 @@
 
 This gem helps identify and manage features within large Ruby and Rails applications. This gem works best in large, usually monolithic code bases for applications that incorporate a wide range of features with various dependencies.
 
-Check out [`lib/feature_map.rb`](https://github.com/Beyond-Finance/feature_map/blob/main/lib/feature_map.rb) to see the public API.
-
-Check out [`feature_map_spec.rb`](https://github.com/Beyond-Finance/feature_map/blob/main/spec/lib/feature_map_spec.rb) to see examples of how the feature map utility is used.
-
 ## Getting started
 
 To get started there's a few things you should do.
 
 1) Create a `.feature_map/config.yml` file and declare where your files live. Here's a sample to start with:
-```yml
-assigned_globs:
-  - '{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx}'
-unassigned_globs:
-  - db/**/*
-  - app/services/some_file1.rb
-  - app/services/some_file2.rb
-  - frontend/javascripts/**/__generated__/**/*
-```
-You may find a more comprehensive example in this repository's `.feature_map/config.yml`.
+    ```yml
+    assigned_globs:
+      - '{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx}'
+    unassigned_globs:
+      - db/**/*
+      - app/services/some_file1.rb
+      - app/services/some_file2.rb
+      - frontend/javascripts/**/__generated__/**/*
+    ```
+    You may find a more comprehensive example in this repository's `.feature_map/config.yml`.
 
 2) Define the features of our your application. There are two methods for defining features:
     * YAML Definitions: Each feature can be defined in a separate YAML file within the `.feature_map/definitions` directory. Here's an example, that would live at `.feature_map/definitions/onboarding.yml`:
@@ -34,8 +30,8 @@ You may find a more comprehensive example in this repository's `.feature_map/con
         # Comment explaining the purpose of this file and how it should be managed.
 
         Name,Description,Documentation Link,Custom Attribute
-        Onboarding,Lorem ipsum dolor sit amet, consectetur adipiscing elit.,https://www.notion.so/onboarding-feature-abcd1234,Test 123
-        User Management,Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation,,
+        Onboarding,"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",https://www.notion.so/onboarding-feature-abcd1234,Test 123
+        User Management,"Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",,
         ``` 
 3) Declare feature assignments. You can do this at a directory level or at a file level. All of the files within the `assigned_globs` you declared in step 1 will need to have a feature assigned (or be opted out via `unassigned_globs`). See the next section for more detail.
 4) Run validations when you commit, and/or in CI. If you run validations in CI, ensure that if your `assignments.yml` file gets changed, that gets pushed to the PR. A `metrics.yml` file will also be generated but we recommend NOT commiting that file because it changes very frequently.
@@ -46,9 +42,6 @@ There are multiple ways to assign the feature for a source file using this gem.
 
 ### Directory-Based Assignment
 Directory based assignment allows for all files in that directory and all its sub-directories to be assigned to a single feature. To define this, add a `.feature` file inside that directory with the name of the feature as the contents of that file.
-```
-Feature
-```
 
 ### File-Annotation Based Assignment
 File annotations are a last resort if there is no clear home for your code. File annotations go at the top of your file, and look like this:
@@ -94,6 +87,11 @@ require:
 Now, `bin/featuremap validate` will automatically include your new mapper and/or validator. See [`spec/lib/feature_map/private/extension_loader_spec.rb](spec/lib/feature_map/private/extension_loader_spec.rb) for an example of what this looks like.
 
 ## Usage: Reading FeatureMap
+
+Check out [`lib/feature_map.rb`](https://github.com/Beyond-Finance/feature_map/blob/main/lib/feature_map.rb) to see the public API.
+
+Check out [`feature_map_spec.rb`](https://github.com/Beyond-Finance/feature_map/blob/main/spec/lib/feature_map_spec.rb) to see examples of how the feature map utility is used.
+
 ### `for_file`
 `FeatureMap.for_file`, given a relative path to a file returns a `CodeFeatures::Feature` if there is a feature assigned to the file, `nil` otherwise.
 
@@ -171,7 +169,7 @@ Test coverage statistics can be pulled for a specific commit (e.g. the latest co
 
 ### CodeCov API Token Generation
 
-Running the `bin/featuremap test_coverage` will prompt the user to provide an active CodeCov API access token unless one has been specified as the `CODECOV_API_TOKEN` environment variable in your shell's environment. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
+Running the `bin/featuremap test_coverage` requires an active CodeCov API access token to be specified in the `CODECOV_API_TOKEN` environment variable of your shell session. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
 
 Use the following steps to generate a new CodeCov API token:
 
@@ -191,12 +189,13 @@ Use the following steps to generate a new CodeCov API token:
 **ZSH**
   ```shell
   echo 'export CODECOV_API_TOKEN="YOUR_CODECOV_API_TOKEN"' >> ~/.zshrc
+  source ~/.zshrc
   ```
 
 **Bash**
   ```shell
-  # Bash
   echo 'export CODECOV_API_TOKEN="YOUR_CODECOV_API_TOKEN"' >> ~/.bashrc
+  source ~/.bashrc
   ```
 
 ## Proper Configuration & Validation
@@ -244,4 +243,9 @@ That's it! Assuming you can complete all of these steps without any error or iss
 
 #### Publication
 
-This gem is integrated into other Beyond Finance applications directly via Github. Pushing out a pull request in this repo, getting it reviewed and approved, and merging the changes back to main are all that is needed to publish a new version of this gem and incorporate the changes into downstream applications.
+When a new version of the gem is ready to be published, please follow these steps:
+
+* Create a new release tag in Github ([link](https://github.com/Beyond-Finance/feature_map/releases)).
+    * Assign a version to this release in accordance with [Semantic Versioning](https://semver.org/) based on the changes contained in this release.
+* Checkout the release tag in your local environment.
+* Publish the new version of the gem to RubyGems ([docs](https://guides.rubygems.org/publishing/#publishing-to-rubygemsorg)).

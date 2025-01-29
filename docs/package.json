@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "Beyond Finance",
-  "license": "ISC",
+  "license": "MIT",
   "description": "",
   "dependencies": {
     "@headlessui/react": "^2.2.0",
