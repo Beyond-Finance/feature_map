@@ -16,10 +16,9 @@ const config = {
         "abc_size": 890.8100000000001,
         "lines_of_code": 1200,
         "cyclomatic_complexity": 400,
-        "todo_count": 2,
         "todo_locations": {
-          "124": "src/auth/services/oauth_service.rb",
-          "45": "src/auth/middleware/auth_middleware.rb"
+          "src/auth/services/oauth_service.rb:124": "Refactor this method",
+          "src/auth/middleware/auth_middleware.rb:45": "Add documentation for this class"
         }
       },
       "test_coverage": {

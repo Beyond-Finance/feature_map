@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require 'rubocop'
-require_relative 'todo_inspector'
 module FeatureMap
   module Private
     class FeatureMetricsCalculator
@@ -11,14 +10,12 @@ module FeatureMap
       ABC_SIZE_METRIC = 'abc_size'
       CYCLOMATIC_COMPLEXITY_METRIC = 'cyclomatic_complexity'
       LINES_OF_CODE_METRIC = 'lines_of_code'
-      TODO_COUNT_METRIC = 'todo_count'
       TODO_LOCATIONS_METRIC = 'todo_locations'
 
       SUPPORTED_METRICS = T.let([
         ABC_SIZE_METRIC,
         CYCLOMATIC_COMPLEXITY_METRIC,
         LINES_OF_CODE_METRIC,
-        TODO_COUNT_METRIC,
         TODO_LOCATIONS_METRIC
       ].freeze, T::Array[String])
 
@@ -66,12 +63,11 @@ module FeatureMap
         # make right now.
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
-        todo_count, todo_locations = TodoInspector.new(file_path).calculate
+        todo_locations = TodoInspector.new(file_path).calculate
 
         metrics.merge(
           ABC_SIZE_METRIC => abc_calculator.calculate.first.round(2),
           CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
-          TODO_COUNT_METRIC => todo_count,
           TODO_LOCATIONS_METRIC => todo_locations
         )
       end

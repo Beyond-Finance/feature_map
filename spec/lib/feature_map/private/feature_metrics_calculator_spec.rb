@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'tmpdir'
-require_relative '../../../../lib/feature_map/private/todo_inspector'
 
 module FeatureMap
   RSpec.describe Private::FeatureMetricsCalculator do
@@ -92,7 +91,7 @@ module FeatureMap
         end
       end
 
-      it 'aggregates TODO counts across files' do
+      it 'aggregates TODO locations across files' do
         Dir.mktmpdir do |dir|
           file1_path = File.join(dir, 'file1.rb')
           File.write(file1_path, <<~RUBY)
@@ -112,7 +111,7 @@ module FeatureMap
           RUBY
 
           metrics = described_class.calculate_for_feature([file1_path, file2_path])
-          expect(metrics['todo_count']).to eq(3)
+          expect(metrics['todo_locations'].length).to eq(3)
         end
       end
     end
@@ -123,7 +122,6 @@ module FeatureMap
                                                                   'abc_size' => 0,
                                                                   'lines_of_code' => 0,
                                                                   'cyclomatic_complexity' => 0,
-                                                                  'todo_count' => 0,
                                                                   'todo_locations' => {}
                                                                 })
       end
@@ -232,7 +230,6 @@ module FeatureMap
                                          'abc_size' => 1.41,
                                          'lines_of_code' => 4,
                                          'cyclomatic_complexity' => 1,
-                                         'todo_count' => 0,
                                          'todo_locations' => {}
                                        })
 
@@ -240,7 +237,6 @@ module FeatureMap
                                            'abc_size' => 9.6,
                                            'lines_of_code' => 15,
                                            'cyclomatic_complexity' => 3,
-                                           'todo_count' => 0,
                                            'todo_locations' => {}
                                          })
 
@@ -248,7 +244,6 @@ module FeatureMap
                                           'abc_size' => 26.83,
                                           'lines_of_code' => 35,
                                           'cyclomatic_complexity' => 7,
-                                          'todo_count' => 0,
                                           'todo_locations' => {}
                                         })
         end

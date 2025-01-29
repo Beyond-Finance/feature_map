@@ -54,7 +54,7 @@ export default function FeatureDetails({name, feature}) {
           <div className="flex-shrink-0">
             <Hash className="size-4 text-gray-500" />
           </div>
-          <p className="text-sm text-gray-700">{feature.metrics.todo_count || 0} TODO Comments</p>
+          <p className="text-sm text-gray-700">{Object.keys(feature.metrics.todo_locations).length || 0} TODO Comments</p>
         </li>
       </ul>
 
