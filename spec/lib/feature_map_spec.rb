@@ -276,6 +276,38 @@ RSpec.describe FeatureMap do
     end
   end
 
+  describe '.generate_test_pyramid' do
+    before do
+      create_test_coverage_artifacts
+
+      write_file('tmp/unit.rspec', <<~CONTENTS)
+        { "examples": []}
+      CONTENTS
+      write_file('tmp/integration.rspec', <<~CONTENTS)
+        { "examples": []}
+      CONTENTS
+      write_file('tmp/regression.rspec', <<~CONTENTS)
+        { "examples": []}
+      CONTENTS
+      write_file('regression/.feature_map/assignments.yml', <<~CONTENTS)
+        ---
+        files: {}
+        features: {}
+      CONTENTS
+    end
+
+    it 'generates the test pyramid file' do
+      FeatureMap.generate_test_pyramid!(
+        'tmp/unit.rspec',
+        'tmp/integration.rspec',
+        'tmp/regression.rspec',
+        'regression/.feature_map/assignments.yml'
+      )
+
+      expect(File.exist?(Pathname.pwd.join('.feature_map/test-pyramid.yml'))).to be_truthy
+    end
+  end
+
   describe '.gather_test_coverage!' do
     let(:commit_sha) { '1234567890abcdef1234567890abcdef' }
     let(:code_cov_token) { 'e5124eb5-c948-4136-9297-08efa6f2d537' }

@@ -161,12 +161,10 @@ module FeatureMap
       parser.parse!(args)
       non_flag_args = argv.reject { |arg| arg.start_with?('--') }
 
-      unit_path, integration_path, regression_path, regression_assignments_path = non_flag_args.first(4)
-      raise 'Please specify a path to a unit test summary' if unit_path.empty?
-      raise 'Please specify a path to a integration test summary' if integration_path.empty?
-      raise 'Please specify a path to a regression test summary' if regression_path.empty?
-      raise 'Please specify a path to regression assignments' if regression_assignments_path.empty?
+      file_paths = non_flag_args.first(4)
+      raise 'Please specify all of [unit_path] [integration_path] [regression_path] [regression_assignments_path]' if file_paths.compact.size != 4
 
+      unit_path, integration_path, regression_path, regression_assignments_path = file_paths
       FeatureMap.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
     end
 
