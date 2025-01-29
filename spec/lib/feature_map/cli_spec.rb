@@ -231,6 +231,7 @@ RSpec.describe FeatureMap::Cli do
           validate - run all validations
           docs - generates feature documentation
           test_coverage - generates per-feature test coverage statistics
+          test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
           for_file - find feature assignment for a single file
           for_feature - find assignment information for a feature
           help  - display help information about feature_map
