@@ -7,13 +7,7 @@ const config = {
   features: {
     "Authentication": {
       "assignments": {
-        "files": [
-          "src/auth/controllers/login_controller.rb",
-          "src/auth/services/oauth_service.rb",
-          "src/auth/jobs/token_cleanup_job.rb",
-          "src/auth/models/user.rb",
-          "src/auth/middleware/auth_middleware.rb"
-        ],
+        "files": ["src/auth/controllers/login_controller.rb", "src/auth/services/oauth_service.rb", "src/auth/jobs/token_cleanup_job.rb", "src/auth/models/user.rb", "src/auth/middleware/auth_middleware.rb"],
         "teams": ["Identity & Access"]
       },
       "description": "Core authentication system handling user login, OAuth integration, and session management",
@@ -21,7 +15,11 @@ const config = {
       "metrics": {
         "abc_size": 890.8100000000001,
         "lines_of_code": 1200,
-        "cyclomatic_complexity": 400
+        "cyclomatic_complexity": 400,
+        "todo_locations": {
+          "src/auth/services/oauth_service.rb:124": "Refactor this method",
+          "src/auth/middleware/auth_middleware.rb:45": "Add documentation for this class"
+        }
       },
       "test_coverage": {
         "lines": 1200,
