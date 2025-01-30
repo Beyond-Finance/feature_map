@@ -20,7 +20,7 @@ module FeatureMap
       FeatureMetrics = T.type_alias do
         T::Hash[
           String,
-          Integer
+          T.any(Integer, Float, T::Hash[String, String])
         ]
       end
 

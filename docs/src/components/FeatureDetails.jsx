@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, FileCode, FolderTree, Shapes, GitCompareArrows, ExternalLink } from 'lucide-react';
+import { Hash, Users, FileCode, FolderTree, Shapes, GitCompareArrows, ExternalLink } from 'lucide-react';
 import { config } from '../utils/config'
 
 export default function FeatureDetails({name, feature}) {
@@ -48,6 +48,13 @@ export default function FeatureDetails({name, feature}) {
             <GitCompareArrows className="size-4 text-gray-500" />
           </div>
           <p className="text-sm text-gray-700">{feature.metrics.cyclomatic_complexity || 0} Cyclomatic Complexity</p>
+        </li>
+
+        <li className="flex items-center gap-2">
+          <div className="flex-shrink-0">
+            <Hash className="size-4 text-gray-500" />
+          </div>
+          <p className="text-sm text-gray-700">{Object.keys(feature.metrics.todo_locations).length || 0} TODO Comments</p>
         </li>
       </ul>
 
