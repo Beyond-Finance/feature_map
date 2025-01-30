@@ -70,6 +70,30 @@ RSpec.describe FeatureMap::Cli do
     end
   end
 
+  describe 'test_pyramid' do
+    let(:argv) { ['test_pyramid', 'tmp/unit.rspec', 'tmp/integration.rspec', 'tmp/regression.rspec', 'regression/.feature_map/assignments.yml'] }
+
+    before do
+      create_non_empty_application
+      create_validation_artifacts
+    end
+
+    it 'uses the provided paths' do
+      expect(FeatureMap).to receive(:generate_test_pyramid!).with('tmp/unit.rspec', 'tmp/integration.rspec', 'tmp/regression.rspec', 'regression/.feature_map/assignments.yml')
+      subject
+    end
+
+    context 'when missing a file path' do
+      let(:argv) { ['test_pyramid', 'tmp/unit.rspec', 'tmp/integration.rspec', 'tmp/regression.rspec'] }
+
+      it 'raises' do
+        expect do
+          subject
+        end.to raise_error('Please specify all of [unit_path] [integration_path] [regression_path] [regression_assignments_path]')
+      end
+    end
+  end
+
   describe 'test_coverage' do
     let(:argv) { ['test_coverage'] }
     let(:assigned_globs) { nil }
@@ -207,6 +231,7 @@ RSpec.describe FeatureMap::Cli do
           validate - run all validations
           docs - generates feature documentation
           test_coverage - generates per-feature test coverage statistics
+          test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
           for_file - find feature assignment for a single file
           for_feature - find assignment information for a feature
           help  - display help information about feature_map

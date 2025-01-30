@@ -4,6 +4,7 @@ module FeatureMap
       let(:feature_assignments) { { 'Bar' => ['app/lib/some_file.rb'], 'Foo' => ['app/lib/some_other_file.rb'] } }
       let(:feature_metrics) { { 'Bar' => { 'abc_size' => 12.34, 'lines_of_code' => 56, 'cyclomatic_complexity' => 7 }, 'Foo' => { 'abc_size' => 98.76, 'lines_of_code' => 543, 'cyclomatic_complexity' => 21 } } }
       let(:feature_test_coverage) { { 'Bar' => { lines: 12, hits: 243, misses: 240 }, 'Foo' => 0.0 } }
+      let(:feature_test_pyramid) { { 'Bar' => { unit_count: 100, unit_pending: 10, integration_count: 11, integration_pending: 4, regression_count: 7, regression_pending: 1 }, 'Foo' => nil } }
       let(:assets_directory) { Private::DocumentationSite.assets_directory }
       let(:configuration) { { 'foo' => 'bar' } }
       let(:git_ref) { 'main' }
@@ -29,6 +30,14 @@ module FeatureMap
               lines: 12,
               hits: 243,
               misses: 240
+            },
+            test_pyramid: {
+              unit_count: 100,
+              unit_pending: 10,
+              integration_count: 11,
+              integration_pending: 4,
+              regression_count: 7,
+              regression_pending: 1
             }
           },
           Foo: {
@@ -40,7 +49,8 @@ module FeatureMap
               lines_of_code: 543,
               cyclomatic_complexity: 21
             },
-            test_coverage: 0.0
+            test_coverage: 0.0,
+            test_pyramid: nil
           }
         }
       end
@@ -63,14 +73,14 @@ module FeatureMap
 
       context 'when there is no existing site content' do
         it 'copies the HTML index page for the site into the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/index.html'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/index.html'))).to eq(File.read(File.join(assets_directory, 'index.html')))
         end
 
         it 'creates a feature-map-config.js file with the appropriate feature details in the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
@@ -84,12 +94,12 @@ module FeatureMap
         end
 
         it 'overwrites the HTML index page for the site into the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
           expect(File.read(Pathname.pwd.join('.feature_map/docs/index.html'))).to eq(File.read(File.join(assets_directory, 'index.html')))
         end
 
         it 'overwrites the feature-map-config.js file with the appropriate feature details in the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
         end
       end
@@ -117,7 +127,7 @@ module FeatureMap
         end
 
         it 'ignores the unrelated features and excludes them from the features-map-config.js file' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
@@ -128,7 +138,7 @@ module FeatureMap
         before { write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n") }
 
         it 'ignores the unrelated features and excludes them from the features-map-config.js file' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).not_to include('Unrelated Feature')
         end
       end

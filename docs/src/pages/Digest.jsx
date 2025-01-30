@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import DigestHealthScoreCard from '../components/DigestHealthScoreCard';
 import DigestTestCoverageCard from '../components/DigestTestCoverageCard';
+import DigestTestPyramidCard from '../components/DigestTestPyramidCard';
+import DigestTestPyramidDetails from '../components/DigestTestPyramidDetails';
 import {
   getFeatureSizeLabel,
   getFilledPills,
@@ -14,7 +16,6 @@ import {
 } from '../utils/health-score';
 
 export default function Digest({ features }) {
-
   const healthScores = Object.entries(features)
     .map(([name, data]) => ({
       name,
@@ -155,7 +156,7 @@ export default function Digest({ features }) {
         </div>
       </div>
 
-      <div className="flow-root">
+      <div className="flow-root mb-12">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg">
             <div className="px-4 py-6">
@@ -259,6 +260,20 @@ export default function Digest({ features }) {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flow-root mb-12">
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg">
+            <div className="px-4 py-6">
+              <DigestTestPyramidCard features={features} />
+            </div>
+          </div>
+
+          <div className="col-span-2 h-full shadow-sm border border-gray-200 rounded-lg bg-white">
+            <DigestTestPyramidDetails features={features} />
           </div>
         </div>
       </div>

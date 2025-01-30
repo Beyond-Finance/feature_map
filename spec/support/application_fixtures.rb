@@ -194,4 +194,20 @@ RSpec.shared_context 'application fixtures' do
           misses: 6
     CONTENTS
   end
+
+  let(:create_test_pyramid_artifacts) do
+    create_files_with_defined_classes
+
+    write_file('.feature_map/test-pyramid.yml', <<~CONTENTS)
+      ---
+      features:
+        Bar:
+          unit_count: 3
+          unit_pending: 2
+          integration_count: 0
+          integration_pending: 0
+          regression_count: 1
+          regression_pending: 1
+    CONTENTS
+  end
 end

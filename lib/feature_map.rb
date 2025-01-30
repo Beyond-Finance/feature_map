@@ -106,6 +106,18 @@ module FeatureMap
     Private.generate_docs!(git_ref)
   end
 
+  sig do
+    params(
+      unit_path: String,
+      integration_path: String,
+      regression_path: String,
+      regression_assignments_path: String
+    ).void
+  end
+  def generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
+    Private.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
+  end
+
   sig { params(commit_sha: String, code_cov_token: String).void }
   def gather_test_coverage!(commit_sha, code_cov_token)
     Private.gather_test_coverage!(commit_sha, code_cov_token)

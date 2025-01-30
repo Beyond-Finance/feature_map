@@ -15,6 +15,7 @@ require 'feature_map/private/feature_assigner'
 require 'feature_map/private/documentation_site'
 require 'feature_map/private/code_cov'
 require 'feature_map/private/test_coverage_file'
+require 'feature_map/private/test_pyramid_file'
 require 'feature_map/private/feature_plugins/assignment'
 require 'feature_map/private/validations/files_have_features'
 require 'feature_map/private/validations/features_up_to_date'
@@ -82,6 +83,12 @@ module FeatureMap
     def self.generate_docs!(git_ref)
       feature_assignments = AssignmentsFile.load_features!
       feature_metrics = MetricsFile.load_features!
+
+      # Generating the test pyramid involves collecting dry-run coverage from rspec for unit, integration,
+      # and regression tests.  This can be difficult to gather, so we allow for the docs site to be built
+      # without it.
+      feature_test_pyramid = TestPyramidFile.path.exist? ? TestPyramidFile.load_features! : {}
+
       # Test coverage data can be onerous to load (e.g. generating a CodeCov token, etc). Allow engineers to generate
       # and review the feature documentation without this data.
       feature_test_coverage = TestCoverageFile.path.exist? ? TestCoverageFile.load_features! : {}
@@ -90,9 +97,26 @@ module FeatureMap
         feature_assignments,
         feature_metrics,
         feature_test_coverage,
+        feature_test_pyramid,
         configuration.raw_hash,
         T.must(git_ref || configuration.repository['main_branch'])
       )
+    end
+
+    sig do
+      params(
+        unit_path: String,
+        integration_path: String,
+        regression_path: String,
+        regression_assignments_path: String
+      ).void
+    end
+    def self.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
+      unit_examples = JSON.parse(File.read(unit_path))&.fetch('examples')
+      integration_examples = JSON.parse(File.read(integration_path))&.fetch('examples')
+      regression_examples = JSON.parse(File.read(regression_path))&.fetch('examples')
+      regression_assignments = YAML.load_file(regression_assignments_path)
+      TestPyramidFile.write!(unit_examples, integration_examples, regression_examples, regression_assignments)
     end
 
     sig { params(commit_sha: String, code_cov_token: String).void }

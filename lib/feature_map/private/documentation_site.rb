@@ -29,6 +29,14 @@ module FeatureMap
     #           "abc_size": 12.34,
     #           "lines_of_code": 56,
     #           "cyclomatic_complexity": 7
+    #         },
+    #         "test_pyramid": {
+    #           "unit_count": 100,
+    #           "unit_pending": 12,
+    #           "integration_count": 15,
+    #           "integration_pending": 2,
+    #           "regression_count": 6,
+    #           "regression_pending": 0,
     #         }
     #       },
     #       "Bar": {
@@ -43,7 +51,8 @@ module FeatureMap
     #           "abc_size": 98.76,
     #           "lines_of_code": 54,
     #           "cyclomatic_complexity": 32
-    #         }
+    #         },
+    #         "test_pyramid": null
     #       }
     #     },
     #     project: {
@@ -64,11 +73,19 @@ module FeatureMap
           feature_assignments: AssignmentsFile::FeaturesContent,
           feature_metrics: MetricsFile::FeaturesContent,
           feature_test_coverage: TestCoverageFile::FeaturesContent,
+          feature_test_pyramid: TestPyramidFile::FeaturesContent,
           project_configuration: T::Hash[T.untyped, T.untyped],
           git_ref: String
         ).void
       end
-      def self.generate(feature_assignments, feature_metrics, feature_test_coverage, project_configuration, git_ref)
+      def self.generate(
+        feature_assignments,
+        feature_metrics,
+        feature_test_coverage,
+        feature_test_pyramid,
+        project_configuration,
+        git_ref
+      )
         FileUtils.mkdir_p(output_directory) if !output_directory.exist?
 
         features = feature_assignments.keys.each_with_object({}) do |feature_name, hash|
@@ -77,7 +94,8 @@ module FeatureMap
           hash[feature_name].merge!(
             assignments: feature_assignments[feature_name],
             metrics: feature_metrics[feature_name],
-            test_coverage: feature_test_coverage[feature_name]
+            test_coverage: feature_test_coverage[feature_name],
+            test_pyramid: feature_test_pyramid[feature_name]
           )
         end
 
