@@ -60,7 +60,9 @@ const DigestTestPyramidCard = ({ features }) => {
           <Info className="size-4 text-gray-400" />
 
           <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2 w-48">
-            Test Coverage distribution by category: shows how many features fall into each level from poor to good
+            Test pyramid distribution by category: shows features which are missing
+            coverage in a given level of the pyramid, or which have a large number of
+            pending tests.
           </div>
         </div>
       </div>
