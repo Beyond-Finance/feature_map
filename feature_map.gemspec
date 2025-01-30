@@ -1,10 +1,10 @@
 Gem::Specification.new do |spec|
   spec.name          = 'feature_map'
-  spec.version       = '1.0.0'
+  spec.version       = '1.1.0'
   spec.authors       = ['Beyond Finance']
   spec.email         = ['engineering@beyondfinance.com']
   spec.summary       = 'A gem to help identify and manage features within large Ruby and Rails applications'
-  spec.description   = 'A gem to help identify and manage features within large Ruby and Rails applications'
+  spec.description   = 'FeatureMap helps identify and manage features within large Ruby and Rails applications. This gem works best in large, usually monolithic code bases for applications that incorporate a wide range of features with various dependencies.'
   spec.homepage      = 'https://github.com/Beyond-Finance/feature_map'
   spec.license       = 'MIT'
   spec.required_ruby_version = '>= 2.6'
@@ -27,17 +27,17 @@ Gem::Specification.new do |spec|
   spec.files = Dir['README.md', 'lib/**/*', 'bin/**/*']
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'code_ownership'
-  spec.add_dependency 'faraday'
-  spec.add_dependency 'packs-specification'
+  spec.add_dependency 'code_ownership', '~> 1.34'
+  spec.add_dependency 'faraday', '~> 2.7'
+  spec.add_dependency 'packs-specification', '~> 0.0'
   spec.add_dependency 'rubocop', '~> 1.0'
-  spec.add_dependency 'sorbet-runtime', '>= 0.5.11249'
+  spec.add_dependency 'sorbet-runtime', '~> 0.5'
 
-  spec.add_development_dependency 'debug'
-  spec.add_development_dependency 'railties'
-  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'debug', '~> 1.9'
+  spec.add_development_dependency 'railties', '~> 7.2'
+  spec.add_development_dependency 'rake', '~> 13.2'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'sorbet'
-  spec.add_development_dependency 'tapioca'
-  spec.add_development_dependency 'webmock'
+  spec.add_development_dependency 'sorbet', '~> 0.5'
+  spec.add_development_dependency 'tapioca', '~> 0.16'
+  spec.add_development_dependency 'webmock', '~> 3.24'
 end
