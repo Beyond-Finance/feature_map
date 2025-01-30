@@ -245,7 +245,11 @@ That's it! Assuming you can complete all of these steps without any error or iss
 
 When a new version of the gem is ready to be published, please follow these steps:
 
-* Create a new release tag in Github ([link](https://github.com/Beyond-Finance/feature_map/releases)).
+* Update `spec.version` value in the (feature_map.gemspec)[feature_map.gemspec] file.
     * Assign a version to this release in accordance with [Semantic Versioning](https://semver.org/) based on the changes contained in this release.
+* Create a new release tag in Github ([link](https://github.com/Beyond-Finance/feature_map/releases)) with a value that matches the new Gemspec version.
 * Checkout the release tag in your local environment.
-* Publish the new version of the gem to RubyGems ([docs](https://guides.rubygems.org/publishing/#publishing-to-rubygemsorg)).
+* Publish the new version of the gem to RubyGems ([docs](https://guides.rubygems.org/publishing/#publishing-to-rubygemsorg)), which largely consists of running the following commands:
+   * Build a new version of the gem: `gem build feature_map.gemspec`
+   * Authenticate with rubygems.org: `gem signin`
+   * Publish the new version of the gem: `gem push feature_map-[NEW_VERSION].gem`
