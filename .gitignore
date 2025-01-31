@@ -18,3 +18,6 @@ Gemfile.lock
 .feature_map/metrics.yml
 .feature_map/test-coverage.yml
 .feature_map/docs
+
+# Gem build artifacts
+feature_map-*.gem
