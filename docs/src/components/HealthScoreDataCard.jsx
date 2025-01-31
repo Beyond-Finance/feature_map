@@ -2,6 +2,7 @@ import React from 'react';
 import { Info, Gauge } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie } from 'recharts';
 import { getHealthScoreLabel, getHealthScoreColor, healthScores } from '../utils/health-score';
+import { Tooltip, TooltipButton, TooltipPanel } from './Tooltip';
 
 const HealthScoreDataCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
@@ -34,13 +35,16 @@ const HealthScoreDataCard = ({ features }) => {
           <span className="flex pl-2">Health Score</span>
         </h3>
 
-        <div className="relative flex-shrink-0 group">
-          <Info className="size-4 text-gray-400" />
+        <Tooltip>
+          <TooltipButton>
+            <Info className="size-4 text-gray-400" />
+          </TooltipButton>
 
-          <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2 w-48">
-            Health Score distribution by category: shows how many features fall into each level from low (needs attention) to good (healthy)
-          </div>
-        </div>
+          <TooltipPanel>
+            Feature health is determined by combining a weighted score for test coverage, code complexity, and encapsulation into a composite score from 0-100%.
+            Each feature is then grouped into a categories ranging from low (needs attention) to good (healthy), which can be managed via `.feature_map/config.yml`.
+          </TooltipPanel>
+        </Tooltip>
       </div>
 
       <div className="flex items-center gap-4">
