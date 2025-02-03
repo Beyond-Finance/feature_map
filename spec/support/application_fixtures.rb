@@ -2,7 +2,7 @@ RSpec.shared_context 'application fixtures' do
   let(:assignments_file_path) { Pathname.pwd.join('.feature_map/assignments.yml') }
 
   def write_configuration(assigned_globs: nil, **kwargs)
-    assigned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml}']
+    assigned_globs ||= ['{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx,json,yml,cls,xml,html}']
     config = {
       'assigned_globs' => assigned_globs,
       'unassigned_globs' => ['.feature_map/config.yml']

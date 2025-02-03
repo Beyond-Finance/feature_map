@@ -22,6 +22,11 @@ module FeatureMap
   requires_ancestor { Kernel }
   GlobsToAssignedFeatureMap = T.type_alias { T::Hash[String, CodeFeatures::Feature] }
 
+  sig { params(assignments_file_path: String).void }
+  def apply_assignments!(assignments_file_path)
+    Private.apply_assignments!(assignments_file_path)
+  end
+
   sig { params(file: String).returns(T.nilable(CodeFeatures::Feature)) }
   def for_file(file)
     @for_file ||= T.let(@for_file, T.nilable(T::Hash[String, T.nilable(CodeFeatures::Feature)]))
