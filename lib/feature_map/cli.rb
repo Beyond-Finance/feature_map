@@ -9,7 +9,9 @@ module FeatureMap
   class Cli
     def self.run!(argv)
       command = argv.shift
-      if command == 'validate'
+      if command == 'apply_assignments'
+        apply_assignments!(argv)
+      elsif command == 'validate'
         validate!(argv)
       elsif command == 'docs'
         docs!(argv)
@@ -26,17 +28,45 @@ module FeatureMap
           Usage: bin/featuremap <subcommand>
 
           Subcommands:
-            validate - run all validations
+            apply_assignments - applies specified feature assignments to source files
             docs - generates feature documentation
+            for_feature - find assignment information for a feature
+            for_file - find feature assignment for a single file
             test_coverage - generates per-feature test coverage statistics
             test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
-            for_file - find feature assignment for a single file
-            for_feature - find assignment information for a feature
+            validate - run all validations
+
+            ##################################################
             help  - display help information about feature_map
+            ##################################################
         USAGE
       else
         puts "'#{command}' is not a feature_map command. See `bin/featuremap help`."
       end
+    end
+
+    def self.apply_assignments!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = <<~MSG
+          Usage: bin/featuremap apply_assignments [assignments.csv].
+          Note:  Expects two fields with no header:  dir/filepath,feature
+                 Supports assignments in the following filetypes:
+                   cls,html,js,jsx,rb,ts,tsx,xml
+        MSG
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      args = parser.order!(argv)
+      parser.parse!(args)
+      non_flag_args = argv.reject { |arg| arg.start_with?('--') }
+      assignments_file_path = non_flag_args[0]
+
+      raise 'Please specify assignments.csv file' if assignments_file_path.nil?
+
+      FeatureMap.apply_assignments!(assignments_file_path)
     end
 
     def self.validate!(argv)

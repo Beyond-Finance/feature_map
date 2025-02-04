@@ -40,6 +40,30 @@ RSpec.describe FeatureMap::Cli do
     end
   end
 
+  describe 'apply_assignments' do
+    let(:argv) { ['apply_assignments', 'tmp/assignments.csv'] }
+
+    before do
+      create_non_empty_application
+      create_validation_artifacts
+    end
+
+    it 'uses the provided paths' do
+      expect(FeatureMap).to receive(:apply_assignments!).with('tmp/assignments.csv')
+      subject
+    end
+
+    context 'when missing a file path' do
+      let(:argv) { ['apply_assignments'] }
+
+      it 'raises' do
+        expect do
+          subject
+        end.to raise_error('Please specify assignments.csv file')
+      end
+    end
+  end
+
   describe 'docs' do
     let(:argv) { ['docs'] }
     let(:assigned_globs) { nil }
@@ -228,13 +252,17 @@ RSpec.describe FeatureMap::Cli do
         Usage: bin/featuremap <subcommand>
 
         Subcommands:
-          validate - run all validations
+          apply_assignments - applies specified feature assignments to source files
           docs - generates feature documentation
+          for_feature - find assignment information for a feature
+          for_file - find feature assignment for a single file
           test_coverage - generates per-feature test coverage statistics
           test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
-          for_file - find feature assignment for a single file
-          for_feature - find assignment information for a feature
+          validate - run all validations
+
+          ##################################################
           help  - display help information about feature_map
+          ##################################################
       EXPECTED
       expect(FeatureMap::Cli).to receive(:puts).with(expected)
       subject

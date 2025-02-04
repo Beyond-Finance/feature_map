@@ -2,6 +2,8 @@
 
 # typed: strict
 
+require 'csv'
+
 require 'feature_map/constants'
 require 'feature_map/private/extension_loader'
 require 'feature_map/private/cyclomatic_complexity_calculator'
@@ -9,6 +11,7 @@ require 'feature_map/private/lines_of_code_calculator'
 require 'feature_map/private/todo_inspector'
 require 'feature_map/private/feature_metrics_calculator'
 require 'feature_map/private/assignments_file'
+require 'feature_map/private/assignment_applicator'
 require 'feature_map/private/metrics_file'
 require 'feature_map/private/glob_cache'
 require 'feature_map/private/feature_assigner'
@@ -36,6 +39,12 @@ module FeatureMap
         FeatureName,
         FileList
       ]
+    end
+
+    sig { params(assignments_file_path: String).void }
+    def self.apply_assignments!(assignments_file_path)
+      assignments = CSV.read(assignments_file_path)
+      AssignmentApplicator.apply_assignments!(assignments)
     end
 
     sig { returns(Configuration) }

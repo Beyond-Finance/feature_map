@@ -308,6 +308,32 @@ RSpec.describe FeatureMap do
     end
   end
 
+  describe '.apply_assignments!' do
+    before do
+      create_test_coverage_artifacts
+
+      write_file('tmp/assignments.csv', <<~CONTENTS)
+        app/foo.rb,Foo
+      CONTENTS
+      write_file('app/foo.rb', <<~CONTENTS)
+        class Foo
+        end
+      CONTENTS
+    end
+
+    it 'applies assignments' do
+      FeatureMap.apply_assignments!(
+        'tmp/assignments.csv'
+      )
+
+      expect(File.read('app/foo.rb')).to eq(<<~CONTENTS)
+        # @feature Foo
+        class Foo
+        end
+      CONTENTS
+    end
+  end
+
   describe '.gather_test_coverage!' do
     let(:commit_sha) { '1234567890abcdef1234567890abcdef' }
     let(:code_cov_token) { 'e5124eb5-c948-4136-9297-08efa6f2d537' }
