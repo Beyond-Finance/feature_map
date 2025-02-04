@@ -3,6 +3,7 @@ import { Info, FlaskConical } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie } from 'recharts';
 import { config } from '../utils/config'
 import { getTestCoverageLabel, getTestCoverageColor} from '../utils/feature-helpers';
+import { Tooltip, TooltipButton, TooltipPanel } from './Tooltip';
 
 const TestCoverageDataCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
@@ -36,13 +37,16 @@ const TestCoverageDataCard = ({ features }) => {
           <span className="flex pl-2">Test Coverage</span>
         </h3>
 
-        <div className="relative flex-shrink-0 group">
-          <Info className="size-4 text-gray-400" />
+        <Tooltip>
+          <TooltipButton>
+            <Info className="size-4 text-gray-400" />
+          </TooltipButton>
 
-          <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2 w-48">
-            Test Coverage distribution by category: shows how many features fall into each level from poor to good
-          </div>
-        </div>
+          <TooltipPanel>
+            Test coverage is determined by using CodeCov data (lines, hits, misses) to calculate a percentage score, from 0-100%, relative to the other features in the codebase.
+            A qualitative coverage ranking is assigned to each feature, which can be managed which can be managed via `.feature_map/config.yml`.
+          </TooltipPanel>
+        </Tooltip>
       </div>
 
       <div className="flex items-center gap-4">

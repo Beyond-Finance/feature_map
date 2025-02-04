@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 import { Info, Proportions } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie } from 'recharts';
-import { config } from '../utils/config'
+import { config } from '../utils/config';
 import { getFeatureSizeLabel, getFeatureSizeColor } from '../utils/feature-helpers';
+import { Tooltip, TooltipButton, TooltipPanel } from './Tooltip';
 
 const FeatureSizeDataCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
@@ -13,9 +14,9 @@ const FeatureSizeDataCard = ({ features }) => {
       distribution[category]++;
     }
     return distribution;
-  }, { xs: 0, s: 0, m: 0, l: 0, xl: 0 } );
+  }, { xs: 0, s: 0, m: 0, l: 0, xl: 0 });
 
-  const { minimum_thresholds: sizePercentileThresholds } = config.project.documentation_site.size_percentile
+  const { minimum_thresholds: sizePercentileThresholds } = config.project.documentation_site.size_percentile;
   const sizeDistribution = Object.entries(distribution).map(([name, value], index) => ({
     name,
     value,
@@ -31,20 +32,23 @@ const FeatureSizeDataCard = ({ features }) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h3 className="flex items-center text-xs font-medium text-gpray-600 uppercase">
+        <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
           <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             <Proportions className="size-5" />
           </div>
           <span className="flex pl-2">Feature Size</span>
         </h3>
 
-        <div className="relative flex-shrink-0 group">
-          <Info className="size-4 text-gray-400" />
+        <Tooltip width="w-72">
+          <TooltipButton>
+            <Info className="size-4 text-gray-400" />
+          </TooltipButton>
 
-          <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2 w-48">
-            Feature Size distribution by category: shows how many features fall into each complexity level from X-Small (simplest) to X-Large (most complex)
-          </div>
-        </div>
+          <TooltipPanel>
+            Feature size is determined by analyzing the total number of files and lines of code associated with each feature. Each feature is then grouped
+            into different size bins, which can be configured in the config.yaml file.
+          </TooltipPanel>
+        </Tooltip>
       </div>
 
       <div className="flex items-center gap-4">
@@ -107,7 +111,6 @@ const FeatureSizeDataCard = ({ features }) => {
         </ul>
       </div>
     </div>
-
   );
 };
 

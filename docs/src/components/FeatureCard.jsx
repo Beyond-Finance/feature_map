@@ -1,6 +1,7 @@
 import React from 'react';
 import { Info } from 'lucide-react';
 import CircularProgress from './CircularProgress';
+import { Tooltip, TooltipButton, TooltipPanel } from '../components/Tooltip';
 
 const FeatureCard = ({
   children,
@@ -21,14 +22,17 @@ const FeatureCard = ({
           <span className="flex pl-2">{title}</span>
         </h3>
 
-        <div className="relative flex-shrink-0 group">
-          <Info className="size-4 text-gray-400" />
-          {tooltip && (
-            <div className="absolute whitespace-nowrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2">
+        {tooltip && (
+          <Tooltip>
+            <TooltipButton>
+              <Info className="size-4 text-gray-400" />
+            </TooltipButton>
+
+            <TooltipPanel>
               {tooltip}
-            </div>
-          )}
-        </div>
+            </TooltipPanel>
+          </Tooltip>
+        )}
       </div>
 
       <div className="flex items-center gap-4">

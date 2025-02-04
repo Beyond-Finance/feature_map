@@ -14,6 +14,7 @@ import {
 import {
   getHealthScoreColor,
 } from '../utils/health-score';
+import { Tooltip, TooltipButton, TooltipPanel } from '../components/Tooltip';
 
 export default function Feature({ features }) {
   const { name } = useParams();
@@ -58,7 +59,7 @@ export default function Feature({ features }) {
               title="Health Score"
               value={healthScore.toFixed(0)}
               suffix="%"
-              tooltip="Health score calculations are still a WIP"
+              tooltip="Feature health is determined by combining a weighted score for test coverage, code complexity, and encapsulation into a composite score from 0-100%. Each feature is then grouped into a categories ranging from low (needs attention) to good (healthy), which can be managed via `.feature_map/config.yml`."
               icon={<Gauge />}
               color={getHealthScoreColor(healthScore).hex}
             >
@@ -79,7 +80,7 @@ export default function Feature({ features }) {
               title="Test Coverage"
               value={feature.metrics.testCoverage.score}
               suffix="%"
-              tooltip="Test coverage is pulled from CodeCov"
+              tooltip="Test coverage is determined by using CodeCov data (lines, hits, misses) to calculate a percentage score, from 0-100%, relative to the other features in the codebase. A qualitative coverage ranking is assigned to each feature, which can be managed which can be managed via `.feature_map/config.yml`."
               icon={<FlaskConical />}
               color={getTestCoverageColor(feature.metrics.testCoverage.score).hex}
             >
@@ -105,12 +106,16 @@ export default function Feature({ features }) {
                   <span className="flex pl-2">Feature Size</span>
                 </h3>
 
-                <div className="relative flex-shrink-0 group">
-                  <Info className="size-4 text-gray-400" />
-                  <div className="absolute whitespace-nowrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2">
-                    Relative size of feature using lines of code and file counts
-                  </div>
-                </div>
+                <Tooltip>
+                  <TooltipButton>
+                    <Info className="size-4 text-gray-400" />
+                  </TooltipButton>
+
+                  <TooltipPanel>
+                    Feature size is determined by analyzing the total number of files and lines of code associated with each feature. Each feature is then grouped
+                    into different size bins, which can be configured in the config.yaml file.
+                  </TooltipPanel>
+                </Tooltip>
               </div>
 
               <div className="flex items-center gap-4">
