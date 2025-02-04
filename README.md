@@ -259,7 +259,7 @@ That's it! Assuming you can complete all of these steps without any error or iss
 
 When a new version of the gem is ready to be published, please follow these steps:
 
-* Update `spec.version` value in the (feature_map.gemspec)[feature_map.gemspec] file.
+* Update `spec.version` value in the [feature_map.gemspec](feature_map.gemspec) file.
     * Assign a version to this release in accordance with [Semantic Versioning](https://semver.org/) based on the changes contained in this release.
 * Create a new release tag in Github ([link](https://github.com/Beyond-Finance/feature_map/releases)) with a value that matches the new Gemspec version.
 * Checkout the release tag in your local environment.
