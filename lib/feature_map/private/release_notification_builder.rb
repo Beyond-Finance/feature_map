@@ -37,7 +37,7 @@ module FeatureMap
           feature_header_markdown = "*_#{feature_name}_*"
 
           # If the docs site is hosted at a persistent URL, include a link to the feature show page.
-          if documentation_site_url
+          if documentation_site_url && feature_name != FeatureMap::NO_FEATURE_KEY
             feature_header_markdown += " (<#{documentation_site_url}#/#{URI::DEFAULT_PARSER.escape(feature_name)}|View Documentation>)"
           end
 

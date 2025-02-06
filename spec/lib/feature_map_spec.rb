@@ -428,20 +428,14 @@ RSpec.describe FeatureMap do
           assigned_globs:
             - app/shared.rb
         CONTENTS
-        shared_commit = FeatureMap::Commit.new(sha: 'fff555', description: 'Change to a feature with no assigned team.', files: ['app/shared.rb'])
+        shared_commit = FeatureMap::Commit.new(sha: 'fff666', description: 'Change to a feature with no assigned team.', files: ['app/shared.rb'])
 
         grouped_commits = FeatureMap.group_commits([shared_commit])
         expect(grouped_commits).to eq({
                                         'All Teams' => {
-                                          'Shared' => ['fff555']
+                                          'Shared' => ['fff666']
                                         }
                                       })
-      end
-
-      it 'ignores files with no assigned feature' do
-        featureless_commit = FeatureMap::Commit.new(sha: 'fff555', description: 'Change to a file with no feature.', files: ['app/featureless.rb'])
-        grouped_commits = FeatureMap.group_commits([featureless_commit])
-        expect(grouped_commits).to eq({})
       end
 
       it 'lists only features modified within the specified commits' do
@@ -454,14 +448,32 @@ RSpec.describe FeatureMap do
       end
 
       it 'lists teams who are responsible for any file of a features modified within the specified commits, even if the teams files were NOT modified in the specified commits' do
-        team_a_commit = FeatureMap::Commit.new(sha: 'eee444', description: 'Change made by Team A to a Foo file.', files: ['app/foo_stuff_owned_by_team_a.rb'])
+        team_a_commit = FeatureMap::Commit.new(sha: 'eee555', description: 'Change made by Team A to a Foo file.', files: ['app/foo_stuff_owned_by_team_a.rb'])
         grouped_commits = FeatureMap.group_commits([team_a_commit])
         expect(grouped_commits).to eq({
                                         'Team A' => {
-                                          'Foo' => ['eee444']
+                                          'Foo' => ['eee555']
                                         },
                                         'Team B' => {
-                                          'Foo' => ['eee444']
+                                          'Foo' => ['eee555']
+                                        }
+                                      })
+      end
+
+      it 'lists commits that change that have no responsible team under a key representing all teams' do
+        write_file('app/featureless_file.rb', 'class FeaturelessClass; end')
+        featureless_commit = FeatureMap::Commit.new(sha: 'ddd444', description: 'Change to files that are not assigned to any feature.', files: ['app/featureless_file.rb'])
+
+        grouped_commits = FeatureMap.group_commits([featureless_commit, foo_commit])
+        expect(grouped_commits).to eq({
+                                        'All Teams' => {
+                                          'No Feature' => ['ddd444']
+                                        },
+                                        'Team A' => {
+                                          'Foo' => ['bbb222']
+                                        },
+                                        'Team B' => {
+                                          'Foo' => ['bbb222']
                                         }
                                       })
       end

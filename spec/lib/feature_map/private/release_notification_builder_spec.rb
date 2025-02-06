@@ -133,6 +133,33 @@ module FeatureMap
                                   ])
           end
         end
+
+        context 'when set of commits include a \'No Feature\' secton' do
+          let(:commit) { Commit.new(sha: 'aaa111', description: 'A test change of Foo.', files: ['app/my_file.rb']) }
+          let(:featureless_commit) { Commit.new(sha: 'ddd444', description: 'Change to files that are not assigned to any feature.', files: ['app/featureless_file.rb']) }
+          let(:commits_by_feature) { { 'Foo' => [commit], 'No Feature' => [featureless_commit] } }
+
+          it 'excludes the documentation site link for the \'No Feature\' section' do
+            payload = described_class.build(commits_by_feature)
+            expect(payload).to eq([
+                                    {
+                                      type: 'section',
+                                      text: {
+                                        type: 'mrkdwn',
+                                        text: "*_Foo_* (<https://test-org.github.io/feature_map/#/Foo|View Documentation>)\n• A test change of Foo."
+                                      }
+                                    },
+                                    { type: 'divider' },
+                                    {
+                                      type: 'section',
+                                      text: {
+                                        type: 'mrkdwn',
+                                        text: "*_No Feature_*\n• Change to files that are not assigned to any feature."
+                                      }
+                                    }
+                                  ])
+          end
+        end
       end
 
       context 'when the repository URL and documentation site URL are NOT configured' do

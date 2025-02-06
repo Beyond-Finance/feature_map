@@ -16,6 +16,7 @@ require 'feature_map/configuration'
 
 module FeatureMap
   ALL_TEAMS_KEY = 'All Teams'
+  NO_FEATURE_KEY = 'No Feature'
 
   module_function
 
@@ -210,9 +211,9 @@ module FeatureMap
   sig { params(commits: T::Array[Commit]).returns(UpdatedFeaturesByTeam) }
   def group_commits(commits)
     commits.each_with_object({}) do |commit, hash|
-      commit.files.each do |file|
+      commit_features = commit.files.map do |file|
         feature = FeatureMap.for_file(file)
-        next unless feature
+        next nil unless feature
 
         teams = Private.all_teams_for_feature(feature)
         team_names = teams.empty? ? [ALL_TEAMS_KEY] : teams.map(&:name)
@@ -222,7 +223,17 @@ module FeatureMap
           hash[team_name][feature.name] ||= []
           hash[team_name][feature.name] << commit.sha
         end
+
+        feature
       end
+
+      # If the commit did not have any files that relate to a specific feature, include it in a "No Feature" section
+      # of the "All Teams" grouping to avoid it being omitted from the resulting grouped commits entirely.
+      next unless commit_features.compact.empty?
+
+      hash[ALL_TEAMS_KEY] ||= {}
+      hash[ALL_TEAMS_KEY][NO_FEATURE_KEY] ||= []
+      hash[ALL_TEAMS_KEY][NO_FEATURE_KEY] << commit.sha
     end
   end
 
