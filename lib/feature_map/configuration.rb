@@ -15,6 +15,7 @@ module FeatureMap
     const :code_cov, T::Hash[String, T.nilable(String)]
     const :repository, T::Hash[String, T.nilable(String)]
     const :documentation_site, T::Hash[String, T.untyped]
+    const :documentation_site_url, T.nilable(String)
 
     sig { returns(Configuration) }
     def self.fetch
@@ -36,7 +37,8 @@ module FeatureMap
         ignore_feature_definitions: config_hash.fetch('ignore_feature_definitions', false),
         code_cov: config_hash.fetch('code_cov', {}),
         repository: config_hash.fetch('repository', {}),
-        documentation_site: config_hash.fetch('documentation_site', {})
+        documentation_site: config_hash.fetch('documentation_site', {}),
+        documentation_site_url: config_hash.fetch('documentation_site_url', nil)
       )
     end
   end

@@ -157,6 +157,8 @@ RSpec.shared_context 'application fixtures' do
     require Pathname.pwd.join('app/foo_stuff_owned_by_team_a')
     require Pathname.pwd.join('app/foo_stuff_owned_by_team_b')
     require Pathname.pwd.join('app/other_team_b_stuff')
+
+    write_configuration('unassigned_globs' => ['.feature_map/config.yml', 'config/code_ownership.yml'], 'skip_code_ownership' => false)
   end
 
   let(:create_validation_artifacts) do
@@ -168,9 +170,16 @@ RSpec.shared_context 'application fixtures' do
         app/my_error.rb:
           feature: Bar
           mapper: Annotations at the top of file
+        app/my_file.rb:
+          feature: Foo
+          mapper: Annotations at the top of file
       features:
         Bar:
+          files:
           - app/my_error.rb
+        Foo:
+          files:
+          - app/my_file.rb
     CONTENTS
     write_file('.feature_map/metrics.yml', <<~CONTENTS)
       ---

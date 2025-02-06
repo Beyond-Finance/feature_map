@@ -105,7 +105,7 @@ module FeatureMap
             context 'when the file is assigned to a team that IS NOT in the require_assignment_for_teams set' do
               before do
                 write_file('config/teams/unassigned_team.yml', <<~CONTENTS)
-                  name: UnAssigned Team
+                  name: Unassigned Team
                   github:
                     team: '@My-Org/unassigned-team'
                   owned_globs: ['app/missing_assignment.rb']

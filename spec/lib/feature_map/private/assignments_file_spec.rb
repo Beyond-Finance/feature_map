@@ -265,7 +265,6 @@ module FeatureMap
         before do
           create_files_with_defined_classes
           create_files_with_team_assignments
-          write_configuration('unassigned_globs' => ['.feature_map/config.yml', 'config/code_ownership.yml'], 'skip_code_ownership' => false)
         end
 
         let(:expected_lines) do
@@ -632,7 +631,8 @@ module FeatureMap
 
       it 'returns the feature metrics details from the existing Metrics File' do
         expect(Private::AssignmentsFile.load_features!).to eq({
-                                                                'Bar' => ['app/my_error.rb']
+                                                                'Bar' => { 'files' => ['app/my_error.rb'] },
+                                                                'Foo' => { 'files' => ['app/my_file.rb'] }
                                                               })
       end
 

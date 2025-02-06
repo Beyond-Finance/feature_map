@@ -5,6 +5,7 @@ require 'rubocop'
 require 'feature_map'
 require 'packs-specification'
 require 'packs/rspec/support' # Provides Rspec wrappers that support and isolate test files setup.
+# See more at https://github.com/rubyatscale/packs-specification/blob/71336be896386c5527dac9aa935deb3ae3fe3828/lib/packs/rspec/support.rb#L3
 require_relative 'support/application_fixtures'
 
 RSpec.configure do |config|
@@ -28,6 +29,8 @@ RSpec.configure do |config|
     unless c.metadata[:do_not_bust_cache]
       FeatureMap.bust_caches!
       FeatureMap::CodeFeatures.bust_caches!
+      CodeOwnership.bust_caches!
+      CodeTeams.bust_caches!
     end
   end
 end
