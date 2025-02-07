@@ -221,7 +221,7 @@ module FeatureMap
         team_names.sort.each do |team_name|
           hash[team_name] ||= {}
           hash[team_name][feature.name] ||= []
-          hash[team_name][feature.name] << commit.sha
+          hash[team_name][feature.name] << commit
         end
 
         feature
@@ -233,7 +233,7 @@ module FeatureMap
 
       hash[ALL_TEAMS_KEY] ||= {}
       hash[ALL_TEAMS_KEY][NO_FEATURE_KEY] ||= []
-      hash[ALL_TEAMS_KEY][NO_FEATURE_KEY] << commit.sha
+      hash[ALL_TEAMS_KEY][NO_FEATURE_KEY] << commit
     end
   end
 

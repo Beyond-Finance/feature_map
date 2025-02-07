@@ -381,8 +381,8 @@ RSpec.describe FeatureMap do
         grouped_commits = FeatureMap.group_commits([foo_commit, foo_and_bar_commit, bar_commit])
         expect(grouped_commits).to eq({
                                         'All Teams' => {
-                                          'Foo' => %w[bbb222 aaa111],
-                                          'Bar' => %w[aaa111 ccc333]
+                                          'Foo' => [foo_commit, foo_and_bar_commit],
+                                          'Bar' => [foo_and_bar_commit, bar_commit]
                                         }
                                       })
       end
@@ -412,11 +412,11 @@ RSpec.describe FeatureMap do
         grouped_commits = FeatureMap.group_commits([foo_commit, foo_and_bar_commit, bar_commit])
         expect(grouped_commits).to eq({
                                         'Team A' => {
-                                          'Foo' => %w[bbb222 aaa111]
+                                          'Foo' => [foo_commit, foo_and_bar_commit]
                                         },
                                         'Team B' => {
-                                          'Foo' => %w[bbb222 aaa111],
-                                          'Bar' => %w[aaa111 ccc333]
+                                          'Foo' => [foo_commit, foo_and_bar_commit],
+                                          'Bar' => [foo_and_bar_commit, bar_commit]
                                         }
                                       })
       end
@@ -433,7 +433,7 @@ RSpec.describe FeatureMap do
         grouped_commits = FeatureMap.group_commits([shared_commit])
         expect(grouped_commits).to eq({
                                         'All Teams' => {
-                                          'Shared' => ['fff666']
+                                          'Shared' => [shared_commit]
                                         }
                                       })
       end
@@ -442,7 +442,7 @@ RSpec.describe FeatureMap do
         grouped_commits = FeatureMap.group_commits([bar_commit])
         expect(grouped_commits).to eq({
                                         'Team B' => {
-                                          'Bar' => ['ccc333']
+                                          'Bar' => [bar_commit]
                                         }
                                       })
       end
@@ -452,10 +452,10 @@ RSpec.describe FeatureMap do
         grouped_commits = FeatureMap.group_commits([team_a_commit])
         expect(grouped_commits).to eq({
                                         'Team A' => {
-                                          'Foo' => ['eee555']
+                                          'Foo' => [team_a_commit]
                                         },
                                         'Team B' => {
-                                          'Foo' => ['eee555']
+                                          'Foo' => [team_a_commit]
                                         }
                                       })
       end
@@ -467,13 +467,13 @@ RSpec.describe FeatureMap do
         grouped_commits = FeatureMap.group_commits([featureless_commit, foo_commit])
         expect(grouped_commits).to eq({
                                         'All Teams' => {
-                                          'No Feature' => ['ddd444']
+                                          'No Feature' => [featureless_commit]
                                         },
                                         'Team A' => {
-                                          'Foo' => ['bbb222']
+                                          'Foo' => [foo_commit]
                                         },
                                         'Team B' => {
-                                          'Foo' => ['bbb222']
+                                          'Foo' => [foo_commit]
                                         }
                                       })
       end
