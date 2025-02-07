@@ -421,7 +421,20 @@ RSpec.describe FeatureMap do
                                       })
       end
 
-      it 'lists features that have no responsible team unde a key representing all teams' do
+      it 'does not duplicate commits with multiple files for the same feature' do
+        multi_file_commit = FeatureMap::Commit.new(sha: 'abc123', description: 'Changes to multiple Foo files.', files: ['app/my_file.rb', 'app/foo_stuff_owned_by_team_a.rb'])
+        grouped_commits = FeatureMap.group_commits([multi_file_commit])
+        expect(grouped_commits).to eq({
+                                        'Team A' => {
+                                          'Foo' => [multi_file_commit]
+                                        },
+                                        'Team B' => {
+                                          'Foo' => [multi_file_commit]
+                                        }
+                                      })
+      end
+
+      it 'lists features that have no responsible team under a key representing all teams' do
         write_file('app/shared.rb', 'class Shared; end')
         write_file('.feature_map/definitions/shared.yml', <<~CONTENTS)
           name: Shared

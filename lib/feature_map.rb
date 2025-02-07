@@ -221,7 +221,7 @@ module FeatureMap
         team_names.sort.each do |team_name|
           hash[team_name] ||= {}
           hash[team_name][feature.name] ||= []
-          hash[team_name][feature.name] << commit
+          hash[team_name][feature.name] << commit unless hash[team_name][feature.name].include?(commit)
         end
 
         feature
