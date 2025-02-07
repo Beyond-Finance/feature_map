@@ -6,6 +6,7 @@ require 'set'
 require 'sorbet-runtime'
 require 'json'
 require 'yaml'
+require 'feature_map/commit'
 require 'feature_map/code_features'
 require 'feature_map/mapper'
 require 'feature_map/validator'
@@ -14,6 +15,9 @@ require 'feature_map/cli'
 require 'feature_map/configuration'
 
 module FeatureMap
+  ALL_TEAMS_KEY = 'All Teams'
+  NO_FEATURE_KEY = 'No Feature'
+
   module_function
 
   extend T::Sig
@@ -21,6 +25,9 @@ module FeatureMap
 
   requires_ancestor { Kernel }
   GlobsToAssignedFeatureMap = T.type_alias { T::Hash[String, CodeFeatures::Feature] }
+
+  UpdatedFeaturesByTeam = T.type_alias { T::Hash[String, CommitsByFeature] }
+  CommitsByFeature = T.type_alias { T::Hash[String, T::Array[Commit]] }
 
   sig { params(assignments_file_path: String).void }
   def apply_assignments!(assignments_file_path)
@@ -196,6 +203,45 @@ module FeatureMap
       @memoized_values[klass.to_s] = value_to_memoize
       value_to_memoize
     end
+  end
+
+  # Groups the provided list of commits (e.g. the changes being deployed in a release) by both the feature they impact
+  # and the teams responsible for these features. Returns a hash with keys for each team with features modified within
+  # these commits and values that are a hash of features to the set of commits that impact each feature.
+  sig { params(commits: T::Array[Commit]).returns(UpdatedFeaturesByTeam) }
+  def group_commits(commits)
+    commits.each_with_object({}) do |commit, hash|
+      commit_features = commit.files.map do |file|
+        feature = FeatureMap.for_file(file)
+        next nil unless feature
+
+        teams = Private.all_teams_for_feature(feature)
+        team_names = teams.empty? ? [ALL_TEAMS_KEY] : teams.map(&:name)
+
+        team_names.sort.each do |team_name|
+          hash[team_name] ||= {}
+          hash[team_name][feature.name] ||= []
+          hash[team_name][feature.name] << commit unless hash[team_name][feature.name].include?(commit)
+        end
+
+        feature
+      end
+
+      # If the commit did not have any files that relate to a specific feature, include it in a "No Feature" section
+      # of the "All Teams" grouping to avoid it being omitted from the resulting grouped commits entirely.
+      next unless commit_features.compact.empty?
+
+      hash[ALL_TEAMS_KEY] ||= {}
+      hash[ALL_TEAMS_KEY][NO_FEATURE_KEY] ||= []
+      hash[ALL_TEAMS_KEY][NO_FEATURE_KEY] << commit
+    end
+  end
+
+  # Generates a block kit message grouping the provided commits into sections for each feature impacted by the
+  # cheanges.
+  sig { params(commits_by_feature: CommitsByFeature).returns(T::Array[T::Hash[String, T.untyped]]) }
+  def generate_release_notification(commits_by_feature)
+    Private.generate_release_notification(commits_by_feature)
   end
 
   # Generally, you should not ever need to do this, because once your ruby process loads, cached content should not change.

@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = 'feature_map'
-  spec.version       = '1.1.1'
+  spec.version       = '1.2.0'
   spec.authors       = ['Beyond Finance']
   spec.email         = ['engineering@beyondfinance.com']
   spec.summary       = 'A gem to help identify and manage features within large Ruby and Rails applications'
@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'packs-specification', '~> 0.0'
   spec.add_dependency 'rubocop', '~> 1.0'
   spec.add_dependency 'sorbet-runtime', '~> 0.5'
+  spec.add_dependency 'uri', '~> 1.0'
 
   spec.add_development_dependency 'debug', '~> 1.9'
   spec.add_development_dependency 'railties', '~> 7.2'

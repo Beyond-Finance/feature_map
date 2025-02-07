@@ -360,7 +360,166 @@ RSpec.describe FeatureMap do
     it 'captures the test coverage statistics for all features in a test-coverage.yml file within the .feature_map directory' do
       FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
       expect(File.exist?(test_coverage_output_file)).to be_truthy
-      expect(YAML.load_file(test_coverage_output_file)).to match({ 'features' => { 'Bar' => { 'hits' => 8, 'lines' => 10, 'misses' => 2 } } })
+      expect(YAML.load_file(test_coverage_output_file)).to match({
+                                                                   'features' => {
+                                                                     'Bar' => { 'hits' => 8, 'lines' => 10, 'misses' => 2 },
+                                                                     'Foo' => { 'hits' => 0, 'lines' => 0, 'misses' => 0 }
+                                                                   }
+                                                                 })
+    end
+  end
+
+  describe '.group_commits' do
+    let(:foo_and_bar_commit) { FeatureMap::Commit.new(sha: 'aaa111', description: 'A test change impacting both Foo and Bar.', pull_request_number: '111', files: ['app/my_file.rb', 'app/my_error.rb']) }
+    let(:foo_commit) { FeatureMap::Commit.new(sha: 'bbb222', description: 'A Foo only change.', pull_request_number: '222', files: ['app/my_file.rb']) }
+    let(:bar_commit) { FeatureMap::Commit.new(sha: 'ccc333', description: 'A Bar only change.', pull_request_number: '333', files: ['app/my_error.rb']) }
+
+    before { create_validation_artifacts }
+
+    context 'when CodeOwnership is not being used' do
+      it 'groups all features under a single key representing all teams' do
+        grouped_commits = FeatureMap.group_commits([foo_commit, foo_and_bar_commit, bar_commit])
+        expect(grouped_commits).to eq({
+                                        'All Teams' => {
+                                          'Foo' => [foo_commit, foo_and_bar_commit],
+                                          'Bar' => [foo_and_bar_commit, bar_commit]
+                                        }
+                                      })
+      end
+    end
+
+    context 'when CodeOwnership is being used' do
+      before do
+        create_files_with_team_assignments
+
+        write_file('.feature_map/assignments.yml', <<~CONTENTS)
+          ---
+          files:
+          features:
+            Bar:
+              files:
+              - app/my_error.rb
+              - app/other_team_b_stuff.rb
+            Foo:
+              files:
+              - app/my_file.rb
+              - app/foo_stuff_owned_by_team_a.rb
+              - app/foo_stuff_owned_by_team_b.rb
+        CONTENTS
+      end
+
+      it 'groups all features under the teams responsible for them' do
+        grouped_commits = FeatureMap.group_commits([foo_commit, foo_and_bar_commit, bar_commit])
+        expect(grouped_commits).to eq({
+                                        'Team A' => {
+                                          'Foo' => [foo_commit, foo_and_bar_commit]
+                                        },
+                                        'Team B' => {
+                                          'Foo' => [foo_commit, foo_and_bar_commit],
+                                          'Bar' => [foo_and_bar_commit, bar_commit]
+                                        }
+                                      })
+      end
+
+      it 'does not duplicate commits with multiple files for the same feature' do
+        multi_file_commit = FeatureMap::Commit.new(sha: 'abc123', description: 'Changes to multiple Foo files.', files: ['app/my_file.rb', 'app/foo_stuff_owned_by_team_a.rb'])
+        grouped_commits = FeatureMap.group_commits([multi_file_commit])
+        expect(grouped_commits).to eq({
+                                        'Team A' => {
+                                          'Foo' => [multi_file_commit]
+                                        },
+                                        'Team B' => {
+                                          'Foo' => [multi_file_commit]
+                                        }
+                                      })
+      end
+
+      it 'lists features that have no responsible team under a key representing all teams' do
+        write_file('app/shared.rb', 'class Shared; end')
+        write_file('.feature_map/definitions/shared.yml', <<~CONTENTS)
+          name: Shared
+          assigned_globs:
+            - app/shared.rb
+        CONTENTS
+        shared_commit = FeatureMap::Commit.new(sha: 'fff666', description: 'Change to a feature with no assigned team.', files: ['app/shared.rb'])
+
+        grouped_commits = FeatureMap.group_commits([shared_commit])
+        expect(grouped_commits).to eq({
+                                        'All Teams' => {
+                                          'Shared' => [shared_commit]
+                                        }
+                                      })
+      end
+
+      it 'lists only features modified within the specified commits' do
+        grouped_commits = FeatureMap.group_commits([bar_commit])
+        expect(grouped_commits).to eq({
+                                        'Team B' => {
+                                          'Bar' => [bar_commit]
+                                        }
+                                      })
+      end
+
+      it 'lists teams who are responsible for any file of a features modified within the specified commits, even if the teams files were NOT modified in the specified commits' do
+        team_a_commit = FeatureMap::Commit.new(sha: 'eee555', description: 'Change made by Team A to a Foo file.', files: ['app/foo_stuff_owned_by_team_a.rb'])
+        grouped_commits = FeatureMap.group_commits([team_a_commit])
+        expect(grouped_commits).to eq({
+                                        'Team A' => {
+                                          'Foo' => [team_a_commit]
+                                        },
+                                        'Team B' => {
+                                          'Foo' => [team_a_commit]
+                                        }
+                                      })
+      end
+
+      it 'lists commits that change that have no responsible team under a key representing all teams' do
+        write_file('app/featureless_file.rb', 'class FeaturelessClass; end')
+        featureless_commit = FeatureMap::Commit.new(sha: 'ddd444', description: 'Change to files that are not assigned to any feature.', files: ['app/featureless_file.rb'])
+
+        grouped_commits = FeatureMap.group_commits([featureless_commit, foo_commit])
+        expect(grouped_commits).to eq({
+                                        'All Teams' => {
+                                          'No Feature' => [featureless_commit]
+                                        },
+                                        'Team A' => {
+                                          'Foo' => [foo_commit]
+                                        },
+                                        'Team B' => {
+                                          'Foo' => [foo_commit]
+                                        }
+                                      })
+      end
+    end
+  end
+
+  describe '.generate_release_notification' do
+    let(:foo_and_bar_commit) { FeatureMap::Commit.new(sha: 'aaa111', description: 'A test change impacting both Foo and Bar.', pull_request_number: '111', files: ['app/my_file.rb', 'app/my_error.rb']) }
+    let(:foo_commit) { FeatureMap::Commit.new(sha: 'bbb222', description: 'A Foo only change.', pull_request_number: '222', files: ['app/my_file.rb']) }
+    let(:bar_commit) { FeatureMap::Commit.new(sha: 'ccc333', description: 'A Bar only change.', pull_request_number: '333', files: ['app/my_error.rb']) }
+    let(:commits_by_feature) { { 'Foo' => [foo_and_bar_commit, foo_commit], 'Bar' => [bar_commit, foo_and_bar_commit] } }
+
+    before { create_files_with_defined_classes }
+
+    it 'generated a release notification payload for the specified set of commits' do
+      payload = FeatureMap.generate_release_notification(commits_by_feature)
+      expect(payload).to eq([
+                              {
+                                type: 'section',
+                                text: {
+                                  type: 'mrkdwn',
+                                  text: "*_Bar_*\n• A Bar only change.\n• A test change impacting both Foo and Bar."
+                                }
+                              },
+                              { type: 'divider' },
+                              {
+                                type: 'section',
+                                text: {
+                                  type: 'mrkdwn',
+                                  text: "*_Foo_*\n• A test change impacting both Foo and Bar.\n• A Foo only change."
+                                }
+                              }
+                            ])
     end
   end
 end

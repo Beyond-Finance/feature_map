@@ -2,6 +2,7 @@
 
 # typed: strict
 
+require 'code_ownership'
 require 'csv'
 
 require 'feature_map/constants'
@@ -27,6 +28,7 @@ require 'feature_map/private/assignment_mappers/file_annotations'
 require 'feature_map/private/assignment_mappers/feature_globs'
 require 'feature_map/private/assignment_mappers/directory_assignment'
 require 'feature_map/private/assignment_mappers/feature_definition_assignment'
+require 'feature_map/private/release_notification_builder'
 
 module FeatureMap
   module Private
@@ -206,6 +208,23 @@ module FeatureMap
 
         feature_files
       end
+    end
+
+    sig { params(feature: CodeFeatures::Feature).returns(T::Array[CodeTeams::Team]) }
+    def self.all_teams_for_feature(feature)
+      return [] if configuration.skip_code_ownership
+
+      feature_assignments = AssignmentsFile.load_features!
+
+      feature_files = feature_assignments.dig(feature.name, AssignmentsFile::FILES_KEY)
+      return [] if !feature_files || feature_files.empty?
+
+      feature_files.map { |file| CodeOwnership.for_file(file) }.compact.uniq
+    end
+
+    sig { params(commits_by_feature: CommitsByFeature).returns(ReleaseNotificationBuilder::BlockKitPayload) }
+    def self.generate_release_notification(commits_by_feature)
+      ReleaseNotificationBuilder.build(commits_by_feature)
     end
   end
 
