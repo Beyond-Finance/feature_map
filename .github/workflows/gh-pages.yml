@@ -30,6 +30,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          npm install tailwindcss @tailwindcss/cli
+          npx @tailwindcss/cli -i ./readme/tailwind.src.css -o ./readme/tailwind.build.css
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
