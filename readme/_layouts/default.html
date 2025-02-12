@@ -1,16 +1,17 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-  <title>{{ page.title }}</title>
+  <title>Feature Map - {{ page.title }}</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Tailwind is built at deploy time by github actions -->
-  <link rel="stylesheet" href="./tailwind.build.css">
+  <link rel="stylesheet" href="{{ '/tailwind.build.css' | relative_url }}">
 </head>
 <body>
   <header class="sticky top-0 z-50 flex items-center justify-between px-3 py-2 border-b shadow-lg bg-white/90 backdrop-blur-sm border-slate-400/40">
     <div class="flex items-center flex-grow basis-0">
-      <a href="" class="text-lg font-semibold tracking-tight text-slate-900">
+      <a href="/" class="text-lg font-semibold tracking-tight text-slate-900">
         Feature Map
       </a>
     </div>
@@ -34,22 +35,40 @@
       <div class="absolute inset-y-0 right-0 w-full lg:w-[50vw] bg-white lg:bg-slate-50"></div>
 
       <nav class="sticky top-[4.5rem] w-64 pr-8 text-base lg:text-sm xl:w-72 xl:pr-16">
-        <ul role="list" class="-ml-0.5 h-[calc(100vh-4.5rem)] overflow-y-auto py-7 pl-0.5 space-y-8">
+        <ul role="nav" class="-ml-0.5 h-[calc(100vh-4.5rem)] overflow-y-auto py-7 pl-0.5 space-y-8">
           <li>
             <h3 class="font-semibold tracking-tight text-slate-900">
               Getting started
             </h3>
 
-            <ul role="list" class="pl-3 mt-3 space-y-2">
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
               <li>
-                <a href="#" class="text-slate-900 hover:text-slate-800">
-                  Quick start guide
+                <a href="/getting-started/configuration" class="text-slate-900 hover:text-slate-800">
+                  Configuration
                 </a>
               </li>
 
               <li>
-                <a href="#" class="text-slate-600 hover:text-slate-800">
-                  How does Spinal work?
+                <a href="/getting-started/feature-definition" class="text-slate-900 hover:text-slate-800">
+                  Feature Definition
+                </a>
+              </li>
+
+              <li>
+                <a href="/getting-started/feature-assignment" class="text-slate-900 hover:text-slate-800">
+                  Feature Assignment
+                </a>
+              </li>
+
+              <li>
+                <a href="/getting-started/with-code-ownership" class="text-slate-600 hover:text-slate-800">
+                  With Code Ownership
+                </a>
+              </li>
+
+              <li>
+                <a href="/getting-started/inline-execution" class="text-slate-600 hover:text-slate-800">
+                  Inline Execution
                 </a>
               </li>
             </ul>
@@ -57,19 +76,55 @@
 
           <li>
             <h3 class="font-semibold tracking-tight text-slate-900">
-              Content Types
+              Public Interface (Gem + CLI)
             </h3>
 
-            <ul role="list" class="pl-3 mt-3 space-y-2">
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
               <li>
                 <a href="#" class="text-slate-600 hover:text-slate-800">
-                  What are content types?
+                  Overview
                 </a>
               </li>
 
               <li>
                 <a href="#" class="text-slate-600 hover:text-slate-800">
-                  Create and edit content types
+                  Apply Assignments
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Docs
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  For Feature
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  For File
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Test Coverage
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Test Pyramid
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Validate
                 </a>
               </li>
             </ul>
@@ -77,19 +132,71 @@
 
           <li>
             <h3 class="font-semibold tracking-tight text-slate-900">
-              Content
+              Documentation Site
             </h3>
 
-            <ul role="list" class="pl-3 mt-3 space-y-2">
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
               <li>
                 <a href="#" class="text-slate-600 hover:text-slate-800">
-                  What kind of content can I create and edit?
+                  Overview
                 </a>
               </li>
 
               <li>
                 <a href="#" class="text-slate-600 hover:text-slate-800">
-                  Previewing content
+                  Artifact Generation
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Publication
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h3 class="font-semibold tracking-tight text-slate-900">
+              Continuous Integration (CI)
+            </h3>
+
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Validation
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Release Notification
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h3 class="font-semibold tracking-tight text-slate-900">
+              Development
+            </h3>
+
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Ruby Gem
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  Documentation Site
+                </a>
+              </li>
+
+              <li>
+                <a href="#" class="text-slate-600 hover:text-slate-800">
+                  This Readme Site
                 </a>
               </li>
             </ul>
@@ -100,7 +207,7 @@
 
     <div class="flex-auto max-w-2xl min-w-0 px-4 py-10 lg:max-w-none lg:pr-0 lg:pl-8 xl:px-16">
       <article class="">
-        <header class="">
+        <header class="text-2xl font-semibold tracking-tight text-slate-900 mb-8">
           {{ page.title }}
         </header>
         {{ content }}

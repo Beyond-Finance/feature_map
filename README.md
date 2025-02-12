@@ -1,6 +1,5 @@
 # FeatureMap
 
-This gem helps identify and manage features within large Ruby and Rails applications. This gem works best in large, usually monolithic code bases for applications that incorporate a wide range of features with various dependencies.
 
 ## Getting started
 
@@ -32,7 +31,7 @@ To get started there's a few things you should do.
         Name,Description,Documentation Link,Custom Attribute
         Onboarding,"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",https://www.notion.so/onboarding-feature-abcd1234,Test 123
         User Management,"Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",,
-        ``` 
+        ```
 3) Declare feature assignments. You can do this at a directory level or at a file level. All of the files within the `assigned_globs` you declared in step 1 will need to have a feature assigned (or be opted out via `unassigned_globs`). See the next section for more detail.
 4) Run validations when you commit, and/or in CI. If you run validations in CI, ensure that if your `assignments.yml` file gets changed, that gets pushed to the PR. A `metrics.yml` file will also be generated but we recommend NOT commiting that file because it changes very frequently.
 
