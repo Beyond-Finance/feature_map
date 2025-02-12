@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+pre {
+  @apply bg-slate-900 text-slate-100 p-4 my-4 rounded-sm overflow-scroll
+}
+
+code {
+  @apply font-mono
+}
+
+article {
+  @apply max-w-3xl
+}
+
+blockquote {
+  @apply border-l-2 border-slate-800 pl-4 ml-4 my-4
+}
+
+ul:not([role="nav"]) {
+  @apply space-y-1 list-disc list-inside my-4 ml-4
+}
+
+table {
+ @apply w-full text-sm text-left
+   text-gray-700 max-w-xl m-auto my-4
+}
+
+tr:first-of-type {
+  @apply text-xs text-gray-700 uppercase bg-slate-800
+    text-slate-100
+}
+
+tr:not(:first-of-type) {
+  @apply even:bg-white odd:bg-gray-50 border-b border-slate-800
+}
+
+td {
+  @apply p-2
+}
+
+h1 {
+  @apply text-lg font-bold mt-8
+}
+
+a {
+  @apply underline text-slate-700
+}
