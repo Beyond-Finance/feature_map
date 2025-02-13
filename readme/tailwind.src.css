@@ -46,7 +46,7 @@ h1 {
   @apply text-lg font-bold mt-8
 }
 
-a {
+a:not([role="nav"]) {
   @apply underline text-slate-700
 }
 

@@ -30,3 +30,4 @@ feature_map-*.gem
 /readme/tailwind.build.css
 /readme/.jekyll-cache
 /readme/.sass-cache
+/readme/example-docs-site.html
