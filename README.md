@@ -1,140 +1,12 @@
 # FeatureMap
 
 
-## Getting started
-
-To get started there's a few things you should do.
-
-1) Create a `.feature_map/config.yml` file and declare where your files live. Here's a sample to start with:
-    ```yml
-    assigned_globs:
-      - '{app,components,config,frontend,lib,packs,spec}/**/*.{rb,rake,js,jsx,ts,tsx}'
-    unassigned_globs:
-      - db/**/*
-      - app/services/some_file1.rb
-      - app/services/some_file2.rb
-      - frontend/javascripts/**/__generated__/**/*
-    ```
-    You may find a more comprehensive example in this repository's `.feature_map/config.yml`.
-
-2) Define the features of our your application. There are two methods for defining features:
-    * YAML Definitions: Each feature can be defined in a separate YAML file within the `.feature_map/definitions` directory. Here's an example, that would live at `.feature_map/definitions/onboarding.yml`:
-        ```yml
-        name: Onboarding
-        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-        documentation_link: https://www.notion.so/onboarding-feature-abcd1234
-        ```
-    * CSV Definitions: All features can be defined within a single CSV file located at `.feature_map/feature_definitions.csv`. Here's an example of what that file might look like:
-        ```
-        # Comment explaining the purpose of this file and how it should be managed.
-
-        Name,Description,Documentation Link,Custom Attribute
-        Onboarding,"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",https://www.notion.so/onboarding-feature-abcd1234,Test 123
-        User Management,"Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",,
-        ```
-3) Declare feature assignments. You can do this at a directory level or at a file level. All of the files within the `assigned_globs` you declared in step 1 will need to have a feature assigned (or be opted out via `unassigned_globs`). See the next section for more detail.
-4) Run validations when you commit, and/or in CI. If you run validations in CI, ensure that if your `assignments.yml` file gets changed, that gets pushed to the PR. A `metrics.yml` file will also be generated but we recommend NOT commiting that file because it changes very frequently.
-
-## Usage: Assigning Features
-
-There are multiple ways to assign the feature for a source file using this gem.
-
-### Directory-Based Assignment
-Directory based assignment allows for all files in that directory and all its sub-directories to be assigned to a single feature. To define this, add a `.feature` file inside that directory with the name of the feature as the contents of that file.
-
-### File-Annotation Based Assignment
-File annotations are a last resort if there is no clear home for your code. File annotations go at the top of your file, and look like this:
-```ruby
-# @feature Onboarding
-```
-
-### Glob-Based Assignment
-In the YML configuration of a feature, you can set `assigned_globs` to be a glob of files assigned to this feature. For example, in `onboarding.yml`:
-```yml
-name: Onboarding
-assigned_globs:
-  - app/services/stuff_for_onboarding/**/**
-  - app/controllers/other_stuff_for_onboarding/**/**
-```
-
-### Feature Definition File Assignment
-By default any feature definition YML files, located in the `.feature_map/definitions' directory, are assigned to their corresponding feature.
-
-The leading `.` in the path for these files results in them being quoted within the resulting `.feature_map/assignments` file. The following is an example of this content:
-```yml
----
-files:
-  ".feature_map/definitions/bar.yml":
-    feature: Bar
-    mapper: Feature definition file assignment
-features:
-  Bar:
-  - ".feature_map/definitions/bar.yml"
-```
-
-In cases when the feature assignments for these files is irrelevant, this behavior can be disabled by setting the `ignore_feature_definitions` key in the `.feature_map/config.yml` file to `true`.
-
-### Custom Assignment
-To enable custom assignment, you can inject your own custom classes into `feature_map`.
-To do this, first create a class that adheres to the `FeatureMap::Mapper` and/or `FeatureMap::Validator` interface.
-Then, in `.feature_map/config.yml`, you can require that file:
-```yml
-require:
-  - ./lib/my_extension.rb
-```
-
-Now, `bin/featuremap validate` will automatically include your new mapper and/or validator. See [`spec/lib/feature_map/private/extension_loader_spec.rb](spec/lib/feature_map/private/extension_loader_spec.rb) for an example of what this looks like.
-
-## Usage: Reading FeatureMap
+## FeatureMap Gem Structure
 
 Check out [`lib/feature_map.rb`](https://github.com/Beyond-Finance/feature_map/blob/main/lib/feature_map.rb) to see the public API.
 
 Check out [`feature_map_spec.rb`](https://github.com/Beyond-Finance/feature_map/blob/main/spec/lib/feature_map_spec.rb) to see examples of how the feature map utility is used.
 
-### `for_file`
-`FeatureMap.for_file`, given a relative path to a file returns a `CodeFeatures::Feature` if there is a feature assigned to the file, `nil` otherwise.
-
-```ruby
-FeatureMap.for_file('path/to/file/relative/to/application/root.rb')
-```
-
-Contributor note: If you are making updates to this method or the methods getting used here, please benchmark the performance of the new implementation against the current for both `for_files` and `for_file` (with 1, 100, 1000 files).
-
-See `feature_map_spec.rb` for examples.
-
-### `for_backtrace`
-`FeatureMap.for_backtrace` can be given a backtrace and will either return `nil`, or a `CodeFeatures::Feature`.
-
-```ruby
-FeatureMap.for_backtrace(exception.backtrace)
-```
-
-This will go through the backtrace, and return the feature of the first files with a feature assignment associated with frames within the backtrace.
-
-See `feature_map_spec.rb` for an example.
-
-### `for_class`
-
-`FeatureMap.for_class` can be given a class and will either return `nil`, or a `CodeFeatures::Feature`.
-
-```ruby
-FeatureMap.for_class(MyClass)
-```
-
-Under the hood, this finds the file where the class is defined and returns the featuer assigned to that file.
-
-See `feature_map_spec.rb` for an example.
-
-### `for_feature`
-`FeatureMap.for_feature` can be used to generate a feature report for a single feature.
-```ruby
-FeatureMap.for_feature('Onboarding')
-```
-
-You can shovel this into a markdown file for easy viewing using the CLI:
-```
-bin/feature_map for_feature 'Onboarding' > tmp/onboarding_feature_report.md
-```
 
 ## Usage: Generating Feature Assignment files
 
@@ -144,10 +16,7 @@ When you run `bin/featuremap validate`, the following files will automatically b
 
 ## Usage: Generating Documentation
 
-The feature map gem captures valuable insights about the features of your application (e.g. metrics like ABC size, lines of code, and cyclomatic complexity). To review this information locally, you can run `bin/featuremap docs` to produce a single, self contained HTML file that includes a fully functional documentation site with useful diagrams and details about the features of your application. This file is created within the `.feature_map/docs` directory and the `index.html` file can loaded in the browser of your choice by running `open .feature_map/docs/index.html`.
 
-**Example screenshot**
-![Feature Map Docs Dashboard](readme_assets/feature-map-docs-dashboard.png)
 
 ## Usage: Generating the Test Pyramid
 
