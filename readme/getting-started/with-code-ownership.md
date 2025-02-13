@@ -7,4 +7,4 @@ FeatureMap delegates to the [CodeOwnership](https://github.com/rubyatscale/code_
 Because CodeOwnership is executed by FeatureMap (e.g., via [inline bundling]({{ '/getting-started/inline-execution' | relative_url }})), team assignment and FeatureMap team enforcement will function in any environment that this library is installed in -- with the following caveats:
 
   - Any environment may describe team ownership via CodeOwnership's glob pattern, or `.codeowner` file-based team assignment.
-  - Only environments that support `#`-style commments may include inline `# @team Foo` style team assignments.
+  - Only environments that support `#`-style comments may include inline `# @team Foo` style team assignments.
