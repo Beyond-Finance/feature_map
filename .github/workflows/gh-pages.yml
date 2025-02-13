@@ -36,6 +36,9 @@ jobs:
       - run: |
           npm install tailwindcss @tailwindcss/cli
           npx @tailwindcss/cli -i ./readme/tailwind.src.css -o ./readme/tailwind.build.css
+      - name: Copy current example site
+        run: |
+          cp ./lib/feature_map/private/docs/index.html ./readme/example-docs-site.html
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
