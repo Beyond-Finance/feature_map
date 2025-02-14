@@ -7,7 +7,7 @@ import { Tooltip, TooltipButton, TooltipPanel } from './Tooltip';
 
 const FeatureSizeDataCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
-    const sizeScore = currentFeature.metrics.featureSize.percentOfMax;
+    const sizeScore = currentFeature.additional_metrics.feature_size.percent_of_max || 0;
 
     if (sizeScore !== undefined && sizeScore !== null) {
       const category = getFeatureSizeLabel(sizeScore);
