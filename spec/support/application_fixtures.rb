@@ -296,4 +296,4 @@ RSpec.shared_context 'application fixtures' do
             overall: 96.3157894736842
     CONTENTS
   end
-send
+end
