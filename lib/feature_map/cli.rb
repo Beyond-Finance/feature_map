@@ -19,6 +19,8 @@ module FeatureMap
         test_coverage!(argv)
       elsif command == 'test_pyramid'
         test_pyramid!(argv)
+      elsif command == 'additional_metrics'
+        additional_metrics!(argv)
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -34,6 +36,7 @@ module FeatureMap
             for_file - find feature assignment for a single file
             test_coverage - generates per-feature test coverage statistics
             test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
+            additional_metrics - generates additional metrics per-feature (e.g. health score)
             validate - run all validations
 
             ##################################################
@@ -197,6 +200,24 @@ module FeatureMap
 
       unit_path, integration_path, regression_path, regression_assignments_path = file_paths
       FeatureMap.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
+    end
+
+    def self.additional_metrics!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = <<~MSG
+          Usage: bin/featuremap additional_metrics
+          Should be run after metrics and test coverage files have been generated
+        MSG
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      args = parser.order!(argv)
+      parser.parse!(args)
+
+      FeatureMap.generate_additional_metrics!
     end
 
     # For now, this just returns feature assignment

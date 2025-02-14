@@ -219,4 +219,81 @@ RSpec.shared_context 'application fixtures' do
           regression_pending: 1
     CONTENTS
   end
+
+  let(:create_additional_metrics_artifacts) do
+    create_files_with_defined_classes
+
+    write_file('.feature_map/additional-metrics.yml', <<~CONTENTS)
+      ---
+      features:
+        Bar:
+          cyclomatic_complexity:
+            percentile: 0.0
+            percent_of_max: 0
+            score: 0
+          encapsulation:
+            percentile: 0.0
+            percent_of_max: 0
+            score: 0
+          feature_size:
+            percentile: 0.0
+            percent_of_max: 0
+            score: 0
+          test_coverage:
+            percentile: 0.0
+            percent_of_max: 0
+            score: 0
+          health:
+            test_coverage_component:
+              awardable_points: 70
+              health_score: 0.0
+              close_to_maximum_score: false
+              exceeds_score_threshold: false
+            cyclomatic_complexity_component:
+              awardable_points: 15
+              health_score: 0.0
+              close_to_maximum_score: false
+              exceeds_score_threshold: false
+            encapsulation_component:
+              awardable_points: 15
+              health_score: 0.0
+              close_to_maximum_score: false
+              exceeds_score_threshold: false
+            overall: 0.0
+        Foo:
+          cyclomatic_complexity:
+            percentile: 50.0
+            percent_of_max: 100
+            score: 6.0675675675675675
+          encapsulation:
+            percentile: 50.0
+            percent_of_max: 100
+            score: 0.015590200445434299
+          feature_size:
+            percentile: 50.0
+            percent_of_max: 100
+            score: 449
+          test_coverage:
+            percentile: 50.0
+            percent_of_max: 100
+            score: 90
+          health:
+            test_coverage_component:
+              awardable_points: 70
+              health_score: 66.3157894736842
+              close_to_maximum_score: false
+              exceeds_score_threshold: false
+            cyclomatic_complexity_component:
+              awardable_points: 15
+              health_score: 15
+              close_to_maximum_score: true
+              exceeds_score_threshold: false
+            encapsulation_component:
+              awardable_points: 15
+              health_score: 15
+              close_to_maximum_score: true
+              exceeds_score_threshold: false
+            overall: 96.3157894736842
+    CONTENTS
+  end
 end

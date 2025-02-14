@@ -258,6 +258,7 @@ RSpec.describe FeatureMap::Cli do
           for_file - find feature assignment for a single file
           test_coverage - generates per-feature test coverage statistics
           test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
+          additional_metrics - generates additional metrics per-feature (e.g. health score)
           validate - run all validations
 
           ##################################################
