@@ -122,7 +122,9 @@ module FeatureMap
                                                                   'abc_size' => 0,
                                                                   'lines_of_code' => 0,
                                                                   'cyclomatic_complexity' => 0,
-                                                                  'todo_locations' => {}
+                                                                  'todo_locations' => {},
+                                                                  'complexity_ratio' => 0,
+                                                                  'encapsulation_ratio' => 0
                                                                 })
       end
 
@@ -230,6 +232,8 @@ module FeatureMap
                                          'abc_size' => 1.41,
                                          'lines_of_code' => 4,
                                          'cyclomatic_complexity' => 1,
+                                         'complexity_ratio' => 4.0,
+                                         'encapsulation_ratio' => 0.25,
                                          'todo_locations' => {}
                                        })
 
@@ -237,6 +241,8 @@ module FeatureMap
                                            'abc_size' => 9.6,
                                            'lines_of_code' => 15,
                                            'cyclomatic_complexity' => 3,
+                                           'complexity_ratio' => 5.0,
+                                           'encapsulation_ratio' => 0.13333333333333333,
                                            'todo_locations' => {}
                                          })
 
@@ -244,6 +250,8 @@ module FeatureMap
                                           'abc_size' => 26.83,
                                           'lines_of_code' => 35,
                                           'cyclomatic_complexity' => 7,
+                                          'complexity_ratio' => 5.0,
+                                          'encapsulation_ratio' => 0.08571428571428572,
                                           'todo_locations' => {}
                                         })
         end
