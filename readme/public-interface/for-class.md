@@ -1,5 +1,5 @@
 ---
-title: For Class
+title: Public Interface - For Class
 ---
 
 `FeatureMap.for_class` can be given a class and will either return `nil`, or a `CodeFeatures::Feature`.

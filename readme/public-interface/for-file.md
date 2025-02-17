@@ -1,5 +1,5 @@
 ---
-title: For File
+title: Public Interface - For File
 ---
 
 `FeatureMap.for_file`, given a relative path to a file returns a `CodeFeatures::Feature` if there is a feature assigned to the file, `nil` otherwise.

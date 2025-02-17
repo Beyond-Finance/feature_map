@@ -1,5 +1,5 @@
 ---
-title: Apply Assignments
+title: Public Interface - Apply Assignments
 ---
 
 When first integrating FeatureMap into a new codebase, there will often be many files that must be assigned to a feature at once.

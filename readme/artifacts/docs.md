@@ -1,5 +1,5 @@
 ---
-title: Docs
+title: Artifacts - Docs
 ---
 
 The documentation files support rendering the [documentation site]({{ 'documentation-site/overview' | relative_url }}).  They are composed of `.feature_map/docs/index.html` and `.feature_map/docs/feature-map-config.js`.

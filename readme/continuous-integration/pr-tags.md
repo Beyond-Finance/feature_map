@@ -1,5 +1,5 @@
 ---
-title: Release Notification
+title: Continuous Integration - PR Tags
 ---
 
 Once FeatureMap has been integrated into an application, the knowledge of which files are assigned to a given feature may be used during the pull request review process.  The specific implementation depends largely on the structure of a given application, but broadly you may consider the following steps:

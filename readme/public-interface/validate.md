@@ -1,5 +1,5 @@
 ---
-title: Validate
+title: Public Interface - Validate
 ---
 
 FeatureMap comes with a validation function to ensure the following things are true:

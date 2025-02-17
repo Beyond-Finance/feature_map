@@ -1,5 +1,5 @@
 ---
-title: Metrics
+title: Artifacts - Metrics
 ---
 
 The metrics file includes basic metrics derived for each feature.

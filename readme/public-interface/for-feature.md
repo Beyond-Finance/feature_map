@@ -1,5 +1,5 @@
 ---
-title: For Feature
+title: Public Interface - For Feature
 ---
 
 `FeatureMap.for_feature` can be used to generate a feature report for a single feature.

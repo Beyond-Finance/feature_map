@@ -1,5 +1,5 @@
 ---
-title: Test Pyramid
+title: Artifacts - Test Pyramid
 ---
 The test pyramid file includes details about the number of unit, integration, and regression tests that are assigned to each feature.
 

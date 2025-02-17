@@ -1,5 +1,5 @@
 ---
-title: Validation
+title: Continuous Integration - Validation
 ---
 
 Once FeatureMap has been integrated into an application, it's important to keep feature annotations up-to-date.  This is best done via an existing continuous integration pipeline (e.g., GitHub Actions, or CircleCI).

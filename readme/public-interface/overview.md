@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Public Interface - Overview
 ---
 
 FeatureMap provides many utilities via its bundled bin script (or when made into a bin script via [Inline Execution]({{ '/getting-started/inline-execution' | relative_url }})).

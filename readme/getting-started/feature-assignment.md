@@ -1,5 +1,5 @@
 ---
-title: Feature Assignment
+title: Getting Started - Feature Assignment
 ---
 
 There are multiple ways to assign the feature for a source file using this gem.  The [`bin/featuremap apply_assignments`]({{ '/public-interface/apply-assignments' | relative_url }}) command can aid in applying new assignments across a codebase.

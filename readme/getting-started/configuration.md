@@ -1,5 +1,5 @@
 ---
-title: Configuration
+title: Getting Started - Configuration
 ---
 
 FeatureMap is configured via its `.feature_map/config.yml` configuration file.  Directives are described inline, below.  Feel free to copy and paste this into your project as a starting point.

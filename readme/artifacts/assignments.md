@@ -1,5 +1,5 @@
 ---
-title: Assignments
+title: Artifacts - Assignments
 ---
 
 The assignments file holds a mapping of files and their assigned feature &mdash; as well as features and their assigned files.  This file may be found:  `.feature_map/assignments.yml`

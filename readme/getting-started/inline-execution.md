@@ -1,5 +1,5 @@
 ---
-title: Inline Execution
+title: Getting Started - Inline Execution
 ---
 
 FeatureMap is a Ruby gem and must be executed within a Ruby environment.  For non-Ruby projects, this may be done by via [inline bundling](https://bundler.io/guides/bundler_in_a_single_file_ruby_script.html).

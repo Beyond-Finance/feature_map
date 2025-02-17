@@ -1,5 +1,5 @@
 ---
-title: Test Pyramid
+title: Public Interface - Test Pyramid
 ---
 
 The feature map gem supports reporting on the [test pyramid](https://martinfowler.com/bliki/TestPyramid.html) coverage of the application and its constituent features.  It works, broadly, by:  accepting test execution reports (e.g., rspec's `json` format) for unit, integration, and regression tests -- and then matches those tests to their corresponding features as follows:

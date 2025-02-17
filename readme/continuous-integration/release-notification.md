@@ -1,5 +1,5 @@
 ---
-title: Release Notification
+title: Continuous Integration - Release Notification
 ---
 
 Once FeatureMap has been integrated into an application, the knowledge of which files are assigned to a given feature may be used during the publication of a release (or upon the merge to a main branch).  The specific implementation depends largely on the structure of a given application, but broadly you may consider the following steps:

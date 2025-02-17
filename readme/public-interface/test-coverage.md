@@ -1,5 +1,5 @@
 ---
-title: Test Coverage
+title: Public Interface - Test Coverage
 ---
 
 When you run `bin/featuremap test_coverage`, the test coverage statistics of the latest commit on the main branch will be pulled from [CodeCov](https://codecov.io/) and collected into a set of per-feature test coverage statistics. This feature level test coverage data is then captured in the `.feature_map/test-coverage.yml` file.

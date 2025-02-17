@@ -1,5 +1,5 @@
 ---
-title: Test Coverage
+title: Artifacts - Test Coverage
 ---
 The test coverage file includes line-count test coverage statistics for each feature.
 

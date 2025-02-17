@@ -1,5 +1,5 @@
 ---
-title: For Backtrace
+title: Public Interface - For Backtrace
 ---
 
 `FeatureMap.for_backtrace` can be given a backtrace and will either return `nil`, or a `CodeFeatures::Feature`.
