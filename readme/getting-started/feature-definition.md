@@ -18,7 +18,7 @@ It's also helpful to understand what articulating the features of a system _does
 **Here are a few examples of poorly-constructed features**
 
 | Feature | Reason|
-Program Management | Too big
+Everything Management | Too big
 API Endpoints | Supports many use cases; not well isolated
 Slow Jobs | No well defined responsibilities
 Blueprints | Code construct used by multiple features

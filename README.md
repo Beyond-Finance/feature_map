@@ -49,7 +49,7 @@ The documentation site may be run locally to aid in development via `bin/docs`. 
 
 The README site is built with Jekyll and TailwindCSS and is hosted via GitHub Pages at:  https://beyond-finance.github.io/feature_map.  It can be run locally to aid in development via `bin/readme`.
 
-#### Publication
+### Publication
 
 When a new version of the gem is ready to be published, please follow these steps:
 

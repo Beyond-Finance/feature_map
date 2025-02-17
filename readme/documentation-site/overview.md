@@ -2,7 +2,7 @@
 title: Overview
 ---
 
-The documentation site provides a visual representation of the set of Features that an application is composed up, as well as details on those Features' description, composition, health, and test coverage.
+The documentation site provides a visual representation of the set of Features that an application is composed of, as well as details on those Features' description, composition, health, and test coverage.
 
 [You can view an example of the documentation site at right here]({{ '/example-docs-site.html' | relative_url }}){:target="_blank"}.
 
