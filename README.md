@@ -45,6 +45,8 @@ Compilation of the build asset is done via `npm run build` from within the [docs
 
 The documentation site may be run locally to aid in development via `bin/docs`.  It uses sample data found in [docs/src/data/sample_config.js](./docs/src/data/sample_config.js).
 
+More information on the development of the documentation site may be found in the [Docs Readme](./docs/README.md).
+
 ### README Site
 
 The README site is built with Jekyll and TailwindCSS and is hosted via GitHub Pages at:  https://beyond-finance.github.io/feature_map.  It can be run locally to aid in development via `bin/readme`.
@@ -61,3 +63,9 @@ When a new version of the gem is ready to be published, please follow these step
    * Build a new version of the gem: `gem build feature_map.gemspec`
    * Authenticate with rubygems.org: `gem signin`
    * Publish the new version of the gem: `gem push feature_map-[NEW_VERSION].gem`
+
+## Colophon
+
+The structure and execution of FeatureMap's initial version was based on the gem [CodeOwnership](https://github.com/rubyatscale/code_ownership).
+
+The structure and styling of the README site was based on a theme from [Spinal](https://spinalcms.com/resources/documentation-theme-built-with-tailwind-css/).
