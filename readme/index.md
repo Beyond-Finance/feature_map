@@ -20,7 +20,7 @@ FeatureMap may be installed directly into a Ruby environment or Ruby on Rails ap
 > `gem install feature_map`
 
 **Gemfile**
-> `gem 'feature_map', '~> 1.2'``
+> `gem 'feature_map'``
 
 **Inline**\
 FeatureMap may also be executed without direct installation via [inline bundling](https://bundler.io/guides/bundler_in_a_single_file_ruby_script.html).  For more information see [Inline Execution]({{ '/getting-started/inline-execution' | relative_url }}).
