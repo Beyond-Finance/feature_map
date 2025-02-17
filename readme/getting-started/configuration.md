@@ -26,7 +26,8 @@ skip_code_ownership: false
 require_assignment_for_teams:
   - Onboarding
 
-# Skips validation of the associated assignments file
+# Disables the requirement for the assignments.yml file to be up to date and
+# committed to the codebase
 skip_features_validation: false
 
 # Supports the retrieval of rolled up test coverage
