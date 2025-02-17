@@ -1,5 +1,5 @@
 ---
-title: Inline Execution
+title: With Code Ownership
 ---
 
 FeatureMap delegates to the [CodeOwnership](https://github.com/rubyatscale/code_ownership) gem in order to enforce its `require_assignment_for_teams` configuration directive.  In order to specify team-based assignment in FeatureMap, those same teams must exist and be configured via CodeOwnership's config files.
