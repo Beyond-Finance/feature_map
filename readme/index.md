@@ -34,5 +34,7 @@ The set of Features that compose the application must be defined in a csv file a
 # 4. Feature Assignment
 Source files within the application must be annotated with their corresponding Feature.  For more information, see [Feature Assignment]({{ '/getting-started/feature-assignment' | relative_url }}).
 
-# 5. Usage
+# 5. Artifact Generation
 Once all required source files have been assigned to a corresponding feature, FeatureMap is ready to be used.  You can produce artifacts that support various workflows, from [validating assignment in CI]({{ '/ci/validation' | relative_url }}), to publishing [release notifications]({{ '/ci/release-notification' | relative_url }}), or [generating the documentation site]({{ '/documentation-site/overview' | relative_url }}) in order to get a holistic view of the health and composition of your system.
+
+See the [Artifact Overview]({{ '/artifacts/overview' | relative_url }}) for more details on the artifacts that drive these processes.
