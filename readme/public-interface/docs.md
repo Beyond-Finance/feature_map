@@ -6,8 +6,7 @@ The feature map gem captures valuable insights about the features of your applic
 
 [You can view an example of the documentation site at right here]({{ '/example-docs-site.html' | relative_url }}){:target="_blank"}.
 
-More information on the structure of this site can be found in the [Documentation Site - Overview]({{ '/documentation-site/overview' | 
-}}).
+More information on the structure of this site can be found in the [Documentation Site - Overview]({{ '/documentation-site/overview' | relative_url }}).
 
 **Example screenshot**
 ![Feature Map Docs Dashboard]({{ '/images/feature-map-docs-dashboard.png' | relative_url }})
@@ -26,7 +25,7 @@ Successful generation of the documentation site depends on a handful of artifact
 
 # Output
 
-The generation of the Documentation Site results in the creation of two files:
+The generation of the documentation site results in the creation of two files:
   - `.feature_map/docs/index.html`
   - `.feature_map/docs/feature-map-config.js`
 

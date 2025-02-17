@@ -2,7 +2,7 @@
 title: Feature Definition
 ---
 
-# What is a Feature?
+# What is a "Feature"?
 
 The set of features that compose your application must be defined before they can be used in assignments.  The features of an application decompose its overall function into discrete, coherent units.  This gem defines a "feature" as follows:
 
@@ -25,10 +25,10 @@ Blueprints | Code construct used by multiple features
 
 In short, a feature is well-defined if it can be used to reason about a distinct part of a system at a level more abstract that a few source files.
 
-# Where are Features defined?
+# Where are features defined?
 
 All features are defined within a single CSV file located at `.feature_map/feature_definitions.csv`.  That file may optionally begin with one or more `#` denoted, sequential comments that describe the file and the strategy used to manage the feature list.  Then it must have a single header row with following headings -- followed by corresponding values.  Only the `Name` must be populated with a value for each row.
-  - Name:  Canonical name of the Feature.  May include spaces or other punctuation.
+  - Name:  Canonical name of the feature.  May include spaces or other punctuation.
   - Description:  A text description of the feature for reference.
   - Documentation Link:  A URL that points to more comprehensive, external documentation if available.
 
