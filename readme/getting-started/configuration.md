@@ -16,8 +16,9 @@ unassigned_globs:
   - app/models/**/*
   - app/controllers/admin/**/*
 
-# Enables the identification of teams responsible
-# for each feature based on team assignments.
+# Enables the identification of teams responsible for each feature based
+# on the CodeOwnership team assigned to the files for a feature (see
+# https://github.com/rubyatscale/code_ownership for more detail).
 skip_code_ownership: false
 
 # Allows the validation check to ignore files assigned to teams other than
