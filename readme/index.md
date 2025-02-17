@@ -2,7 +2,7 @@
 title: Overview
 ---
 
-This gem helps identify and manage features within large applications.  It was built specifically to support monolithic Ruby on Rails codebases, but can will function (see [Inline Execution]({{ '/getting-started/inline-execution' | relative_url }})) in any environment that supports the following comment styles:
+This gem helps identify and manage features within large applications.  It was built specifically to support monolithic Ruby on Rails codebases, but can be integrated using [Inline Execution]({{ '/getting-started/inline-execution' | relative_url }}) into any environment that supports the following comment styles:
   - `#`
   - `//`
   - `/* single or multline */`
