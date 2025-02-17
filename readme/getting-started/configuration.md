@@ -39,7 +39,7 @@ code_cov:
   repo: example
 
 # GitHub repository information.  Required for various interactions
-# with git (commit history, links file references to source in GitHub).
+# with git (commit history, file reference links to source in GitHub).
 repository:
   main_branch: 'main'
   url: https://example.com
