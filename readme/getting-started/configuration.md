@@ -20,9 +20,8 @@ unassigned_globs:
 # for each feature based on team assignments.
 skip_code_ownership: false
 
-# Expects feature annotations only for files owned
-# by the given teams unless disabled (of the assigned_globs, above).
-# Must be null when skipping code ownership.
+# Allows the validation check to ignore files assigned to teams other than
+# those specified here. Must be null when skipping code ownership.
 require_assignment_for_teams:
   - Onboarding
 
