@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <title>Feature Map - {{ page.title }}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind is built at deploy time by github actions -->
+  <link rel="stylesheet" href="{{ '/tailwind.build.css' | relative_url }}">
+</head>
+<body>
+  <header class="sticky top-0 z-50 flex items-center justify-between px-3 py-2 border-b shadow-lg bg-white/90 backdrop-blur-sm border-slate-400/40">
+    <div class="flex items-center flex-grow basis-0">
+      <a href="{{ '/' | relative_url }}" class="text-lg font-semibold tracking-tight text-slate-900">
+        Feature Map
+      </a>
+    </div>
+
+    <div class="items-center justify-end flex-grow hidden basis-0 md:flex">
+      <a role="nav" href="https://github.com/Beyond-Finance/feature_map" class="px-4 py-2 text-sm font-semibold rounded bg-slate-900 text-slate-50 transition ease-in-out delay-75 hover:scale-105 duration-200">
+        Go to Repository
+      </a>
+    </div>
+  </header>
+
+  <main class="relative flex justify-center mx-auto max-w-8xl sm:px-2 lg:px-8 xl:px-12">
+    <label for="navigation" class="fixed bottom-0 left-0 z-50 flex items-center justify-center w-12 h-12 mb-4 ml-4 bg-white border rounded-full shadow-lg cursor-pointer text-slate-600 border-slate-300 lg:hidden transition duration-200 ease-in-out active:scale-95">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
+      </svg>
+    </label>
+
+    <input type="checkbox" name="navigation" id="navigation" class="hidden peer" />
+    <div class="fixed top-[3.5rem] h-screen shadow-xl px-4 left-0 hidden peer-checked:block lg:relative lg:top-0 lg:h-auto lg:px-0 lg:block lg:flex-none lg:shadow-none">
+      <div class="absolute inset-y-0 right-0 w-full lg:w-[50vw] bg-white lg:bg-slate-50"></div>
+
+      <nav class="sticky top-[4.5rem] w-64 pr-8 text-base lg:text-sm xl:w-72 xl:pr-16">
+        <ul role="nav" class="-ml-0.5 h-[calc(100vh-4.5rem)] overflow-y-auto py-7 pl-0.5 space-y-8">
+          <li>
+            <h3 class="font-semibold tracking-tight text-slate-900">
+              Getting Started
+            </h3>
+
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
+              <li>
+                <a href="{{ '/getting-started/configuration' | relative_url }}" class="text-slate-900 hover:text-slate-800">
+                  Configuration
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/getting-started/feature-definition' | relative_url }}" class="text-slate-900 hover:text-slate-800">
+                  Feature Definition
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/getting-started/feature-assignment' | relative_url }}" class="text-slate-900 hover:text-slate-800">
+                  Feature Assignment
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/getting-started/with-code-ownership' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  With Code Ownership
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/getting-started/inline-execution' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Inline Execution
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h3 class="font-semibold tracking-tight text-slate-900">
+              Public Interface
+            </h3>
+
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
+              <li>
+                <a href="{{ '/public-interface/overview' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Overview
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/apply-assignments' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Apply Assignments
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/docs' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Docs
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/for-backtrace' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  For Backtrace
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/for-class' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  For Class
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/for-feature' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  For Feature
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/for-file' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  For File
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/test-coverage' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Test Coverage
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/test-pyramid' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Test Pyramid
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/public-interface/validate' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Validate
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h3 class="font-semibold tracking-tight text-slate-900">
+              Artifacts
+            </h3>
+
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
+              <li>
+                <a href="{{ '/artifacts/overview' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Overview
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/artifacts/assignments' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Assignments
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/artifacts/docs' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Docs
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/artifacts/metrics' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Metrics
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/artifacts/test-coverage' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Test Coverage
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/artifacts/test-pyramid' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Test Pyramid
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h3 class="font-semibold tracking-tight text-slate-900">
+              Documentation Site
+            </h3>
+
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
+              <li>
+                <a href="{{ '/documentation-site/overview' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Overview
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <h3 class="font-semibold tracking-tight text-slate-900">
+              Continuous Integration
+            </h3>
+
+            <ul role="nav" class="pl-3 mt-3 space-y-2">
+              <li>
+                <a href="{{ '/continuous-integration/validation' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Validation
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/continuous-integration/release-notification' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  Release Notification
+                </a>
+              </li>
+
+              <li>
+                <a href="{{ '/continuous-integration/pr-tags' | relative_url }}" class="text-slate-600 hover:text-slate-800">
+                  PR Tags
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="flex-auto max-w-2xl min-w-0 px-4 py-10 lg:max-w-none lg:pr-0 lg:pl-8 xl:px-16">
+      <article class="">
+        <header class="text-2xl font-semibold tracking-tight text-slate-900 mb-8">
+          {{ page.title }}
+        </header>
+        {{ content }}
+      </article>
+    </div>
+  </main>
+</body>
+</html>

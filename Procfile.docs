@@ -1,0 +1,1 @@
+vite: cd docs && npm run dev
