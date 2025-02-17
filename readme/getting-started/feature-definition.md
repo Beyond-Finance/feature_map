@@ -4,7 +4,7 @@ title: Feature Definition
 
 # What is a Feature?
 
-The set of features that compose your application must be defined before they can be used in assignment.  We think of a "feature" of an application as a way to decompose its overall function into discrete, coherent units.  Our formal, working definition is as follows:
+The set of features that compose your application must be defined before they can be used in assignments.  The features of an application decompose its overall function into discrete, coherent units.  This gem defines a "feature" as follows:
 
 > A feature is an internal component of the system that performs a well defined and relatively isolated set of responsibilities.
 
