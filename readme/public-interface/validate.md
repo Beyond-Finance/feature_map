@@ -22,6 +22,9 @@ unassigned_globs:
   - app/services/some_file2.rb
   - frontend/javascripts/**/__generated__/**/*
 ```
+
+# Command
+
 You can call the validation function with the Ruby API
 ```ruby
 FeatureMap.validate!
@@ -31,9 +34,13 @@ or the CLI
 bin/featuremap validate
 ```
 
-# Additional Files
+# Input
+
+This command must be run within a repository that has been configured to use FeatureMap, and where feature assigments have been recorded.  For more, see [Getting Started - Configuration]({{ '/getting-started/configuration' | relative_url }})
+
+# Output
 
 When you run `bin/featuremap validate`, the following files will automatically be generated:
- * `.feature_map/assignments.yml`: Captures a mapping of files within a repository to their corresponding feature and a mapping of features to their corresponding files.
- * `.feature_map/metrics.yml`: Captures a set of metrics rolled up at the feature level (i.e. computed over all files assigned to the feature).
 
+- [`.feature_map/assignments.yml`]({{ '/artifacts/assignments' | relative_url }})
+- [`.feature_map/metrics.yml`]({{ '/artifacts/metrics' | relative_url }})

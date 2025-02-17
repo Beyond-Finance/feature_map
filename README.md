@@ -39,7 +39,7 @@ That's it! Assuming you can complete all of these steps without any error or iss
 
 ### Documentation Site
 
-The Documentation Site is a React application which is built on the Vite framework.  There are two steps to building the site:  first, the skeleton of the site is compiled and committed into this repository; second, the various artifacts are injected from a host repository into a project-specific instance of the site via [bin/featuremap docs](https://beyond-finance.github.io/feature_map/interface/docs).
+The Documentation Site is a React application which is built on the Vite framework.  There are two steps to building the site:  first, the skeleton of the site is compiled and committed into this repository; second, the various artifacts are injected from a host repository into a project-specific instance of the site via [bin/featuremap docs](https://beyond-finance.github.io/feature_map/public-interface/docs).
 
 Compilation of the build asset is done via `npm run build` from within the [docs](./docs) folder.  This compiles the React app into a single static file which is placed in [./lib/feature_map/private/docs/index.html](./lib/feature_map/private/docs/index.html]).
 

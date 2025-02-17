@@ -2,7 +2,7 @@
 title: Test Coverage
 ---
 
-When you run `bin/featuremap test_coverage`, the test coverage statistics the latest commit on the main branch will be pulled from [CodeCov](https://codecov.io/) and collected into a set of per-feature test coverage statistics. This feature level test coverage data is then captured in the `.feature_map/test-coverage.yml` file.
+When you run `bin/featuremap test_coverage`, the test coverage statistics of the latest commit on the main branch will be pulled from [CodeCov](https://codecov.io/) and collected into a set of per-feature test coverage statistics. This feature level test coverage data is then captured in the `.feature_map/test-coverage.yml` file.
 
 This command requires the following CodeCov account settings to be configured within the `.feature_map/config.yml` file:
 
@@ -15,12 +15,17 @@ code_cov:
 
 See the [CodeCov API docs](https://docs.codecov.com/reference/repos_retrieve) for more information about the expected values for these configurations.
 
+# Command
+
+> `bin/featuremap test_coverage [optional git SHA]`
+
 Test coverage statistics can be pulled for a specific commit (e.g. the latest commit on a feature branch) by including the full commit SHA as an argument at the end of this CLI command (e.g. `bin/featuremap test_coverage ae80a927654997be4f48d3dbcd1320083cf22eea`). Before running this command please check the [CodeCov dashboard](https://app.codecov.io/) for your application to ensure test coverage statistics have been reported for this commit.
 
-# CodeCov API Token Generation
+# Input
 
 Running the `bin/featuremap test_coverage` requires an active CodeCov API access token to be specified in the `CODECOV_API_TOKEN` environment variable of your shell session. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
 
+## Generating a CodeCov API Token
 Use the following steps to generate a new CodeCov API token:
 
 1. Log into your [CodeCov account](https://app.codecov.io/)
@@ -47,3 +52,7 @@ source ~/.zshrc
 echo 'export CODECOV_API_TOKEN="YOUR_CODECOV_API_TOKEN"' >> ~/.bashrc
 source ~/.bashrc
 ```
+
+# Output
+
+This command results in the generation of `.feature_map/test-coverage.yml`.  More information regarding this artifact can be found at [Artifacts - Test Coverage]({{ '/artifacts/test-coverage' | relative_url }}).

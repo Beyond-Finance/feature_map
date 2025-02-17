@@ -9,7 +9,16 @@ The feature map gem supports reporting on the [test pyramid](https://martinfowle
 
 Once test pyramid data has been generated for a give project, it's automatically included in that project's doc site.
 
-To generate the test pyramid data, run:
-> bin/featuremap test_pyramid [unit_examples_file] [integration_examples_file] [regression_examples_file] [regression_assignments_file]
+# Command
 
-Note:  FeatureMap currently only supports _examples files_ in rspec's `json` format (--format json), though support for others (e.g., jest's `--json`, or the JUnit XML format) may be added in the future.
+> `bin/featuremap test_pyramid [unit_examples_file] [integration_examples_file] [regression_examples_file] [regression_assignments_file]`
+
+# Input
+
+FeatureMap currently only supports _examples files_ in rspec's `json` format (--format json), though support for others (e.g., jest's `--json`, or the JUnit XML format) may be added in the future.
+
+The regression assignments file should be a reference to the assignments file ([Artifacts - Assignments]({{ '/artifacts/assignments' | relative_url }})) to some project (either where FeatureMap is embedded, or a separate feature mapped "regression test" repository).
+
+# Output
+
+This command results in the generation of `.feature_map/test-pyramid.yml`.  More information regarding this artifact can be found at [Artifacts - Test Pyramid]({{ '/artifacts/test-pyramid' | relative_url }}).
