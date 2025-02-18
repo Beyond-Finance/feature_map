@@ -181,6 +181,7 @@ module FeatureMap
           Usage: bin/featuremap test_pyramid [unit_path] [integration_path] [regression_path] [regression_assignments_path].
           Paths should point to files containing json-formatted rspec test summaries.
           These can be generated via rspec's `-f j` flag.
+          Regression test summary and assignments file path are optional.
         MSG
 
         opts.on('--help', 'Shows this prompt') do
@@ -193,9 +194,14 @@ module FeatureMap
       non_flag_args = argv.reject { |arg| arg.start_with?('--') }
 
       file_paths = non_flag_args.first(4)
-      raise 'Please specify all of [unit_path] [integration_path] [regression_path] [regression_assignments_path]' if file_paths.compact.size != 4
+      if file_paths.compact.size == 2
+        unit_path, integration_path = file_paths
+      elsif file_paths.compact.size == 4
+        unit_path, integration_path, regression_path, regression_assignments_path = file_paths
+      else
+        raise 'Please specify at least the [unit_path] and [integration_path] arguments. If regression test details are provided both the [regression_path] and [regression_assignments_path] arguments must be populated.'
+      end
 
-      unit_path, integration_path, regression_path, regression_assignments_path = file_paths
       FeatureMap.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
     end
 

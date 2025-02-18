@@ -107,13 +107,22 @@ RSpec.describe FeatureMap::Cli do
       subject
     end
 
-    context 'when missing a file path' do
+    context 'when only unit and integration test details are provided' do
+      let(:argv) { ['test_pyramid', 'tmp/unit.rspec', 'tmp/integration.rspec'] }
+
+      it 'raises' do
+        expect(FeatureMap).to receive(:generate_test_pyramid!).with('tmp/unit.rspec', 'tmp/integration.rspec', nil, nil)
+        subject
+      end
+    end
+
+    context 'when missing an incomplete set of arguments are provided' do
       let(:argv) { ['test_pyramid', 'tmp/unit.rspec', 'tmp/integration.rspec', 'tmp/regression.rspec'] }
 
       it 'raises' do
         expect do
           subject
-        end.to raise_error('Please specify all of [unit_path] [integration_path] [regression_path] [regression_assignments_path]')
+        end.to raise_error('Please specify at least the [unit_path] and [integration_path] arguments. If regression test details are provided both the [regression_path] and [regression_assignments_path] arguments must be populated.')
       end
     end
   end

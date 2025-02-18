@@ -122,8 +122,8 @@ module FeatureMap
     params(
       unit_path: String,
       integration_path: String,
-      regression_path: String,
-      regression_assignments_path: String
+      regression_path: T.nilable(String),
+      regression_assignments_path: T.nilable(String)
     ).void
   end
   def generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)

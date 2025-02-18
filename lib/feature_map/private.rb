@@ -118,15 +118,15 @@ module FeatureMap
       params(
         unit_path: String,
         integration_path: String,
-        regression_path: String,
-        regression_assignments_path: String
+        regression_path: T.nilable(String),
+        regression_assignments_path: T.nilable(String)
       ).void
     end
     def self.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
       unit_examples = JSON.parse(File.read(unit_path))&.fetch('examples')
       integration_examples = JSON.parse(File.read(integration_path))&.fetch('examples')
-      regression_examples = JSON.parse(File.read(regression_path))&.fetch('examples')
-      regression_assignments = YAML.load_file(regression_assignments_path)
+      regression_examples = regression_path ? JSON.parse(File.read(regression_path))&.fetch('examples') : []
+      regression_assignments = regression_assignments_path ? YAML.load_file(regression_assignments_path) : {}
       TestPyramidFile.write!(unit_examples, integration_examples, regression_examples, regression_assignments)
     end
 
