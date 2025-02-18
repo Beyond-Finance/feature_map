@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'uri', '~> 1.0'
 
   spec.add_development_dependency 'debug', '~> 1.9'
+  spec.add_development_dependency 'github-pages', '~> 232'
   spec.add_development_dependency 'railties', '~> 7.2'
   spec.add_development_dependency 'rake', '~> 13.2'
   spec.add_development_dependency 'rspec', '~> 3.0'

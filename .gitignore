@@ -21,3 +21,13 @@ Gemfile.lock
 
 # Gem build artifacts
 feature_map-*.gem
+
+# Documentation site build artifacts
+/readme/_site
+/readme/node_modules
+/readme/package-lock.json
+/readme/package.json
+/readme/tailwind.build.css
+/readme/.jekyll-cache
+/readme/.sass-cache
+/readme/example-docs-site.html
