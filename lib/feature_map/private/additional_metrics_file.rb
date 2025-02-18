@@ -3,9 +3,6 @@
 
 module FeatureMap
   module Private
-    #
-    # TODO: Document this class
-    #
     class AdditionalMetricsFile
       extend T::Sig
 
