@@ -31,17 +31,20 @@ const DigestTestPyramidCard = ({ features }) => {
     regression_pending: 0
   })
 
+
+  // Log values go negative when the test count drops below 1. This does not make sense for this
+  // use case, so we are explicitly preventing the displayed value from being less than zero.
   const data = [
     {
-      "value": Math.log(pyramid.unit_count + pyramid.unit_pending),
+      "value": Math.max(Math.log(pyramid.unit_count + pyramid.unit_pending), 0),
       "fill": "#1d4ed8"
     },
     {
-      "value": Math.log(pyramid.integration_count + pyramid.integration_pending),
+      "value": Math.max(Math.log(pyramid.integration_count + pyramid.integration_pending), 0),
       "fill": "#2563eb"
     },
     {
-      "value": Math.log(pyramid.regression_count + pyramid.regression_pending),
+      "value": Math.max(Math.log(pyramid.regression_count + pyramid.regression_pending), 0),
       "fill": "#3b82f6"
     },
   ]
