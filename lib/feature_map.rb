@@ -135,6 +135,11 @@ module FeatureMap
     Private.gather_test_coverage!(commit_sha, code_cov_token)
   end
 
+  sig { void }
+  def generate_additional_metrics!
+    Private.generate_additional_metrics!
+  end
+
   # Given a backtrace from either `Exception#backtrace` or `caller`, find the
   # first line that corresponds to a file with an assigned feature
   sig { params(backtrace: T.nilable(T::Array[String]), excluded_features: T::Array[CodeFeatures::Feature]).returns(T.nilable(CodeFeatures::Feature)) }

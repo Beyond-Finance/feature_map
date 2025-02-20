@@ -11,6 +11,8 @@ module FeatureMap
     class TestCoverageFile
       extend T::Sig
 
+      COVERAGE_RATIO = 'coverage_ratio'
+
       class FileContentError < StandardError; end
 
       FEATURES_KEY = 'features'
@@ -64,7 +66,7 @@ module FeatureMap
         feature_test_coverage = T.let({}, FeaturesContent)
 
         Private.feature_file_assignments.each do |feature_name, files|
-          feature_test_coverage[feature_name] = T.let({ 'lines' => 0, 'hits' => 0, 'misses' => 0 }, FeatureCoverage)
+          feature_test_coverage[feature_name] = T.let({ 'lines' => 0, 'hits' => 0, 'misses' => 0, 'coverage_ratio' => 0 }, FeatureCoverage)
 
           files.each_with_object(T.must(feature_test_coverage[feature_name])) do |file_path, coverage|
             next unless coverage_stats[file_path]
@@ -75,6 +77,12 @@ module FeatureMap
 
             coverage
           end
+
+          T.must(feature_test_coverage[feature_name])[COVERAGE_RATIO] = if T.must(T.must(feature_test_coverage[feature_name])['lines']).zero?
+                                                                          0
+                                                                        else
+                                                                          ((T.must(feature_test_coverage[feature_name])['hits'].to_f / T.must(T.must(feature_test_coverage[feature_name])['lines'])) * 100).round
+                                                                        end
         end
 
         { FEATURES_KEY => feature_test_coverage }

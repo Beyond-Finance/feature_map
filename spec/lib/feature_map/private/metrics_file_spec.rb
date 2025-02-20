@@ -20,16 +20,22 @@ module FeatureMap
               cyclomatic_complexity: 1
               lines_of_code: 6
               todo_locations: {}
+              complexity_ratio: 6.0
+              encapsulation_ratio: 0.3333333333333333
             Foo:
               abc_size: 2.0
               cyclomatic_complexity: 1
               lines_of_code: 7
               todo_locations: {}
+              complexity_ratio: 7.0
+              encapsulation_ratio: 0.2857142857142857
             Empty Feature:
               abc_size: 0
               cyclomatic_complexity: 0
               lines_of_code: 1
               todo_locations: {}
+              complexity_ratio: 0.0
+              encapsulation_ratio: 1.0
         FEATURES
       end
 

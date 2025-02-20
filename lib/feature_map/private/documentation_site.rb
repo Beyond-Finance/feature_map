@@ -74,6 +74,7 @@ module FeatureMap
           feature_metrics: MetricsFile::FeaturesContent,
           feature_test_coverage: TestCoverageFile::FeaturesContent,
           feature_test_pyramid: TestPyramidFile::FeaturesContent,
+          feature_additional_metrics: AdditionalMetricsFile::FeaturesContent,
           project_configuration: T::Hash[T.untyped, T.untyped],
           git_ref: String
         ).void
@@ -83,6 +84,7 @@ module FeatureMap
         feature_metrics,
         feature_test_coverage,
         feature_test_pyramid,
+        feature_additional_metrics,
         project_configuration,
         git_ref
       )
@@ -95,7 +97,8 @@ module FeatureMap
             assignments: feature_assignments[feature_name],
             metrics: feature_metrics[feature_name],
             test_coverage: feature_test_coverage[feature_name],
-            test_pyramid: feature_test_pyramid[feature_name]
+            test_pyramid: feature_test_pyramid[feature_name],
+            additional_metrics: feature_additional_metrics[feature_name]
           )
         end
 

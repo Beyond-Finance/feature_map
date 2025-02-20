@@ -21,6 +21,27 @@ const config = {
           "src/auth/middleware/auth_middleware.rb:45": "Add documentation for this class"
         }
       },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 35.5, "percent_of_max": 80, "score": 12 },
+        "encapsulation": { "percentile": 65.2, "percent_of_max": 75, "score": 10 },
+        "feature_size": { "percentile": 46.3, "percent_of_max": 13, "score": 1500 },
+        "test_coverage": { "percentile": 88.4, "percent_of_max": 95, "score": 85 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 66.5,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 12.0,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 11.25,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "overall": 89.75
+        }
+      },
       "test_coverage": {
         "lines": 1200,
         "hits": 1140,
@@ -55,6 +76,27 @@ const config = {
         "lines_of_code": 5582,
         "cyclomatic_complexity": 500
       },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 78.2, "percent_of_max": 65, "score": 14 },
+        "encapsulation": { "percentile": 92.1, "percent_of_max": 88, "score": 13 },
+        "feature_size": { "percentile": 82.5, "percent_of_max": 45, "score": 2500 },
+        "test_coverage": { "percentile": 95.8, "percent_of_max": 98, "score": 90 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 68.6,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 13.2,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 13.8,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "overall": 95.6
+        }
+      },
       "test_coverage": {
         "lines": 2582,
         "hits": 2530,
@@ -87,6 +129,27 @@ const config = {
         "lines_of_code": 1582,
         "cyclomatic_complexity": 300
       },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 45.6, "percent_of_max": 42, "score": 10 },
+        "encapsulation": { "percentile": 58.3, "percent_of_max": 55, "score": 9 },
+        "feature_size": { "percentile": 63.2, "percent_of_max": 28, "score": 1800 },
+        "test_coverage": { "percentile": 70.1, "percent_of_max": 70, "score": 75 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 49.0,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 8.25,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 8.25,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "overall": 65.5
+        }
+      },
       "test_coverage": {
         "lines": 1582,
         "hits": 1108,
@@ -117,6 +180,27 @@ const config = {
         "abc_size": 156.92,
         "lines_of_code": 289,
         "cyclomatic_complexity": 22
+      },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 92.3, "percent_of_max": 95, "score": 15 },
+        "encapsulation": { "percentile": 88.7, "percent_of_max": 85, "score": 14 },
+        "feature_size": { "percentile": 25.4, "percent_of_max": 8, "score": 500 },
+        "test_coverage": { "percentile": 98.9, "percent_of_max": 99, "score": 95 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 69.3,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 14.25,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 13.5,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "overall": 97.05
+        }
       },
       "test_coverage": {
         "lines": 289,
@@ -151,7 +235,28 @@ const config = {
         "lines_of_code": 1124,
         "cyclomatic_complexity": 82
       },
-      "test_coverage": null
+      "test_coverage": null,
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 68.4, "percent_of_max": 72, "score": 13 },
+        "encapsulation": { "percentile": 75.6, "percent_of_max": 70, "score": 12 },
+        "feature_size": { "percentile": 55.8, "percent_of_max": 35, "score": 2000 },
+        "test_coverage": { "percentile": 82.3, "percent_of_max": 85, "score": 80 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 59.5,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 10.8,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 10.5,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "overall": 80.8
+        }
+      }
     },
     "Analytics": {
       "assignments": {
@@ -182,6 +287,27 @@ const config = {
         "integration_pending": 2,
         "regression_count": 5,
         "regression_pending": 1
+      },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 85.2, "percent_of_max": 82, "score": 14 },
+        "encapsulation": { "percentile": 78.9, "percent_of_max": 75, "score": 13 },
+        "feature_size": { "percentile": 42.1, "percent_of_max": 25, "score": 1200 },
+        "test_coverage": { "percentile": 78.6, "percent_of_max": 80, "score": 70 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 55.0,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 12.3,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 11.25,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "overall": 78.55
+        }
       }
     },
     "API Gateway": {
@@ -213,6 +339,27 @@ const config = {
         "integration_pending": 2,
         "regression_count": 5,
         "regression_pending": 1
+      },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 89.5, "percent_of_max": 88, "score": 15 },
+        "encapsulation": { "percentile": 92.3, "percent_of_max": 90, "score": 14 },
+        "feature_size": { "percentile": 58.7, "percent_of_max": 42, "score": 2200 },
+        "test_coverage": { "percentile": 98.2, "percent_of_max": 99, "score": 90 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 68.6,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 13.5,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 13.8,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "overall": 95.9
+        }
       }
     },
     "Document Processing": {
@@ -245,6 +392,27 @@ const config = {
         "integration_pending": 2,
         "regression_count": 5,
         "regression_pending": 1
+      },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 72.4, "percent_of_max": 68, "score": 12 },
+        "encapsulation": { "percentile": 65.8, "percent_of_max": 62, "score": 11 },
+        "feature_size": { "percentile": 68.9, "percent_of_max": 55, "score": 2500 },
+        "test_coverage": { "percentile": 59.8, "percent_of_max": 60, "score": 60 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 42.0,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 10.2,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 9.3,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "overall": 61.5
+        }
       }
     },
     "Notification System": {
@@ -264,6 +432,27 @@ const config = {
         "lines_of_code": 1456,
         "cyclomatic_complexity": 241
       },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 62.8, "percent_of_max": 58, "score": 11 },
+        "encapsulation": { "percentile": 71.2, "percent_of_max": 65, "score": 10 },
+        "feature_size": { "percentile": 82.4, "percent_of_max": 75, "score": 2700 },
+        "test_coverage": { "percentile": 68.5, "percent_of_max": 70, "score": 65 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 49.0,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 8.7,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 9.75,
+            "close_to_maximum_score": false, "exceeds_score_threshold": true
+          },
+          "overall": 67.45
+        }
+      },
       "test_coverage": {
         "lines": 1456,
         "hits": 998,
@@ -276,7 +465,7 @@ const config = {
         "integration_pending": 2,
         "regression_count": 5,
         "regression_pending": 1
-      }
+      },
     },
     "Search Engine": {
       "assignments": {
@@ -295,6 +484,27 @@ const config = {
         "abc_size": 645.78,
         "lines_of_code": 934,
         "cyclomatic_complexity": 76
+      },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 75.0, "percent_of_max": 70, "score": 13 },
+        "encapsulation": { "percentile": 80.0, "percent_of_max": 75, "score": 12 },
+        "feature_size": { "percentile": 60.0, "percent_of_max": 50, "score": 1800 },
+        "test_coverage": { "percentile": 85.0, "percent_of_max": 80, "score": 75 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 68.0,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 10.5,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 11.25,
+            "close_to_maximum_score": true, "exceeds_score_threshold": true
+          },
+          "overall": 89.75
+        }
       },
       "test_coverage": {
         "lines": 567,
@@ -321,6 +531,27 @@ const config = {
         "abc_size": null,
         "lines_of_code": null,
         "cyclomatic_complexity": null
+      },
+      "additional_metrics": {
+        "cyclomatic_complexity": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
+        "encapsulation": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
+        "feature_size": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
+        "test_coverage": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
+        "health": {
+          "test_coverage_component": {
+            "awardable_points": 70, "health_score": 0.0,
+            "close_to_maximum_score": false, "exceeds_score_threshold": false
+          },
+          "cyclomatic_complexity_component": {
+            "awardable_points": 15, "health_score": 0.0,
+            "close_to_maximum_score": false, "exceeds_score_threshold": false
+          },
+          "encapsulation_component": {
+            "awardable_points": 15, "health_score": 0.0,
+            "close_to_maximum_score": false, "exceeds_score_threshold": false
+          },
+          "overall": 0.0
+        }
       },
       "test_coverage": null
     },

@@ -5,6 +5,52 @@ module FeatureMap
       let(:feature_metrics) { { 'Bar' => { 'abc_size' => 12.34, 'lines_of_code' => 56, 'cyclomatic_complexity' => 7 }, 'Foo' => { 'abc_size' => 98.76, 'lines_of_code' => 543, 'cyclomatic_complexity' => 21 } } }
       let(:feature_test_coverage) { { 'Bar' => { lines: 12, hits: 243, misses: 240 }, 'Foo' => 0.0 } }
       let(:feature_test_pyramid) { { 'Bar' => { unit_count: 100, unit_pending: 10, integration_count: 11, integration_pending: 4, regression_count: 7, regression_pending: 1 }, 'Foo' => nil } }
+      let(:feature_additional_metrics) {
+        {
+          'Bar' => {
+            cyclomatic_complexity: {
+              percentile: 35.5, percent_of_max: 80, score: 320
+            },
+            encapsulation: {
+              percentile: 65.2,
+              percent_of_max: 75,
+              score: 450
+            },
+            feature_size: {
+              percentile: 65.2,
+              percent_of_max: 75,
+              score: 450
+            },
+            test_coverage: {
+              percentile: 88,
+              percent_of_max: 95,
+              score: 100
+            },
+            health: {
+              test_coverage_component: {
+                awardable_points: 70,
+                health_score: 66.5,
+                close_to_maximum_score: true,
+                exceeds_score_threshold: true
+              },
+              cyclomatic_complexity_component: {
+                awardable_points: 15,
+                health_score: 12,
+                close_to_maximum_score: true,
+                exceeds_score_threshold: true
+              },
+              encapsulation_component: {
+                awardable_points: 15,
+                health_score: 11,
+                close_to_maximum_score: true,
+                exceeds_score_threshold: true
+              },
+              overall: 89.75
+            }
+          },
+          'Foo' => nil
+        }
+      }
       let(:assets_directory) { Private::DocumentationSite.assets_directory }
       let(:configuration) { { 'foo' => 'bar' } }
       let(:git_ref) { 'main' }
@@ -38,6 +84,49 @@ module FeatureMap
               integration_pending: 4,
               regression_count: 7,
               regression_pending: 1
+            },
+            additional_metrics: {
+              cyclomatic_complexity: {
+                percentile: 35.5,
+                percent_of_max: 80,
+                score: 320
+              },
+              encapsulation: {
+                percentile: 65.2,
+                percent_of_max: 75,
+                score: 450
+              },
+              feature_size: {
+                percentile: 65.2,
+                percent_of_max: 75,
+                score: 450
+              },
+              test_coverage: {
+                percentile: 88,
+                percent_of_max: 95,
+                score: 100
+              },
+              health: {
+                test_coverage_component: {
+                  awardable_points: 70,
+                  health_score: 66.5,
+                  close_to_maximum_score: true,
+                  exceeds_score_threshold: true
+                },
+                cyclomatic_complexity_component: {
+                  awardable_points: 15,
+                  health_score: 12,
+                  close_to_maximum_score: true,
+                  exceeds_score_threshold: true
+                },
+                encapsulation_component: {
+                  awardable_points: 15,
+                  health_score: 11,
+                  close_to_maximum_score: true,
+                  exceeds_score_threshold: true
+                },
+                overall: 89.75
+              }
             }
           },
           Foo: {
@@ -50,7 +139,8 @@ module FeatureMap
               cyclomatic_complexity: 21
             },
             test_coverage: 0.0,
-            test_pyramid: nil
+            test_pyramid: nil,
+            additional_metrics: nil
           }
         }
       end
@@ -73,15 +163,14 @@ module FeatureMap
 
       context 'when there is no existing site content' do
         it 'copies the HTML index page for the site into the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, feature_additional_metrics, configuration, git_ref)
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/index.html'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/index.html'))).to eq(File.read(File.join(assets_directory, 'index.html')))
         end
 
         it 'creates a feature-map-config.js file with the appropriate feature details in the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
-
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, feature_additional_metrics, configuration, git_ref)
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
         end
@@ -94,12 +183,12 @@ module FeatureMap
         end
 
         it 'overwrites the HTML index page for the site into the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, feature_additional_metrics, configuration, git_ref)
           expect(File.read(Pathname.pwd.join('.feature_map/docs/index.html'))).to eq(File.read(File.join(assets_directory, 'index.html')))
         end
 
         it 'overwrites the feature-map-config.js file with the appropriate feature details in the docs output directory' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, feature_additional_metrics, configuration, git_ref)
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
         end
       end
@@ -118,16 +207,26 @@ module FeatureMap
             other: abc 123
           CONTENTS
 
-          # The order of keys in this has must match the ordering of the source code to ensure identical JSON output is produced.
           expected_features[:Foo] = {
             description: description,
             dashboard_link: dashboard_link,
-            documentation_link: documentation_link
-          }.merge(expected_features[:Foo])
+            documentation_link: documentation_link,
+            assignments: [
+              'app/lib/some_other_file.rb'
+            ],
+            metrics: {
+              abc_size: 98.76,
+              lines_of_code: 543,
+              cyclomatic_complexity: 21
+            },
+            test_coverage: 0.0,
+            test_pyramid: nil,
+            additional_metrics: nil
+          }
         end
 
         it 'ignores the unrelated features and excludes them from the features-map-config.js file' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, feature_additional_metrics, configuration, git_ref)
 
           expect(File.exist?(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to be_truthy
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to eq("window.FEATURE_MAP_CONFIG = #{expected_feature_map_config.to_json};")
@@ -138,7 +237,7 @@ module FeatureMap
         before { write_file('.feature_map/definitions/unrelated.yml', "name: Unrelated Feature\n") }
 
         it 'ignores the unrelated features and excludes them from the features-map-config.js file' do
-          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, configuration, git_ref)
+          Private::DocumentationSite.generate(feature_assignments, feature_metrics, feature_test_coverage, feature_test_pyramid, feature_additional_metrics, configuration, git_ref)
           expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).not_to include('Unrelated Feature')
         end
       end

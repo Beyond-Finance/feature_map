@@ -7,7 +7,7 @@ import { Tooltip, TooltipButton, TooltipPanel } from './Tooltip';
 
 const TestCoverageDataCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
-    const sizeScore = currentFeature.metrics.testCoverage.score;
+    const sizeScore = currentFeature.additional_metrics.test_coverage.score || 0;
 
     if (sizeScore !== undefined && sizeScore !== null) {
       const category = getTestCoverageLabel(sizeScore);
