@@ -129,6 +129,10 @@ module FeatureMap
           options[:skip_validate] = true
         end
 
+        opts.on('--skip-additional-metrics', 'Skip the execution of the additional_metrics command, using the existing feature output files') do
+          options[:skip_additional_metrics] = true
+        end
+
         opts.on('--help', 'Shows this prompt') do
           puts opts
           exit
@@ -141,6 +145,7 @@ module FeatureMap
       custom_git_ref = non_flag_args[0]
 
       FeatureMap.validate!(stage_changes: !options[:skip_stage]) unless options[:skip_validate]
+      FeatureMap.generate_additional_metrics! unless options[:skip_additional_metrics]
 
       FeatureMap.generate_docs!(custom_git_ref)
 

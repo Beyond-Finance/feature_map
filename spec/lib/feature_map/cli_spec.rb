@@ -78,16 +78,18 @@ RSpec.describe FeatureMap::Cli do
         expect(FeatureMap).to receive(:validate!) do |args|
           expect(args[:stage_changes]).to eq true
         end
+        expect(FeatureMap).to receive(:generate_additional_metrics!)
         expect(FeatureMap).to receive(:generate_docs!)
         subject
       end
     end
 
     context 'with --skip-validate' do
-      let(:argv) { ['docs', '--skip-validate'] }
+      let(:argv) { ['docs', '--skip-validate', '--skip-additional-metrics'] }
 
       it 'does not trigger the validate operation' do
         expect(FeatureMap).not_to receive(:validate!)
+        expect(FeatureMap).not_to receive(:generate_additional_metrics!)
         expect(FeatureMap).to receive(:generate_docs!)
         subject
       end
