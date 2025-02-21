@@ -44,6 +44,9 @@ repository:
   main_branch: 'main'
   url: https://example.com
 
+# Supports link generation in message construction, e.g., release announcements
+documentation_site_url: example.github.io/repo
+
 # Various configurations used by the documentation site.
 documentation_site:
   health:

@@ -23,6 +23,8 @@ code_cov:
 repository:
   main_branch: 'main'
   url: https://example.com
+# Supports link generation in message construction, e.g., release announcements
+documentation_site_url: example.github.io/repo
 documentation_site:
   health:
     minimum_thresholds:
