@@ -20,7 +20,7 @@ export default function Digest({ features }) {
     .map(([name, data]) => ({
       name,
       data: data || 0,
-      health: data.metrics.health.overall || 0
+      health: data.additional_metrics.health.overall || 0
     }))
     .sort((a, b) => a.health - b.health)
     .slice(0, 5);
@@ -29,7 +29,7 @@ export default function Digest({ features }) {
     .map(([name, data]) => ({
       name,
       data: data || 0,
-      score: data.metrics.testCoverage.score || 0
+      score: data.additional_metrics.test_coverage.score || 0
     }))
     .sort((a, b) => a.score - b.score)
     .slice(0, 5);
@@ -86,9 +86,9 @@ export default function Digest({ features }) {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {healthScores.map((feature) => {
-                        const sizeScore = feature.data.metrics.featureSize.percentOfMax
+                        const sizeScore = feature.data.additional_metrics.feature_size.percent_of_max
                         const sizeLabel = getFeatureSizeLabel(sizeScore);
-                        const healthScore = feature.health || 0
+                        const healthScore = feature.data.additional_metrics.health.score || 0
 
                         return (
                           <tr key={feature.name}>
@@ -189,9 +189,9 @@ export default function Digest({ features }) {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {testCoverageScores.map((feature) => {
-                        const sizeScore = feature.data.metrics.featureSize.percentOfMax
+                        const sizeScore = feature.data.additional_metrics.feature_size.percent_of_max
                         const sizeLabel = getFeatureSizeLabel(sizeScore);
-                        const coveragePercent = feature.data.metrics.testCoverage.score || 0
+                        const coveragePercent = feature.data.additional_metrics.test_coverage.score || 0
 
                         return (
                           <tr key={feature.name}>

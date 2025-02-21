@@ -5,7 +5,7 @@ import { getHealthScoreLabel, getHealthScoreColor, healthScores } from '../utils
 
 const DigestHealthScoreCard = ({ features }) => {
   const distribution = Object.values(features).reduce((distribution, currentFeature) => {
-    const sizeScore = currentFeature.metrics.health.overall;
+    const sizeScore = currentFeature.additional_metrics.health.overall;
 
     if (sizeScore !== undefined && sizeScore !== null) {
       const category = getHealthScoreLabel(sizeScore);
