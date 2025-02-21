@@ -32,7 +32,7 @@ const highlightFeatures = ({ features, metric, sortDirection = 'ASC' }) => {
 
       // If the metric is the same, return the large feature
       if (metricA === metricB) {
-        return featureB.metrics.featureSize.score - featureA.metrics.featureSize.score
+        return featureB.additional_metrics.feature_size.score - featureA.additional_metrics.feature_size.score
       }
 
       if (sortDirection === 'ASC') return metricA - metricB
@@ -125,7 +125,7 @@ const DigestTestPyramidDetails = ({ features }) => {
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
               {pyramidDetails.map(({ featureName, feature, score }) => {
-                const sizeScore = feature.metrics.featureSize.percentOfMax
+                const sizeScore = feature.additional_metrics.feature_size.percent_of_max
                 const sizeLabel = getFeatureSizeLabel(sizeScore);
 
                 return (
