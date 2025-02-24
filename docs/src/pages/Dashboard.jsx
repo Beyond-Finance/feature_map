@@ -49,7 +49,7 @@ const Dashboard = ({ features }) => {
       </div>
 
       <div>
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <li className="px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
             <FeatureSizeDataCard features={filteredFeatures} />
           </li>
@@ -67,7 +67,7 @@ const Dashboard = ({ features }) => {
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-gray-600" aria-hidden="true" />
             <span className="text-sm text-gray-600 font-medium">
-              Teams: {totalTeams || 0} | Total Features: {totalFeatures || 0}
+              Features: { Object.entries(filteredFeatures).length }
             </span>
           </div>
 
