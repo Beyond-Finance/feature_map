@@ -35,17 +35,14 @@ export default function Feature({ features }) {
   }
 
   const healthScore = feature.additional_metrics.health.overall;
-  const sizeScore = feature.additional_metrics.feature_size.percentOfMax;
+  const sizeScore = feature.additional_metrics.feature_size.percent_of_max;
   const filledPills = getFilledPills(sizeScore);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <Link to="/" className="text-gray-600 hover:text-blue-800 block text-sm font-normal">
-          ← Back to Dashboard
-        </Link>
+    <div className="h-screen max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column */}
         <div className="col-span-1 lg:col-span-3">

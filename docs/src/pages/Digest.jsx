@@ -1,5 +1,7 @@
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
+import { Dropdown } from '../components/ui';
 import DigestHealthScoreCard from '../components/DigestHealthScoreCard';
 import DigestTestCoverageCard from '../components/DigestTestCoverageCard';
 import DigestTestPyramidCard from '../components/DigestTestPyramidCard';
@@ -16,23 +18,56 @@ import {
 } from '../utils/health-score';
 
 export default function Digest({ features }) {
-  const healthScores = Object.entries(features)
-    .map(([name, data]) => ({
-      name,
-      data: data || 0,
-      health: data.additional_metrics.health.overall || 0
-    }))
-    .sort((a, b) => a.health - b.health)
-    .slice(0, 5);
+  const [selectedTeam, setSelectedTeam] = useState('All Teams');
 
-  const testCoverageScores = Object.entries(features)
-    .map(([name, data]) => ({
-      name,
-      data: data || 0,
-      score: data.additional_metrics.test_coverage.score || 0
-    }))
-    .sort((a, b) => a.score - b.score)
-    .slice(0, 5);
+  const teams = useMemo(() => {
+    const teamSet = new Set();
+    teamSet.add('All Teams');
+
+    Object.values(features).forEach(feature => {
+      if (feature.assignments?.teams) {
+        feature.assignments.teams.forEach(team => teamSet.add(team));
+      }
+    });
+
+    return Array.from(teamSet);
+  }, [features]);
+
+  const filteredFeatures = useMemo(() => {
+    if (selectedTeam === 'All Teams') return features;
+
+    return Object.fromEntries(
+      Object.entries(features).filter(([_, data]) =>
+        data.assignments?.teams?.includes(selectedTeam)
+      )
+    );
+  }, [features, selectedTeam]);
+
+  const healthScores = useMemo(() => (
+    Object.entries(filteredFeatures)
+      .map(([name, data]) => ({
+        name,
+        data: data || 0,
+        health: data.additional_metrics.health.overall || 0
+      }))
+      .sort((a, b) => a.health - b.health)
+      .slice(0, 5)
+    ),
+    [filteredFeatures]
+  )
+
+  const testCoverageScores = useMemo(() => (
+    Object.entries(filteredFeatures)
+      .map(([name, data]) => ({
+        name,
+        data: data || 0,
+        score: data.additional_metrics.test_coverage.score || 0
+      }))
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 5)
+    ),
+    [filteredFeatures]
+  )
 
   const TableHeader = ({ title }) => (
     <th
@@ -46,18 +81,21 @@ export default function Digest({ features }) {
   );
 
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-8">
-      <div className="mb-8">
-        <Link to="/" className="text-gray-600 hover:text-blue-800 block text-sm font-normal">
-          ← Back to Dashboard
-        </Link>
+    <div className="h-screen max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-800">Digest</h1>
+        <Dropdown
+          items={teams}
+          selectedItem={selectedTeam}
+          onItemSelect={setSelectedTeam}
+        />
       </div>
 
-      <div className="flow-root mb-12">
+      <div className="flow-root">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg h-full">
             <div className="px-4 py-6 h-fit">
-              <DigestHealthScoreCard features={features} />
+              <DigestHealthScoreCard features={filteredFeatures} />
             </div>
           </div>
 
@@ -156,11 +194,11 @@ export default function Digest({ features }) {
         </div>
       </div>
 
-      <div className="flow-root mb-12">
+      <div className="flow-root">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg">
             <div className="px-4 py-6">
-              <DigestTestCoverageCard features={features} />
+              <DigestTestCoverageCard features={filteredFeatures} />
             </div>
           </div>
 
@@ -264,16 +302,16 @@ export default function Digest({ features }) {
         </div>
       </div>
 
-      <div className="flow-root mb-12">
+      <div className="flow-root">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg">
             <div className="px-4 py-6">
-              <DigestTestPyramidCard features={features} />
+              <DigestTestPyramidCard features={filteredFeatures} />
             </div>
           </div>
 
           <div className="col-span-2 h-full shadow-sm border border-gray-200 rounded-lg bg-white">
-            <DigestTestPyramidDetails features={features} />
+            <DigestTestPyramidDetails features={filteredFeatures} />
           </div>
         </div>
       </div>
