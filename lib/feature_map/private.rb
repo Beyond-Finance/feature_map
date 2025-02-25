@@ -20,6 +20,7 @@ require 'feature_map/private/documentation_site'
 require 'feature_map/private/code_cov'
 require 'feature_map/private/test_coverage_file'
 require 'feature_map/private/test_pyramid_file'
+require 'feature_map/private/additional_metrics_file'
 require 'feature_map/private/feature_plugins/assignment'
 require 'feature_map/private/validations/files_have_features'
 require 'feature_map/private/validations/features_up_to_date'
@@ -104,11 +105,15 @@ module FeatureMap
       # and review the feature documentation without this data.
       feature_test_coverage = TestCoverageFile.path.exist? ? TestCoverageFile.load_features! : {}
 
+      # Additional metrics must be calculated after the initial metrics are loaded
+      feature_additional_metrics = AdditionalMetricsFile.path.exist? ? AdditionalMetricsFile.load_features! : {}
+
       DocumentationSite.generate(
         feature_assignments,
         feature_metrics,
         feature_test_coverage,
         feature_test_pyramid,
+        feature_additional_metrics,
         configuration.raw_hash,
         T.must(git_ref || configuration.repository['main_branch'])
       )
@@ -135,6 +140,14 @@ module FeatureMap
       coverage_stats = CodeCov.fetch_coverage_stats(commit_sha, code_cov_token)
 
       TestCoverageFile.write!(coverage_stats)
+    end
+
+    sig { void }
+    def self.generate_additional_metrics!
+      feature_metrics = MetricsFile.load_features!
+      feature_test_coverage = TestCoverageFile.path.exist? ? TestCoverageFile.load_features! : {}
+
+      AdditionalMetricsFile.write!(feature_metrics, feature_test_coverage, configuration.raw_hash['documentation_site']['health'])
     end
 
     # Returns a string version of the relative path to a Rails constant,

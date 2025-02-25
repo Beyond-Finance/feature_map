@@ -370,8 +370,8 @@ RSpec.describe FeatureMap do
       expect(File.exist?(test_coverage_output_file)).to be_truthy
       expect(YAML.load_file(test_coverage_output_file)).to match({
                                                                    'features' => {
-                                                                     'Bar' => { 'hits' => 8, 'lines' => 10, 'misses' => 2 },
-                                                                     'Foo' => { 'hits' => 0, 'lines' => 0, 'misses' => 0 }
+                                                                     'Bar' => { 'hits' => 8, 'lines' => 10, 'misses' => 2, 'coverage_ratio' => 80 },
+                                                                     'Foo' => { 'hits' => 0, 'lines' => 0, 'misses' => 0, 'coverage_ratio' => 0 }
                                                                    }
                                                                  })
     end

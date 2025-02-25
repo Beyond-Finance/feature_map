@@ -45,16 +45,16 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
           bValue = teamsB[0] || '';
           break;
         case 'size':
-          aValue = featureDataA?.metrics?.featureSize?.percentOfMax || 0;
-          bValue = featureDataB?.metrics?.featureSize?.percentOfMax || 0;
+          aValue = featureDataA?.additional_metrics?.feature_size?.percent_of_max || 0;
+          bValue = featureDataB?.additional_metrics?.feature_size?.percent_of_max || 0;
           break;
         case 'health_score':
-          aValue = featureDataA?.metrics?.health?.overall || 0;
-          bValue = featureDataB?.metrics?.health?.overall || 0;
+          aValue = featureDataA?.additional_metrics?.health?.overall || 0;
+          bValue = featureDataB?.additional_metrics?.health?.overall || 0;
           break;
         case 'test_coverage':
-          aValue = featureDataA?.metrics?.testCoverage?.score ?? -1;
-          bValue = featureDataB?.metrics?.testCoverage?.score ?? -1;
+          aValue = featureDataA?.additional_metrics?.test_coverage?.score ?? -1;
+          bValue = featureDataB?.additional_metrics?.test_coverage?.score ?? -1;
           break;
         default:
           aValue = featureNameA;
@@ -108,10 +108,10 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {filteredAndSortedFeatures.map(([name, data]) => {
-            const sizeScore = data.metrics.featureSize.percentOfMax;
+            const sizeScore = data?.additional_metrics?.feature_size?.percent_of_max || 0;
             const sizeLabel = getFeatureSizeLabel(sizeScore);
-            const healthScore = data.metrics.health.overall;
-            const coveragePercent = data.metrics.testCoverage.score;
+            const healthScore = data?.additional_metrics?.health?.overall || 0;
+            const coveragePercent = data?.additional_metrics?.test_coverage?.score || 0;
 
             return (
               <tr key={name}>

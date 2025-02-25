@@ -34,8 +34,8 @@ export default function Feature({ features }) {
     );
   }
 
-  const healthScore = feature.metrics.health.overall;
-  const sizeScore = feature.metrics.featureSize.percentOfMax;
+  const healthScore = feature.additional_metrics.health.overall;
+  const sizeScore = feature.additional_metrics.feature_size.percentOfMax;
   const filledPills = getFilledPills(sizeScore);
 
   return (
@@ -65,24 +65,24 @@ export default function Feature({ features }) {
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">
-                  Coverage: {feature.metrics.health.testCoverageComponent.healthScore.toFixed(0)} / {feature.metrics.health.testCoverageComponent.awardablePoints}
+                  Coverage: {feature.additional_metrics.health.test_coverage_component.health_score.toFixed(0)} / {feature.additional_metrics.health.test_coverage_component.awardable_points}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Complexity: {feature.metrics.health.cyclomaticComplexityComponent.healthScore.toFixed(0)} / {feature.metrics.health.cyclomaticComplexityComponent.awardablePoints}
+                  Complexity: {feature.additional_metrics.health.cyclomatic_complexity_component.health_score.toFixed(0)} / {feature.additional_metrics.health.cyclomatic_complexity_component.awardable_points}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Encapsulation: {feature.metrics.health.encapsulationComponent.healthScore.toFixed(0)} / {feature.metrics.health.encapsulationComponent.awardablePoints}
+                  Encapsulation: {feature.additional_metrics.health.encapsulation_component.health_score.toFixed(0)} / {feature.additional_metrics.health.encapsulation_component.awardable_points}
                 </li>
               </ul>
             </FeatureCard>
 
             <FeatureCard
               title="Test Coverage"
-              value={feature.metrics.testCoverage.score}
+              value={feature.additional_metrics.test_coverage.score}
               suffix="%"
               tooltip="Test coverage is determined by using CodeCov data (lines, hits, misses) to calculate a percentage score, from 0-100%, relative to the other features in the codebase. A qualitative coverage ranking is assigned to each feature, which can be managed which can be managed via `.feature_map/config.yml`."
               icon={<FlaskConical />}
-              color={getTestCoverageColor(feature.metrics.testCoverage.score).hex}
+              color={getTestCoverageColor(feature.additional_metrics.test_coverage.score).hex}
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">

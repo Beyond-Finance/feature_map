@@ -78,16 +78,18 @@ RSpec.describe FeatureMap::Cli do
         expect(FeatureMap).to receive(:validate!) do |args|
           expect(args[:stage_changes]).to eq true
         end
+        expect(FeatureMap).to receive(:generate_additional_metrics!)
         expect(FeatureMap).to receive(:generate_docs!)
         subject
       end
     end
 
     context 'with --skip-validate' do
-      let(:argv) { ['docs', '--skip-validate'] }
+      let(:argv) { ['docs', '--skip-validate', '--skip-additional-metrics'] }
 
       it 'does not trigger the validate operation' do
         expect(FeatureMap).not_to receive(:validate!)
+        expect(FeatureMap).not_to receive(:generate_additional_metrics!)
         expect(FeatureMap).to receive(:generate_docs!)
         subject
       end
@@ -267,6 +269,7 @@ RSpec.describe FeatureMap::Cli do
           for_file - find feature assignment for a single file
           test_coverage - generates per-feature test coverage statistics
           test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
+          additional_metrics - generates additional metrics per-feature (e.g. health score)
           validate - run all validations
 
           ##################################################

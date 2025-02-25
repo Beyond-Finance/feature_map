@@ -31,14 +31,17 @@ module FeatureMap
               lines: 13
               hits: 10
               misses: 3
+              coverage_ratio: 77
             Foo:
               lines: 9
               hits: 3
               misses: 6
+              coverage_ratio: 33
             Empty Feature:
               lines: 0
               hits: 0
               misses: 0
+              coverage_ratio: 0
         FEATURES
       end
 
