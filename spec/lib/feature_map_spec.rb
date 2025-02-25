@@ -306,6 +306,14 @@ RSpec.describe FeatureMap do
 
       expect(File.exist?(Pathname.pwd.join('.feature_map/test-pyramid.yml'))).to be_truthy
     end
+
+    context 'when only unit and integration test summaries are provided' do
+      it 'generates the test pyramid file' do
+        FeatureMap.generate_test_pyramid!('tmp/unit.rspec', 'tmp/integration.rspec', nil, nil)
+
+        expect(File.exist?(Pathname.pwd.join('.feature_map/test-pyramid.yml'))).to be_truthy
+      end
+    end
   end
 
   describe '.apply_assignments!' do
