@@ -12,7 +12,7 @@ export default function FeatureDetails({name, feature}) {
   return(
     <div className="bg-white p-4 rounded-lg border border-gray-200 h-fit">
       <div className="mb-6">
-        <h2 className="text-lg font-bold text-gray-800 mb-2">{name}</h2>
+      <h3 className="text-sm font-medium text-gray-900 mb-3">Description</h3>
 
         {feature.description && (
           <p className="text-sm md:text-base text-gray-600">{feature.description}</p>

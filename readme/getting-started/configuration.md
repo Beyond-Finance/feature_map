@@ -44,6 +44,9 @@ repository:
   main_branch: 'main'
   url: https://example.com
 
+# Supports link generation in message construction, e.g., release announcements
+documentation_site_url: example.github.io/repo
+
 # Various configurations used by the documentation site.
 documentation_site:
   health:
@@ -63,6 +66,11 @@ documentation_site:
       test_coverage:
         weight: 70
         score_threshold: 98
+  linked_sites:
+    - name: User Service
+      url: https://example.github.io/user-service
+    - name: Gateway Service
+      url: https://example.github.io/gateway-service
   size_percentile:
     minimum_thresholds:
       xl: 95
@@ -70,6 +78,7 @@ documentation_site:
       m: 25
       s: 5
       xs: 0
+  title: Example Site
   test_coverage:
     minimum_thresholds:
       good: 98
