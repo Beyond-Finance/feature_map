@@ -1,24 +1,17 @@
-# typed: true
-
 module FeatureMap
   module CodeFeatures
     module Plugins
       class Identity < Plugin
-        extend T::Sig
-        extend T::Helpers
-
         IdentityStruct = Struct.new(:name)
 
-        sig { returns(IdentityStruct) }
         def identity
           IdentityStruct.new(
             @feature.raw_hash['name']
           )
         end
 
-        sig { override.params(features: T::Array[CodeFeatures::Feature]).returns(T::Array[String]) }
         def self.validation_errors(features)
-          errors = T.let([], T::Array[String])
+          errors = []
 
           uniq_set = Set.new
           features.each do |feature|

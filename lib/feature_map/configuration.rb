@@ -1,23 +1,46 @@
-# typed: strict
-
 module FeatureMap
-  class Configuration < T::Struct
-    extend T::Sig
+  class Configuration
+    attr_reader :assigned_globs
+    attr_reader :unassigned_globs
+    attr_reader :unbuilt_gems_path
+    attr_reader :skip_features_validation
+    attr_reader :raw_hash
+    attr_reader :skip_code_ownership
+    attr_reader :require_assignment_for_teams
+    attr_reader :ignore_feature_definitions
+    attr_reader :code_cov
+    attr_reader :repository
+    attr_reader :documentation_site
+    attr_reader :documentation_site_url
 
-    const :assigned_globs, T::Array[String]
-    const :unassigned_globs, T::Array[String]
-    const :unbuilt_gems_path, T.nilable(String)
-    const :skip_features_validation, T::Boolean
-    const :raw_hash, T::Hash[T.untyped, T.untyped]
-    const :skip_code_ownership, T::Boolean
-    const :require_assignment_for_teams, T.nilable(T::Array[String])
-    const :ignore_feature_definitions, T::Boolean
-    const :code_cov, T::Hash[String, T.nilable(String)]
-    const :repository, T::Hash[String, T.nilable(String)]
-    const :documentation_site, T::Hash[String, T.untyped]
-    const :documentation_site_url, T.nilable(String)
+    def initialize(
+      assigned_globs: nil,
+      unassigned_globs: nil,
+      unbuilt_gems_path: nil,
+      skip_features_validation: nil,
+      raw_hash: nil,
+      skip_code_ownership: nil,
+      require_assignment_for_teams: nil,
+      ignore_feature_definitions: nil,
+      code_cov: nil,
+      repository: nil,
+      documentation_site: nil,
+      documentation_site_url: nil
+    )
+      @assigned_globs = assigned_globs
+      @unassigned_globs = unassigned_globs
+      @unbuilt_gems_path = unbuilt_gems_path
+      @skip_features_validation = skip_features_validation
+      @raw_hash = raw_hash
+      @skip_code_ownership = skip_code_ownership
+      @require_assignment_for_teams = require_assignment_for_teams
+      @ignore_feature_definitions = ignore_feature_definitions
+      @code_cov = code_cov
+      @repository = repository
+      @documentation_site = documentation_site
+      @documentation_site_url = documentation_site_url
+    end
 
-    sig { returns(Configuration) }
     def self.fetch
       config_hash = YAML.load_file('.feature_map/config.yml')
 

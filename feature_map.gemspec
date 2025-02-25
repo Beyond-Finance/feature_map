@@ -31,7 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'faraday', '~> 2.7'
   spec.add_dependency 'packs-specification', '~> 0.0'
   spec.add_dependency 'rubocop', '~> 1.0'
-  spec.add_dependency 'sorbet-runtime', '~> 0.5'
   spec.add_dependency 'uri', '~> 1.0'
 
   spec.add_development_dependency 'debug', '~> 1.9'
@@ -39,7 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'railties', '~> 7.2'
   spec.add_development_dependency 'rake', '~> 13.2'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'sorbet', '~> 0.5'
-  spec.add_development_dependency 'tapioca', '~> 0.16'
   spec.add_development_dependency 'webmock', '~> 3.24'
 end

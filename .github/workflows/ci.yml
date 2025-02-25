@@ -41,18 +41,6 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
       - name: Run tests
         run: bundle exec rspec
-  static_type_check:
-    name: "Type Check"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          ruby-version: 3.3
-      - name: Run static type checks
-        run: bundle exec srb tc
   rubocop_check:
     name: "Rubocop"
     runs-on: ubuntu-latest

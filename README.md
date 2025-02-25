@@ -33,7 +33,6 @@ Contributions are welcome and appreciated. Here's how to get started:
 - install dependencies: `$ bundle install`
 - run tests: `$ bundle exec rspec`
 - run Rubocop: `$ bundle exec rubocop`
-- run Sorbet: `$ bundle exec srb tc`
 
 That's it! Assuming you can complete all of these steps without any error or issues, you should be good to go.
 

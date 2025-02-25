@@ -1,12 +1,8 @@
-# typed: strict
 # frozen_string_literal: true
 
 module FeatureMap
   module Private
     class FeatureAssigner
-      extend T::Sig
-
-      sig { params(globs_to_assigned_feature_map: GlobsToAssignedFeatureMap).returns(GlobsToAssignedFeatureMap) }
       def self.assign_features(globs_to_assigned_feature_map)
         globs_to_assigned_feature_map.each_with_object({}) do |(glob, feature), mapping|
           # addresses the case where a directory name includes regex characters
