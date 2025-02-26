@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-# typed: strict
 
 require 'feature_map'
 FeatureMap::Cli.run!(ARGV)

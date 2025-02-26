@@ -1,14 +1,9 @@
-# typed: strict
-
 module FeatureMap
   module Private
     module Validations
       class FeaturesUpToDate
-        extend T::Sig
-        extend T::Helpers
         include Validator
 
-        sig { override.params(files: T::Array[String], autocorrect: T::Boolean, stage_changes: T::Boolean).returns(T::Array[String]) }
         def validation_errors(files:, autocorrect: true, stage_changes: true)
           return [] if Private.configuration.skip_features_validation
 
@@ -16,7 +11,7 @@ module FeatureMap
           expected_content_lines = AssignmentsFile.expected_contents_lines
 
           features_file_up_to_date = actual_content_lines == expected_content_lines
-          errors = T.let([], T::Array[String])
+          errors = []
 
           if !features_file_up_to_date
             if autocorrect

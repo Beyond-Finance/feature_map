@@ -1,12 +1,8 @@
-# typed: strict
 # frozen_string_literal: true
 
 module FeatureMap
   module Private
     class AssignmentApplicator
-      extend T::Sig
-
-      sig { params(assignments: T::Array[T::Array[T.nilable(String)]]).void }
       def self.apply_assignments!(assignments)
         file_to_feature_map = map_files_to_feature
         assignments.each do |(filepath, feature)|
@@ -17,7 +13,6 @@ module FeatureMap
         end
       end
 
-      sig { params(filepath: String, feature: String).void }
       def self.apply_assignment(filepath, feature)
         return apply_to_directory(filepath, feature) if File.directory?(filepath)
 
@@ -42,7 +37,6 @@ module FeatureMap
         end
       end
 
-      sig { params(file: T::Array[String], filepath: String, feature: String).void }
       def self.apply_to_apex(file, filepath, feature)
         File.open(filepath, 'w') do |f|
           f.write("// @feature #{feature}\n\n")
@@ -50,14 +44,12 @@ module FeatureMap
         end
       end
 
-      sig { params(filepath: String, feature: String).void }
       def self.apply_to_directory(filepath, feature)
         feature_path = File.join(filepath, '.feature')
 
         File.write(feature_path, "#{feature}\n")
       end
 
-      sig { params(file: T::Array[String], filepath: String, feature: String).void }
       def self.apply_to_html(file, filepath, feature)
         File.open(filepath, 'w') do |f|
           f.write("<!-- @feature #{feature} -->\n\n")
@@ -65,7 +57,6 @@ module FeatureMap
         end
       end
 
-      sig { params(file: T::Array[String], filepath: String, feature: String).void }
       def self.apply_to_javascript(file, filepath, feature)
         File.open(filepath, 'w') do |f|
           f.write("// @feature #{feature}\n\n")
@@ -73,7 +64,6 @@ module FeatureMap
         end
       end
 
-      sig { params(file: T::Array[String], filepath: String, feature: String).void }
       def self.apply_to_ruby(file, filepath, feature)
         File.open(filepath, 'w') do |f|
           # NOTE:  No spacing newline; doing so would separate
@@ -86,7 +76,6 @@ module FeatureMap
         end
       end
 
-      sig { params(file: T::Array[String], filepath: String, feature: String).void }
       def self.apply_to_xml(file, filepath, feature)
         # NOTE:  Installation of top-level comments in some XML files (notably, in Salesforce)
         #        breaks parsing.  Instead, we'll insert them right after the opening XML declaration.
@@ -99,7 +88,6 @@ module FeatureMap
         end
       end
 
-      sig { returns(T::Hash[String, String]) }
       def self.map_files_to_feature
         Private.feature_file_assignments.reduce({}) do |content, (feature_name, files)|
           mapped_files = files.to_h { |f| [f, feature_name] }

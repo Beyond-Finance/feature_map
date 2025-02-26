@@ -1,5 +1,3 @@
-# typed: true
-
 require 'optparse'
 require 'pathname'
 require 'fileutils'

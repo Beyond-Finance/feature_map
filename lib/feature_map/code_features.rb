@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# typed: strict
-
 require 'yaml'
 require 'csv'
 require 'set'
@@ -11,22 +9,16 @@ require 'feature_map/code_features/plugins/identity'
 
 module FeatureMap
   module CodeFeatures
-    extend T::Sig
-
-    NON_BREAKING_SPACE = T.let(65_279.chr(Encoding::UTF_8), String)
+    NON_BREAKING_SPACE = 65_279.chr(Encoding::UTF_8)
 
     class IncorrectPublicApiUsageError < StandardError; end
 
-    sig { returns(T::Array[Feature]) }
     def self.all
-      @all = T.let(@all, T.nilable(T::Array[Feature]))
       @all ||= from_csv('.feature_map/feature_definitions.csv')
       @all ||= for_directory('.feature_map/definitions')
     end
 
-    sig { params(name: String).returns(T.nilable(Feature)) }
     def self.find(name)
-      @index_by_name = T.let(@index_by_name, T.nilable(T::Hash[String, CodeFeatures::Feature]))
       @index_by_name ||= begin
         result = {}
         all.each { |t| result[t.name] = t }
@@ -36,7 +28,6 @@ module FeatureMap
       @index_by_name[name]
     end
 
-    sig { params(file_path: String).returns(T.nilable(T::Array[Feature])) }
     def self.from_csv(file_path)
       return nil if !File.exist?(file_path)
 
@@ -53,7 +44,6 @@ module FeatureMap
       end
     end
 
-    sig { params(dir: String).returns(T::Array[Feature]) }
     def self.for_directory(dir)
       Pathname.new(dir).glob('**/*.yml').map do |path|
         Feature.from_yml(path.to_s)
@@ -62,14 +52,12 @@ module FeatureMap
       end
     end
 
-    sig { params(features: T::Array[Feature]).returns(T::Array[String]) }
     def self.validation_errors(features)
       Plugin.all_plugins.flat_map do |plugin|
         plugin.validation_errors(features)
       end
     end
 
-    sig { params(string: String).returns(String) }
     def self.tag_value_for(string)
       string.tr('&', ' ').gsub(/\s+/, '_').downcase
     end
@@ -77,7 +65,6 @@ module FeatureMap
     # Generally, you should not ever need to do this, because once your ruby process loads, cached content should not change.
     # Namely, the YML files that are the source of truth for features should not change, so we should not need to look at the YMLs again to verify.
     # The primary reason this is helpful is for tests where each context is testing against a different set of features
-    sig { void }
     def self.bust_caches!
       Plugin.bust_caches!
       @all = nil
@@ -85,9 +72,6 @@ module FeatureMap
     end
 
     class Feature
-      extend T::Sig
-
-      sig { params(config_yml: String).returns(Feature) }
       def self.from_yml(config_yml)
         hash = YAML.load_file(config_yml)
 
@@ -97,7 +81,6 @@ module FeatureMap
         )
       end
 
-      sig { params(raw_hash: T::Hash[T.untyped, T.untyped]).returns(Feature) }
       def self.from_hash(raw_hash)
         new(
           config_yml: nil,
@@ -105,34 +88,22 @@ module FeatureMap
         )
       end
 
-      sig { returns(T::Hash[T.untyped, T.untyped]) }
       attr_reader :raw_hash
-
-      sig { returns(T.nilable(String)) }
       attr_reader :config_yml
 
-      sig do
-        params(
-          config_yml: T.nilable(String),
-          raw_hash: T::Hash[T.untyped, T.untyped]
-        ).void
-      end
       def initialize(config_yml:, raw_hash:)
         @config_yml = config_yml
         @raw_hash = raw_hash
       end
 
-      sig { returns(String) }
       def name
         Plugins::Identity.for(self).identity.name
       end
 
-      sig { returns(String) }
       def to_tag
         CodeFeatures.tag_value_for(name)
       end
 
-      sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
         if other.is_a?(CodeFeatures::Feature)
           name == other.name
@@ -143,7 +114,6 @@ module FeatureMap
 
       alias eql? ==
 
-      sig { returns(Integer) }
       def hash
         name.hash
       end

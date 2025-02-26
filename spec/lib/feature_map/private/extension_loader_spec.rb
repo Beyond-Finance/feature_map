@@ -17,37 +17,25 @@ module FeatureMap
 
       write_file('lib/my_extension.rb', <<~RUBY)
         class MyExtension
-          extend T::Sig
           include FeatureMap::Mapper
           include FeatureMap::Validator
 
-          sig do
-            override.params(file: String).
-              returns(T.nilable(FeatureMap::CodeFeatures::Feature))
-          end
           def map_file_to_feature(file)
             FeatureMap::CodeFeatures.all.last
           end
 
-          sig do
-            override.params(files: T::Array[String]).
-              returns(T::Hash[String, FeatureMap::CodeFeatures::Feature])
-          end
           def globs_to_feature(files)
             Dir.glob('**/*.rb').map{|f| [f, FeatureMap::CodeFeatures.all.last]}.to_h
           end
 
-          sig { override.returns(String) }
           def description
             'My special extension'
           end
 
-          sig { override.params(files: T::Array[String], autocorrect: T::Boolean, stage_changes: T::Boolean).returns(T::Array[String]) }
           def validation_errors(files:, autocorrect: true, stage_changes: true)
             ['my validation errors']
           end
 
-          sig { override.void }
           def bust_caches!
             nil
           end

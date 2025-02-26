@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-# typed: strict
-
 require 'set'
-require 'sorbet-runtime'
+
 require 'json'
 require 'yaml'
 require 'feature_map/commit'
@@ -20,23 +18,11 @@ module FeatureMap
 
   module_function
 
-  extend T::Sig
-  extend T::Helpers
-
-  requires_ancestor { Kernel }
-  GlobsToAssignedFeatureMap = T.type_alias { T::Hash[String, CodeFeatures::Feature] }
-
-  UpdatedFeaturesByTeam = T.type_alias { T::Hash[String, CommitsByFeature] }
-  CommitsByFeature = T.type_alias { T::Hash[String, T::Array[Commit]] }
-
-  sig { params(assignments_file_path: String).void }
   def apply_assignments!(assignments_file_path)
     Private.apply_assignments!(assignments_file_path)
   end
 
-  sig { params(file: String).returns(T.nilable(CodeFeatures::Feature)) }
   def for_file(file)
-    @for_file ||= T.let(@for_file, T.nilable(T::Hash[String, T.nilable(CodeFeatures::Feature)]))
     @for_file ||= {}
 
     return nil if file.start_with?('./')
@@ -44,8 +30,7 @@ module FeatureMap
 
     Private.load_configuration!
 
-    feature = T.let(nil, T.nilable(CodeFeatures::Feature))
-
+    feature = nil
     Mapper.all.each do |mapper|
       feature = mapper.map_file_to_feature(file)
       break if feature # TODO: what if there are multiple features? Should we respond with an error instead of the first match?
@@ -54,10 +39,9 @@ module FeatureMap
     @for_file[file] = feature
   end
 
-  sig { params(feature: T.any(CodeFeatures::Feature, String)).returns(String) }
   def for_feature(feature)
-    feature = T.must(CodeFeatures.find(feature)) if feature.is_a?(String)
-    feature_report = T.let([], T::Array[String])
+    feature = CodeFeatures.find(feature)
+    feature_report = []
 
     feature_report << "# Report for `#{feature.name}` Feature"
 
@@ -85,18 +69,10 @@ module FeatureMap
   class InvalidFeatureMapConfigurationError < StandardError
   end
 
-  sig { params(filename: String).void }
   def self.remove_file_annotation!(filename)
     Private::AssignmentMappers::FileAnnotations.new.remove_file_annotation!(filename)
   end
 
-  sig do
-    params(
-      autocorrect: T::Boolean,
-      stage_changes: T::Boolean,
-      files: T.nilable(T::Array[String])
-    ).void
-  end
   def validate!(
     autocorrect: true,
     stage_changes: true,
@@ -113,43 +89,30 @@ module FeatureMap
     Private.validate!(files: tracked_file_subset, autocorrect: autocorrect, stage_changes: stage_changes)
   end
 
-  sig { params(git_ref: T.nilable(String)).void }
   def generate_docs!(git_ref)
     Private.generate_docs!(git_ref)
   end
 
-  sig do
-    params(
-      unit_path: String,
-      integration_path: String,
-      regression_path: T.nilable(String),
-      regression_assignments_path: T.nilable(String)
-    ).void
-  end
   def generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
     Private.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
   end
 
-  sig { params(commit_sha: String, code_cov_token: String).void }
   def gather_test_coverage!(commit_sha, code_cov_token)
     Private.gather_test_coverage!(commit_sha, code_cov_token)
   end
 
-  sig { void }
   def generate_additional_metrics!
     Private.generate_additional_metrics!
   end
 
   # Given a backtrace from either `Exception#backtrace` or `caller`, find the
   # first line that corresponds to a file with an assigned feature
-  sig { params(backtrace: T.nilable(T::Array[String]), excluded_features: T::Array[CodeFeatures::Feature]).returns(T.nilable(CodeFeatures::Feature)) }
   def for_backtrace(backtrace, excluded_features: [])
     first_assigned_file_for_backtrace(backtrace, excluded_features: excluded_features)&.first
   end
 
   # Given a backtrace from either `Exception#backtrace` or `caller`, find the
   # first assigned file in it, useful for figuring out which file is being blamed.
-  sig { params(backtrace: T.nilable(T::Array[String]), excluded_features: T::Array[CodeFeatures::Feature]).returns(T.nilable([CodeFeatures::Feature, String])) }
   def first_assigned_file_for_backtrace(backtrace, excluded_features: [])
     backtrace_with_feature_assignments(backtrace).each do |(feature, file)|
       if feature && !excluded_features.include?(feature)
@@ -160,7 +123,6 @@ module FeatureMap
     nil
   end
 
-  sig { params(backtrace: T.nilable(T::Array[String])).returns(T::Enumerable[[T.nilable(CodeFeatures::Feature), String]]) }
   def backtrace_with_feature_assignments(backtrace)
     return [] unless backtrace
 
@@ -183,7 +145,7 @@ module FeatureMap
       match = line.match(backtrace_line)
       next unless match
 
-      file = T.must(match[:file])
+      file = match[:file]
 
       [
         FeatureMap.for_file(file),
@@ -193,9 +155,7 @@ module FeatureMap
   end
   private_class_method(:backtrace_with_feature_assignments)
 
-  sig { params(klass: T.nilable(T.any(T::Class[T.anything], Module))).returns(T.nilable(CodeFeatures::Feature)) }
   def for_class(klass)
-    @memoized_values ||= T.let(@memoized_values, T.nilable(T::Hash[String, T.nilable(CodeFeatures::Feature)]))
     @memoized_values ||= {}
     # We use key because the memoized value could be `nil`
     if @memoized_values.key?(klass.to_s)
@@ -213,7 +173,7 @@ module FeatureMap
   # Groups the provided list of commits (e.g. the changes being deployed in a release) by both the feature they impact
   # and the teams responsible for these features. Returns a hash with keys for each team with features modified within
   # these commits and values that are a hash of features to the set of commits that impact each feature.
-  sig { params(commits: T::Array[Commit]).returns(UpdatedFeaturesByTeam) }
+
   def group_commits(commits)
     commits.each_with_object({}) do |commit, hash|
       commit_features = commit.files.map do |file|
@@ -244,7 +204,7 @@ module FeatureMap
 
   # Generates a block kit message grouping the provided commits into sections for each feature impacted by the
   # cheanges.
-  sig { params(commits_by_feature: CommitsByFeature).returns(T::Array[T::Hash[String, T.untyped]]) }
+
   def generate_release_notification(commits_by_feature)
     Private.generate_release_notification(commits_by_feature)
   end
@@ -253,7 +213,7 @@ module FeatureMap
   # Namely, the set of files, and directories which are tracked for feature assignment should not change.
   # The primary reason this is helpful is for clients of FeatureMap who want to test their code, and each test context
   # has different feature assignments and tracked files.
-  sig { void }
+
   def self.bust_caches!
     @for_file = nil
     @memoized_values = nil
@@ -261,7 +221,6 @@ module FeatureMap
     Mapper.all.each(&:bust_caches!)
   end
 
-  sig { returns(Configuration) }
   def self.configuration
     Private.configuration
   end

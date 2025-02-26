@@ -1,12 +1,9 @@
-# typed: strict
 # frozen_string_literal: true
 
 require 'rubocop'
 module FeatureMap
   module Private
     class FeatureMetricsCalculator
-      extend T::Sig
-
       ABC_SIZE_METRIC = 'abc_size'
       CYCLOMATIC_COMPLEXITY_METRIC = 'cyclomatic_complexity'
       LINES_OF_CODE_METRIC = 'lines_of_code'
@@ -14,23 +11,15 @@ module FeatureMap
       COMPLEXITY_RATIO_METRIC = 'complexity_ratio'
       ENCAPSULATION_RATIO_METRIC = 'encapsulation_ratio'
 
-      SUPPORTED_METRICS = T.let([
+      SUPPORTED_METRICS = [
         ABC_SIZE_METRIC,
         CYCLOMATIC_COMPLEXITY_METRIC,
         LINES_OF_CODE_METRIC,
         TODO_LOCATIONS_METRIC,
         COMPLEXITY_RATIO_METRIC,
         ENCAPSULATION_RATIO_METRIC
-      ].freeze, T::Array[String])
+      ].freeze
 
-      FeatureMetrics = T.type_alias do
-        T::Hash[
-          String, # metric name
-          T.any(Integer, T.nilable(Float), T::Hash[String, String]) # score or todo locations with messages
-        ]
-      end
-
-      sig { params(file_paths: T::Array[String]).returns(FeatureMetrics) }
       def self.calculate_for_feature(file_paths)
         metrics = file_paths.map { |file| calculate_for_file(file) }
 
@@ -48,7 +37,6 @@ module FeatureMap
         aggregate_metrics
       end
 
-      sig { params(file_path: String).returns(FeatureMetrics) }
       def self.calculate_for_file(file_path)
         metrics = {
           LINES_OF_CODE_METRIC => LinesOfCodeCalculator.new(file_path).calculate
@@ -76,14 +64,12 @@ module FeatureMap
         )
       end
 
-      sig { params(aggregate_metrics: T::Hash[String, T.untyped]).returns(T.nilable(Float)) }
       def self.complexity_ratio(aggregate_metrics)
         return 0.0 if aggregate_metrics[LINES_OF_CODE_METRIC].nil? || aggregate_metrics[CYCLOMATIC_COMPLEXITY_METRIC].nil? || aggregate_metrics[CYCLOMATIC_COMPLEXITY_METRIC].zero?
 
         aggregate_metrics[LINES_OF_CODE_METRIC].to_f / aggregate_metrics[CYCLOMATIC_COMPLEXITY_METRIC]
       end
 
-      sig { params(file_paths: T.nilable(T::Array[String]), aggregate_metrics: T::Hash[String, T.untyped]).returns(T.nilable(Float)) }
       def self.encapsulation_ratio(file_paths, aggregate_metrics)
         return 0.0 if file_paths.nil? || aggregate_metrics[LINES_OF_CODE_METRIC].nil? || aggregate_metrics[LINES_OF_CODE_METRIC].zero?
 

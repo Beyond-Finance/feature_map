@@ -1,4 +1,3 @@
-# typed: strict
 # frozen_string_literal: true
 
 module FeatureMap
@@ -63,22 +62,9 @@ module FeatureMap
     # The `window.FEATURES` global variable is used within the site logic to render an appropriate set of
     # documentation artifacts and charts.
     class DocumentationSite
-      extend T::Sig
-
       ASSETS_DIRECTORY = 'docs'
       FETAURE_DEFINITION_KEYS_TO_INCLUDE = %w[description dashboard_link documentation_link].freeze
 
-      sig do
-        params(
-          feature_assignments: AssignmentsFile::FeaturesContent,
-          feature_metrics: MetricsFile::FeaturesContent,
-          feature_test_coverage: TestCoverageFile::FeaturesContent,
-          feature_test_pyramid: TestPyramidFile::FeaturesContent,
-          feature_additional_metrics: AdditionalMetricsFile::FeaturesContent,
-          project_configuration: T::Hash[T.untyped, T.untyped],
-          git_ref: String
-        ).void
-      end
       def self.generate(
         feature_assignments,
         feature_metrics,
@@ -117,12 +103,10 @@ module FeatureMap
         end
       end
 
-      sig { returns(Pathname) }
       def self.output_directory
         Pathname.pwd.join('.feature_map/docs')
       end
 
-      sig { returns(String) }
       def self.assets_directory
         File.join(File.dirname(__FILE__), ASSETS_DIRECTORY)
       end

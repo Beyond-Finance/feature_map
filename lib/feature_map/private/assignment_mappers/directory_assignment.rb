@@ -1,29 +1,19 @@
 # frozen_string_literal: true
 
-# typed: true
-
 module FeatureMap
   module Private
     module AssignmentMappers
       class DirectoryAssignment
-        extend T::Sig
         include Mapper
 
         FEATURE_DIRECTORY_ASSIGNMENT_FILE_NAME = '.feature'
 
-        @@directory_cache = T.let({}, T::Hash[String, T.nilable(CodeFeatures::Feature)]) # rubocop:disable Style/ClassVars
+        @@directory_cache = {} # rubocop:disable Style/ClassVars
 
-        sig do
-          override.params(file: String)
-            .returns(T.nilable(CodeFeatures::Feature))
-        end
         def map_file_to_feature(file)
           map_file_to_relevant_feature(file)
         end
 
-        sig do
-          override.params(cache: GlobsToAssignedFeatureMap, files: T::Array[String]).returns(GlobsToAssignedFeatureMap)
-        end
         def update_cache(cache, files)
           globs_to_feature(files)
         end
@@ -36,14 +26,8 @@ module FeatureMap
         # but in practice this is not of consequence because in reality we never really want to generate feature assignments for only a
         # subset of files, but rather we want feature assignments for all files.
         #
-        sig do
-          override.params(files: T::Array[String])
-            .returns(T::Hash[String, CodeFeatures::Feature])
-        end
         def globs_to_feature(files)
-          # The T.unsafe is because the upstream RBI is wrong for Pathname.glob
-          T
-            .unsafe(Pathname)
+          Pathname
             .glob(File.join('**/', FEATURE_DIRECTORY_ASSIGNMENT_FILE_NAME))
             .map(&:cleanpath)
             .each_with_object({}) do |pathname, res|
@@ -53,19 +37,16 @@ module FeatureMap
           end
         end
 
-        sig { override.returns(String) }
         def description
           'Feature Assigned in .feature'
         end
 
-        sig { override.void }
         def bust_caches!
           @@directory_cache = {} # rubocop:disable Style/ClassVars
         end
 
         private
 
-        sig { params(file: Pathname).returns(CodeFeatures::Feature) }
         def feature_for_directory_assignment_file(file)
           raw_feature_value = File.foreach(file).first.strip
 
@@ -80,10 +61,9 @@ module FeatureMap
         # and `.feature` in that order, stopping at the first file to actually exist.
         # If the provided file is a directory, it will look for `.feature` in that directory and then upwards.
         # We do additional caching so that we don't have to check for file existence every time.
-        sig { params(file: String).returns(T.nilable(CodeFeatures::Feature)) }
         def map_file_to_relevant_feature(file)
           file_path = Pathname.new(file)
-          feature = T.let(nil, T.nilable(CodeFeatures::Feature))
+          feature = nil
 
           if File.directory?(file)
             feature = get_feature_from_assignment_file_within_directory(file_path)
@@ -97,7 +77,7 @@ module FeatureMap
 
           (path_components.length - 1).downto(0).each do |i|
             feature = get_feature_from_assignment_file_within_directory(
-               Pathname.new(File.join(*T.unsafe(path_components[0...i])))
+               Pathname.new(File.join(*path_components[0...i]))
              )
             return feature unless feature.nil?
           end
@@ -105,7 +85,6 @@ module FeatureMap
           feature
         end
 
-        sig { params(directory: Pathname).returns(T.nilable(CodeFeatures::Feature)) }
         def get_feature_from_assignment_file_within_directory(directory)
           potential_directory_assignment_file = directory.join(FEATURE_DIRECTORY_ASSIGNMENT_FILE_NAME)
 
@@ -125,7 +104,6 @@ module FeatureMap
           feature
         end
 
-        sig { params(file: Pathname).returns(String) }
         def glob_for_directory_assignment_file(file)
           unescaped = file.dirname.cleanpath.join('**/**').to_s
 

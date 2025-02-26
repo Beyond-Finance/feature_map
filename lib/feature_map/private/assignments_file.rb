@@ -1,4 +1,3 @@
-# typed: strict
 # frozen_string_literal: true
 
 require 'code_ownership'
@@ -11,8 +10,6 @@ module FeatureMap
     # PR/release announcements, documentation generation, etc).
     #
     class AssignmentsFile
-      extend T::Sig
-
       class FileContentError < StandardError; end
 
       FILES_KEY = 'files'
@@ -21,42 +18,6 @@ module FeatureMap
       FEATURES_KEY = 'features'
       FEATURE_FILES_KEY = 'files'
 
-      FeatureName = T.type_alias { String }
-      FilePath = T.type_alias { String }
-      MapperDescription = T.type_alias { String }
-
-      FileDetails = T.type_alias do
-        T::Hash[
-          String,
-          T.any(FeatureName, MapperDescription)
-        ]
-      end
-
-      FilesContent = T.type_alias do
-        T::Hash[
-          FilePath,
-          FileDetails
-        ]
-      end
-
-      FileList = T.type_alias { T::Array[String] }
-      TeamList = T.type_alias { T::Array[String] }
-
-      FeatureDetails = T.type_alias do
-        T::Hash[
-          String,
-          T.any(FileList, TeamList)
-        ]
-      end
-
-      FeaturesContent = T.type_alias do
-        T::Hash[
-          FeatureName,
-          FeatureDetails
-        ]
-      end
-
-      sig { returns(T::Array[String]) }
       def self.actual_contents_lines
         if path.exist?
           content = path.read
@@ -70,7 +31,6 @@ module FeatureMap
         end
       end
 
-      sig { returns(T::Array[T.nilable(String)]) }
       def self.expected_contents_lines
         cache = Private.glob_cache.raw_cache_contents
 
@@ -84,9 +44,9 @@ module FeatureMap
           # set of files assigned to a feature change, which should be explicitly tracked.
         HEADER
 
-        files_content = T.let({}, FilesContent)
-        files_by_feature = T.let({}, T::Hash[FeatureName, FileList])
-        features_content = T.let({}, FeaturesContent)
+        files_content = {}
+        files_by_feature = {}
+        features_content = {}
 
         cache.each do |mapper_description, assignment_map_cache|
           assignment_map_cache = assignment_map_cache.sort_by do |glob, _feature|
@@ -94,10 +54,10 @@ module FeatureMap
           end
 
           assignment_map_cache.to_h.each do |path, feature|
-            files_content[path] = T.let({ FILE_FEATURE_KEY => feature.name, FILE_MAPPER_KEY => mapper_description }, FileDetails)
+            files_content[path] = { FILE_FEATURE_KEY => feature.name, FILE_MAPPER_KEY => mapper_description }
 
             files_by_feature[feature.name] ||= []
-            T.must(files_by_feature[feature.name]) << path
+            files_by_feature[feature.name] << path
           end
         end
 
@@ -111,10 +71,10 @@ module FeatureMap
           # repo/application.
           next if expanded_files.empty?
 
-          features_content[feature.name] = T.let({ 'files' => expanded_files.sort }, FeatureDetails)
+          features_content[feature.name] = { 'files' => expanded_files.sort }
 
           if !Private.configuration.skip_code_ownership
-            T.must(features_content[feature.name])['teams'] = expanded_files.map { |file| CodeOwnership.for_file(file)&.name }.compact.uniq.sort
+            features_content[feature.name]['teams'] = expanded_files.map { |file| CodeOwnership.for_file(file)&.name }.compact.uniq.sort
           end
         end
 
@@ -126,18 +86,15 @@ module FeatureMap
         ]
       end
 
-      sig { void }
       def self.write!
         FileUtils.mkdir_p(path.dirname) if !path.dirname.exist?
         path.write(expected_contents_lines.join("\n"))
       end
 
-      sig { returns(Pathname) }
       def self.path
         Pathname.pwd.join('.feature_map/assignments.yml')
       end
 
-      sig { params(files: T::Array[String]).void }
       def self.update_cache!(files)
         cache = Private.glob_cache
         # Each mapper returns a new copy of the cache subset related to that mapper,
@@ -149,14 +106,12 @@ module FeatureMap
         end
       end
 
-      sig { returns(T::Boolean) }
       def self.use_features_cache?
         AssignmentsFile.path.exist? && !Private.configuration.skip_features_validation
       end
 
-      sig { returns(GlobCache) }
       def self.to_glob_cache
-        raw_cache_contents = T.let({}, GlobCache::CacheShape)
+        raw_cache_contents = {}
         features_by_name = CodeFeatures.all.each_with_object({}) do |feature, map|
           map[feature.name] = feature
         end
@@ -175,7 +130,6 @@ module FeatureMap
         GlobCache.new(raw_cache_contents)
       end
 
-      sig { returns(FeaturesContent) }
       def self.load_features!
         assignments_content = YAML.load_file(path)
 

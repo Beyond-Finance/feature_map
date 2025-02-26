@@ -1,4 +1,3 @@
-# typed: strict
 # frozen_string_literal: true
 
 module FeatureMap
@@ -9,15 +8,7 @@ module FeatureMap
     # (see https://app.slack.com/block-kit-builder).
     #
     class ReleaseNotificationBuilder
-      extend T::Sig
-
-      BlockKitSection = T.type_alias { T::Hash[String, T.untyped] }
-      BlockKitPayload = T.type_alias { T::Array[T::Hash[String, T.untyped]] }
-
       class << self
-        extend T::Sig
-
-        sig { params(commits_by_feature: CommitsByFeature).returns(BlockKitPayload) }
         def build(commits_by_feature)
           return [] if commits_by_feature.empty?
 
@@ -26,13 +17,12 @@ module FeatureMap
           feature_names.flat_map.with_index do |feature_name, index|
             # Insert a divider between each feature but not above the first feature nor below the last feature.
             divider = index.zero? ? [] : [{ type: 'divider' }]
-            divider + [build_feature_section(feature_name, T.must(commits_by_feature[feature_name]))]
+            divider + [build_feature_section(feature_name, commits_by_feature[feature_name])]
           end
         end
 
         private
 
-        sig { params(feature_name: String, commits: T::Array[Commit]).returns(BlockKitSection) }
         def build_feature_section(feature_name, commits)
           feature_header_markdown = "*_#{feature_name}_*"
 
@@ -61,12 +51,10 @@ module FeatureMap
           }
         end
 
-        sig { returns(T.nilable(String)) }
         def documentation_site_url
           Private.configuration.documentation_site_url
         end
 
-        sig { returns(T.nilable(String)) }
         def repository_url
           Private.configuration.repository['url']
         end

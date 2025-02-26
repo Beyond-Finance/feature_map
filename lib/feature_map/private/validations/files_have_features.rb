@@ -1,16 +1,11 @@
-# typed: strict
-
 require 'code_ownership'
 
 module FeatureMap
   module Private
     module Validations
       class FilesHaveFeatures
-        extend T::Sig
-        extend T::Helpers
         include Validator
 
-        sig { override.params(files: T::Array[String], autocorrect: T::Boolean, stage_changes: T::Boolean).returns(T::Array[String]) }
         def validation_errors(files:, autocorrect: true, stage_changes: true)
           cache = Private.glob_cache
           file_mappings = cache.mapper_descriptions_that_map_files(files)
@@ -18,14 +13,14 @@ module FeatureMap
             mapper_descriptions.count.zero?
           end
 
-          errors = T.let([], T::Array[String])
+          errors = []
 
           # When a set of teams are configured that require assignments, ignore any files NOT
           # assigned to one of these teams.
           unless Private.configuration.require_assignment_for_teams.nil?
             files_not_mapped_at_all.filter! do |file, _mappers|
               file_team = CodeOwnership.for_file(file)
-              file_team && T.must(Private.configuration.require_assignment_for_teams).include?(file_team.name)
+              file_team && Private.configuration.require_assignment_for_teams.include?(file_team.name)
             end
           end
 

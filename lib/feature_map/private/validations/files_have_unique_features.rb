@@ -1,14 +1,9 @@
-# typed: strict
-
 module FeatureMap
   module Private
     module Validations
       class FilesHaveUniqueFeatures
-        extend T::Sig
-        extend T::Helpers
         include Validator
 
-        sig { override.params(files: T::Array[String], autocorrect: T::Boolean, stage_changes: T::Boolean).returns(T::Array[String]) }
         def validation_errors(files:, autocorrect: true, stage_changes: true)
           cache = Private.glob_cache
           file_mappings = cache.mapper_descriptions_that_map_files(files)
@@ -16,7 +11,7 @@ module FeatureMap
             mapper_descriptions.count > 1
           end
 
-          errors = T.let([], T::Array[String])
+          errors = []
 
           if files_mapped_by_multiple_mappers.any?
             errors << <<~MSG

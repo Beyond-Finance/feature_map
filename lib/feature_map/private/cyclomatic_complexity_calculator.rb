@@ -1,4 +1,3 @@
-# typed: strict
 # frozen_string_literal: true
 
 require 'parser/current'
@@ -6,20 +5,16 @@ require 'parser/current'
 module FeatureMap
   module Private
     class CyclomaticComplexityCalculator
-      extend T::Sig
-
       COMPLEXITY_NODES = %i[
         if case while until for
         rescue when and or
       ].freeze
 
-      sig { params(ast: T.nilable(Parser::AST::Node)).void }
       def initialize(ast)
         @ast = ast
-        @complexity = T.let(1, Integer) # Start at 1 for the base path
+        @complexity = 1 # Start at 1 for the base path
       end
 
-      sig { returns(Integer) }
       def calculate
         process(@ast)
         @complexity
@@ -27,7 +22,6 @@ module FeatureMap
 
       private
 
-      sig { params(node: T.nilable(T.any(Parser::AST::Node, Symbol, Integer, String, NilClass))).void }
       def process(node)
         return unless node.is_a?(Parser::AST::Node)
 
