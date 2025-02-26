@@ -35,19 +35,15 @@ module FeatureMap
         feature_additional_metrics = {}
 
         percentile_metrics = PercentileMetricsCalculator.new(metrics: feature_metrics, test_coverage: feature_test_coverage)
-        Private.feature_file_assignments.each_key do |feature_name|
-          cyclomatic_complexity = percentile_metrics.cyclomatic_complexity_for(feature_name)
-          encapsulation = percentile_metrics.encapsulation_for(feature_name)
-          feature_size = percentile_metrics.feature_size_for(feature_name)
-          test_coverage = percentile_metrics.test_coverage_for(feature_name)
-          health = health_score_for(cyclomatic_complexity, encapsulation, test_coverage, health_config)
+        health_calculator = HealthCalculator.new(percentile_metrics: percentile_metrics, health_config: health_config)
 
+        Private.feature_file_assignments.each_key do |feature_name|
           feature_additional_metrics[feature_name] = {
-            'cyclomatic_complexity' => cyclomatic_complexity,
-            'encapsulation' => encapsulation,
-            'feature_size' => feature_size,
-            'test_coverage' => test_coverage,
-            'health' => health
+            'cyclomatic_complexity' => percentile_metrics.cyclomatic_complexity_for(feature_name),
+            'encapsulation' => percentile_metrics.encapsulation_for(feature_name),
+            'feature_size' => percentile_metrics.feature_size_for(feature_name),
+            'test_coverage' => percentile_metrics.test_coverage_for(feature_name),
+            'health' => health_calculator.health_score_for(feature_name)
           }
         end
 
@@ -64,31 +60,6 @@ module FeatureMap
         raise FileContentError, "Invalid YAML content found at #{path}. Error: #{e.message} Use `bin/featuremap additional_metrics` to generate it and try again."
       rescue Errno::ENOENT
         raise FileContentError, "No feature metrics file found at #{path}. Use `bin/featuremap additional_metrics` to generate it and try again."
-      end
-
-      def self.health_score_component(awardable_points, score, score_threshold, percent_of_max = 0, percent_of_max_threshold = 100)
-        close_to_maximum_score = percent_of_max >= percent_of_max_threshold
-        exceeds_score_threshold = score >= score_threshold
-
-        if close_to_maximum_score || exceeds_score_threshold
-          { 'awardable_points' => awardable_points, 'health_score' => awardable_points, 'close_to_maximum_score' => close_to_maximum_score, 'exceeds_score_threshold' => exceeds_score_threshold }
-        else
-          { 'awardable_points' => awardable_points, 'health_score' => (score.to_f / score_threshold) * awardable_points, 'close_to_maximum_score' => close_to_maximum_score, 'exceeds_score_threshold' => exceeds_score_threshold }
-        end
-      end
-
-      def self.health_score_for(encapsulation, cyclomatic_complexity, test_coverage, health_config)
-        cyclomatic_complexity_config = health_config['components']['cyclomatic_complexity']
-        encapsulation_config = health_config['components']['encapsulation']
-        test_coverage_config = health_config['components']['test_coverage']
-
-        test_coverage_component = health_score_component(test_coverage_config['weight'], test_coverage['score'], test_coverage_config['score_threshold'])
-        cyclomatic_complexity_component = health_score_component(cyclomatic_complexity_config['weight'], cyclomatic_complexity['percentile'], cyclomatic_complexity_config['score_threshold'], cyclomatic_complexity['percent_of_max'], 100 - cyclomatic_complexity_config['minimum_variance'])
-        encapsulation_component = health_score_component(encapsulation_config['weight'], encapsulation['percentile'], encapsulation_config['score_threshold'], encapsulation['percent_of_max'], 100 - encapsulation_config['minimum_variance'])
-
-        overall = test_coverage_component['health_score'] + cyclomatic_complexity_component['health_score'] + encapsulation_component['health_score']
-
-        { 'test_coverage_component' => test_coverage_component, 'cyclomatic_complexity_component' => cyclomatic_complexity_component, 'encapsulation_component' => encapsulation_component, 'overall' => overall }
       end
     end
   end
