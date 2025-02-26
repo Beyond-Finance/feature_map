@@ -34,16 +34,12 @@ module FeatureMap
       def self.generate_content(feature_metrics, feature_test_coverage, health_config)
         feature_additional_metrics = {}
 
-        cyclomatic_complexity_ratios = feature_metrics.map { |_k, m| m[FeatureMetricsCalculator::COMPLEXITY_RATIO_METRIC] }.compact
-        encapsulation_ratios = feature_metrics.map { |_k, m| m[FeatureMetricsCalculator::ENCAPSULATION_RATIO_METRIC] }.compact
-        feature_sizes = feature_metrics.map { |_k, m| m[FeatureMetricsCalculator::LINES_OF_CODE_METRIC] }.compact
-        test_coverage_ratios = feature_test_coverage.map { |_k, c| c[TestCoverageFile::COVERAGE_RATIO] }.compact
-
+        percentile_metrics = PercentileMetricsCalculator.new(metrics: feature_metrics, test_coverage: feature_test_coverage)
         Private.feature_file_assignments.each_key do |feature_name|
-          cyclomatic_complexity = calculate(cyclomatic_complexity_ratios, feature_metrics.dig(feature_name, FeatureMetricsCalculator::COMPLEXITY_RATIO_METRIC) || 0)
-          encapsulation = calculate(encapsulation_ratios, feature_metrics.dig(feature_name, FeatureMetricsCalculator::ENCAPSULATION_RATIO_METRIC) || 0)
-          feature_size = calculate(feature_sizes, feature_metrics.dig(feature_name, FeatureMetricsCalculator::LINES_OF_CODE_METRIC) || 0)
-          test_coverage = calculate(test_coverage_ratios, feature_test_coverage.dig(feature_name, TestCoverageFile::COVERAGE_RATIO) || 0)
+          cyclomatic_complexity = percentile_metrics.cyclomatic_complexity_for(feature_name)
+          encapsulation = percentile_metrics.encapsulation_for(feature_name)
+          feature_size = percentile_metrics.feature_size_for(feature_name)
+          test_coverage = percentile_metrics.test_coverage_for(feature_name)
           health = health_score_for(cyclomatic_complexity, encapsulation, test_coverage, health_config)
 
           feature_additional_metrics[feature_name] = {
@@ -68,33 +64,6 @@ module FeatureMap
         raise FileContentError, "Invalid YAML content found at #{path}. Error: #{e.message} Use `bin/featuremap additional_metrics` to generate it and try again."
       rescue Errno::ENOENT
         raise FileContentError, "No feature metrics file found at #{path}. Use `bin/featuremap additional_metrics` to generate it and try again."
-      end
-
-      def self.calculate(collection, score)
-        max = collection.max || 0
-        percentile = percentile_of(collection, score)
-        percent_of_max = max.zero? ? 0 : ((score.to_f / max) * 100).round.to_i
-
-        { 'percentile' => percentile, 'percent_of_max' => percent_of_max, 'score' => score }
-      end
-
-      def self.percentile_of(arr, val)
-        return 0.0 if arr.empty?
-
-        ensure_array_of_floats = arr.map(&:to_f)
-        ensure_float_value = val.to_f
-
-        below_or_equal_count = ensure_array_of_floats.reduce(0) do |acc, v|
-          if v < ensure_float_value
-            acc + 1
-          elsif v == ensure_float_value
-            acc + 0.5
-          else
-            acc
-          end
-        end
-
-        ((100 * below_or_equal_count) / ensure_array_of_floats.length).to_f
       end
 
       def self.health_score_component(awardable_points, score, score_threshold, percent_of_max = 0, percent_of_max_threshold = 100)
