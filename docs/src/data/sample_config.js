@@ -29,15 +29,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 66.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 12.0,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 11.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "overall": 89.75
         }
@@ -84,15 +84,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 68.6,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 13.2,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 13.8,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "overall": 95.6
         }
@@ -137,15 +137,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 49.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 8.25,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 8.25,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "overall": 65.5
         }
@@ -189,15 +189,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 69.3,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 14.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 13.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "overall": 97.05
         }
@@ -244,15 +244,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 59.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 10.8,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 10.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "overall": 80.8
         }
@@ -296,15 +296,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 55.0,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 12.3,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 11.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "overall": 78.55
         }
@@ -348,15 +348,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 68.6,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 13.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 13.8,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "overall": 95.9
         }
@@ -401,15 +401,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 42.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 10.2,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 9.3,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "overall": 61.5
         }
@@ -440,15 +440,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 49.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 8.7,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 9.75,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "close_to_maximum_score": false
           },
           "overall": 67.45
         }
@@ -493,15 +493,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 68.0,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 10.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 11.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "close_to_maximum_score": true
           },
           "overall": 89.75
         }
@@ -540,15 +540,15 @@ const config = {
         "health": {
           "test_coverage_component": {
             "awardable_points": 70, "health_score": 0.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": false
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
             "awardable_points": 15, "health_score": 0.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": false
+            "close_to_maximum_score": false
           },
           "encapsulation_component": {
             "awardable_points": 15, "health_score": 0.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": false
+            "close_to_maximum_score": false
           },
           "overall": 0.0
         }

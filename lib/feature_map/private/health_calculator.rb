@@ -17,7 +17,11 @@ module FeatureMap
         cyclomatic_complexity_component = cyclomatic_complexity_component_for(feature_name)
         encapsulation_component = encapsulation_component_for(feature_name)
 
-        overall = test_coverage_component['health_score'] + cyclomatic_complexity_component['health_score'] + encapsulation_component['health_score']
+        overall = [
+          test_coverage_component,
+          cyclomatic_complexity_component,
+          encapsulation_component
+        ].sum { |c| c['health_score'] }
 
         {
           'test_coverage_component' => test_coverage_component,
@@ -35,7 +39,6 @@ module FeatureMap
         health_score_component(
           cyclomatic_complexity_config['weight'],
           cyclomatic_complexity['percentile'],
-          cyclomatic_complexity_config['score_threshold'],
           cyclomatic_complexity['percent_of_max'],
           100 - cyclomatic_complexity_config['minimum_variance']
         )
@@ -47,29 +50,25 @@ module FeatureMap
         health_score_component(
           encapsulation_config['weight'],
           encapsulation['percentile'],
-          encapsulation_config['score_threshold'],
           encapsulation['percent_of_max'],
           100 - encapsulation_config['minimum_variance']
         )
       end
 
-      def health_score_component(awardable_points, score, score_threshold, percent_of_max = 0, percent_of_max_threshold = 100)
+      def health_score_component(awardable_points, score, percent_of_max = 0, percent_of_max_threshold = 100)
         close_to_maximum_score = percent_of_max >= percent_of_max_threshold
-        exceeds_score_threshold = score >= score_threshold
 
-        if close_to_maximum_score || exceeds_score_threshold
+        if close_to_maximum_score
           {
             'awardable_points' => awardable_points,
             'health_score' => awardable_points,
-            'close_to_maximum_score' => close_to_maximum_score,
-            'exceeds_score_threshold' => exceeds_score_threshold
+            'close_to_maximum_score' => close_to_maximum_score
           }
         else
           {
             'awardable_points' => awardable_points,
-            'health_score' => (score.to_f / score_threshold) * awardable_points,
-            'close_to_maximum_score' => close_to_maximum_score,
-            'exceeds_score_threshold' => exceeds_score_threshold
+            'health_score' => [(score.to_f / 100) * awardable_points, awardable_points].min,
+            'close_to_maximum_score' => close_to_maximum_score
           }
         end
       end
@@ -79,8 +78,7 @@ module FeatureMap
 
         health_score_component(
           test_coverage_config['weight'],
-          test_coverage['score'],
-          test_coverage_config['score_threshold']
+          test_coverage['score']
         )
       end
     end

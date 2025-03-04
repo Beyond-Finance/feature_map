@@ -76,17 +76,14 @@ module FeatureMap
                   awardable_points: 70
                   health_score: 0.0
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
                 cyclomatic_complexity_component:
                   awardable_points: 15
                   health_score: 0.0
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
                 encapsulation_component:
                   awardable_points: 15
                   health_score: 0.0
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
                 overall: 0.0
             Foo:
               cyclomatic_complexity:
@@ -112,20 +109,17 @@ module FeatureMap
               health:
                 test_coverage_component:
                   awardable_points: 70
-                  health_score: 66.3157894736842
+                  health_score: 63.0
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
                 cyclomatic_complexity_component:
                   awardable_points: 15
                   health_score: 15
                   close_to_maximum_score: true
-                  exceeds_score_threshold: false
                 encapsulation_component:
                   awardable_points: 15
                   health_score: 15
                   close_to_maximum_score: true
-                  exceeds_score_threshold: false
-                overall: 96.3157894736842
+                overall: 93.0
         FEATURES
       end
 
@@ -177,9 +171,9 @@ module FeatureMap
             'feature_size' => { 'percentile' => 0.0, 'percent_of_max' => 0, 'score' => 0 },
             'test_coverage' => { 'percentile' => 0.0, 'percent_of_max' => 0, 'score' => 0 },
             'health' =>
-            { 'test_coverage_component' => { 'awardable_points' => 70, 'health_score' => 0.0, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
-              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
-              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
+            { 'test_coverage_component' => { 'awardable_points' => 70, 'health_score' => 0.0, 'close_to_maximum_score' => false },
+              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false },
+              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false },
               'overall' => 0.0 } },
           'Foo' =>
           { 'cyclomatic_complexity' => { 'percentile' => 50.0, 'percent_of_max' => 100, 'score' => 6.0675675675675675 },
@@ -188,9 +182,9 @@ module FeatureMap
             'test_coverage' => { 'percentile' => 50.0, 'percent_of_max' => 100, 'score' => 90 },
             'health' =>
             { 'test_coverage_component' =>
-              { 'awardable_points' => 70, 'health_score' => 66.3157894736842, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
-              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true, 'exceeds_score_threshold' => false },
-              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true, 'exceeds_score_threshold' => false },
+              { 'awardable_points' => 70, 'health_score' => 66.3157894736842, 'close_to_maximum_score' => false },
+              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true },
+              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true },
               'overall' => 96.3157894736842 } }
         }
 

@@ -30,20 +30,17 @@ module FeatureMap
               test_coverage_component: {
                 awardable_points: 70,
                 health_score: 66.5,
-                close_to_maximum_score: true,
-                exceeds_score_threshold: true
+                close_to_maximum_score: true
               },
               cyclomatic_complexity_component: {
                 awardable_points: 15,
                 health_score: 12,
-                close_to_maximum_score: true,
-                exceeds_score_threshold: true
+                close_to_maximum_score: true
               },
               encapsulation_component: {
                 awardable_points: 15,
                 health_score: 11,
-                close_to_maximum_score: true,
-                exceeds_score_threshold: true
+                close_to_maximum_score: true
               },
               overall: 89.75
             }
@@ -110,20 +107,17 @@ module FeatureMap
                 test_coverage_component: {
                   awardable_points: 70,
                   health_score: 66.5,
-                  close_to_maximum_score: true,
-                  exceeds_score_threshold: true
+                  close_to_maximum_score: true
                 },
                 cyclomatic_complexity_component: {
                   awardable_points: 15,
                   health_score: 12,
-                  close_to_maximum_score: true,
-                  exceeds_score_threshold: true
+                  close_to_maximum_score: true
                 },
                 encapsulation_component: {
                   awardable_points: 15,
                   health_score: 11,
-                  close_to_maximum_score: true,
-                  exceeds_score_threshold: true
+                  close_to_maximum_score: true
                 },
                 overall: 89.75
               }

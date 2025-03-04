@@ -35,14 +35,11 @@ documentation_site:
       cyclomatic_complexity:
         weight: 15
         minimum_variance: 10
-        score_threshold: 100
       encapsulation:
         weight: 15
         minimum_variance: 10
-        score_threshold: 100
       test_coverage:
         weight: 70
-        score_threshold: 98
   linked_sites:
     - name: User Service
       url: https://example.github.io/user-service

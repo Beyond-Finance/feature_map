@@ -248,17 +248,14 @@ RSpec.shared_context 'application fixtures' do
               awardable_points: 70
               health_score: 0.0
               close_to_maximum_score: false
-              exceeds_score_threshold: false
             cyclomatic_complexity_component:
               awardable_points: 15
               health_score: 0.0
               close_to_maximum_score: false
-              exceeds_score_threshold: false
             encapsulation_component:
               awardable_points: 15
               health_score: 0.0
               close_to_maximum_score: false
-              exceeds_score_threshold: false
             overall: 0.0
         Foo:
           cyclomatic_complexity:
@@ -282,17 +279,14 @@ RSpec.shared_context 'application fixtures' do
               awardable_points: 70
               health_score: 66.3157894736842
               close_to_maximum_score: false
-              exceeds_score_threshold: false
             cyclomatic_complexity_component:
               awardable_points: 15
               health_score: 15
               close_to_maximum_score: true
-              exceeds_score_threshold: false
             encapsulation_component:
               awardable_points: 15
               health_score: 15
               close_to_maximum_score: true
-              exceeds_score_threshold: false
             overall: 96.3157894736842
     CONTENTS
   end
