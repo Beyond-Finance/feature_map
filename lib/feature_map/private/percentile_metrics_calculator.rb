@@ -13,34 +13,45 @@ module FeatureMap
       def cyclomatic_complexity_for(feature_name)
         calculate(
           cyclomatic_complexity_ratios,
-          metrics.dig(feature_name, FeatureMetricsCalculator::COMPLEXITY_RATIO_METRIC) || 0
+          metrics.dig(feature_name, FeatureMetricsCalculator::COMPLEXITY_RATIO_METRIC)
         )
       end
 
       def encapsulation_for(feature_name)
         calculate(
           encapsulation_ratios,
-          metrics.dig(feature_name, FeatureMetricsCalculator::ENCAPSULATION_RATIO_METRIC) || 0
+          metrics.dig(feature_name, FeatureMetricsCalculator::ENCAPSULATION_RATIO_METRIC)
         )
       end
 
       def feature_size_for(feature_name)
         calculate(
           feature_sizes,
-          metrics.dig(feature_name, FeatureMetricsCalculator::LINES_OF_CODE_METRIC) || 0
+          metrics.dig(feature_name, FeatureMetricsCalculator::LINES_OF_CODE_METRIC)
         )
       end
 
       def test_coverage_for(feature_name)
         calculate(
           test_coverage_ratios,
-          test_coverage.dig(feature_name, TestCoverageFile::COVERAGE_RATIO) || 0
+          test_coverage.dig(feature_name, TestCoverageFile::COVERAGE_RATIO)
+        )
+      end
+
+      def todo_count_for(feature_name)
+        calculate(
+          todo_counts,
+          metrics.dig(feature_name, FeatureMetricsCalculator::TODO_LOCATIONS_METRIC)&.size
         )
       end
 
       private
 
       def calculate(collection, score)
+        if score.nil?
+          return { 'percentile' => 0.0, 'percent_of_max' => 0, 'score' => 0 }
+        end
+
         max = collection.max || 0
         percentile = percentile_of(collection, score)
         percent_of_max = max.zero? ? 0 : ((score.to_f / max) * 100).round.to_i
@@ -94,6 +105,12 @@ module FeatureMap
         return @test_coverage_ratios if defined?(@test_coverage_ratios)
 
         @test_coverage_ratios = test_coverage.values.map { |c| c[TestCoverageFile::COVERAGE_RATIO] }.compact
+      end
+
+      def todo_counts
+        return @todo_counts if defined?(@todo_counts)
+
+        @todo_counts = metrics.values.map { |c| c[FeatureMetricsCalculator::TODO_LOCATIONS_METRIC]&.size }.compact
       end
     end
   end

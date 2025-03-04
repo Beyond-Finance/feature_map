@@ -10,7 +10,10 @@ module FeatureMap
           'abc_size' => 500.08,
           'cyclomatic_complexity' => 74,
           'lines_of_code' => 449,
-          'todo_locations' => {},
+          'todo_locations' => {
+            'app/models/foo:12' => 'Fix Me',
+            'app/services/foo:145' => 'Refactor'
+          },
           'complexity_ratio' => 6.0675675675675675,
           'encapsulation_ratio' => 0.015590200445434299
         },
@@ -18,7 +21,9 @@ module FeatureMap
           'abc_size' => 300.15,
           'cyclomatic_complexity' => 45,
           'lines_of_code' => 320,
-          'todo_locations' => {},
+          'todo_locations' => {
+            'spec/models/bar:45' => 'Add assertion'
+          },
           'complexity_ratio' => 4.5,
           'encapsulation_ratio' => 0.025
         },
@@ -253,6 +258,85 @@ module FeatureMap
         expect(result['percentile']).to eq(0.0)
         expect(result['percent_of_max']).to eq(0)
         expect(result['score']).to eq(0)
+      end
+    end
+
+    describe '#todo_count_for' do
+      it 'calculates the correct percentile for an existing feature' do
+        result = subject.todo_count_for('Foo')
+        expect(result['percentile']).to be_within(0.1).of(83.3)
+        expect(result['percent_of_max']).to eq(100)
+        expect(result['score']).to eq(2)
+      end
+
+      it 'calculates the correct percentile for a feature with mid-range value' do
+        result = subject.todo_count_for('Bar')
+        expect(result['percentile']).to be_within(0.1).of(50.0)
+        expect(result['percent_of_max']).to eq(50)
+        expect(result['score']).to eq(1)
+      end
+
+      it 'calculates the correct percentile for the lowest value feature' do
+        result = subject.todo_count_for('Baz')
+        expect(result['percentile']).to be_within(0.1).of(16.7)
+        expect(result['percent_of_max']).to eq(0)
+        expect(result['score']).to eq(0)
+      end
+
+      it 'returns zero values for a non-existent feature' do
+        result = subject.todo_count_for('NonExistent')
+        expect(result['percentile']).to eq(0.0)
+        expect(result['percent_of_max']).to eq(0)
+        expect(result['score']).to eq(0)
+      end
+
+      context 'with empty metrics collection' do
+        let(:metrics) { {} }
+
+        it 'returns zero values when no metrics exist' do
+          result = subject.todo_count_for('Foo')
+          expect(result['percentile']).to eq(0.0)
+          expect(result['percent_of_max']).to eq(0)
+          expect(result['score']).to eq(0)
+        end
+      end
+
+      context 'with all zero values' do
+        let(:metrics) do
+          {
+            'Foo' => { 'todo_locations' => {} },
+            'Bar' => { 'todo_locations' => {} }
+          }
+        end
+
+        it 'handles all zero values gracefully' do
+          result = subject.todo_count_for('Foo')
+          # When all values are 0, including the target, the percentile is 50%
+          # because none are below, but all are equal (counting as 0.5 each)
+          expect(result['percentile']).to eq(50.0)
+          expect(result['percent_of_max']).to eq(0)
+          expect(result['score']).to eq(0)
+        end
+      end
+
+      context 'with repeated values' do
+        let(:metrics) do
+          {
+            'Foo' => { 'todo_locations' => { 'somewhere:12' => 'make it slightly better' } },
+            'Bar' => { 'todo_locations' => { 'somewhere:12' => 'make it slightly better' } },
+            'Baz' => { 'todo_locations' => { 'somewhere:12' => 'make it slightly better' } }
+          }
+        end
+
+        it 'calculates percentiles correctly for repeated values' do
+          result = subject.todo_count_for('Foo')
+          # For 5.0 in [5.0, 5.0, 5.0], all values are equal
+          # 0 values below and 3 * 0.5 for exact matches → 1.5 below or equal
+          # (100 * 1.5) / 3 = 50 percentile
+          expect(result['percentile']).to be_within(0.1).of(50.0)
+          expect(result['percent_of_max']).to eq(100)
+          expect(result['score']).to eq(1)
+        end
       end
     end
 
