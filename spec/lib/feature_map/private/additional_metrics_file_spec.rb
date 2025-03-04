@@ -11,7 +11,9 @@ module FeatureMap
             'abc_size' => 500.08,
             'cyclomatic_complexity' => 74,
             'lines_of_code' => 449,
-            'todo_locations' => {},
+            'todo_locations' => {
+              'app/foo.rb:43' => 'move me'
+            },
             'complexity_ratio' => 6.0675675675675675,
             'encapsulation_ratio' => 0.015590200445434299
           }
@@ -65,6 +67,10 @@ module FeatureMap
                 percentile: 0.0
                 percent_of_max: 0
                 score: 0
+              todo_count:
+                percentile: 0.0
+                percent_of_max: 0
+                score: 0
               health:
                 test_coverage_component:
                   awardable_points: 70
@@ -99,6 +105,10 @@ module FeatureMap
                 percentile: 50.0
                 percent_of_max: 100
                 score: 90
+              todo_count:
+                percentile: 50.0
+                percent_of_max: 100
+                score: 1
               health:
                 test_coverage_component:
                   awardable_points: 70

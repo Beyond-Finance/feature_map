@@ -43,6 +43,7 @@ module FeatureMap
             'encapsulation' => percentile_metrics.encapsulation_for(feature_name),
             'feature_size' => percentile_metrics.feature_size_for(feature_name),
             'test_coverage' => percentile_metrics.test_coverage_for(feature_name),
+            'todo_count' => percentile_metrics.todo_count_for(feature_name),
             'health' => health_calculator.health_score_for(feature_name)
           }
         end
