@@ -112,7 +112,7 @@ module FeatureMap
 
         health_score_component(
           todo_count_config['weight'],
-          100 - todo_count['percentile'],
+          100 - todo_count['percent_of_max'],
           100 - todo_count['percent_of_max'],
           todo_count_config['percent_of_max_threshold']
         )

@@ -144,7 +144,7 @@ module FeatureMap
             component = result['todo_count_component']
             expect(component['awardable_points']).to eq(15)
             expect(component['close_to_maximum_score']).to be false
-            expect(component['health_score']).to be_within(0.1).of(4.5)
+            expect(component['health_score']).to be_within(0.1).of(3)
           end
 
           it 'calculates the overall health score correctly' do
@@ -152,7 +152,7 @@ module FeatureMap
             test_coverage = 56
             cyclomatic_complexity = 3.5
             encapsulation = 6
-            todo_count = 4.5
+            todo_count = 3
 
             expected_overall = (test_coverage + cyclomatic_complexity + encapsulation + todo_count) / 100.0 * 100
             expect(result['overall']).to be_within(0.1).of(expected_overall)

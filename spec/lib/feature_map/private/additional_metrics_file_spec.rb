@@ -127,8 +127,8 @@ module FeatureMap
                 todo_count_component:
                   awardable_points: 15
                   close_to_maximum_score: false
-                  health_score: 7.5
-                overall: 85.5
+                  health_score: 0.0
+                overall: 78.0
         FEATURES
       end
 
