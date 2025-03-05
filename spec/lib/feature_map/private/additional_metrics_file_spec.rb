@@ -29,9 +29,9 @@ module FeatureMap
       let(:health_config) do
         {
           'components' => {
-            'cyclomatic_complexity' => { 'weight' => 15, 'score_threshold' => 100, 'minimum_variance' => 10 },
-            'encapsulation' => { 'weight' => 15, 'score_threshold' => 100, 'minimum_variance' => 10 },
-            'test_coverage' => { 'weight' => 70, 'score_threshold' => 95 }
+            'cyclomatic_complexity' => { 'weight' => 15, 'percent_of_max_threshold' => 90 },
+            'encapsulation' => { 'weight' => 15, 'percent_of_max_threshold' => 90 },
+            'test_coverage' => { 'weight' => 70, 'percent_of_max_threshold' => 95 }
           }
         }
       end
@@ -74,16 +74,16 @@ module FeatureMap
               health:
                 test_coverage_component:
                   awardable_points: 70
-                  health_score: 0.0
                   close_to_maximum_score: false
+                  health_score: 0.0
                 cyclomatic_complexity_component:
                   awardable_points: 15
-                  health_score: 0.0
                   close_to_maximum_score: false
+                  health_score: 0.0
                 encapsulation_component:
                   awardable_points: 15
-                  health_score: 0.0
                   close_to_maximum_score: false
+                  health_score: 0.0
                 overall: 0.0
             Foo:
               cyclomatic_complexity:
@@ -109,16 +109,16 @@ module FeatureMap
               health:
                 test_coverage_component:
                   awardable_points: 70
-                  health_score: 63.0
                   close_to_maximum_score: false
+                  health_score: 63.0
                 cyclomatic_complexity_component:
                   awardable_points: 15
-                  health_score: 15
                   close_to_maximum_score: true
+                  health_score: 15
                 encapsulation_component:
                   awardable_points: 15
-                  health_score: 15
                   close_to_maximum_score: true
+                  health_score: 15
                 overall: 93.0
         FEATURES
       end

@@ -50,9 +50,9 @@ module FeatureMap
     let(:health_config) do
       {
         'components' => {
-          'cyclomatic_complexity' => { 'weight' => 15, 'minimum_variance' => 10 },
-          'encapsulation' => { 'weight' => 15, 'minimum_variance' => 10 },
-          'test_coverage' => { 'weight' => 70 }
+          'cyclomatic_complexity' => { 'weight' => 15, 'percent_of_max_threshold' => 90 },
+          'encapsulation' => { 'weight' => 15, 'percent_of_max_threshold' => 90 },
+          'test_coverage' => { 'weight' => 70, 'percent_of_max_threshold' => 95 }
         }
       }
     end
