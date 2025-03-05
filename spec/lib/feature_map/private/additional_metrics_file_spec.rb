@@ -29,9 +29,10 @@ module FeatureMap
       let(:health_config) do
         {
           'components' => {
-            'cyclomatic_complexity' => { 'weight' => 15, 'percent_of_max_threshold' => 90 },
-            'encapsulation' => { 'weight' => 15, 'percent_of_max_threshold' => 90 },
-            'test_coverage' => { 'weight' => 70, 'percent_of_max_threshold' => 95 }
+            'cyclomatic_complexity' => { 'weight' => 5, 'percent_of_max_threshold' => 90 },
+            'encapsulation' => { 'weight' => 10, 'percent_of_max_threshold' => 90 },
+            'test_coverage' => { 'weight' => 70, 'percent_of_max_threshold' => 95 },
+            'todo_count' => { 'weight' => 15, 'percent_of_max_threshold' => 95 }
           }
         }
       end
@@ -77,14 +78,18 @@ module FeatureMap
                   close_to_maximum_score: false
                   health_score: 0.0
                 cyclomatic_complexity_component:
-                  awardable_points: 15
+                  awardable_points: 5
                   close_to_maximum_score: false
                   health_score: 0.0
                 encapsulation_component:
-                  awardable_points: 15
+                  awardable_points: 10
                   close_to_maximum_score: false
                   health_score: 0.0
-                overall: 0.0
+                todo_count_component:
+                  awardable_points: 15
+                  close_to_maximum_score: true
+                  health_score: 15
+                overall: 15.0
             Foo:
               cyclomatic_complexity:
                 percentile: 50.0
@@ -112,14 +117,18 @@ module FeatureMap
                   close_to_maximum_score: false
                   health_score: 63.0
                 cyclomatic_complexity_component:
-                  awardable_points: 15
+                  awardable_points: 5
                   close_to_maximum_score: true
-                  health_score: 15
+                  health_score: 5
                 encapsulation_component:
-                  awardable_points: 15
+                  awardable_points: 10
                   close_to_maximum_score: true
-                  health_score: 15
-                overall: 93.0
+                  health_score: 10
+                todo_count_component:
+                  awardable_points: 15
+                  close_to_maximum_score: false
+                  health_score: 7.5
+                overall: 85.5
         FEATURES
       end
 

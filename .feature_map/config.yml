@@ -34,7 +34,7 @@ documentation_site:
     components:
       cyclomatic_complexity:
         # The relative proportion of total health score that this component adds
-        weight: 15
+        weight: 5
         # A threshold measured against the maximum scoring feature, after which
         # a given feature should receive a perfect score.  For percentile-based
         # health components, this allows features to score well when their
@@ -42,12 +42,15 @@ documentation_site:
         # but which is still very close to the top score.
         percent_of_max_threshold: 90
       encapsulation:
-        weight: 15
+        weight: 10
         percent_of_max_threshold: 90
       test_coverage:
         weight: 70
         # In absolute scoring components, like test coverage, this number is an
         # absolute threshold after which a feature receives a perfect score.
+        percent_of_max_threshold: 95
+      todo_count:
+        weight: 15
         percent_of_max_threshold: 95
   linked_sites:
     - name: User Service

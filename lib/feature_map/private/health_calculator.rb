@@ -3,31 +3,42 @@
 module FeatureMap
   module Private
     class HealthCalculator
-      attr_reader :percentile_metrics, :cyclomatic_complexity_config, :encapsulation_config, :test_coverage_config
+      attr_reader :percentile_metrics, :cyclomatic_complexity_config, :encapsulation_config, :test_coverage_config, :todo_count_config
 
       def initialize(percentile_metrics:, health_config:)
         @percentile_metrics = percentile_metrics
         @cyclomatic_complexity_config = health_config['components']['cyclomatic_complexity']
         @encapsulation_config = health_config['components']['encapsulation']
         @test_coverage_config = health_config['components']['test_coverage']
+        @todo_count_config = health_config['components']['todo_count']
       end
 
       def health_score_for(feature_name)
         test_coverage_component = test_coverage_component_for(feature_name)
         cyclomatic_complexity_component = cyclomatic_complexity_component_for(feature_name)
         encapsulation_component = encapsulation_component_for(feature_name)
+        todo_count_component = todo_count_component_for(feature_name)
 
         overall = [
           test_coverage_component,
           cyclomatic_complexity_component,
-          encapsulation_component
+          encapsulation_component,
+          todo_count_component
         ].sum { |c| c['health_score'] }
+
+        total_weight = [
+          cyclomatic_complexity_config,
+          encapsulation_config,
+          test_coverage_config,
+          todo_count_config
+        ].sum { |c| c['weight'] }
 
         {
           'test_coverage_component' => test_coverage_component,
           'cyclomatic_complexity_component' => cyclomatic_complexity_component,
           'encapsulation_component' => encapsulation_component,
-          'overall' => overall
+          'todo_count_component' => todo_count_component,
+          'overall' => overall / total_weight * 100
         }
       end
 
@@ -93,6 +104,17 @@ module FeatureMap
           test_coverage['score'],
           test_coverage['score'],
           test_coverage_config['percent_of_max_threshold']
+        )
+      end
+
+      def todo_count_component_for(feature_name)
+        todo_count = percentile_metrics.todo_count_for(feature_name)
+
+        health_score_component(
+          todo_count_config['weight'],
+          100 - todo_count['percentile'],
+          100 - todo_count['percent_of_max'],
+          todo_count_config['percent_of_max_threshold']
         )
       end
     end
