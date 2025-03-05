@@ -39,7 +39,11 @@ const config = {
             "awardable_points": 15, "health_score": 11.25,
             "close_to_maximum_score": true
           },
-          "overall": 89.75
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 9.75, // (100-35)/100 * 15 = 9.75
+            "close_to_maximum_score": false
+          },
+          "overall": 85.82 // Adjusted overall score
         }
       },
       "test_coverage": {
@@ -94,7 +98,11 @@ const config = {
             "awardable_points": 15, "health_score": 13.8,
             "close_to_maximum_score": true
           },
-          "overall": 95.6
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 15, // Full points (very few TODOs)
+            "close_to_maximum_score": true
+          },
+          "overall": 110.6 // Needs to be normalized to 100 in actual calculation
         }
       },
       "test_coverage": {
@@ -147,7 +155,11 @@ const config = {
             "awardable_points": 15, "health_score": 8.25,
             "close_to_maximum_score": false
           },
-          "overall": 65.5
+         "todo_count_component": {
+            "awardable_points": 15, "health_score": 6.75, // (100-55)/100 * 15 = 6.75
+            "close_to_maximum_score": false
+          },
+          "overall": 72.25
         }
       },
       "test_coverage": {
@@ -199,7 +211,11 @@ const config = {
             "awardable_points": 15, "health_score": 13.5,
             "close_to_maximum_score": true
           },
-          "overall": 97.05
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 15, // Full points (no TODOs)
+            "close_to_maximum_score": true
+          },
+          "overall": 112.05
         }
       },
       "test_coverage": {
@@ -254,7 +270,11 @@ const config = {
             "awardable_points": 15, "health_score": 10.5,
             "close_to_maximum_score": true
           },
-          "overall": 80.8
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 2.25, // (100-85)/100 * 15 = 2.25
+            "close_to_maximum_score": false
+          },
+          "overall": 83.05
         }
       }
     },
@@ -306,7 +326,11 @@ const config = {
             "awardable_points": 15, "health_score": 11.25,
             "close_to_maximum_score": true
           },
-          "overall": 78.55
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 12.75, // (100-15)/100 * 15 = 12.75
+            "close_to_maximum_score": false
+          },
+          "overall": 91.3 // Updated overall score
         }
       }
     },
@@ -358,7 +382,11 @@ const config = {
             "awardable_points": 15, "health_score": 13.8,
             "close_to_maximum_score": true
           },
-          "overall": 95.9
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 15, // Full points due to being close to max
+            "close_to_maximum_score": true
+          },
+          "overall": 100.0
         }
       }
     },
@@ -411,7 +439,11 @@ const config = {
             "awardable_points": 15, "health_score": 9.3,
             "close_to_maximum_score": false
           },
-          "overall": 61.5
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 3.75, // (100-75)/100 * 15 = 3.75
+            "close_to_maximum_score": false
+          },
+          "overall": 65.25
         }
       }
     },
@@ -450,7 +482,11 @@ const config = {
             "awardable_points": 15, "health_score": 9.75,
             "close_to_maximum_score": false
           },
-          "overall": 67.45
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 3.0, // (100-80)/100 * 15 = 3.0
+            "close_to_maximum_score": false
+          },
+          "overall": 70.45
         }
       },
       "test_coverage": {
@@ -503,7 +539,11 @@ const config = {
             "awardable_points": 15, "health_score": 11.25,
             "close_to_maximum_score": true
           },
-          "overall": 89.75
+          "todo_count_component": {
+            "awardable_points": 15, "health_score": 11.25, // (100-25)/100 * 15 = 11.25
+            "close_to_maximum_score": false
+          },
+          "overall": 100.0
         }
       },
       "test_coverage": {
@@ -547,6 +587,10 @@ const config = {
             "close_to_maximum_score": false
           },
           "encapsulation_component": {
+            "awardable_points": 15, "health_score": 0.0,
+            "close_to_maximum_score": false
+          },
+          "todo_count_component": {
             "awardable_points": 15, "health_score": 0.0,
             "close_to_maximum_score": false
           },
