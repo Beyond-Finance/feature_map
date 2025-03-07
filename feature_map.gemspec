@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = 'feature_map'
-  spec.version       = '1.2.3'
+  spec.version       = '1.2.4'
   spec.authors       = ['Beyond Finance']
   spec.email         = ['engineering@beyondfinance.com']
   spec.summary       = 'A gem to help identify and manage features within large Ruby and Rails applications'

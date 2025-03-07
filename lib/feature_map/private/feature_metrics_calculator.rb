@@ -39,7 +39,9 @@ module FeatureMap
 
       def self.calculate_for_file(file_path)
         metrics = {
-          LINES_OF_CODE_METRIC => LinesOfCodeCalculator.new(file_path).calculate
+          LINES_OF_CODE_METRIC => LinesOfCodeCalculator.new(file_path).calculate,
+          TODO_LOCATIONS_METRIC => TodoInspector.new(file_path).calculate
+
         }
 
         return metrics unless file_path.end_with?('.rb')
@@ -55,12 +57,10 @@ module FeatureMap
         # make right now.
         abc_calculator = RuboCop::Cop::Metrics::Utils::AbcSizeCalculator.new(source.ast)
         cyclomatic_calculator = CyclomaticComplexityCalculator.new(source.ast)
-        todo_locations = TodoInspector.new(file_path).calculate
 
         metrics.merge(
           ABC_SIZE_METRIC => abc_calculator.calculate.first.round(2),
-          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate,
-          TODO_LOCATIONS_METRIC => todo_locations
+          CYCLOMATIC_COMPLEXITY_METRIC => cyclomatic_calculator.calculate
         )
       end
 
