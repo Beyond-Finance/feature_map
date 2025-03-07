@@ -110,8 +110,18 @@ module FeatureMap
             end
           RUBY
 
-          metrics = described_class.calculate_for_feature([file1_path, file2_path])
-          expect(metrics['todo_locations'].length).to eq(3)
+          file3_path = File.join(dir, 'file2.anything')
+          File.write(file3_path, <<~MISC)
+            # TODO: First todo
+            /* TODO: Second todo */
+            // TODO: Third todo
+            <!--
+            TODO: Fourth todo
+            -->
+          MISC
+
+          metrics = described_class.calculate_for_feature([file1_path, file2_path, file3_path])
+          expect(metrics['todo_locations'].length).to eq(7)
         end
       end
     end
