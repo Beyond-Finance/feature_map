@@ -7,8 +7,16 @@ const config = {
   features: {
     "Authentication": {
       "assignments": {
-        "files": ["src/auth/controllers/login_controller.rb", "src/auth/services/oauth_service.rb", "src/auth/jobs/token_cleanup_job.rb", "src/auth/models/user.rb", "src/auth/middleware/auth_middleware.rb"],
-        "teams": ["Identity & Access"]
+        "files": [
+          "src/auth/controllers/login_controller.rb",
+          "src/auth/services/oauth_service.rb",
+          "src/auth/jobs/token_cleanup_job.rb",
+          "src/auth/models/user.rb",
+          "src/auth/middleware/auth_middleware.rb"
+        ],
+        "teams": [
+          "Identity & Access"
+        ]
       },
       "description": "Core authentication system handling user login, OAuth integration, and session management",
       "documentation_link": "https://internal-docs.company.com/auth/overview",
@@ -22,24 +30,48 @@ const config = {
         }
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 35.5, "percent_of_max": 80, "score": 12 },
-        "encapsulation": { "percentile": 65.2, "percent_of_max": 75, "score": 10 },
-        "feature_size": { "percentile": 46.3, "percent_of_max": 13, "score": 1500 },
-        "test_coverage": { "percentile": 88.4, "percent_of_max": 95, "score": 85 },
+        "cyclomatic_complexity": {
+          "percentile": 35.5,
+          "percent_of_max": 80,
+          "score": 12
+        },
+        "encapsulation": {
+          "percentile": 65.2,
+          "percent_of_max": 75,
+          "score": 10
+        },
+        "feature_size": {
+          "percentile": 46.3,
+          "percent_of_max": 13,
+          "score": 1500
+        },
+        "test_coverage": {
+          "percentile": 88.4,
+          "percent_of_max": 95,
+          "score": 85
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 66.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 66.5,
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 12.0,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 12.0,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 11.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 11.25,
+            "close_to_maximum_score": true
           },
-          "overall": 89.75
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 9.75,
+            "close_to_maximum_score": false
+          },
+          "overall": 85.82
         }
       },
       "test_coverage": {
@@ -67,7 +99,10 @@ const config = {
           "src/payments/workers/payment_worker.rb",
           "src/payments/validators/payment_validator.rb"
         ],
-        "teams": ["Payments", "Revenue"]
+        "teams": [
+          "Payments",
+          "Revenue"
+        ]
       },
       "description": "Payment processing system integrating with Stripe for charges, refunds and reconciliation",
       "documentation_link": "https://internal-docs.company.com/payments/overview",
@@ -77,24 +112,48 @@ const config = {
         "cyclomatic_complexity": 500
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 78.2, "percent_of_max": 65, "score": 14 },
-        "encapsulation": { "percentile": 92.1, "percent_of_max": 88, "score": 13 },
-        "feature_size": { "percentile": 82.5, "percent_of_max": 45, "score": 2500 },
-        "test_coverage": { "percentile": 95.8, "percent_of_max": 98, "score": 90 },
+        "cyclomatic_complexity": {
+          "percentile": 78.2,
+          "percent_of_max": 65,
+          "score": 14
+        },
+        "encapsulation": {
+          "percentile": 92.1,
+          "percent_of_max": 88,
+          "score": 13
+        },
+        "feature_size": {
+          "percentile": 82.5,
+          "percent_of_max": 45,
+          "score": 2500
+        },
+        "test_coverage": {
+          "percentile": 95.8,
+          "percent_of_max": 98,
+          "score": 90
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 68.6,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 68.6,
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 13.2,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 13.2,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 13.8,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 13.8,
+            "close_to_maximum_score": true
           },
-          "overall": 95.6
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 15,
+            "close_to_maximum_score": true
+          },
+          "overall": 110.6
         }
       },
       "test_coverage": {
@@ -120,7 +179,9 @@ const config = {
           "src/users/models/profile.rb",
           "src/users/workers/profile_worker.rb"
         ],
-        "teams": ["Identity & Access"]
+        "teams": [
+          "Identity & Access"
+        ]
       },
       "description": "User profile and account management system",
       "documentation_link": "https://internal-docs.company.com/users/overview",
@@ -130,24 +191,48 @@ const config = {
         "cyclomatic_complexity": 300
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 45.6, "percent_of_max": 42, "score": 10 },
-        "encapsulation": { "percentile": 58.3, "percent_of_max": 55, "score": 9 },
-        "feature_size": { "percentile": 63.2, "percent_of_max": 28, "score": 1800 },
-        "test_coverage": { "percentile": 70.1, "percent_of_max": 70, "score": 75 },
+        "cyclomatic_complexity": {
+          "percentile": 45.6,
+          "percent_of_max": 42,
+          "score": 10
+        },
+        "encapsulation": {
+          "percentile": 58.3,
+          "percent_of_max": 55,
+          "score": 9
+        },
+        "feature_size": {
+          "percentile": 63.2,
+          "percent_of_max": 28,
+          "score": 1800
+        },
+        "test_coverage": {
+          "percentile": 70.1,
+          "percent_of_max": 70,
+          "score": 75
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 49.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 49.0,
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 8.25,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 8.25,
+            "close_to_maximum_score": false
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 8.25,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 8.25,
+            "close_to_maximum_score": false
           },
-          "overall": 65.5
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 6.75,
+            "close_to_maximum_score": false
+          },
+          "overall": 72.25
         }
       },
       "test_coverage": {
@@ -172,7 +257,9 @@ const config = {
           "src/email/templates/welcome_email.rb",
           "src/email/templates/reset_password.rb"
         ],
-        "teams": ["Communications"]
+        "teams": [
+          "Communications"
+        ]
       },
       "description": "Transactional email service handling all system notifications",
       "documentation_link": "https://internal-docs.company.com/email/overview",
@@ -182,24 +269,48 @@ const config = {
         "cyclomatic_complexity": 22
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 92.3, "percent_of_max": 95, "score": 15 },
-        "encapsulation": { "percentile": 88.7, "percent_of_max": 85, "score": 14 },
-        "feature_size": { "percentile": 25.4, "percent_of_max": 8, "score": 500 },
-        "test_coverage": { "percentile": 98.9, "percent_of_max": 99, "score": 95 },
+        "cyclomatic_complexity": {
+          "percentile": 92.3,
+          "percent_of_max": 95,
+          "score": 15
+        },
+        "encapsulation": {
+          "percentile": 88.7,
+          "percent_of_max": 85,
+          "score": 14
+        },
+        "feature_size": {
+          "percentile": 25.4,
+          "percent_of_max": 8,
+          "score": 500
+        },
+        "test_coverage": {
+          "percentile": 98.9,
+          "percent_of_max": 99,
+          "score": 95
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 69.3,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 69.3,
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 14.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 14.25,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 13.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 13.5,
+            "close_to_maximum_score": true
           },
-          "overall": 97.05
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 15,
+            "close_to_maximum_score": true
+          },
+          "overall": 112.05
         }
       },
       "test_coverage": {
@@ -226,7 +337,10 @@ const config = {
           "src/sync/workers/sync_worker.rb",
           "src/sync/validators/sync_validator.rb"
         ],
-        "teams": ["Platform", "Data Infrastructure"]
+        "teams": [
+          "Platform",
+          "Data Infrastructure"
+        ]
       },
       "description": "Real-time data synchronization system between services",
       "documentation_link": "https://internal-docs.company.com/sync/overview",
@@ -237,24 +351,48 @@ const config = {
       },
       "test_coverage": null,
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 68.4, "percent_of_max": 72, "score": 13 },
-        "encapsulation": { "percentile": 75.6, "percent_of_max": 70, "score": 12 },
-        "feature_size": { "percentile": 55.8, "percent_of_max": 35, "score": 2000 },
-        "test_coverage": { "percentile": 82.3, "percent_of_max": 85, "score": 80 },
+        "cyclomatic_complexity": {
+          "percentile": 68.4,
+          "percent_of_max": 72,
+          "score": 13
+        },
+        "encapsulation": {
+          "percentile": 75.6,
+          "percent_of_max": 70,
+          "score": 12
+        },
+        "feature_size": {
+          "percentile": 55.8,
+          "percent_of_max": 35,
+          "score": 2000
+        },
+        "test_coverage": {
+          "percentile": 82.3,
+          "percent_of_max": 85,
+          "score": 80
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 59.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 59.5,
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 10.8,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 10.8,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 10.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 10.5,
+            "close_to_maximum_score": true
           },
-          "overall": 80.8
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 2.25,
+            "close_to_maximum_score": false
+          },
+          "overall": 83.05
         }
       }
     },
@@ -266,7 +404,9 @@ const config = {
           "src/analytics/models/event.rb",
           "src/analytics/workers/analytics_worker.rb"
         ],
-        "teams": ["Data Science"]
+        "teams": [
+          "Data Science"
+        ]
       },
       "description": "User behavior tracking and analytics processing pipeline",
       "documentation_link": "https://internal-docs.company.com/analytics/overview",
@@ -289,24 +429,48 @@ const config = {
         "regression_pending": 1
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 85.2, "percent_of_max": 82, "score": 14 },
-        "encapsulation": { "percentile": 78.9, "percent_of_max": 75, "score": 13 },
-        "feature_size": { "percentile": 42.1, "percent_of_max": 25, "score": 1200 },
-        "test_coverage": { "percentile": 78.6, "percent_of_max": 80, "score": 70 },
+        "cyclomatic_complexity": {
+          "percentile": 85.2,
+          "percent_of_max": 82,
+          "score": 14
+        },
+        "encapsulation": {
+          "percentile": 78.9,
+          "percent_of_max": 75,
+          "score": 13
+        },
+        "feature_size": {
+          "percentile": 42.1,
+          "percent_of_max": 25,
+          "score": 1200
+        },
+        "test_coverage": {
+          "percentile": 78.6,
+          "percent_of_max": 80,
+          "score": 70
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 55.0,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 55.0,
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 12.3,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 12.3,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 11.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 11.25,
+            "close_to_maximum_score": true
           },
-          "overall": 78.55
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 12.75,
+            "close_to_maximum_score": false
+          },
+          "overall": 91.3
         }
       }
     },
@@ -318,7 +482,9 @@ const config = {
           "src/gateway/middleware/api_middleware.rb",
           "src/gateway/models/api_key.rb"
         ],
-        "teams": ["Platform"]
+        "teams": [
+          "Platform"
+        ]
       },
       "description": "API Gateway handling authentication, rate limiting and request routing",
       "documentation_link": "https://internal-docs.company.com/gateway/overview",
@@ -341,24 +507,48 @@ const config = {
         "regression_pending": 1
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 89.5, "percent_of_max": 88, "score": 15 },
-        "encapsulation": { "percentile": 92.3, "percent_of_max": 90, "score": 14 },
-        "feature_size": { "percentile": 58.7, "percent_of_max": 42, "score": 2200 },
-        "test_coverage": { "percentile": 98.2, "percent_of_max": 99, "score": 90 },
+        "cyclomatic_complexity": {
+          "percentile": 89.5,
+          "percent_of_max": 88,
+          "score": 15
+        },
+        "encapsulation": {
+          "percentile": 92.3,
+          "percent_of_max": 90,
+          "score": 14
+        },
+        "feature_size": {
+          "percentile": 58.7,
+          "percent_of_max": 42,
+          "score": 2200
+        },
+        "test_coverage": {
+          "percentile": 98.2,
+          "percent_of_max": 99,
+          "score": 90
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 68.6,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 68.6,
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 13.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 13.5,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 13.8,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 13.8,
+            "close_to_maximum_score": true
           },
-          "overall": 95.9
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 15,
+            "close_to_maximum_score": true
+          },
+          "overall": 100.0
         }
       }
     },
@@ -371,7 +561,9 @@ const config = {
           "src/documents/workers/pdf_worker.rb",
           "src/documents/validators/document_validator.rb"
         ],
-        "teams": ["Content Management"]
+        "teams": [
+          "Content Management"
+        ]
       },
       "description": "Document processing system for PDF generation and manipulation",
       "documentation_link": "https://internal-docs.company.com/documents/overview",
@@ -394,24 +586,48 @@ const config = {
         "regression_pending": 1
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 72.4, "percent_of_max": 68, "score": 12 },
-        "encapsulation": { "percentile": 65.8, "percent_of_max": 62, "score": 11 },
-        "feature_size": { "percentile": 68.9, "percent_of_max": 55, "score": 2500 },
-        "test_coverage": { "percentile": 59.8, "percent_of_max": 60, "score": 60 },
+        "cyclomatic_complexity": {
+          "percentile": 72.4,
+          "percent_of_max": 68,
+          "score": 12
+        },
+        "encapsulation": {
+          "percentile": 65.8,
+          "percent_of_max": 62,
+          "score": 11
+        },
+        "feature_size": {
+          "percentile": 68.9,
+          "percent_of_max": 55,
+          "score": 2500
+        },
+        "test_coverage": {
+          "percentile": 59.8,
+          "percent_of_max": 60,
+          "score": 60
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 42.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 42.0,
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 10.2,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 10.2,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 9.3,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 9.3,
+            "close_to_maximum_score": false
           },
-          "overall": 61.5
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 3.75,
+            "close_to_maximum_score": false
+          },
+          "overall": 65.25
         }
       }
     },
@@ -423,7 +639,9 @@ const config = {
           "src/notifications/models/notification.rb",
           "src/notifications/workers/push_notification_worker.rb"
         ],
-        "teams": ["Communications"]
+        "teams": [
+          "Communications"
+        ]
       },
       "description": "Push notification system for mobile and web clients",
       "documentation_link": "https://internal-docs.company.com/notifications/overview",
@@ -433,24 +651,48 @@ const config = {
         "cyclomatic_complexity": 241
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 62.8, "percent_of_max": 58, "score": 11 },
-        "encapsulation": { "percentile": 71.2, "percent_of_max": 65, "score": 10 },
-        "feature_size": { "percentile": 82.4, "percent_of_max": 75, "score": 2700 },
-        "test_coverage": { "percentile": 68.5, "percent_of_max": 70, "score": 65 },
+        "cyclomatic_complexity": {
+          "percentile": 62.8,
+          "percent_of_max": 58,
+          "score": 11
+        },
+        "encapsulation": {
+          "percentile": 71.2,
+          "percent_of_max": 65,
+          "score": 10
+        },
+        "feature_size": {
+          "percentile": 82.4,
+          "percent_of_max": 75,
+          "score": 2700
+        },
+        "test_coverage": {
+          "percentile": 68.5,
+          "percent_of_max": 70,
+          "score": 65
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 49.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 49.0,
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 8.7,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 8.7,
+            "close_to_maximum_score": false
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 9.75,
-            "close_to_maximum_score": false, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 9.75,
+            "close_to_maximum_score": false
           },
-          "overall": 67.45
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 3.0,
+            "close_to_maximum_score": false
+          },
+          "overall": 70.45
         }
       },
       "test_coverage": {
@@ -465,7 +707,7 @@ const config = {
         "integration_pending": 2,
         "regression_count": 5,
         "regression_pending": 1
-      },
+      }
     },
     "Search Engine": {
       "assignments": {
@@ -476,7 +718,12 @@ const config = {
           "src/search/models/search_index.rb",
           "src/search/workers/indexing_worker.rb"
         ],
-        "teams": ["Search & Discovery", "Platform", "Communications", "Admin"]
+        "teams": [
+          "Search & Discovery",
+          "Platform",
+          "Communications",
+          "Admin"
+        ]
       },
       "description": "Elasticsearch-based full-text search engine",
       "documentation_link": "https://internal-docs.company.com/search/overview",
@@ -486,24 +733,48 @@ const config = {
         "cyclomatic_complexity": 76
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 75.0, "percent_of_max": 70, "score": 13 },
-        "encapsulation": { "percentile": 80.0, "percent_of_max": 75, "score": 12 },
-        "feature_size": { "percentile": 60.0, "percent_of_max": 50, "score": 1800 },
-        "test_coverage": { "percentile": 85.0, "percent_of_max": 80, "score": 75 },
+        "cyclomatic_complexity": {
+          "percentile": 75.0,
+          "percent_of_max": 70,
+          "score": 13
+        },
+        "encapsulation": {
+          "percentile": 80.0,
+          "percent_of_max": 75,
+          "score": 12
+        },
+        "feature_size": {
+          "percentile": 60.0,
+          "percent_of_max": 50,
+          "score": 1800
+        },
+        "test_coverage": {
+          "percentile": 85.0,
+          "percent_of_max": 80,
+          "score": 75
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 68.0,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 70,
+            "health_score": 68.0,
+            "close_to_maximum_score": true
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 10.5,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 10.5,
+            "close_to_maximum_score": true
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 11.25,
-            "close_to_maximum_score": true, "exceeds_score_threshold": true
+            "awardable_points": 15,
+            "health_score": 11.25,
+            "close_to_maximum_score": true
           },
-          "overall": 89.75
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 11.25,
+            "close_to_maximum_score": false
+          },
+          "overall": 100.0
         }
       },
       "test_coverage": {
@@ -533,28 +804,52 @@ const config = {
         "cyclomatic_complexity": null
       },
       "additional_metrics": {
-        "cyclomatic_complexity": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
-        "encapsulation": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
-        "feature_size": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
-        "test_coverage": { "percentile": 0.0, "percent_of_max": 0, "score": 0 },
+        "cyclomatic_complexity": {
+          "percentile": 0.0,
+          "percent_of_max": 0,
+          "score": 0
+        },
+        "encapsulation": {
+          "percentile": 0.0,
+          "percent_of_max": 0,
+          "score": 0
+        },
+        "feature_size": {
+          "percentile": 0.0,
+          "percent_of_max": 0,
+          "score": 0
+        },
+        "test_coverage": {
+          "percentile": 0.0,
+          "percent_of_max": 0,
+          "score": 0
+        },
         "health": {
           "test_coverage_component": {
-            "awardable_points": 70, "health_score": 0.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": false
+            "awardable_points": 70,
+            "health_score": 0.0,
+            "close_to_maximum_score": false
           },
           "cyclomatic_complexity_component": {
-            "awardable_points": 15, "health_score": 0.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": false
+            "awardable_points": 15,
+            "health_score": 0.0,
+            "close_to_maximum_score": false
           },
           "encapsulation_component": {
-            "awardable_points": 15, "health_score": 0.0,
-            "close_to_maximum_score": false, "exceeds_score_threshold": false
+            "awardable_points": 15,
+            "health_score": 0.0,
+            "close_to_maximum_score": false
+          },
+          "todo_count_component": {
+            "awardable_points": 15,
+            "health_score": 0.0,
+            "close_to_maximum_score": false
           },
           "overall": 0.0
         }
       },
       "test_coverage": null
-    },
+    }
   },
 };
 

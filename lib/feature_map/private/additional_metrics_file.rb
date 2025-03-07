@@ -34,24 +34,17 @@ module FeatureMap
       def self.generate_content(feature_metrics, feature_test_coverage, health_config)
         feature_additional_metrics = {}
 
-        cyclomatic_complexity_ratios = feature_metrics.map { |_k, m| m[FeatureMetricsCalculator::COMPLEXITY_RATIO_METRIC] }.compact
-        encapsulation_ratios = feature_metrics.map { |_k, m| m[FeatureMetricsCalculator::ENCAPSULATION_RATIO_METRIC] }.compact
-        feature_sizes = feature_metrics.map { |_k, m| m[FeatureMetricsCalculator::LINES_OF_CODE_METRIC] }.compact
-        test_coverage_ratios = feature_test_coverage.map { |_k, c| c[TestCoverageFile::COVERAGE_RATIO] }.compact
+        percentile_metrics = PercentileMetricsCalculator.new(metrics: feature_metrics, test_coverage: feature_test_coverage)
+        health_calculator = HealthCalculator.new(percentile_metrics: percentile_metrics, health_config: health_config)
 
         Private.feature_file_assignments.each_key do |feature_name|
-          cyclomatic_complexity = calculate(cyclomatic_complexity_ratios, feature_metrics.dig(feature_name, FeatureMetricsCalculator::COMPLEXITY_RATIO_METRIC) || 0)
-          encapsulation = calculate(encapsulation_ratios, feature_metrics.dig(feature_name, FeatureMetricsCalculator::ENCAPSULATION_RATIO_METRIC) || 0)
-          feature_size = calculate(feature_sizes, feature_metrics.dig(feature_name, FeatureMetricsCalculator::LINES_OF_CODE_METRIC) || 0)
-          test_coverage = calculate(test_coverage_ratios, feature_test_coverage.dig(feature_name, TestCoverageFile::COVERAGE_RATIO) || 0)
-          health = health_score_for(cyclomatic_complexity, encapsulation, test_coverage, health_config)
-
           feature_additional_metrics[feature_name] = {
-            'cyclomatic_complexity' => cyclomatic_complexity,
-            'encapsulation' => encapsulation,
-            'feature_size' => feature_size,
-            'test_coverage' => test_coverage,
-            'health' => health
+            'cyclomatic_complexity' => percentile_metrics.cyclomatic_complexity_for(feature_name),
+            'encapsulation' => percentile_metrics.encapsulation_for(feature_name),
+            'feature_size' => percentile_metrics.feature_size_for(feature_name),
+            'test_coverage' => percentile_metrics.test_coverage_for(feature_name),
+            'todo_count' => percentile_metrics.todo_count_for(feature_name),
+            'health' => health_calculator.health_score_for(feature_name)
           }
         end
 
@@ -68,58 +61,6 @@ module FeatureMap
         raise FileContentError, "Invalid YAML content found at #{path}. Error: #{e.message} Use `bin/featuremap additional_metrics` to generate it and try again."
       rescue Errno::ENOENT
         raise FileContentError, "No feature metrics file found at #{path}. Use `bin/featuremap additional_metrics` to generate it and try again."
-      end
-
-      def self.calculate(collection, score)
-        max = collection.max || 0
-        percentile = percentile_of(collection, score)
-        percent_of_max = max.zero? ? 0 : ((score.to_f / max) * 100).round.to_i
-
-        { 'percentile' => percentile, 'percent_of_max' => percent_of_max, 'score' => score }
-      end
-
-      def self.percentile_of(arr, val)
-        return 0.0 if arr.empty?
-
-        ensure_array_of_floats = arr.map(&:to_f)
-        ensure_float_value = val.to_f
-
-        below_or_equal_count = ensure_array_of_floats.reduce(0) do |acc, v|
-          if v < ensure_float_value
-            acc + 1
-          elsif v == ensure_float_value
-            acc + 0.5
-          else
-            acc
-          end
-        end
-
-        ((100 * below_or_equal_count) / ensure_array_of_floats.length).to_f
-      end
-
-      def self.health_score_component(awardable_points, score, score_threshold, percent_of_max = 0, percent_of_max_threshold = 100)
-        close_to_maximum_score = percent_of_max >= percent_of_max_threshold
-        exceeds_score_threshold = score >= score_threshold
-
-        if close_to_maximum_score || exceeds_score_threshold
-          { 'awardable_points' => awardable_points, 'health_score' => awardable_points, 'close_to_maximum_score' => close_to_maximum_score, 'exceeds_score_threshold' => exceeds_score_threshold }
-        else
-          { 'awardable_points' => awardable_points, 'health_score' => (score.to_f / score_threshold) * awardable_points, 'close_to_maximum_score' => close_to_maximum_score, 'exceeds_score_threshold' => exceeds_score_threshold }
-        end
-      end
-
-      def self.health_score_for(encapsulation, cyclomatic_complexity, test_coverage, health_config)
-        cyclomatic_complexity_config = health_config['components']['cyclomatic_complexity']
-        encapsulation_config = health_config['components']['encapsulation']
-        test_coverage_config = health_config['components']['test_coverage']
-
-        test_coverage_component = health_score_component(test_coverage_config['weight'], test_coverage['score'], test_coverage_config['score_threshold'])
-        cyclomatic_complexity_component = health_score_component(cyclomatic_complexity_config['weight'], cyclomatic_complexity['percentile'], cyclomatic_complexity_config['score_threshold'], cyclomatic_complexity['percent_of_max'], 100 - cyclomatic_complexity_config['minimum_variance'])
-        encapsulation_component = health_score_component(encapsulation_config['weight'], encapsulation['percentile'], encapsulation_config['score_threshold'], encapsulation['percent_of_max'], 100 - encapsulation_config['minimum_variance'])
-
-        overall = test_coverage_component['health_score'] + cyclomatic_complexity_component['health_score'] + encapsulation_component['health_score']
-
-        { 'test_coverage_component' => test_coverage_component, 'cyclomatic_complexity_component' => cyclomatic_complexity_component, 'encapsulation_component' => encapsulation_component, 'overall' => overall }
       end
     end
   end

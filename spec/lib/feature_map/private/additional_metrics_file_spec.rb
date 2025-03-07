@@ -11,7 +11,9 @@ module FeatureMap
             'abc_size' => 500.08,
             'cyclomatic_complexity' => 74,
             'lines_of_code' => 449,
-            'todo_locations' => {},
+            'todo_locations' => {
+              'app/foo.rb:43' => 'move me'
+            },
             'complexity_ratio' => 6.0675675675675675,
             'encapsulation_ratio' => 0.015590200445434299
           }
@@ -27,9 +29,10 @@ module FeatureMap
       let(:health_config) do
         {
           'components' => {
-            'cyclomatic_complexity' => { 'weight' => 15, 'score_threshold' => 100, 'minimum_variance' => 10 },
-            'encapsulation' => { 'weight' => 15, 'score_threshold' => 100, 'minimum_variance' => 10 },
-            'test_coverage' => { 'weight' => 70, 'score_threshold' => 95 }
+            'cyclomatic_complexity' => { 'weight' => 5, 'percent_of_max_threshold' => 90 },
+            'encapsulation' => { 'weight' => 10, 'percent_of_max_threshold' => 90 },
+            'test_coverage' => { 'weight' => 70, 'percent_of_max_threshold' => 95 },
+            'todo_count' => { 'weight' => 15, 'percent_of_max_threshold' => 95 }
           }
         }
       end
@@ -65,23 +68,28 @@ module FeatureMap
                 percentile: 0.0
                 percent_of_max: 0
                 score: 0
+              todo_count:
+                percentile: 0.0
+                percent_of_max: 0
+                score: 0
               health:
                 test_coverage_component:
                   awardable_points: 70
-                  health_score: 0.0
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
+                  health_score: 0.0
                 cyclomatic_complexity_component:
-                  awardable_points: 15
-                  health_score: 0.0
+                  awardable_points: 5
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
+                  health_score: 0.0
                 encapsulation_component:
-                  awardable_points: 15
-                  health_score: 0.0
+                  awardable_points: 10
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
-                overall: 0.0
+                  health_score: 0.0
+                todo_count_component:
+                  awardable_points: 15
+                  close_to_maximum_score: true
+                  health_score: 15
+                overall: 15.0
             Foo:
               cyclomatic_complexity:
                 percentile: 50.0
@@ -99,23 +107,28 @@ module FeatureMap
                 percentile: 50.0
                 percent_of_max: 100
                 score: 90
+              todo_count:
+                percentile: 50.0
+                percent_of_max: 100
+                score: 1
               health:
                 test_coverage_component:
                   awardable_points: 70
-                  health_score: 66.3157894736842
                   close_to_maximum_score: false
-                  exceeds_score_threshold: false
+                  health_score: 63.0
                 cyclomatic_complexity_component:
-                  awardable_points: 15
-                  health_score: 15
+                  awardable_points: 5
                   close_to_maximum_score: true
-                  exceeds_score_threshold: false
+                  health_score: 5
                 encapsulation_component:
-                  awardable_points: 15
-                  health_score: 15
+                  awardable_points: 10
                   close_to_maximum_score: true
-                  exceeds_score_threshold: false
-                overall: 96.3157894736842
+                  health_score: 10
+                todo_count_component:
+                  awardable_points: 15
+                  close_to_maximum_score: false
+                  health_score: 0.0
+                overall: 78.0
         FEATURES
       end
 
@@ -167,9 +180,9 @@ module FeatureMap
             'feature_size' => { 'percentile' => 0.0, 'percent_of_max' => 0, 'score' => 0 },
             'test_coverage' => { 'percentile' => 0.0, 'percent_of_max' => 0, 'score' => 0 },
             'health' =>
-            { 'test_coverage_component' => { 'awardable_points' => 70, 'health_score' => 0.0, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
-              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
-              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
+            { 'test_coverage_component' => { 'awardable_points' => 70, 'health_score' => 0.0, 'close_to_maximum_score' => false },
+              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false },
+              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 0.0, 'close_to_maximum_score' => false },
               'overall' => 0.0 } },
           'Foo' =>
           { 'cyclomatic_complexity' => { 'percentile' => 50.0, 'percent_of_max' => 100, 'score' => 6.0675675675675675 },
@@ -178,9 +191,9 @@ module FeatureMap
             'test_coverage' => { 'percentile' => 50.0, 'percent_of_max' => 100, 'score' => 90 },
             'health' =>
             { 'test_coverage_component' =>
-              { 'awardable_points' => 70, 'health_score' => 66.3157894736842, 'close_to_maximum_score' => false, 'exceeds_score_threshold' => false },
-              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true, 'exceeds_score_threshold' => false },
-              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true, 'exceeds_score_threshold' => false },
+              { 'awardable_points' => 70, 'health_score' => 66.3157894736842, 'close_to_maximum_score' => false },
+              'cyclomatic_complexity_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true },
+              'encapsulation_component' => { 'awardable_points' => 15, 'health_score' => 15, 'close_to_maximum_score' => true },
               'overall' => 96.3157894736842 } }
         }
 

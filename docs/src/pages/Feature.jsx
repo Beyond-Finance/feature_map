@@ -70,6 +70,9 @@ export default function Feature({ features }) {
                 <li className="text-xs text-gray-500">
                   Encapsulation: {feature.additional_metrics.health.encapsulation_component.health_score.toFixed(0)} / {feature.additional_metrics.health.encapsulation_component.awardable_points}
                 </li>
+                <li className="text-xs text-gray-500">
+                  Todos: {feature.additional_metrics.health.todo_count_component.health_score.toFixed(0)} / {feature.additional_metrics.health.todo_count_component.awardable_points}
+                </li>
               </ul>
             </FeatureCard>
 
