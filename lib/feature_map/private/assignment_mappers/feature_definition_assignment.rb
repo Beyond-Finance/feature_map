@@ -13,6 +13,13 @@ module FeatureMap
           return @@map_files_to_features if @@map_files_to_features&.keys && @@map_files_to_features.keys.count.positive?
 
           @@map_files_to_features = CodeFeatures.all.each_with_object({}) do |feature, map| # rubocop:disable Style/ClassVars
+            # NOTE:  The FeatureDefinitionAssignment naively assumes that all
+            #        features will have a definition yaml file.  This comes from
+            #        the CodeOwnership implementation which does require these
+            #        files to exist.  This is not true in repositories using the
+            #        feature_definitions.csv style of feature definition.
+            next if feature.config_yml.nil?
+
             map[feature.config_yml] = feature
           end
         end
@@ -27,6 +34,13 @@ module FeatureMap
           return {} if Private.configuration.ignore_feature_definitions
 
           CodeFeatures.all.each_with_object({}) do |feature, map|
+            # NOTE:  The FeatureDefinitionAssignment naively assumes that all
+            #        features will have a definition yaml file.  This comes from
+            #        the CodeOwnership implementation which does require these
+            #        files to exist.  This is not true in repositories using the
+            #        feature_definitions.csv style of feature definition.
+            next if feature.config_yml.nil?
+
             map[feature.config_yml] = feature
           end
         end

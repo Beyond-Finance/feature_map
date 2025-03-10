@@ -1,6 +1,28 @@
 RSpec.describe FeatureMap do
   # Look at individual validations spec to see other validaions that ship with FeatureMap
   describe '.validate!' do
+    describe 'when no feature definition files exist' do
+      it 'does not error' do
+        # NOTE:  The FeatureDefinitionAssignment naively assumes that all
+        #        features will have a definition yaml file.  This comes from
+        #        the CodeOwnership implementation which does require these
+        #        files to exist.  This is not true in repositories using the
+        #        feature_definitions.csv style of feature definition.
+        write_configuration('assigned_globs' => ['**/some_file.ts'])
+        write_file('.feature_map/feature_definitions.csv', <<~CSV.strip)
+          Name,Description,Documentation Link,Dashboard Link,Custom Attribute
+          Bar,,,,
+        CSV
+
+        write_file('app/services/[test]/some_file.ts', <<~TYPESCRIPT)
+          // @feature Bar
+          // Countries
+        TYPESCRIPT
+
+        expect { FeatureMap.validate! }.to_not raise_error
+      end
+    end
+
     describe 'features must exist validation' do
       before do
         write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
