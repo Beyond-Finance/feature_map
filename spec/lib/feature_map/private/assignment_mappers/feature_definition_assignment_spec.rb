@@ -1,14 +1,10 @@
 module FeatureMap
   RSpec.describe Private::AssignmentMappers::FeatureDefinitionAssignment do
     before do
-      write_configuration('assigned_globs' => '**/*')
-      write_file('.feature_map/feature_definitions.csv', <<~CSV.strip)
-        Name,Description,Documentation Link,Dashboard Link,Custom Attribute
-        Bar,,,,
-      CSV
-      write_file('foo.rb', <<~FILE.strip)
-        # @feature Bar
-      FILE
+      write_configuration
+      write_file('.feature_map/definitions/bar.yml', <<~CONTENTS)
+        name: Bar
+      CONTENTS
     end
 
     describe 'FeatureMap.for_feature' do
