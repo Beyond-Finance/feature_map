@@ -1,3 +1,5 @@
+# @feature CLI
+
 require 'optparse'
 require 'pathname'
 require 'fileutils'
@@ -152,30 +154,58 @@ module FeatureMap
     end
 
     def self.test_coverage!(argv)
+      options = {
+        source: :codecov,
+        simplecov_paths: []
+      }
+
       parser = OptionParser.new do |opts|
         opts.banner = <<~MSG
           Usage: bin/featuremap test_coverage [options] [code_cov_commit_sha].
-          Note:  Requires environment variable `CODECOV_API_TOKEN`.
+          Note:  Requires environment variable `CODECOV_API_TOKEN` when using codecov.
         MSG
+
+        opts.on('--use-simplecov', 'Use SimpleCov instead of CodeCov') do
+          options[:source] = :simplecov
+        end
+
+        opts.on('--simplecov-path PATH', 'Use SimpleCov JSON resultset file instead of CodeCov.  May be specified multiple times.') do |path|
+          options[:simplecov_paths] << path
+        end
 
         opts.on('--help', 'Shows this prompt') do
           puts opts
           exit
         end
       end
+
       args = parser.order!(argv)
       parser.parse!(args)
       non_flag_args = argv.reject { |arg| arg.start_with?('--') }
       custom_commit_sha = non_flag_args[0]
 
-      code_cov_token = ENV.fetch('CODECOV_API_TOKEN', '')
-      raise 'Please specify a CodeCov API token in your environment as `CODECOV_API_TOKEN`' if code_cov_token.empty?
+      case options[:source]
+      when :codecov
+        code_cov_token = ENV.fetch('CODECOV_API_TOKEN', '')
+        raise 'Please specify a CodeCov API token in your environment as `CODECOV_API_TOKEN`' if code_cov_token.empty?
 
-      # If no commit SHA was providid in the CLI command args, use the most recent commit of the main branch in the upstream remote.
-      commit_sha = custom_commit_sha || `git log -1 --format=%H origin/main`.chomp
-      puts "Pulling test coverage statistics for commit #{commit_sha}"
+        # If no commit SHA was provided in the CLI command args, use the most recent commit of the main branch in the upstream remote.
+        commit_sha = custom_commit_sha || `git log -1 --format=%H origin/main`.chomp
+        puts "Pulling test coverage statistics for commit #{commit_sha}"
 
-      FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
+        FeatureMap.gather_test_coverage!(commit_sha, code_cov_token)
+      when :simplecov
+        missing_paths = options[:simplecov_paths].reject { |path| File.exist?(path) }
+        raise 'Error: When using --use-simplecov, you must specify at least one path with --simplecov-path.' if options[:simplecov_paths].empty?
+        raise "SimpleCov results file not found: #{missing_paths.join(', ')}" if missing_paths.any?
+        raise 'Error: Cannot specify a commit SHA when using --simplecov. These options are incompatible.' if custom_commit_sha
+
+        puts "Gathering test coverage statistics from SimpleCov files: #{options[:simplecov_paths].join(', ')}"
+
+        FeatureMap.gather_simplecov_test_coverage!(options[:simplecov_paths])
+      else
+        raise 'Invalid source'
+      end
 
       puts OutputColor.green('FeatureMap test coverage statistics collected.')
       puts 'View the resulting test coverage for each feature in .feature_map/test-coverage.yml'

@@ -399,6 +399,80 @@ RSpec.describe FeatureMap do
     end
   end
 
+  describe '.gather_simplecov_test_coverage!' do
+    let(:simplecov_path) { 'tmp/coverage/.resultset.json' }
+    let(:simplecov_path2) { 'tmp/other_coverage/.resultset.json' }
+    let(:test_coverage_output_file) { Pathname.pwd.join('.feature_map/test-coverage.yml') }
+    let(:simplecov_data) do
+      {
+        'RSpec' => {
+          'coverage' => {
+            'app/my_error.rb' => {
+              'lines' => [1, 1, 0, 1, nil, 1, 0, 1, 1, 1]
+            },
+            'app/my_file.rb' => {
+              'lines' => [1, 1, 1, nil, 1, 1]
+            }
+          }
+        }
+      }
+    end
+
+    before do
+      create_validation_artifacts
+
+      write_file(simplecov_path, simplecov_data.to_json)
+
+      FileUtils.rm_f(test_coverage_output_file)
+    end
+
+    it 'captures test coverage statistics from SimpleCov files' do
+      FeatureMap.gather_simplecov_test_coverage!([simplecov_path])
+
+      expect(File.exist?(test_coverage_output_file)).to be_truthy
+      coverage_data = YAML.load_file(test_coverage_output_file)
+
+      expect(coverage_data).to match({
+                                       'features' => {
+                                         'Bar' => { 'hits' => 7, 'lines' => 9, 'misses' => 2, 'coverage_ratio' => 78 },
+                                         'Foo' => { 'hits' => 5, 'lines' => 5, 'misses' => 0, 'coverage_ratio' => 100 }
+                                       }
+                                     })
+    end
+
+    context 'with multiple SimpleCov files' do
+      let(:simplecov_data2) do
+        {
+          'RSpec' => {
+            'coverage' => {
+              'app/my_error.rb' => {
+                'lines' => [1, 1, 1, 1, nil, 1, 1, 1, 1, 1]
+              }
+            }
+          }
+        }
+      end
+
+      before do
+        write_file(simplecov_path2, simplecov_data2.to_json)
+      end
+
+      it 'merges coverage data from multiple files' do
+        FeatureMap.gather_simplecov_test_coverage!([simplecov_path, simplecov_path2])
+
+        expect(File.exist?(test_coverage_output_file)).to be_truthy
+        coverage_data = YAML.load_file(test_coverage_output_file)
+
+        expect(coverage_data).to match({
+                                         'features' => {
+                                           'Bar' => { 'hits' => 9, 'lines' => 9, 'misses' => 0, 'coverage_ratio' => 100 },
+                                           'Foo' => { 'hits' => 5, 'lines' => 5, 'misses' => 0, 'coverage_ratio' => 100 }
+                                         }
+                                       })
+      end
+    end
+  end
+
   describe '.group_commits' do
     let(:foo_and_bar_commit) { FeatureMap::Commit.new(sha: 'aaa111', description: 'A test change impacting both Foo and Bar.', pull_request_number: '111', files: ['app/my_file.rb', 'app/my_error.rb']) }
     let(:foo_commit) { FeatureMap::Commit.new(sha: 'bbb222', description: 'A Foo only change.', pull_request_number: '222', files: ['app/my_file.rb']) }

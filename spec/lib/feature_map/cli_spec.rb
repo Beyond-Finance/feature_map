@@ -170,6 +170,74 @@ RSpec.describe FeatureMap::Cli do
         end.to raise_error(/Please specify a CodeCov API token in your environment as `CODECOV_API_TOKEN`/)
       end
     end
+
+    context 'when using SimpleCov' do
+      let(:simplecov_path) { 'tmp/coverage/.resultset.json' }
+
+      before do
+        allow(File).to receive(:exist?).and_call_original
+        allow(File).to receive(:exist?).with(simplecov_path).and_return(true)
+      end
+
+      context 'with --use-simplecov and --simplecov-path' do
+        let(:argv) { ['test_coverage', '--use-simplecov', '--simplecov-path', simplecov_path] }
+
+        it 'uses SimpleCov instead of CodeCov' do
+          expect(FeatureMap).to receive(:gather_simplecov_test_coverage!).with([simplecov_path])
+          subject
+        end
+      end
+
+      context 'with multiple --simplecov-path arguments' do
+        let(:simplecov_path2) { 'tmp/other_coverage/.resultset.json' }
+        let(:argv) { ['test_coverage', '--use-simplecov', '--simplecov-path', simplecov_path, '--simplecov-path', simplecov_path2] }
+
+        before do
+          allow(File).to receive(:exist?).with(simplecov_path2).and_return(true)
+        end
+
+        it 'passes all paths to the gather_simplecov_test_coverage! method' do
+          expect(FeatureMap).to receive(:gather_simplecov_test_coverage!).with([simplecov_path, simplecov_path2])
+          subject
+        end
+      end
+
+      context 'with --use-simplecov but no path specified' do
+        let(:argv) { ['test_coverage', '--use-simplecov'] }
+
+        it 'raises an error about missing paths' do
+          expect do
+            subject
+          end.to raise_error('Error: When using --use-simplecov, you must specify at least one path with --simplecov-path.')
+        end
+      end
+
+      context 'with non-existent path' do
+        let(:non_existent_path) { 'non/existent/path.json' }
+        let(:argv) { ['test_coverage', '--use-simplecov', '--simplecov-path', non_existent_path] }
+
+        before do
+          allow(File).to receive(:exist?).with(non_existent_path).and_return(false)
+        end
+
+        it 'raises an error about missing files' do
+          expect do
+            subject
+          end.to raise_error("SimpleCov results file not found: #{non_existent_path}")
+        end
+      end
+
+      context 'with both SimpleCov options and a commit SHA' do
+        let(:commit_sha) { '1234567890abcdef1234567890abcdef' }
+        let(:argv) { ['test_coverage', '--use-simplecov', '--simplecov-path', simplecov_path, commit_sha] }
+
+        it 'raises an error about incompatible options' do
+          expect do
+            subject
+          end.to raise_error('Error: Cannot specify a commit SHA when using --simplecov. These options are incompatible.')
+        end
+      end
+    end
   end
 
   describe 'for_file' do
