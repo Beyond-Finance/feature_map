@@ -7,5 +7,13 @@
 # set of files assigned to a feature change, which should be explicitly tracked.
 
 ---
-files: {}
-features: {}
+files:
+  lib/feature_map/cli.rb:
+    feature: CLI
+    mapper: Annotations at the top of file
+features:
+  CLI:
+    files:
+    - lib/feature_map/cli.rb
+    teams:
+    - User Experience
