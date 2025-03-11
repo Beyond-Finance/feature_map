@@ -162,7 +162,16 @@ module FeatureMap
       parser = OptionParser.new do |opts|
         opts.banner = <<~MSG
           Usage: bin/featuremap test_coverage [options] [code_cov_commit_sha].
-          Note:  Requires environment variable `CODECOV_API_TOKEN` when using codecov.
+
+          Options:
+            --use-simplecov             Use SimpleCov instead of CodeCov
+            --simplecov-path PATH       Path to a SimpleCov resultset.json file (can be specified multiple times)
+
+          Note:#{'  '}
+            - CodeCov mode requires environment variable `CODECOV_API_TOKEN`
+            - CodeCov mode uses the provided commit SHA or defaults to the latest commit on main
+            - SimpleCov mode requires at least one path to be specified with --simplecov-path
+            - SimpleCov and CodeCov modes cannot be used together
         MSG
 
         opts.on('--use-simplecov', 'Use SimpleCov instead of CodeCov') do
