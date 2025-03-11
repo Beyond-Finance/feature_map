@@ -36,20 +36,15 @@ const FeatureTestPyramidCard = ({ feature }) => {
     }
   ];
 
-  // Create chart data from our test types
   const data = testTypes.map(test => ({
     value: Math.max(Math.log(test.count + test.pending), 0),
     fill: test.fill
   }));
 
-  console.log(data)
-
-  const allValuesZero = data.every(item => item.value === 0);
-
   return (
     <div className="flex items-center gap-4">
       <div className="relative h-20 w-20">
-        {allValuesZero ?
+        {data.every(item => item.value === 0) ?
           <div className="flex flex-col flex-shrink-0 items-center justify-center size-full bg-gray-100 rounded-full shadow text-gray-500 mb-4">
             <Triangle />
           </div> :
