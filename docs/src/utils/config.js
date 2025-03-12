@@ -1,3 +1,4 @@
+// NOTE:  This sample_config is generated as part of `bin/docs`
 import { sampleConfig } from '../../sample_config';
 import sampleProjectConfig from '../../../.feature_map/config.yml'
 
