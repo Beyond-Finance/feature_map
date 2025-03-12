@@ -1,4 +1,4 @@
-import sampleConfig from '../data/sample_config';
+import { sampleConfig } from '../../sample_config';
 import sampleProjectConfig from '../../../.feature_map/config.yml'
 
 const defaultConfig = { ...sampleConfig, project: sampleProjectConfig, environment: { git_ref: 'main' } }

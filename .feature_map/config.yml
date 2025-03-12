@@ -32,9 +32,9 @@ code_cov:
   repo: example
 repository:
   main_branch: 'main'
-  url: https://example.com
+  url: https://github.com/Beyond-Finance/feature_map
 # Supports link generation in message construction, e.g., release announcements
-documentation_site_url: example.github.io/repo
+documentation_site_url: https://beyond-finance.github.io/feature_map/
 documentation_site:
   health:
     minimum_thresholds:
