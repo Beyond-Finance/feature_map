@@ -289,7 +289,7 @@ features:
     - docs/src/components/FeatureCard.jsx
     - docs/src/components/FeatureDetails.jsx
     - docs/src/components/FeatureSizeDataCard.jsx
-    - docs/src/components/FeatureTreemap.jsx
+    - docs/src/components/FeatureTestPyramidCard.jsx
     - docs/src/components/FeaturesTable.jsx
     - docs/src/components/FeaturesTreemap.jsx
     - docs/src/components/FileExplorer.jsx
@@ -303,7 +303,6 @@ features:
     - docs/src/components/ui/Dropdown.jsx
     - docs/src/components/ui/Switcher.jsx
     - docs/src/components/ui/index.js
-    - docs/src/data/sample_config.js
     - docs/src/main.jsx
     - docs/src/pages/Dashboard.jsx
     - docs/src/pages/Digest.jsx
