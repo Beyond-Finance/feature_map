@@ -1,10 +1,10 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Info, Gauge, FlaskConical, Proportions } from 'lucide-react';
+import { Info, Gauge, FolderTree, FlaskConical, Proportions, Pyramid } from 'lucide-react';
 import FileExplorer from '../components/FileExplorer';
 import FeatureDetails from '../components/FeatureDetails';
 import FeatureCard from '../components/FeatureCard';
-import FeatureTreemap from '../components/FeatureTreemap';
+import FeatureTestPyramidCard from '../components/FeatureTestPyramidCard';
 import {
   getFeatureSizeLabel,
   getFilledPills,
@@ -39,19 +39,19 @@ export default function Feature({ features }) {
   const filledPills = getFilledPills(sizeScore);
 
   return (
-    <div className="h-screen max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
+    <div className="h-screen max-w-7xl mx-auto flex flex-col gap-6 py-4 md:py-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         {/* Left Column */}
-        <div className="col-span-1 lg:col-span-3">
+        <div className="col-span-1 xl:col-span-3">
           <FeatureDetails name={name} feature={feature} />
         </div>
 
         {/* Right Column */}
-        <div className="col-span-1 lg:col-span-9">
-          <div className="grid md:grid-cols-3 gap-4 mb-8">
+        <div className="col-span-1 xl:col-span-9">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
             <FeatureCard
               title="Health Score"
               value={healthScore.toFixed(0)}
@@ -140,21 +140,44 @@ export default function Feature({ features }) {
                 </div>
               </div>
             </div>
-          </div>
 
+
+            <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
+              <div className="flex items-center justify-between">
+                <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
+                  <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+                    <Pyramid />
+                  </div>
+                  <span className="flex pl-2">Test Pyramid</span>
+                </h3>
+
+                <Tooltip>
+                  <TooltipButton>
+                    <Info className="size-4 text-gray-400" />
+                  </TooltipButton>
+
+                  <TooltipPanel>
+                    Test pyramid distribution by category: shows features which are missing coverage in a given level
+                    of the pyramid, or which have a large number of pending tests.
+                  </TooltipPanel>
+                </Tooltip>
+              </div>
+
+              <FeatureTestPyramidCard feature={feature} />
+            </div>
+          </div>
 
           {feature.assignments.files && feature.assignments.files.length > 0 ? (
             <>
-              <div className="h-[600px] bg-white rounded-lg border border-gray-200 shadow-sm mb-8">
-                <FeatureTreemap files={feature.assignments.files} />
-              </div>
-
               <FileExplorer files={feature.assignments.files} />
             </>
           ) : (
             <div className="h-[300px] bg-white rounded-lg border border-gray-200 shadow-sm mb-8">
-              <div className="flex items-center justify-center h-full text-gray-500">
-                No files found for this feature
+              <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                <div className="flex items-center justify-center flex-shrink-0 h-16 w-16 bg-gray-100 rounded-full shadow text-gray-500 mb-4">
+                  <FolderTree />
+                </div>
+                <p>No files found for this feature</p>
               </div>
             </div>
           )}

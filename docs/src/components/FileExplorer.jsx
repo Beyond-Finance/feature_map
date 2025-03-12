@@ -1,10 +1,46 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronRight, ChevronDown, Folder, FileCode, List, FolderTree } from 'lucide-react';
-import { config } from '../utils/config'
+import { config } from '../utils/config';
 
 const FileExplorer = ({ files }) => {
   const { project, environment } = config;
-  const baseUrl = `${project.repository.url}/blob/${environment.git_ref}`
+  const baseUrl = `${project.repository.url}/blob/${environment.git_ref}`;
+
+  // Calculate directory counts for each folder
+  const { fileTree, directoryCounts } = useMemo(() => {
+    const tree = {};
+    const counts = {};
+
+    files.forEach(filePath => {
+      const parts = filePath.split('/');
+      let current = tree;
+      let currentPath = '';
+
+      // Build tree structure and count files per directory
+      parts.forEach((part, index) => {
+        // Update path as we traverse
+        currentPath = currentPath ? `${currentPath}/${part}` : part;
+
+        if (index === parts.length - 1) {
+          // This is a file
+          current[part] = { type: 'file', path: filePath };
+
+          // Update counts for all parent directories
+          let countPath = '';
+          parts.slice(0, -1).forEach(dirPart => {
+            countPath = countPath ? `${countPath}/${dirPart}` : dirPart;
+            counts[countPath] = (counts[countPath] || 0) + 1;
+          });
+        } else {
+          // This is a directory
+          current[part] = current[part] || { type: 'directory', children: {} };
+          current = current[part].children;
+        }
+      });
+    });
+
+    return { fileTree: tree, directoryCounts: counts };
+  }, [files]);
 
   const initialExpandedDirs = useMemo(() => {
     const dirs = new Set();
@@ -19,33 +55,13 @@ const FileExplorer = ({ files }) => {
     });
     return dirs;
   }, [files]);
-  const [viewMode, setViewMode] = useState('list'); // 'list' or 'tree'
+
+  const [viewMode, setViewMode] = useState('tree');
   const [expandedDirs, setExpandedDirs] = useState(initialExpandedDirs);
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: 'asc'
   });
-
-  const fileTree = useMemo(() => {
-    const tree = {};
-
-    files.forEach(filePath => {
-      const parts = filePath.split('/');
-      let current = tree;
-
-      parts.forEach((part, index) => {
-        if (index === parts.length - 1) {
-          current[part] = { type: 'file', path: filePath };
-        } else {
-          current[part] = current[part] || { type: 'directory', children: {} };
-          current = current[part].children;
-        }
-      });
-    });
-
-    return tree;
-  }, [files]);
-
 
   const sortedFiles = useMemo(() => {
     return [...files].sort((a, b) => {
@@ -81,27 +97,36 @@ const FileExplorer = ({ files }) => {
     return Object.entries(node).map(([name, item]) => {
       const fullPath = path ? `${path}/${name}` : name;
       const isExpanded = expandedDirs.has(fullPath);
+      const fileCount = directoryCounts[fullPath] || 0;
 
       if (item.type === 'directory') {
         return (
           <React.Fragment key={fullPath}>
             <tr className="hover:bg-gray-50">
               <td className="px-4 py-2 text-sm text-gray-900">
-                <button
-                  onClick={() => toggleDir(fullPath)}
-                  className="flex items-center w-full group"
-                  style={{ paddingLeft: `${level * 16}px` }}
-                >
-                  {isExpanded ? (
-                    <ChevronDown className="size-4 text-gray-400 mr-1 flex-shrink-0" />
-                  ) : (
-                    <ChevronRight className="size-4 text-gray-400 mr-1 flex-shrink-0" />
-                  )}
-                  <Folder className="size-4 text-gray-400 mr-2 flex-shrink-0" />
-                  <span className="font-medium text-gray-600 group-hover:text-gray-900">
-                    {name}
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={() => toggleDir(fullPath)}
+                    className="flex items-center group gap-x-2"
+                    style={{ paddingLeft: `${level * 16}px` }}
+                  >
+                    <div className="flex items-center group">
+                      {isExpanded ? (
+                        <ChevronDown className="size-4 text-gray-400 mr-1 flex-shrink-0" />
+                      ) : (
+                        <ChevronRight className="size-4 text-gray-400 mr-1 flex-shrink-0" />
+                      )}
+                      <Folder className="size-4 text-gray-400 mr-2 flex-shrink-0" />
+                      <span className="font-medium text-gray-600 group-hover:text-gray-900">
+                        {name}
+                      </span>
+                    </div>
+
+                    <span className="flex items-center justify-center text-xs font-medium text-gray-500 bg-gray-200 rounded-full h-5 w-5">
+                    {fileCount}
                   </span>
-                </button>
+                  </button>
+                </div>
               </td>
             </tr>
             {isExpanded && renderTree(item.children, fullPath, level + 1)}
@@ -110,14 +135,16 @@ const FileExplorer = ({ files }) => {
       }
 
       return (
-        <tr key={fullPath} className="">
+        <tr key={fullPath} className="hover:bg-gray-50">
           <td className="px-4 py-2 text-sm text-gray-900">
             <div
               className="flex items-center"
               style={{ paddingLeft: `${(level * 16) + 20}px` }}
             >
               <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
-              <span className="truncate">{name}</span>
+              <a href={`${baseUrl}/${fullPath}`} className="truncate underline" target="_blank" rel="noopener noreferrer">
+                {name}
+              </a>
             </div>
           </td>
         </tr>
@@ -147,7 +174,7 @@ const FileExplorer = ({ files }) => {
           <thead className="bg-gray-50">
             <tr>
               <SortHeader
-                title={viewMode === 'list' ? "File Path" : "Name"}
+                title={viewMode === 'tree' ? "File Path" : "Name"}
                 sortKey="path"
               />
               <th
@@ -155,16 +182,6 @@ const FileExplorer = ({ files }) => {
                 className="px-4 py-3 text-center text-xs font-medium text-gray-800 uppercase tracking-wider"
               >
                 <div className="flex items-center justify-end gap-2">
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`p-1 rounded ${
-                      viewMode === 'list'
-                        ? 'text-blue-600 bg-blue-100'
-                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <List className="size-4" />
-                  </button>
                   <button
                     onClick={() => setViewMode('tree')}
                     className={`p-1 rounded ${
@@ -175,6 +192,16 @@ const FileExplorer = ({ files }) => {
                   >
                     <FolderTree className="size-4" />
                   </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`p-1 rounded ${
+                      viewMode === 'list'
+                        ? 'text-blue-600 bg-blue-100'
+                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <List className="size-4" />
+                  </button>
                 </div>
               </th>
             </tr>
@@ -182,13 +209,13 @@ const FileExplorer = ({ files }) => {
           <tbody className="divide-y divide-gray-200">
             {viewMode === 'list' ? (
               sortedFiles.map((file) => (
-                <tr key={file} className="">
+                <tr key={file} className="hover:bg-gray-50">
                   <td className="px-4 py-3 text-sm font-medium text-gray-900 flex-1">
                     <div className="flex items-center">
                       <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
-                        <a href={`${baseUrl}/${file}`} className="truncate underline" target="_blank">
-                          {file}
-                        </a>
+                      <a href={`${baseUrl}/${file}`} className="truncate underline" target="_blank" rel="noopener noreferrer">
+                        {file}
+                      </a>
                     </div>
                   </td>
                 </tr>
