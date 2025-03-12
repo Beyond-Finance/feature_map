@@ -200,8 +200,22 @@ RSpec.describe FeatureMap do
 
     context 'when nothing is assigned a feature' do
       it 'returns nil' do
-        expect { raise 'opsy' }.to raise_error do |ex|
-          expect(FeatureMap.first_assigned_file_for_backtrace(ex.backtrace)).to be_nil
+        write_file('.feature_map/definitions/core_library.yml', <<~CONTENTS)
+          name: Core Library
+        CONTENTS
+        write_file('app/unassigned_file.rb', <<~CONTENTS)
+          class UnassignedFile
+            def self.raise_error
+              raise 'oopsy'
+            end
+          end
+        CONTENTS
+        require Pathname.pwd.join('app/unassigned_file.rb')
+
+        expect { UnassignedFile.raise_error }.to raise_error do |ex|
+          # NOTE: The backtrace includes this spec file which does have an assignment
+          #       so we'll just take a small sample of the backtrace instead.
+          expect(FeatureMap.first_assigned_file_for_backtrace(ex.backtrace.take(1))).to be_nil
         end
       end
     end
