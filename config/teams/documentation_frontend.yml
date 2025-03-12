@@ -1,0 +1,4 @@
+name: Documentation & Frontend
+owned_globs:
+  - docs/src/**/*
+  - readme/**/*

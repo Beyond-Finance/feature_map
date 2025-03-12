@@ -1,13 +1,22 @@
 assigned_globs:
-  - app/**/*.rb
-  - lib/feature_map/cli.rb
+  - lib/**/*.rb
+  - spec/**/*.rb
+  - docs/src/**/*.{jsx,html}
+  - readme/**/*.{md,html}
 unassigned_globs:
-  - app/models/**/*
-  - app/controllers/admin/**/*
+  - spec/spec_holder.rb
+  - spec/support/**
+  - docs/node_modules/*
+  - readme/node_modules/**/*
+  - readme/_site/**/*
+  - readme/example-docs-site.html
 # The `# @feature ...` annotiation at the top of source files is only required for files assigned
 # to the following teams.
 require_assignment_for_teams:
-  - User Experience
+  - Analysis & Metrics
+  - Documentation & Frontend
+  - Feature Assignment & Validation
+  - Core Library
 # Excludes the `.feature_map/definitions` configuration files from the set of files recorded in
 # the file assignments for each feature.
 ignore_feature_definitions: true
