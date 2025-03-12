@@ -1,3 +1,4 @@
+# @feature Core Library
 module FeatureMap
   module Validator
     def validation_errors(files:, autocorrect: true, stage_changes: true); end

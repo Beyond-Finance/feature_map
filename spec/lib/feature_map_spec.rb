@@ -1,3 +1,4 @@
+# @feature Core Library
 RSpec.describe FeatureMap do
   # Look at individual validations spec to see other validaions that ship with FeatureMap
   describe '.validate!' do

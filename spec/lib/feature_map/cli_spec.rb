@@ -1,3 +1,4 @@
+# @feature Core Library
 RSpec.describe FeatureMap::Cli do
   subject { FeatureMap::Cli.run!(argv) }
 

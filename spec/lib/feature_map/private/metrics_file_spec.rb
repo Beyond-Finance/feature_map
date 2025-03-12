@@ -1,3 +1,4 @@
+# @feature Metrics Storage
 module FeatureMap
   RSpec.describe Private::MetricsFile do
     describe '.write!' do

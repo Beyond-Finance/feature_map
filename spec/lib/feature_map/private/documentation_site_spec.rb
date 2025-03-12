@@ -1,3 +1,4 @@
+# @feature Extension System
 module FeatureMap
   RSpec.describe Private::DocumentationSite do
     describe '.generate' do

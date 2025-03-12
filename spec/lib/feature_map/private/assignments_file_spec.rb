@@ -1,3 +1,4 @@
+# @feature Feature Assignment
 module FeatureMap
   RSpec.describe Private::AssignmentsFile do
     describe '.actual_contents_lines' do
