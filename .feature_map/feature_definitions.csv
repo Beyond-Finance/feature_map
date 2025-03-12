@@ -1,2 +1,12 @@
 Name,Description,Dashboard Link,Documentation Link
-CLI,Supports interaction with FeatureMap through a command line interface,,
+Core Library,"The foundation of the feature_map library including main configuration interfaces, constants, and base functionality that orchestrates the overall system.",,
+Code Features,Plugin system for defining code features and their relationships with extensible interfaces and identity management.,,
+Feature Assignment,Core functionality that handles the assignment of features to files and code elements with storage and application mechanisms.,,
+Assignment Mapping,"Various strategies for mapping features to code elements including directory-based assignments, glob patterns, and file annotation processing.",,
+Validation,Rules and checks that ensure code adheres to feature mapping standards by validating feature assignments and detecting issues.,,
+Metrics Calculation,"Analytical components that calculate code health metrics including complexity, size, and percentile-based measurements across features.",,
+Metrics Storage,Persistence and retrieval mechanisms for metrics data with support for base metrics and additional/custom metrics.,,
+Testing Tools,"Components for analyzing test coverage, maintaining a test pyramid, and integrating with testing libraries like SimpleCov and CodeCov.",,
+Extension System,"Framework for loading extensions, building documentation sites, and generating release notifications to extend core functionality.",,
+Documentation UI,"Frontend React components that render the visualization of features, metrics, and code relationships in an interactive web interface.",,
+Documentation Content,"Written documentation in Markdown format covering usage instructions, configuration, public interfaces, and examples for users.",,
