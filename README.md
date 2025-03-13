@@ -48,7 +48,7 @@ More information on the development of the documentation site may be found in th
 
 ### README Site
 
-The README site is built with Jekyll and TailwindCSS and is hosted via GitHub Pages at:  https://beyond-finance.github.io/feature_map.  It can be run locally to aid in development via `bin/readme`.
+The README site is built with Jekyll and TailwindCSS and is hosted via GitHub Pages at: [https://beyond-finance.github.io/feature_map](https://beyond-finance.github.io/feature_map/).  It can be run locally to aid in development via `bin/readme`.
 
 ### Publication
 
