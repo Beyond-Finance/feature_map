@@ -1,11 +1,9 @@
 import React from 'react';
 import { Info, Pyramid } from 'lucide-react';
 import { ResponsiveContainer, FunnelChart, Funnel, LabelList } from 'recharts';
-import { config } from '../utils/config'
-import { getTestCoverageLabel, getTestCoverageColor} from '../utils/feature-helpers';
 
 const DigestTestPyramidCard = ({ features }) => {
-  const pyramid = Object.entries(features).reduce((acc, [feature_name, feature]) => {
+  const pyramid = Object.entries(features).reduce((acc, [_, feature]) => {
     const {
       integration_count,
       integration_pending,

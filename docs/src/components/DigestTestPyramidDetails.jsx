@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Info, Pyramid, Users } from 'lucide-react';
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
-import { ResponsiveContainer, FunnelChart, Funnel, LabelList } from 'recharts';
-import { config } from '../utils/config'
-import { getTestCoverageLabel, getTestCoverageColor} from '../utils/feature-helpers';
+import { Users } from 'lucide-react';
 import { Dropdown, Switcher } from './ui'
 import {
   getFeatureSizeLabel,
@@ -26,7 +22,7 @@ const TableHeader = ({ title }) => (
 const highlightFeatures = ({ features, metric, sortDirection = 'ASC' }) => {
   return Object
     .entries(features)
-    .sort(([featureNameA, featureA], [featureNameB, featureB]) => {
+    .sort(([_a, featureA], [_b, featureB]) => {
       const metricA = featureA.test_pyramid ? featureA.test_pyramid[metric] || 0 : 0
       const metricB = featureB.test_pyramid ? featureB.test_pyramid[metric] || 0 : 0
 

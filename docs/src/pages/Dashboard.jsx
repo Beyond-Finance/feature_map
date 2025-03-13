@@ -34,9 +34,6 @@ const Dashboard = ({ features }) => {
     );
   }, [features, selectedTeam]);
 
-  const totalFeatures = Object.entries(features).length
-  const totalTeams = teams.length - 1 // This array returns 1 extra item to support the All Teams dropdown
-
   return (
     <div className="h-screen max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
       <div className="flex justify-between items-center">

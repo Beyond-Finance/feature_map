@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, Label, Radio, RadioGroup } from '@headlessui/react'
+import { Field, Radio, RadioGroup } from '@headlessui/react'
 
 const Switcher = ({ items, selectedItem, onItemSelect, size="sm" }) => {
   return (

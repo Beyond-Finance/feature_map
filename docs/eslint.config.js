@@ -34,7 +34,10 @@ export default [
       ...reactPlugin.configs.recommended.rules,
       ...reactHooksPlugin.configs.recommended.rules,
       'react/prop-types': 0, // Not implemented in this project
-      'react/react-in-jsx-scope': 0, // Not required React >= 17
+      'react/react-in-jsx-scope': 0, // Not required React >= 17,
+      "no-unused-vars": ["error", {
+        "destructuredArrayIgnorePattern": "^_",
+      }]
     },
   },
   prettierConfig,

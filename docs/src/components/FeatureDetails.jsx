@@ -94,7 +94,7 @@ export default function FeatureDetails({name, feature}) {
             <div className="flex-shrink-0">
               <ExternalLink className="size-4 text-gray-500" />
             </div>
-            <a href={filteredPullRequestUrl} target="_blank" className="text-sm text-gray-700 hover:underline">Feature Pull Requests</a>
+            <a href={filteredPullRequestUrl} target="_blank" className="text-sm text-gray-700 hover:underline" rel="noreferrer">Feature Pull Requests</a>
           </li>
 
           <li className="flex items-center gap-2">
@@ -102,7 +102,7 @@ export default function FeatureDetails({name, feature}) {
               <ExternalLink className="size-4 text-gray-500" />
             </div>
             {feature.documentation_link ? (
-                <a href={feature.documentation_link} target="_blank" className="text-sm text-gray-700 hover:underline">Feature Documentation</a>
+                <a href={feature.documentation_link} target="_blank" className="text-sm text-gray-700 hover:underline" rel="noreferrer">Feature Documentation</a>
             ) : <span className="text-gray-400 italic text-sm">Missing documentation link</span>}
           </li>
 
@@ -111,7 +111,7 @@ export default function FeatureDetails({name, feature}) {
               <ExternalLink className="size-4 text-gray-500" />
             </div>
             {feature.dashboard_link ? (
-                <a href={feature.dashboard_link} target="_blank" className="text-sm text-gray-700 hover:underline">New Relic Dashboard</a>
+                <a href={feature.dashboard_link} target="_blank" className="text-sm text-gray-700 hover:underline" rel="noreferrer">New Relic Dashboard</a>
             ) : <span className="text-gray-400 italic text-sm">Missing New Relic Dashboard</span>}
           </li>
         </ul>

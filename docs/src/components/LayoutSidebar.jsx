@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { ClipboardList, Component, ExternalLink, Home } from 'lucide-react';
+import { ClipboardList, ExternalLink, Home } from 'lucide-react';
 import { config } from '../utils/config';
 
 const navigation = [
@@ -63,7 +63,7 @@ export default function LayoutSidebar() {
                       className={classNames(
                         'text-gray-700 hover:text-blue-600',
                         'group flex gap-x-3 rounded-md px-2 text-sm/6 font-semibold items-center',
-                      )}
+                      )} rel="noreferrer"
                     >
                       <ExternalLink
                         aria-hidden="true"

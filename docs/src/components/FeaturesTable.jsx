@@ -39,10 +39,8 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
 
       switch(sortConfig.key) {
         case 'team':
-          const teamsA = featureDataA?.assignments?.teams || [];
-          const teamsB = featureDataB?.assignments?.teams || [];
-          aValue = teamsA[0] || '';
-          bValue = teamsB[0] || '';
+          aValue = featureDataA?.assignments?.teams?.[0] || '';
+          bValue = featureDataB?.assignments?.teams?.[0] || '';
           break;
         case 'size':
           aValue = featureDataA?.additional_metrics?.feature_size?.percent_of_max || 0;

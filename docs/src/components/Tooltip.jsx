@@ -77,6 +77,7 @@ const TooltipButton = forwardRef(({ children, ...props }, ref) => {
     </button>
   );
 });
+TooltipButton.displayName = 'TooltipButton'
 
 const TooltipPanel = ({ children, ...props }) => {
   return (
