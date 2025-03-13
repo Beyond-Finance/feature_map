@@ -18,7 +18,7 @@ const TreemapCell = ({ x, y, width, height, name, value }) => {
         fill={'#3b82f6'}
         style={{
           strokeWidth: 2,
-          stroke: '#fff'
+          stroke: '#fff',
         }}
         role="img"
         aria-label={`${name}: ${value} features`}
@@ -32,10 +32,7 @@ const TreemapCell = ({ x, y, width, height, name, value }) => {
             >
               {name}
             </div>
-            <div
-              className={`mt-0.5 ${width < 100 ? 'text-xs' : 'text-sm'}`}
-              aria-hidden="true"
-            >
+            <div className={`mt-0.5 ${width < 100 ? 'text-xs' : 'text-sm'}`} aria-hidden="true">
               {value} {value === 1 ? 'Feature' : 'Features'}
             </div>
           </div>
@@ -48,13 +45,13 @@ const TreemapCell = ({ x, y, width, height, name, value }) => {
 const transformData = (data) => {
   const teamMap = {};
 
-  Object.values(data).forEach(featureData => {
+  Object.values(data).forEach((featureData) => {
     const teams = featureData?.assignments?.teams || [];
-    teams.forEach(team => {
+    teams.forEach((team) => {
       if (!teamMap[team]) {
         teamMap[team] = {
           name: team,
-          value: 0
+          value: 0,
         };
       }
       teamMap[team].value += 1;
@@ -62,7 +59,7 @@ const transformData = (data) => {
   });
 
   return {
-    children: Object.values(teamMap)
+    children: Object.values(teamMap),
   };
 };
 

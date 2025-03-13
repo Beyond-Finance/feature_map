@@ -23,5 +23,5 @@ fi
 
 bundle exec featuremap docs
 cat .feature_map/docs/feature-map-config.js | sed 's/window\.FEATURE_MAP_CONFIG = /export const sampleConfig = /' > docs/sample_config.js
-cd docs && npm install && cd ..
+cd docs && npm install && npm run lint:fix && cd ..
 exec foreman start -f Procfile.docs "$@"

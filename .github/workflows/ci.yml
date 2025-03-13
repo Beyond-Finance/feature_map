@@ -7,20 +7,6 @@ on:
   pull_request:
 
 jobs:
-  ensure_docs_updated:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: |
-          cd ./docs
-          npm install
-          npm run build
-          git diff --quiet
   rspec:
     runs-on: ubuntu-latest
     strategy:

@@ -42,7 +42,6 @@ To get started with the application, follow these steps:
 
 1. Open your browser and visit `http://localhost:5173/` to see the application running (Vite uses port 5173 by default)
 
-
 ## Building for Production
 
 To build the application for production and generate the static HTML file, run: `npm run build`

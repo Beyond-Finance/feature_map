@@ -1,4 +1,4 @@
-import { rm } from 'fs/promises'
+import { rm } from 'fs/promises';
 
 export default function inlinePlugin() {
   return {
@@ -8,16 +8,16 @@ export default function inlinePlugin() {
     transformIndexHtml: {
       enforce: 'post',
       async transform(html, ctx) {
-        if (!ctx.bundle) return html
+        if (!ctx.bundle) return html;
 
-        let jsCode = ''
-        let cssCode = ''
+        let jsCode = '';
+        let cssCode = '';
 
         for (const [fileName, chunk] of Object.entries(ctx.bundle)) {
           if (chunk.type === 'chunk' && chunk.isEntry) {
-            jsCode = chunk.code
+            jsCode = chunk.code;
           } else if (chunk.type === 'asset' && fileName.endsWith('.css')) {
-            cssCode = chunk.source
+            cssCode = chunk.source;
           }
         }
 
@@ -39,19 +39,21 @@ export default function inlinePlugin() {
               <div id="root"></div>
               <script>${jsCode}</script>
             </body>
-          </html>`
-      }
+          </html>`;
+      },
     },
 
     // This hook runs after the bundle has been written to disk
     async closeBundle() {
       try {
         // Remove the assets directory and all its contents
-        await rm('../lib/feature_map/private/docs/assets', { recursive: true, force: true })
-        console.log('Successfully removed assets from documentation site assets directory')
+        await rm('../lib/feature_map/private/docs/assets', { recursive: true, force: true });
+        // eslint-disable-next-line no-undef
+        console.log('Successfully removed assets from documentation site assets directory');
       } catch (error) {
-        console.error('Error cleaning up assets directory:', error)
+        // eslint-disable-next-line no-undef
+        console.error('Error cleaning up assets directory:', error);
       }
-    }
-  }
+    },
+  };
 }

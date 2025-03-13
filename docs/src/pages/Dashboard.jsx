@@ -15,9 +15,9 @@ const Dashboard = ({ features }) => {
     const teamSet = new Set();
     teamSet.add('All Teams');
 
-    Object.values(features).forEach(feature => {
+    Object.values(features).forEach((feature) => {
       if (feature.assignments?.teams) {
-        feature.assignments.teams.forEach(team => teamSet.add(team));
+        feature.assignments.teams.forEach((team) => teamSet.add(team));
       }
     });
 
@@ -34,18 +34,11 @@ const Dashboard = ({ features }) => {
     );
   }, [features, selectedTeam]);
 
-  const totalFeatures = Object.entries(features).length
-  const totalTeams = teams.length - 1 // This array returns 1 extra item to support the All Teams dropdown
-
   return (
     <div className="h-screen max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <Dropdown
-          items={teams}
-          selectedItem={selectedTeam}
-          onItemSelect={setSelectedTeam}
-        />
+        <Dropdown items={teams} selectedItem={selectedTeam} onItemSelect={setSelectedTeam} />
       </div>
 
       <div>
@@ -67,7 +60,7 @@ const Dashboard = ({ features }) => {
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-gray-600" aria-hidden="true" />
             <span className="text-sm text-gray-600 font-medium">
-              Features: { Object.entries(filteredFeatures).length }
+              Features: {Object.entries(filteredFeatures).length}
             </span>
           </div>
 

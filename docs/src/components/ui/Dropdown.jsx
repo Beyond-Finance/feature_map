@@ -2,11 +2,13 @@ import React from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';
 
-const Dropdown = ({ items, selectedItem, onItemSelect, size="sm" }) => {
+const Dropdown = ({ items, selectedItem, onItemSelect, size = 'sm' }) => {
   return (
     <div className="relative h-full">
       <Menu>
-        <MenuButton className={`inline-flex h-full w-48 justify-between items-center gap-x-1.5 rounded-md bg-white px-3 text-${size} font-medium text-gray-900 shadow-sm ring-1 ring-gray-300 hover:bg-gray-50`}>
+        <MenuButton
+          className={`inline-flex h-full w-48 justify-between items-center gap-x-1.5 rounded-md bg-white px-3 text-${size} font-medium text-gray-900 shadow-sm ring-1 ring-gray-300 hover:bg-gray-50`}
+        >
           {selectedItem}
           <ChevronDown className="size-4 text-gray-400" aria-hidden="true" />
         </MenuButton>

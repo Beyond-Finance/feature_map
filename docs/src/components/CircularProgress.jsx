@@ -1,10 +1,6 @@
 import React from 'react';
 
-const CircularProgress = ({
-  value,
-  suffix = '',
-  color = '#ef4444',
-}) => {
+const CircularProgress = ({ value, suffix = '', color = '#ef4444' }) => {
   const strokeColor = value === 0 ? 'transparent' : color;
 
   return (

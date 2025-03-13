@@ -9,11 +9,9 @@ import {
   getFeatureSizeLabel,
   getFilledPills,
   formatNumber,
-  getTestCoverageColor
+  getTestCoverageColor,
 } from '../utils/feature-helpers';
-import {
-  getHealthScoreColor,
-} from '../utils/health-score';
+import { getHealthScoreColor } from '../utils/health-score';
 import { Tooltip, TooltipButton, TooltipPanel } from '../components/Tooltip';
 
 export default function Feature({ features }) {
@@ -62,16 +60,34 @@ export default function Feature({ features }) {
             >
               <ul className="flex flex-col gap-y-1">
                 <li className="text-xs text-gray-500">
-                  Coverage: {feature.additional_metrics.health.test_coverage_component.health_score.toFixed(0)} / {feature.additional_metrics.health.test_coverage_component.awardable_points}
+                  Coverage:{' '}
+                  {feature.additional_metrics.health.test_coverage_component.health_score.toFixed(
+                    0
+                  )}{' '}
+                  / {feature.additional_metrics.health.test_coverage_component.awardable_points}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Complexity: {feature.additional_metrics.health.cyclomatic_complexity_component.health_score.toFixed(0)} / {feature.additional_metrics.health.cyclomatic_complexity_component.awardable_points}
+                  Complexity:{' '}
+                  {feature.additional_metrics.health.cyclomatic_complexity_component.health_score.toFixed(
+                    0
+                  )}{' '}
+                  /{' '}
+                  {
+                    feature.additional_metrics.health.cyclomatic_complexity_component
+                      .awardable_points
+                  }
                 </li>
                 <li className="text-xs text-gray-500">
-                  Encapsulation: {feature.additional_metrics.health.encapsulation_component.health_score.toFixed(0)} / {feature.additional_metrics.health.encapsulation_component.awardable_points}
+                  Encapsulation:{' '}
+                  {feature.additional_metrics.health.encapsulation_component.health_score.toFixed(
+                    0
+                  )}{' '}
+                  / {feature.additional_metrics.health.encapsulation_component.awardable_points}
                 </li>
                 <li className="text-xs text-gray-500">
-                  Todos: {feature.additional_metrics.health.todo_count_component.health_score.toFixed(0)} / {feature.additional_metrics.health.todo_count_component.awardable_points}
+                  Todos:{' '}
+                  {feature.additional_metrics.health.todo_count_component.health_score.toFixed(0)} /{' '}
+                  {feature.additional_metrics.health.todo_count_component.awardable_points}
                 </li>
               </ul>
             </FeatureCard>
@@ -112,20 +128,23 @@ export default function Feature({ features }) {
                   </TooltipButton>
 
                   <TooltipPanel>
-                    Feature size is determined by analyzing the total number of files and lines of code associated with each feature. Each feature is then grouped
-                    into different size bins, which can be configured in the config.yaml file.
+                    Feature size is determined by analyzing the total number of files and lines of
+                    code associated with each feature. Each feature is then grouped into different
+                    size bins, which can be configured in the config.yaml file.
                   </TooltipPanel>
                 </Tooltip>
               </div>
 
               <div className="flex items-center gap-4">
                 <div className="relative h-20 flex items-center">
-                  <div className="text-2xl font-bold uppercase">{getFeatureSizeLabel(sizeScore)}</div>
+                  <div className="text-2xl font-bold uppercase">
+                    {getFeatureSizeLabel(sizeScore)}
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-y-2">
                   <div className="flex gap-1.5 items-center">
-                    {[1, 2, 3, 4, 5].map(index => (
+                    {[1, 2, 3, 4, 5].map((index) => (
                       <div
                         key={index}
                         className={`h-6 w-1.5 rounded ${index <= filledPills ? 'bg-blue-500' : 'bg-gray-300'}`}
@@ -135,12 +154,15 @@ export default function Feature({ features }) {
                 </div>
 
                 <div>
-                  <div className="text-[10px] text-gray-500">{feature.assignments.files ? feature.assignments.files.length : 0} files</div>
-                  <div className="text-[10px] text-gray-500">{formatNumber(feature.metrics.lines_of_code)} lines</div>
+                  <div className="text-[10px] text-gray-500">
+                    {feature.assignments.files ? feature.assignments.files.length : 0} files
+                  </div>
+                  <div className="text-[10px] text-gray-500">
+                    {formatNumber(feature.metrics.lines_of_code)} lines
+                  </div>
                 </div>
               </div>
             </div>
-
 
             <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
               <div className="flex items-center justify-between">
@@ -157,8 +179,8 @@ export default function Feature({ features }) {
                   </TooltipButton>
 
                   <TooltipPanel>
-                    Test pyramid distribution by category: shows features which are missing coverage in a given level
-                    of the pyramid, or which have a large number of pending tests.
+                    Test pyramid distribution by category: shows features which are missing coverage
+                    in a given level of the pyramid, or which have a large number of pending tests.
                   </TooltipPanel>
                 </Tooltip>
               </div>
