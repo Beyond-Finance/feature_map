@@ -40,7 +40,7 @@ export const sampleConfig = {
           percent_of_max: 39,
           score: 0.014900662251655629,
         },
-        feature_size: { percentile: 40.90909090909091, percent_of_max: 24, score: 604 },
+        feature_size: { percentile: 40.90909090909091, percent_of_max: 23, score: 604 },
         test_coverage: { percentile: 50.0, percent_of_max: 99, score: 99 },
         todo_count: { percentile: 31.818181818181817, percent_of_max: 0, score: 0 },
         health: {
@@ -105,7 +105,7 @@ export const sampleConfig = {
           percent_of_max: 42,
           score: 0.0160857908847185,
         },
-        feature_size: { percentile: 13.636363636363637, percent_of_max: 15, score: 373 },
+        feature_size: { percentile: 13.636363636363637, percent_of_max: 14, score: 373 },
         test_coverage: { percentile: 50.0, percent_of_max: 99, score: 99 },
         todo_count: { percentile: 31.818181818181817, percent_of_max: 0, score: 0 },
         health: {
@@ -176,7 +176,7 @@ export const sampleConfig = {
           percent_of_max: 21,
           score: 0.008145363408521303,
         },
-        feature_size: { percentile: 86.36363636363636, percent_of_max: 64, score: 1596 },
+        feature_size: { percentile: 86.36363636363636, percent_of_max: 60, score: 1596 },
         test_coverage: { percentile: 31.818181818181817, percent_of_max: 95, score: 95 },
         todo_count: { percentile: 72.72727272727273, percent_of_max: 4, score: 1 },
         health: {
@@ -258,7 +258,7 @@ export const sampleConfig = {
           percent_of_max: 100,
           score: 0.0380818053596615,
         },
-        feature_size: { percentile: 59.09090909090909, percent_of_max: 28, score: 709 },
+        feature_size: { percentile: 59.09090909090909, percent_of_max: 27, score: 709 },
         test_coverage: { percentile: 9.090909090909092, percent_of_max: 0, score: 0 },
         todo_count: { percentile: 31.818181818181817, percent_of_max: 0, score: 0 },
         health: {
@@ -331,17 +331,17 @@ export const sampleConfig = {
       metrics: {
         abc_size: 0,
         cyclomatic_complexity: 0,
-        lines_of_code: 2496,
+        lines_of_code: 2667,
         todo_locations: {},
         complexity_ratio: 0.0,
-        encapsulation_ratio: 0.01282051282051282,
+        encapsulation_ratio: 0.011998500187476566,
       },
       test_coverage: { lines: 0, hits: 0, misses: 0, coverage_ratio: 0 },
       test_pyramid: null,
       additional_metrics: {
         cyclomatic_complexity: { percentile: 9.090909090909092, percent_of_max: 0, score: 0.0 },
-        encapsulation: { percentile: 50.0, percent_of_max: 34, score: 0.01282051282051282 },
-        feature_size: { percentile: 95.45454545454545, percent_of_max: 100, score: 2496 },
+        encapsulation: { percentile: 50.0, percent_of_max: 32, score: 0.011998500187476566 },
+        feature_size: { percentile: 95.45454545454545, percent_of_max: 100, score: 2667 },
         test_coverage: { percentile: 9.090909090909092, percent_of_max: 0, score: 0 },
         todo_count: { percentile: 31.818181818181817, percent_of_max: 0, score: 0 },
         health: {
@@ -409,7 +409,7 @@ export const sampleConfig = {
           percent_of_max: 28,
           score: 0.01060070671378092,
         },
-        feature_size: { percentile: 31.818181818181817, percent_of_max: 23, score: 566 },
+        feature_size: { percentile: 31.818181818181817, percent_of_max: 21, score: 566 },
         test_coverage: { percentile: 50.0, percent_of_max: 99, score: 99 },
         todo_count: { percentile: 72.72727272727273, percent_of_max: 4, score: 1 },
         health: {
@@ -474,7 +474,7 @@ export const sampleConfig = {
           percent_of_max: 15,
           score: 0.005607476635514018,
         },
-        feature_size: { percentile: 68.18181818181819, percent_of_max: 43, score: 1070 },
+        feature_size: { percentile: 68.18181818181819, percent_of_max: 40, score: 1070 },
         test_coverage: { percentile: 81.81818181818181, percent_of_max: 100, score: 100 },
         todo_count: { percentile: 31.818181818181817, percent_of_max: 0, score: 0 },
         health: {
@@ -572,7 +572,7 @@ export const sampleConfig = {
           percent_of_max: 22,
           score: 0.00831255195344971,
         },
-        feature_size: { percentile: 77.27272727272727, percent_of_max: 48, score: 1203 },
+        feature_size: { percentile: 77.27272727272727, percent_of_max: 45, score: 1203 },
         test_coverage: { percentile: 81.81818181818181, percent_of_max: 100, score: 100 },
         todo_count: { percentile: 86.36363636363636, percent_of_max: 76, score: 19 },
         health: {
@@ -631,7 +631,7 @@ export const sampleConfig = {
           score: 33.333333333333336,
         },
         encapsulation: { percentile: 31.818181818181817, percent_of_max: 26, score: 0.01 },
-        feature_size: { percentile: 22.727272727272727, percent_of_max: 16, score: 400 },
+        feature_size: { percentile: 22.727272727272727, percent_of_max: 15, score: 400 },
         test_coverage: { percentile: 81.81818181818181, percent_of_max: 100, score: 100 },
         todo_count: { percentile: 31.818181818181817, percent_of_max: 0, score: 0 },
         health: {
@@ -725,7 +725,7 @@ export const sampleConfig = {
           percent_of_max: 34,
           score: 0.012968299711815562,
         },
-        feature_size: { percentile: 50.0, percent_of_max: 28, score: 694 },
+        feature_size: { percentile: 50.0, percent_of_max: 26, score: 694 },
         test_coverage: { percentile: 81.81818181818181, percent_of_max: 100, score: 100 },
         todo_count: { percentile: 95.45454545454545, percent_of_max: 100, score: 25 },
         health: {
@@ -785,7 +785,7 @@ export const sampleConfig = {
           percent_of_max: 44,
           score: 0.016778523489932886,
         },
-        feature_size: { percentile: 4.545454545454546, percent_of_max: 12, score: 298 },
+        feature_size: { percentile: 4.545454545454546, percent_of_max: 11, score: 298 },
         test_coverage: { percentile: 22.727272727272727, percent_of_max: 89, score: 89 },
         todo_count: { percentile: 31.818181818181817, percent_of_max: 0, score: 0 },
         health: {
@@ -841,7 +841,7 @@ export const sampleConfig = {
     skip_features_validation: false,
     code_cov: { service: 'github', owner: 'Example', repo: 'example' },
     repository: { main_branch: 'main', url: 'https://github.com/Beyond-Finance/feature_map' },
-    documentation_site_url: 'https://beyond-finance.github.io/feature_map/',
+    documentation_site_url: 'https://beyond-finance.github.io/feature_map/example-docs-site.html',
     documentation_site: {
       health: {
         minimum_thresholds: { good: 95, fair: 80, poor: 0 },
