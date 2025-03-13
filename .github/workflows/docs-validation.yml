@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Change to docs directory
+      run: cd docs
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -24,7 +26,5 @@ jobs:
         npm run format -- --check
     - name: Ensure docs artifact is up-to-date
       run: |
-        cd ./docs
-        npm install
         npm run build
         git diff --quiet
