@@ -1,3 +1,4 @@
+# @feature Core Library
 RSpec.describe FeatureMap::Commit do
   describe '.new' do
     it 'persists all attributes' do

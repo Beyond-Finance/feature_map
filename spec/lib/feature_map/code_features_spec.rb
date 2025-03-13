@@ -1,3 +1,4 @@
+# @feature Code Features
 RSpec.describe FeatureMap::CodeFeatures do
   context 'when feature definitions are provided in YAML files' do
     let(:feature_yml) do

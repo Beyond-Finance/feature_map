@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: Gemfile
+    name: "Ensure assignments are up-to-date"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby 3.2
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 3.2
+      - name: Execute validation
+        run: bundle exec featuremap validate

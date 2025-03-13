@@ -1,3 +1,4 @@
+# @feature Core Library
 RSpec.describe FeatureMap do
   # Look at individual validations spec to see other validaions that ship with FeatureMap
   describe '.validate!' do
@@ -199,8 +200,22 @@ RSpec.describe FeatureMap do
 
     context 'when nothing is assigned a feature' do
       it 'returns nil' do
-        expect { raise 'opsy' }.to raise_error do |ex|
-          expect(FeatureMap.first_assigned_file_for_backtrace(ex.backtrace)).to be_nil
+        write_file('.feature_map/definitions/core_library.yml', <<~CONTENTS)
+          name: Core Library
+        CONTENTS
+        write_file('app/unassigned_file.rb', <<~CONTENTS)
+          class UnassignedFile
+            def self.raise_error
+              raise 'oopsy'
+            end
+          end
+        CONTENTS
+        require Pathname.pwd.join('app/unassigned_file.rb')
+
+        expect { UnassignedFile.raise_error }.to raise_error do |ex|
+          # NOTE: The backtrace includes this spec file which does have an assignment
+          #       so we'll just take a small sample of the backtrace instead.
+          expect(FeatureMap.first_assigned_file_for_backtrace(ex.backtrace.take(1))).to be_nil
         end
       end
     end
@@ -396,6 +411,80 @@ RSpec.describe FeatureMap do
                                                                      'Foo' => { 'hits' => 0, 'lines' => 0, 'misses' => 0, 'coverage_ratio' => 0 }
                                                                    }
                                                                  })
+    end
+  end
+
+  describe '.gather_simplecov_test_coverage!' do
+    let(:simplecov_path) { 'tmp/coverage/.resultset.json' }
+    let(:simplecov_path2) { 'tmp/other_coverage/.resultset.json' }
+    let(:test_coverage_output_file) { Pathname.pwd.join('.feature_map/test-coverage.yml') }
+    let(:simplecov_data) do
+      {
+        'RSpec' => {
+          'coverage' => {
+            'app/my_error.rb' => {
+              'lines' => [1, 1, 0, 1, nil, 1, 0, 1, 1, 1]
+            },
+            'app/my_file.rb' => {
+              'lines' => [1, 1, 1, nil, 1, 1]
+            }
+          }
+        }
+      }
+    end
+
+    before do
+      create_validation_artifacts
+
+      write_file(simplecov_path, simplecov_data.to_json)
+
+      FileUtils.rm_f(test_coverage_output_file)
+    end
+
+    it 'captures test coverage statistics from SimpleCov files' do
+      FeatureMap.gather_simplecov_test_coverage!([simplecov_path])
+
+      expect(File.exist?(test_coverage_output_file)).to be_truthy
+      coverage_data = YAML.load_file(test_coverage_output_file)
+
+      expect(coverage_data).to match({
+                                       'features' => {
+                                         'Bar' => { 'hits' => 7, 'lines' => 9, 'misses' => 2, 'coverage_ratio' => 78 },
+                                         'Foo' => { 'hits' => 5, 'lines' => 5, 'misses' => 0, 'coverage_ratio' => 100 }
+                                       }
+                                     })
+    end
+
+    context 'with multiple SimpleCov files' do
+      let(:simplecov_data2) do
+        {
+          'RSpec' => {
+            'coverage' => {
+              'app/my_error.rb' => {
+                'lines' => [1, 1, 1, 1, nil, 1, 1, 1, 1, 1]
+              }
+            }
+          }
+        }
+      end
+
+      before do
+        write_file(simplecov_path2, simplecov_data2.to_json)
+      end
+
+      it 'merges coverage data from multiple files' do
+        FeatureMap.gather_simplecov_test_coverage!([simplecov_path, simplecov_path2])
+
+        expect(File.exist?(test_coverage_output_file)).to be_truthy
+        coverage_data = YAML.load_file(test_coverage_output_file)
+
+        expect(coverage_data).to match({
+                                         'features' => {
+                                           'Bar' => { 'hits' => 9, 'lines' => 9, 'misses' => 0, 'coverage_ratio' => 100 },
+                                           'Foo' => { 'hits' => 5, 'lines' => 5, 'misses' => 0, 'coverage_ratio' => 100 }
+                                         }
+                                       })
+      end
     end
   end
 

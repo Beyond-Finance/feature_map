@@ -17,6 +17,7 @@ Gemfile.lock
 # Ignore FeatureMap generated files that change frequently or are for local review only.
 .feature_map/metrics.yml
 .feature_map/test-coverage.yml
+.feature_map/additional-metrics.yml
 .feature_map/docs
 
 # Gem build artifacts

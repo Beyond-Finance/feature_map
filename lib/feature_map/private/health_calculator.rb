@@ -1,3 +1,4 @@
+# @feature Metrics Calculation
 # frozen_string_literal: true
 
 module FeatureMap

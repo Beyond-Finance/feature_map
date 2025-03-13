@@ -1,3 +1,4 @@
+# @feature Feature Assignment
 # frozen_string_literal: true
 
 require 'spec_helper'

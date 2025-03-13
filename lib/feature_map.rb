@@ -1,3 +1,4 @@
+# @feature Core Library
 # frozen_string_literal: true
 
 require 'set'
@@ -95,6 +96,10 @@ module FeatureMap
 
   def generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
     Private.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
+  end
+
+  def gather_simplecov_test_coverage!(simplecov_resultsets)
+    Private.gather_simplecov_test_coverage!(simplecov_resultsets)
   end
 
   def gather_test_coverage!(commit_sha, code_cov_token)

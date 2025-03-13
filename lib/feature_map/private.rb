@@ -1,3 +1,4 @@
+# @feature Core Library
 # frozen_string_literal: true
 
 require 'code_ownership'
@@ -21,6 +22,7 @@ require 'feature_map/private/code_cov'
 require 'feature_map/private/test_coverage_file'
 require 'feature_map/private/test_pyramid_file'
 require 'feature_map/private/additional_metrics_file'
+require 'feature_map/private/simple_cov_resultsets'
 require 'feature_map/private/feature_plugins/assignment'
 require 'feature_map/private/validations/files_have_features'
 require 'feature_map/private/validations/features_up_to_date'
@@ -108,6 +110,13 @@ module FeatureMap
       regression_examples = regression_path ? JSON.parse(File.read(regression_path))&.fetch('examples') : []
       regression_assignments = regression_assignments_path ? YAML.load_file(regression_assignments_path) : {}
       TestPyramidFile.write!(unit_examples, integration_examples, regression_examples, regression_assignments)
+    end
+
+    def self.gather_simplecov_test_coverage!(simplecov_paths)
+      simplecov_resultsets = simplecov_paths.map { |path| JSON.parse(File.read(path)) }
+      coverage_stats = SimpleCovResultsets.fetch_coverage_stats(simplecov_resultsets)
+
+      TestCoverageFile.write!(coverage_stats)
     end
 
     def self.gather_test_coverage!(commit_sha, code_cov_token)

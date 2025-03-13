@@ -1,0 +1,27 @@
+name: Analysis & Metrics
+owned_globs:
+  - lib/feature_map/private/feature_metrics_calculator.rb
+  - lib/feature_map/private/health_calculator.rb
+  - lib/feature_map/private/cyclomatic_complexity_calculator.rb
+  - lib/feature_map/private/lines_of_code_calculator.rb
+  - lib/feature_map/private/metrics_file.rb
+  - lib/feature_map/private/additional_metrics_file.rb
+  - lib/feature_map/private/percentile_metrics_calculator.rb
+  - lib/feature_map/private/test_coverage_file.rb
+  - lib/feature_map/private/test_pyramid_file.rb
+  - lib/feature_map/private/code_cov.rb
+  - lib/feature_map/private/simple_cov_resultsets.rb
+  - lib/feature_map/private/todo_inspector.rb
+  - lib/feature_map/private/release_notification_builder.rb
+  - spec/lib/feature_map/private/feature_metrics_calculator_spec.rb
+  - spec/lib/feature_map/private/health_calculator_spec.rb
+  - spec/lib/feature_map/private/cyclomatic_complexity_calculator_spec.rb
+  - spec/lib/feature_map/private/lines_of_code_calculator_spec.rb
+  - spec/lib/feature_map/private/metrics_file_spec.rb
+  - spec/lib/feature_map/private/additional_metrics_file_spec.rb
+  - spec/lib/feature_map/private/percentile_metrics_calculator_spec.rb
+  - spec/lib/feature_map/private/test_coverage_file_spec.rb
+  - spec/lib/feature_map/private/test_pyramid_file_spec.rb
+  - spec/lib/feature_map/private/code_cov_spec.rb
+  - spec/lib/feature_map/private/todo_inspector_spec.rb
+  - spec/lib/feature_map/private/release_notification_builder_spec.rb

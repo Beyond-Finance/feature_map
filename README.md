@@ -42,7 +42,7 @@ The documentation site is a React application which is built on the Vite framewo
 
 Compilation of the build asset is done via `npm run build` from within the [docs](./docs) folder.  This compiles the React app into a single static file which is placed in [./lib/feature_map/private/docs/index.html](./lib/feature_map/private/docs/index.html]).
 
-The documentation site may be run locally to aid in development via `bin/docs`.  It uses sample data found in [docs/src/data/sample_config.js](./docs/src/data/sample_config.js).
+The documentation site may be run locally to aid in development via `bin/docs`.  It will generate test coverage and metrics data, and make it available to the docs site running in development mode.
 
 More information on the development of the documentation site may be found in the [Docs Readme](./docs/README.md).
 

@@ -1,3 +1,4 @@
+# @feature Feature Assignment
 module FeatureMap
   RSpec.describe Private::FeatureAssigner do
     describe '.assign_features' do

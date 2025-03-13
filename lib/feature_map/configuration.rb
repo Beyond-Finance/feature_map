@@ -1,3 +1,4 @@
+# @feature Core Library
 module FeatureMap
   class Configuration
     attr_reader :assigned_globs
