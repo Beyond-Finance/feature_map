@@ -11,20 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Change to docs directory
-      run: cd docs
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 22
         cache: 'npm'
+        cache-dependency-path: docs/package-lock.json
     - name: Install dependencies
+      working-directory: ./docs
       run: npm ci
     - name: Check for lint and formatting errors
+      working-directory: ./docs
       run: |
         npm run lint
         npm run format -- --check
     - name: Ensure docs artifact is up-to-date
+      working-directory: ./docs
       run: |
         npm run build
         git diff --quiet
