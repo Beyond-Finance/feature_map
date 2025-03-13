@@ -5,7 +5,7 @@ import { config } from './utils/config';
 import Dashboard from './pages/Dashboard';
 import Digest from './pages/Digest';
 import Feature from './pages/Feature';
-import Layout from './components/Layout'
+import Layout from './components/Layout';
 
 export default function App() {
   const { features } = config;

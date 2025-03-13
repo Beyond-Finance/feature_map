@@ -1,4 +1,4 @@
-import React, { useState, cloneElement, forwardRef } from "react";
+import React, { useState, cloneElement, forwardRef } from 'react';
 import {
   useFloating,
   autoUpdate,
@@ -10,41 +10,40 @@ import {
   useDismiss,
   useRole,
   useInteractions,
-  FloatingPortal
-} from "@floating-ui/react";
+  FloatingPortal,
+} from '@floating-ui/react';
 
 // Use className to override default styles
-const Tooltip = ({ width = "max-w-56", className = "bg-gray-700 text-white text-xs rounded p-2", children }) => {
+const Tooltip = ({
+  width = 'max-w-56',
+  className = 'bg-gray-700 text-white text-xs rounded p-2',
+  children,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    placement: "bottom",
+    placement: 'bottom',
     whileElementsMounted: autoUpdate,
     middleware: [
       offset(5),
       autoPlacement({
-        fallbackAxisSideDirection: "start"
+        fallbackAxisSideDirection: 'start',
       }),
-      shift()
-    ]
+      shift(),
+    ],
   });
 
   // https://floating-ui.com/docs/useInteractions
   const hover = useHover(context, { move: false });
   const focus = useFocus(context);
   const dismiss = useDismiss(context);
-  const role = useRole(context, { role: "tooltip" });
+  const role = useRole(context, { role: 'tooltip' });
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    hover,
-    focus,
-    dismiss,
-    role
-  ]);
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role]);
 
-  const trigger = React.Children.toArray(children).find(child => child.type === TooltipButton);
-  const content = React.Children.toArray(children).find(child => child.type === TooltipPanel);
+  const trigger = React.Children.toArray(children).find((child) => child.type === TooltipButton);
+  const content = React.Children.toArray(children).find((child) => child.type === TooltipPanel);
 
   return (
     <>
@@ -77,14 +76,10 @@ const TooltipButton = forwardRef(({ children, ...props }, ref) => {
     </button>
   );
 });
-TooltipButton.displayName = 'TooltipButton'
+TooltipButton.displayName = 'TooltipButton';
 
 const TooltipPanel = ({ children, ...props }) => {
-  return (
-    <div {...props}>
-      {children}
-    </div>
-  );
+  return <div {...props}>{children}</div>;
 };
 
 export { Tooltip, TooltipButton, TooltipPanel };

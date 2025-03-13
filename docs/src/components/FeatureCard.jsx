@@ -3,15 +3,7 @@ import { Info } from 'lucide-react';
 import CircularProgress from './CircularProgress';
 import { Tooltip, TooltipButton, TooltipPanel } from '../components/Tooltip';
 
-const FeatureCard = ({
-  children,
-  title,
-  value,
-  suffix = '',
-  icon,
-  tooltip,
-  color,
-}) => {
+const FeatureCard = ({ children, title, value, suffix = '', icon, tooltip, color }) => {
   return (
     <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
       <div className="flex items-center justify-between">
@@ -28,23 +20,15 @@ const FeatureCard = ({
               <Info className="size-4 text-gray-400" />
             </TooltipButton>
 
-            <TooltipPanel>
-              {tooltip}
-            </TooltipPanel>
+            <TooltipPanel>{tooltip}</TooltipPanel>
           </Tooltip>
         )}
       </div>
 
       <div className="flex items-center gap-4">
-        <CircularProgress
-          value={value}
-          suffix={suffix}
-          color={color}
-        />
+        <CircularProgress value={value} suffix={suffix} color={color} />
 
-        <div className="flex flex-col flex-1">
-          {children}
-        </div>
+        <div className="flex flex-col flex-1">{children}</div>
       </div>
     </div>
   );
