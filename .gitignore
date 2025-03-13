@@ -32,6 +32,3 @@ feature_map-*.gem
 /readme/.jekyll-cache
 /readme/.sass-cache
 /readme/example-docs-site.html
-
-# Sample config injected for local development
-docs/sample_config.js
