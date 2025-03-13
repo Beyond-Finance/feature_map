@@ -8,12 +8,373 @@
 
 ---
 files:
-  lib/feature_map/cli.rb:
-    feature: CLI
+  lib/feature_map.rb:
+    feature: Core Library
     mapper: Annotations at the top of file
+  lib/feature_map/cli.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/code_features.rb:
+    feature: Code Features
+    mapper: Annotations at the top of file
+  lib/feature_map/commit.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/configuration.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/constants.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/mapper.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/output_color.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/private.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/private/additional_metrics_file.rb:
+    feature: Metrics Storage
+    mapper: Annotations at the top of file
+  lib/feature_map/private/assignment_applicator.rb:
+    feature: Feature Assignment
+    mapper: Annotations at the top of file
+  lib/feature_map/private/assignments_file.rb:
+    feature: Feature Assignment
+    mapper: Annotations at the top of file
+  lib/feature_map/private/code_cov.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  lib/feature_map/private/cyclomatic_complexity_calculator.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  lib/feature_map/private/documentation_site.rb:
+    feature: Extension System
+    mapper: Annotations at the top of file
+  lib/feature_map/private/extension_loader.rb:
+    feature: Extension System
+    mapper: Annotations at the top of file
+  lib/feature_map/private/feature_assigner.rb:
+    feature: Feature Assignment
+    mapper: Annotations at the top of file
+  lib/feature_map/private/feature_metrics_calculator.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  lib/feature_map/private/feature_plugins/assignment.rb:
+    feature: Code Features
+    mapper: Annotations at the top of file
+  lib/feature_map/private/glob_cache.rb:
+    feature: Assignment Mapping
+    mapper: Annotations at the top of file
+  lib/feature_map/private/health_calculator.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  lib/feature_map/private/lines_of_code_calculator.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  lib/feature_map/private/metrics_file.rb:
+    feature: Metrics Storage
+    mapper: Annotations at the top of file
+  lib/feature_map/private/percentile_metrics_calculator.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  lib/feature_map/private/release_notification_builder.rb:
+    feature: Extension System
+    mapper: Annotations at the top of file
+  lib/feature_map/private/simple_cov_resultsets.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  lib/feature_map/private/test_coverage_file.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  lib/feature_map/private/test_pyramid_file.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  lib/feature_map/private/todo_inspector.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  lib/feature_map/validator.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  readme/index.md:
+    feature: Documentation Content
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/cli_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/code_features_spec.rb:
+    feature: Code Features
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/commit_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/additional_metrics_file_spec.rb:
+    feature: Metrics Storage
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/assignment_applicator_spec.rb:
+    feature: Feature Assignment
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/assignments_file_spec.rb:
+    feature: Feature Assignment
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/code_cov_spec.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/cyclomatic_complexity_calculator_spec.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/documentation_site_spec.rb:
+    feature: Extension System
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/extension_loader_spec.rb:
+    feature: Extension System
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/feature_assigner_spec.rb:
+    feature: Feature Assignment
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/feature_metrics_calculator_spec.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/health_calculator_spec.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/lines_of_code_calculator_spec.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/metrics_file_spec.rb:
+    feature: Metrics Storage
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/percentile_metrics_calculator_spec.rb:
+    feature: Metrics Calculation
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/release_notification_builder_spec.rb:
+    feature: Extension System
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/test_coverage_file_spec.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/test_pyramid_file_spec.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/todo_inspector_spec.rb:
+    feature: Testing Tools
+    mapper: Annotations at the top of file
+  spec/lib/feature_map_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  spec/spec_helper.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  docs/src/**/**:
+    feature: Documentation UI
+    mapper: Feature Assigned in .feature
+  lib/feature_map/code_features/**/**:
+    feature: Code Features
+    mapper: Feature Assigned in .feature
+  lib/feature_map/private/assignment_mappers/**/**:
+    feature: Assignment Mapping
+    mapper: Feature Assigned in .feature
+  lib/feature_map/private/validations/**/**:
+    feature: Validation
+    mapper: Feature Assigned in .feature
+  readme/_layouts/**/**:
+    feature: Documentation Content
+    mapper: Feature Assigned in .feature
+  readme/artifacts/**/**:
+    feature: Documentation Content
+    mapper: Feature Assigned in .feature
+  readme/continuous-integration/**/**:
+    feature: Documentation Content
+    mapper: Feature Assigned in .feature
+  readme/documentation-site/**/**:
+    feature: Documentation Content
+    mapper: Feature Assigned in .feature
+  readme/getting-started/**/**:
+    feature: Documentation Content
+    mapper: Feature Assigned in .feature
+  readme/public-interface/**/**:
+    feature: Documentation Content
+    mapper: Feature Assigned in .feature
+  spec/lib/feature_map/code_features/**/**:
+    feature: Code Features
+    mapper: Feature Assigned in .feature
+  spec/lib/feature_map/private/assignment_mappers/**/**:
+    feature: Assignment Mapping
+    mapper: Feature Assigned in .feature
+  spec/lib/feature_map/private/validations/**/**:
+    feature: Validation
+    mapper: Feature Assigned in .feature
 features:
-  CLI:
+  Assignment Mapping:
     files:
-    - lib/feature_map/cli.rb
+    - lib/feature_map/private/assignment_mappers/directory_assignment.rb
+    - lib/feature_map/private/assignment_mappers/feature_definition_assignment.rb
+    - lib/feature_map/private/assignment_mappers/feature_globs.rb
+    - lib/feature_map/private/assignment_mappers/file_annotations.rb
+    - lib/feature_map/private/glob_cache.rb
+    - spec/lib/feature_map/private/assignment_mappers/directory_assignment_spec.rb
+    - spec/lib/feature_map/private/assignment_mappers/feature_definition_assignment_spec.rb
+    - spec/lib/feature_map/private/assignment_mappers/feature_globs_spec.rb
+    - spec/lib/feature_map/private/assignment_mappers/file_annotations_spec.rb
     teams:
-    - User Experience
+    - Core Library
+  Code Features:
+    files:
+    - lib/feature_map/code_features.rb
+    - lib/feature_map/code_features/plugin.rb
+    - lib/feature_map/code_features/plugins/identity.rb
+    - lib/feature_map/private/feature_plugins/assignment.rb
+    - spec/lib/feature_map/code_features/plugin_spec.rb
+    - spec/lib/feature_map/code_features_spec.rb
+    teams:
+    - Core Library
+  Core Library:
+    files:
+    - lib/feature_map.rb
+    - lib/feature_map/cli.rb
+    - lib/feature_map/commit.rb
+    - lib/feature_map/configuration.rb
+    - lib/feature_map/constants.rb
+    - lib/feature_map/mapper.rb
+    - lib/feature_map/output_color.rb
+    - lib/feature_map/private.rb
+    - lib/feature_map/validator.rb
+    - spec/lib/feature_map/cli_spec.rb
+    - spec/lib/feature_map/commit_spec.rb
+    - spec/lib/feature_map_spec.rb
+    - spec/spec_helper.rb
+    teams:
+    - Core Library
+  Documentation Content:
+    files:
+    - readme/_layouts/default.html
+    - readme/artifacts/assignments.md
+    - readme/artifacts/docs.md
+    - readme/artifacts/metrics.md
+    - readme/artifacts/overview.md
+    - readme/artifacts/test-coverage.md
+    - readme/artifacts/test-pyramid.md
+    - readme/continuous-integration/pr-tags.md
+    - readme/continuous-integration/release-notification.md
+    - readme/continuous-integration/validation.md
+    - readme/documentation-site/overview.md
+    - readme/getting-started/configuration.md
+    - readme/getting-started/feature-assignment.md
+    - readme/getting-started/feature-definition.md
+    - readme/getting-started/inline-execution.md
+    - readme/getting-started/with-code-ownership.md
+    - readme/index.md
+    - readme/public-interface/apply-assignments.md
+    - readme/public-interface/docs.md
+    - readme/public-interface/for-backtrace.md
+    - readme/public-interface/for-class.md
+    - readme/public-interface/for-feature.md
+    - readme/public-interface/for-file.md
+    - readme/public-interface/overview.md
+    - readme/public-interface/test-coverage.md
+    - readme/public-interface/test-pyramid.md
+    - readme/public-interface/validate.md
+    teams:
+    - Core Library
+  Documentation UI:
+    files:
+    - docs/src/App.jsx
+    - docs/src/components/CircularProgress.jsx
+    - docs/src/components/DigestHealthScoreCard.jsx
+    - docs/src/components/DigestTestCoverageCard.jsx
+    - docs/src/components/DigestTestPyramidCard.jsx
+    - docs/src/components/DigestTestPyramidDetails.jsx
+    - docs/src/components/FeatureCard.jsx
+    - docs/src/components/FeatureDetails.jsx
+    - docs/src/components/FeatureSizeDataCard.jsx
+    - docs/src/components/FeatureTestPyramidCard.jsx
+    - docs/src/components/FeaturesTable.jsx
+    - docs/src/components/FeaturesTreemap.jsx
+    - docs/src/components/FileExplorer.jsx
+    - docs/src/components/HealthScoreDataCard.jsx
+    - docs/src/components/Layout.jsx
+    - docs/src/components/LayoutSidebar.jsx
+    - docs/src/components/MetricCard.jsx
+    - docs/src/components/SearchBox.jsx
+    - docs/src/components/TestCoverageDataCard.jsx
+    - docs/src/components/Tooltip.jsx
+    - docs/src/components/ui/Dropdown.jsx
+    - docs/src/components/ui/Switcher.jsx
+    - docs/src/components/ui/index.js
+    - docs/src/main.jsx
+    - docs/src/pages/Dashboard.jsx
+    - docs/src/pages/Digest.jsx
+    - docs/src/pages/Feature.jsx
+    - docs/src/scripts/app.js
+    - docs/src/styles/app.css
+    - docs/src/utils/config.js
+    - docs/src/utils/feature-helpers.jsx
+    - docs/src/utils/health-score.js
+    teams:
+    - Core Library
+  Extension System:
+    files:
+    - lib/feature_map/private/documentation_site.rb
+    - lib/feature_map/private/extension_loader.rb
+    - lib/feature_map/private/release_notification_builder.rb
+    - spec/lib/feature_map/private/documentation_site_spec.rb
+    - spec/lib/feature_map/private/extension_loader_spec.rb
+    - spec/lib/feature_map/private/release_notification_builder_spec.rb
+    teams:
+    - Core Library
+  Feature Assignment:
+    files:
+    - lib/feature_map/private/assignment_applicator.rb
+    - lib/feature_map/private/assignments_file.rb
+    - lib/feature_map/private/feature_assigner.rb
+    - spec/lib/feature_map/private/assignment_applicator_spec.rb
+    - spec/lib/feature_map/private/assignments_file_spec.rb
+    - spec/lib/feature_map/private/feature_assigner_spec.rb
+    teams:
+    - Core Library
+  Metrics Calculation:
+    files:
+    - lib/feature_map/private/cyclomatic_complexity_calculator.rb
+    - lib/feature_map/private/feature_metrics_calculator.rb
+    - lib/feature_map/private/health_calculator.rb
+    - lib/feature_map/private/lines_of_code_calculator.rb
+    - lib/feature_map/private/percentile_metrics_calculator.rb
+    - spec/lib/feature_map/private/cyclomatic_complexity_calculator_spec.rb
+    - spec/lib/feature_map/private/feature_metrics_calculator_spec.rb
+    - spec/lib/feature_map/private/health_calculator_spec.rb
+    - spec/lib/feature_map/private/lines_of_code_calculator_spec.rb
+    - spec/lib/feature_map/private/percentile_metrics_calculator_spec.rb
+    teams:
+    - Core Library
+  Metrics Storage:
+    files:
+    - lib/feature_map/private/additional_metrics_file.rb
+    - lib/feature_map/private/metrics_file.rb
+    - spec/lib/feature_map/private/additional_metrics_file_spec.rb
+    - spec/lib/feature_map/private/metrics_file_spec.rb
+    teams:
+    - Core Library
+  Testing Tools:
+    files:
+    - lib/feature_map/private/code_cov.rb
+    - lib/feature_map/private/simple_cov_resultsets.rb
+    - lib/feature_map/private/test_coverage_file.rb
+    - lib/feature_map/private/test_pyramid_file.rb
+    - lib/feature_map/private/todo_inspector.rb
+    - spec/lib/feature_map/private/code_cov_spec.rb
+    - spec/lib/feature_map/private/test_coverage_file_spec.rb
+    - spec/lib/feature_map/private/test_pyramid_file_spec.rb
+    - spec/lib/feature_map/private/todo_inspector_spec.rb
+    teams:
+    - Core Library
+  Validation:
+    files:
+    - lib/feature_map/private/validations/features_up_to_date.rb
+    - lib/feature_map/private/validations/files_have_features.rb
+    - lib/feature_map/private/validations/files_have_unique_features.rb
+    - spec/lib/feature_map/private/validations/files_have_features_spec.rb
+    - spec/lib/feature_map/private/validations/files_have_unique_features_spec.rb
+    teams:
+    - Core Library

@@ -1,3 +1,4 @@
+# @feature Code Features
 # frozen_string_literal: true
 
 require 'yaml'

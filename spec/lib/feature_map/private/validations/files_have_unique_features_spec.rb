@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FeatureMap
   RSpec.describe Private::Validations::FilesHaveUniqueFeatures do
     describe 'FeatureMap.validate!' do

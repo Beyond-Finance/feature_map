@@ -1,3 +1,4 @@
+# @feature Testing Tools
 class SimpleCovResultsets
   def self.fetch_coverage_stats(simplecov_resultsets)
     root_dir = "#{Dir.pwd}/"

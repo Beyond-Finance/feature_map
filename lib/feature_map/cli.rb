@@ -1,5 +1,4 @@
-# @feature CLI
-
+# @feature Core Library
 require 'optparse'
 require 'pathname'
 require 'fileutils'

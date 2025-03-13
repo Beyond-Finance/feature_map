@@ -1,3 +1,4 @@
+# @feature Core Library
 # frozen_string_literal: true
 
 require 'set'

@@ -1,3 +1,4 @@
+# @feature Extension System
 module FeatureMap
   # TODO: This was failing without cache busting. It seems like the code_ownership gem has some
   # interdependencies within their tests that were not replicated into this gem and seem undesirable.

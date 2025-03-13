@@ -1,3 +1,0 @@
-name: User Experience
-owned_globs:
-  - 'lib/feature_map/cli.rb'

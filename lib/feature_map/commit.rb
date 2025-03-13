@@ -1,3 +1,4 @@
+# @feature Core Library
 module FeatureMap
   class Commit
     attr_reader :sha

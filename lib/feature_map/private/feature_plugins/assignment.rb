@@ -1,3 +1,4 @@
+# @feature Code Features
 module FeatureMap
   module Private
     module FeaturePlugins

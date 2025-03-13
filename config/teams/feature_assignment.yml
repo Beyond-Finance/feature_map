@@ -1,0 +1,18 @@
+name: Feature Assignment & Validation
+owned_globs:
+  - lib/feature_map/private/feature_assigner.rb
+  - lib/feature_map/private/assignments_file.rb
+  - lib/feature_map/private/assignment_applicator.rb
+  - lib/feature_map/private/assignment_mappers/**/*
+  - lib/feature_map/private/feature_plugins/assignment.rb
+  - lib/feature_map/private/glob_cache.rb
+  - lib/feature_map/private/validations/**/*
+  - lib/feature_map/private/extension_loader.rb
+  - lib/feature_map/private/documentation_site.rb
+  - spec/lib/feature_map/private/feature_assigner_spec.rb
+  - spec/lib/feature_map/private/assignments_file_spec.rb
+  - spec/lib/feature_map/private/assignment_applicator_spec.rb
+  - spec/lib/feature_map/private/assignment_mappers/**/*
+  - spec/lib/feature_map/private/validations/**/*
+  - spec/lib/feature_map/private/extension_loader_spec.rb
+  - spec/lib/feature_map/private/documentation_site_spec.rb

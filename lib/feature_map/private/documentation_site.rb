@@ -1,3 +1,4 @@
+# @feature Extension System
 # frozen_string_literal: true
 
 module FeatureMap

@@ -1,6 +1,7 @@
 ---
 title: Overview
 ---
+<!-- @feature Documentation Content -->
 
 This gem helps identify and manage features within large applications.  It was built specifically to support monolithic Ruby on Rails codebases, but can be integrated using [Inline Execution]({{ '/getting-started/inline-execution' | relative_url }}) into any environment that supports the following comment styles:
   - `#`
