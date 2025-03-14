@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
 
+# NOTE:  bundler/setup is required to reference local library code
+#        rather than a system installed version of feature_map.
+require 'bundler/setup'
 require 'feature_map'
 FeatureMap::Cli.run!(ARGV)

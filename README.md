@@ -31,8 +31,8 @@ Contributions are welcome and appreciated. Here's how to get started:
 
 - clone repo: `$ git clone git@github.com:Beyond-Finance/feature_map.git`
 - install dependencies: `$ bundle install`
-- run tests: `$ bundle exec rspec`
-- run Rubocop: `$ bundle exec rubocop`
+- run tests: `$ bin/rspec`
+- run Rubocop: `$ bin/rubocop`
 
 That's it! Assuming you can complete all of these steps without any error or issues, you should be good to go.
 

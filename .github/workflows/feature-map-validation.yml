@@ -20,4 +20,4 @@ jobs:
           bundler-cache: true
           ruby-version: 3.2
       - name: Execute validation
-        run: bundle exec featuremap validate
+        run: bin/featuremap validate

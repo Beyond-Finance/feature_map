@@ -6,4 +6,5 @@ if ! gem list foreman -i --silent; then
 fi
 
 cp ./lib/feature_map/private/docs/index.html ./readme/example-docs-site.html
+cd readme && npm i && cd ..
 exec foreman start -f Procfile.readme "$@"
