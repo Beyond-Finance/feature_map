@@ -1,2 +1,2 @@
-jekyll: bundle exec jekyll serve -s readme -d readme/_site --baseurl=""
-tailwind: npx @tailwindcss/cli -i readme/tailwind.src.css -o readme/tailwind.build.css --watch
+jekyll: bin/jekyll serve -s readme -d readme/_site --baseurl=""
+tailwind: cd readme && npx @tailwindcss/cli -i tailwind.src.css -o tailwind.build.css --watch
