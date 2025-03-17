@@ -1,16 +1,11 @@
-import { Outlet } from 'react-router-dom'
-import { useState } from 'react'
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  TransitionChild,
-} from '@headlessui/react'
+import { Outlet } from 'react-router-dom';
+import { useState } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react';
 import { CircleX, Menu } from 'lucide-react';
-import LayoutSidebar from './LayoutSidebar'
+import LayoutSidebar from './LayoutSidebar';
 
 export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div>
@@ -27,7 +22,11 @@ export default function Layout() {
           >
             <TransitionChild>
               <div className="absolute left-full top-0 flex w-16 justify-center pt-5 duration-300 ease-in-out data-[closed]:opacity-0">
-                <button type="button" onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(false)}
+                  className="-m-2.5 p-2.5"
+                >
                   <span className="sr-only">Close sidebar</span>
                   <CircleX aria-hidden="true" className="size-6 text-white" />
                 </button>
@@ -51,7 +50,11 @@ export default function Layout() {
 
       <div className="lg:pl-72">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white lg:hidden px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-          <button type="button" onClick={() => setSidebarOpen(true)} className="-m-2.5 p-2.5 text-gray-700 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+          >
             <span className="sr-only">Open sidebar</span>
             <Menu aria-hidden="true" className="size-6" />
           </button>
@@ -64,5 +67,5 @@ export default function Layout() {
         </main>
       </div>
     </div>
-  )
+  );
 }

@@ -10,12 +10,9 @@ import {
   getFeatureSizeLabel,
   getFilledPills,
   renderTeams,
-  getTestCoverageColor
+  getTestCoverageColor,
 } from '../utils/feature-helpers';
-import {
-  healthScoreBackgroundColor,
-  getHealthScoreColor,
-} from '../utils/health-score';
+import { healthScoreBackgroundColor, getHealthScoreColor } from '../utils/health-score';
 
 export default function Digest({ features }) {
   const [selectedTeam, setSelectedTeam] = useState('All Teams');
@@ -24,9 +21,9 @@ export default function Digest({ features }) {
     const teamSet = new Set();
     teamSet.add('All Teams');
 
-    Object.values(features).forEach(feature => {
+    Object.values(features).forEach((feature) => {
       if (feature.assignments?.teams) {
-        feature.assignments.teams.forEach(team => teamSet.add(team));
+        feature.assignments.teams.forEach((team) => teamSet.add(team));
       }
     });
 
@@ -43,40 +40,38 @@ export default function Digest({ features }) {
     );
   }, [features, selectedTeam]);
 
-  const healthScores = useMemo(() => (
-    Object.entries(filteredFeatures)
-      .map(([name, data]) => ({
-        name,
-        data: data || 0,
-        health: data.additional_metrics.health.overall || 0
-      }))
-      .sort((a, b) => a.health - b.health)
-      .slice(0, 5)
-    ),
+  const healthScores = useMemo(
+    () =>
+      Object.entries(filteredFeatures)
+        .map(([name, data]) => ({
+          name,
+          data: data || 0,
+          health: data.additional_metrics.health.overall || 0,
+        }))
+        .sort((a, b) => a.health - b.health)
+        .slice(0, 5),
     [filteredFeatures]
-  )
+  );
 
-  const testCoverageScores = useMemo(() => (
-    Object.entries(filteredFeatures)
-      .map(([name, data]) => ({
-        name,
-        data: data || 0,
-        score: data.additional_metrics.test_coverage.score || 0
-      }))
-      .sort((a, b) => a.score - b.score)
-      .slice(0, 5)
-    ),
+  const testCoverageScores = useMemo(
+    () =>
+      Object.entries(filteredFeatures)
+        .map(([name, data]) => ({
+          name,
+          data: data || 0,
+          score: data.additional_metrics.test_coverage.score || 0,
+        }))
+        .sort((a, b) => a.score - b.score)
+        .slice(0, 5),
     [filteredFeatures]
-  )
+  );
 
   const TableHeader = ({ title }) => (
     <th
       scope="col"
       className="px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider"
     >
-      <div className="flex items-center gap-x-2">
-        {title}
-      </div>
+      <div className="flex items-center gap-x-2">{title}</div>
     </th>
   );
 
@@ -84,11 +79,7 @@ export default function Digest({ features }) {
     <div className="h-screen max-w-7xl mx-auto flex flex-col gap-8 p-4 md:p-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Digest</h1>
-        <Dropdown
-          items={teams}
-          selectedItem={selectedTeam}
-          onItemSelect={setSelectedTeam}
-        />
+        <Dropdown items={teams} selectedItem={selectedTeam} onItemSelect={setSelectedTeam} />
       </div>
 
       <div className="flow-root">
@@ -124,16 +115,15 @@ export default function Digest({ features }) {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {healthScores.map((feature) => {
-                        const sizeScore = feature.data.additional_metrics.feature_size.percent_of_max
+                        const sizeScore =
+                          feature.data.additional_metrics.feature_size.percent_of_max;
                         const sizeLabel = getFeatureSizeLabel(sizeScore);
-                        const healthScore = feature.data.additional_metrics.health.score || 0
+                        const healthScore = feature.data.additional_metrics.health.score || 0;
 
                         return (
                           <tr key={feature.name}>
                             <td className="w-full max-w-0 py-4 px-4 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none">
-                              <div className="">
-                                {feature.name}
-                              </div>
+                              <div className="">{feature.name}</div>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500">
                               <div className="flex items-center gap-2">
@@ -144,7 +134,7 @@ export default function Digest({ features }) {
                             <td className="px-4 py-4 text-sm text-gray-500">
                               <div className="flex items-center gap-x-2">
                                 <div className="flex gap-1.5 items-center">
-                                  {[1, 2, 3, 4, 5].map(index => (
+                                  {[1, 2, 3, 4, 5].map((index) => (
                                     <div
                                       key={index}
                                       className={`h-5 w-1.5 rounded ${
@@ -155,15 +145,17 @@ export default function Digest({ features }) {
                                     ></div>
                                   ))}
                                 </div>
-                                <span className="text-xs text-gray-500 uppercase">
-                                  {sizeLabel}
-                                </span>
+                                <span className="text-xs text-gray-500 uppercase">{sizeLabel}</span>
                               </div>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500">
                               <div className="flex items-center gap-x-2">
-                                <div className={`w-4 h-4 rounded-full flex items-center justify-center ${healthScoreBackgroundColor(healthScore)}`}>
-                                  <div className={`w-2 h-2 rounded-full ${getHealthScoreColor(healthScore).class}`} />
+                                <div
+                                  className={`w-4 h-4 rounded-full flex items-center justify-center ${healthScoreBackgroundColor(healthScore)}`}
+                                >
+                                  <div
+                                    className={`w-2 h-2 rounded-full ${getHealthScoreColor(healthScore).class}`}
+                                  />
                                 </div>
                                 <span className="text-gray-600">{healthScore.toFixed(0)}%</span>
                               </div>
@@ -175,15 +167,24 @@ export default function Digest({ features }) {
                                     to={`/${encodeURIComponent(feature.name)}`}
                                     className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
                                   >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
-                                      <path fillRule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                      className="size-5"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                                        clipRule="evenodd"
+                                      />
                                     </svg>
                                   </Link>
                                 </div>
                               </div>
                             </td>
                           </tr>
-                        )
+                        );
                       })}
                     </tbody>
                   </table>
@@ -227,16 +228,16 @@ export default function Digest({ features }) {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {testCoverageScores.map((feature) => {
-                        const sizeScore = feature.data.additional_metrics.feature_size.percent_of_max
+                        const sizeScore =
+                          feature.data.additional_metrics.feature_size.percent_of_max;
                         const sizeLabel = getFeatureSizeLabel(sizeScore);
-                        const coveragePercent = feature.data.additional_metrics.test_coverage.score || 0
+                        const coveragePercent =
+                          feature.data.additional_metrics.test_coverage.score || 0;
 
                         return (
                           <tr key={feature.name}>
                             <td className="w-full max-w-0 py-4 px-4 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none">
-                              <div className="">
-                                {feature.name}
-                              </div>
+                              <div className="">{feature.name}</div>
                             </td>
                             <td className="px-4 py-4 text-sm text-gray-500">
                               <div className="flex items-center gap-2">
@@ -247,7 +248,7 @@ export default function Digest({ features }) {
                             <td className="px-4 py-4 text-sm text-gray-500">
                               <div className="flex items-center gap-x-2">
                                 <div className="flex gap-1.5 items-center">
-                                  {[1, 2, 3, 4, 5].map(index => (
+                                  {[1, 2, 3, 4, 5].map((index) => (
                                     <div
                                       key={index}
                                       className={`h-5 w-1.5 rounded ${
@@ -258,9 +259,7 @@ export default function Digest({ features }) {
                                     ></div>
                                   ))}
                                 </div>
-                                <span className="text-xs text-gray-500 uppercase">
-                                  {sizeLabel}
-                                </span>
+                                <span className="text-xs text-gray-500 uppercase">{sizeLabel}</span>
                               </div>
                             </td>
                             <td className="px-4 py-4 text-sm">
@@ -283,15 +282,24 @@ export default function Digest({ features }) {
                                     to={`/${encodeURIComponent(feature.name)}`}
                                     className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
                                   >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
-                                      <path fillRule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                      className="size-5"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                                        clipRule="evenodd"
+                                      />
                                     </svg>
                                   </Link>
                                 </div>
                               </div>
                             </td>
                           </tr>
-                        )
+                        );
                       })}
                     </tbody>
                   </table>

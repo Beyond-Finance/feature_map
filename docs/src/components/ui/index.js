@@ -1,2 +1,2 @@
-export { default as Dropdown } from './Dropdown'
-export { default as Switcher } from './Switcher'
+export { default as Dropdown } from './Dropdown';
+export { default as Switcher } from './Switcher';

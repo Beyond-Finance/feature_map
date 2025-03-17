@@ -11,7 +11,7 @@ const FileExplorer = ({ files }) => {
     const tree = {};
     const counts = {};
 
-    files.forEach(filePath => {
+    files.forEach((filePath) => {
       const parts = filePath.split('/');
       let current = tree;
       let currentPath = '';
@@ -27,7 +27,7 @@ const FileExplorer = ({ files }) => {
 
           // Update counts for all parent directories
           let countPath = '';
-          parts.slice(0, -1).forEach(dirPart => {
+          parts.slice(0, -1).forEach((dirPart) => {
             countPath = countPath ? `${countPath}/${dirPart}` : dirPart;
             counts[countPath] = (counts[countPath] || 0) + 1;
           });
@@ -44,11 +44,11 @@ const FileExplorer = ({ files }) => {
 
   const initialExpandedDirs = useMemo(() => {
     const dirs = new Set();
-    files.forEach(filePath => {
+    files.forEach((filePath) => {
       const parts = filePath.split('/');
       let currentPath = '';
 
-      parts.slice(0, -1).forEach(part => {
+      parts.slice(0, -1).forEach((part) => {
         currentPath = currentPath ? `${currentPath}/${part}` : part;
         dirs.add(currentPath);
       });
@@ -60,7 +60,7 @@ const FileExplorer = ({ files }) => {
   const [expandedDirs, setExpandedDirs] = useState(initialExpandedDirs);
   const [sortConfig, setSortConfig] = useState({
     key: null,
-    direction: 'asc'
+    direction: 'asc',
   });
 
   const sortedFiles = useMemo(() => {
@@ -73,7 +73,7 @@ const FileExplorer = ({ files }) => {
   }, [files, sortConfig]);
 
   const toggleDir = (path) => {
-    setExpandedDirs(prev => {
+    setExpandedDirs((prev) => {
       const next = new Set(prev);
       if (next.has(path)) {
         next.delete(path);
@@ -123,8 +123,8 @@ const FileExplorer = ({ files }) => {
                     </div>
 
                     <span className="flex items-center justify-center text-xs font-medium text-gray-500 bg-gray-200 rounded-full h-5 w-5">
-                    {fileCount}
-                  </span>
+                      {fileCount}
+                    </span>
                   </button>
                 </div>
               </td>
@@ -137,12 +137,14 @@ const FileExplorer = ({ files }) => {
       return (
         <tr key={fullPath} className="hover:bg-gray-50">
           <td className="px-4 py-2 text-sm text-gray-900">
-            <div
-              className="flex items-center"
-              style={{ paddingLeft: `${(level * 16) + 20}px` }}
-            >
+            <div className="flex items-center" style={{ paddingLeft: `${level * 16 + 20}px` }}>
               <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
-              <a href={`${baseUrl}/${fullPath}`} className="truncate underline" target="_blank" rel="noopener noreferrer">
+              <a
+                href={`${baseUrl}/${fullPath}`}
+                className="truncate underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {name}
               </a>
             </div>
@@ -152,7 +154,7 @@ const FileExplorer = ({ files }) => {
     });
   };
 
-  const SortHeader = ({ title, sortKey, className = "" }) => (
+  const SortHeader = ({ title, sortKey, className = '' }) => (
     <th
       scope="col"
       className={`px-4 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider cursor-pointer ${className}`}
@@ -160,8 +162,19 @@ const FileExplorer = ({ files }) => {
     >
       <div className="flex items-center gap-x-2 group">
         {title}
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4 text-gray-400 group-hover:text-gray-600">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-4 text-gray-400 group-hover:text-gray-600"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
+          />
         </svg>
       </div>
     </th>
@@ -173,10 +186,7 @@ const FileExplorer = ({ files }) => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <SortHeader
-                title={viewMode === 'tree' ? "File Path" : "Name"}
-                sortKey="path"
-              />
+              <SortHeader title={viewMode === 'tree' ? 'File Path' : 'Name'} sortKey="path" />
               <th
                 scope="col"
                 className="px-4 py-3 text-center text-xs font-medium text-gray-800 uppercase tracking-wider"
@@ -207,22 +217,25 @@ const FileExplorer = ({ files }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {viewMode === 'list' ? (
-              sortedFiles.map((file) => (
-                <tr key={file} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900 flex-1">
-                    <div className="flex items-center">
-                      <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
-                      <a href={`${baseUrl}/${file}`} className="truncate underline" target="_blank" rel="noopener noreferrer">
-                        {file}
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              renderTree(fileTree)
-            )}
+            {viewMode === 'list'
+              ? sortedFiles.map((file) => (
+                  <tr key={file} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900 flex-1">
+                      <div className="flex items-center">
+                        <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
+                        <a
+                          href={`${baseUrl}/${file}`}
+                          className="truncate underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {file}
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              : renderTree(fileTree)}
           </tbody>
         </table>
       </div>
