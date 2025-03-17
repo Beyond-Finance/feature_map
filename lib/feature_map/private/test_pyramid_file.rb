@@ -13,19 +13,9 @@ module FeatureMap
 
       FEATURES_KEY = 'features'
 
-      def self.write!(unit_examples, integration_examples, regression_examples, regression_assignments)
+      def self.write!(unit_by_feature, integration_by_feature, regression_by_feature)
         FileUtils.mkdir_p(path.dirname) if !path.dirname.exist?
-
-        regression_file_assignments = regression_assignments['features']&.transform_values do |feature|
-          feature['files']&.map { |file| filepath(file) } || []
-        end || {}
-
-        content = generate_content(
-          unit_examples.group_by { |ex| filepath(ex['id']) },
-          integration_examples.group_by { |ex| filepath(ex['id']) },
-          regression_examples.group_by { |ex| filepath(ex['id']) },
-          regression_file_assignments
-        )
+        content = generate_content(unit_by_feature, integration_by_feature, regression_by_feature)
         path.write([header_comment, "\n", { FEATURES_KEY => content }.to_yaml].join)
       end
 
@@ -47,36 +37,15 @@ module FeatureMap
         HEADER
       end
 
-      def self.generate_content(unit_examples, integration_examples, regression_examples, regression_file_assignments)
-        Private.feature_file_assignments.reduce({}) do |content, (feature_name, files)|
-          regression_files = regression_file_assignments[feature_name] || []
-          regression_count, regression_pending = regression_files.reduce([0, 0]) do |accumulated_counts, file|
-            accumulated_count, accumulated_pending = accumulated_counts
-            count, pending = split(regression_examples[file])
-
-            [accumulated_count + count, accumulated_pending + pending]
-          end
-
-          pyramid = files.reduce({}) do |acc, file|
-            normalized_path = filepath(file)
-
-            unit_count, unit_pending = split(unit_examples["#{normalized_path}_spec"])
-            integration_count, integration_pending = split(integration_examples[normalized_path])
-
-            {
-              'unit_count' => (acc['unit_count'] || 0) + unit_count,
-              'unit_pending' => (acc['unit_pending'] || 0) + unit_pending,
-              'integration_count' => (acc['integration_count'] || 0) + integration_count,
-              'integration_pending' => (acc['integration_pending'] || 0) + integration_pending
-            }
-          end
-
-          {
-            feature_name => pyramid.merge(
-              'regression_count' => regression_count,
-              'regression_pending' => regression_pending
-            ),
-            **content
+      def self.generate_content(unit_by_feature, integration_by_feature, regression_by_feature)
+        CodeFeatures.all.map(&:name).each_with_object({}) do |feature_name, content|
+          content[feature_name] = {
+            'unit_count' => unit_by_feature.dig(feature_name, :count) || 0,
+            'unit_pending' => unit_by_feature.dig(feature_name, :pending) || 0,
+            'integration_count' => integration_by_feature.dig(feature_name, :count) || 0,
+            'integration_pending' => integration_by_feature.dig(feature_name, :pending) || 0,
+            'regression_count' => regression_by_feature.dig(feature_name, :count) || 0,
+            'regression_pending' => regression_by_feature.dig(feature_name, :pending) || 0
           }
         end
       end
@@ -91,20 +60,6 @@ module FeatureMap
         raise FileContentError, "Invalid YAML content found at #{path}. Error: #{e.message} Use `bin/featuremap test_coverage` to generate it and try again."
       rescue Errno::ENOENT
         raise FileContentError, "No feature test coverage file found at #{path}. Use `bin/featuremap test_coverage` to generate it and try again."
-      end
-
-      def self.split(examples)
-        return [0, 0] if examples.nil?
-
-        examples.partition { |ex| ex['status'] == 'passed' }.map(&:count)
-      end
-
-      def self.filepath(pathlike)
-        File
-          .join(File.dirname(pathlike), File.basename(pathlike, '.*'))
-          .gsub(%r{^\./}, '')
-          .gsub(%r{^spec/}, '')
-          .gsub(%r{^app/}, '')
       end
     end
   end

@@ -207,6 +207,24 @@ RSpec.shared_context 'application fixtures' do
   let(:create_test_pyramid_artifacts) do
     create_files_with_defined_classes
 
+    write_file('.feature_map/assignments.yml', <<~CONTENTS)
+      ---
+      files:
+        app/my_error.rb:
+          feature: Bar
+          mapper: Annotations at the top of file
+        app/my_file.rb:
+          feature: Foo
+          mapper: Annotations at the top of file
+      features:
+        Bar:
+          files:
+          - app/my_error.rb
+        Foo:
+          files:
+          - app/my_file.rb
+    CONTENTS
+
     write_file('.feature_map/test-pyramid.yml', <<~CONTENTS)
       ---
       features:
