@@ -24,6 +24,7 @@ require 'feature_map/private/test_pyramid_file'
 require 'feature_map/private/additional_metrics_file'
 require 'feature_map/private/simple_cov_resultsets'
 require 'feature_map/private/feature_plugins/assignment'
+require 'feature_map/private/test_pyramid/mapper'
 require 'feature_map/private/test_pyramid/rspec_mapper'
 require 'feature_map/private/validations/files_have_features'
 require 'feature_map/private/validations/features_up_to_date'
@@ -106,32 +107,12 @@ module FeatureMap
     end
 
     def self.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
-      unit_examples = JSON.parse(File.read(unit_path))&.fetch('examples')
-      integration_examples = JSON.parse(File.read(integration_path))&.fetch('examples')
-      regression_examples = regression_path ? JSON.parse(File.read(regression_path))&.fetch('examples') : []
-      regression_assignments = regression_assignments_path ? YAML.load_file(regression_assignments_path) : {}
-
-      feature_assignments = AssignmentsFile.load_features!
-
-      unit_by_feature = TestPyramid::RspecMapper.map_tests_by_assignment(
-        unit_examples,
-        feature_assignments,
-        ->(path) { "#{path}_spec" }
+      mapper = TestPyramid::Mapper.new(unit_path, integration_path, regression_path, regression_assignments_path)
+      TestPyramidFile.write!(
+        mapper.unit_by_feature,
+        mapper.integration_by_feature,
+        mapper.regression_by_feature
       )
-
-      integration_by_feature = TestPyramid::RspecMapper.map_tests_by_assignment(
-        integration_examples,
-        feature_assignments,
-        ->(path) { path }
-      )
-
-      regression_by_feature = TestPyramid::RspecMapper.map_tests_by_assignment(
-        regression_examples,
-        regression_assignments['features'] || {},
-        ->(path) { path }
-      )
-
-      TestPyramidFile.write!(unit_by_feature, integration_by_feature, regression_by_feature)
     end
 
     def self.gather_simplecov_test_coverage!(simplecov_paths)
