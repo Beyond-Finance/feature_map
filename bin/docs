@@ -12,8 +12,8 @@ if [ ! -f $COVERAGE_FILE ] || [ $(find $COVERAGE_FILE -mtime +7 -print 2>/dev/nu
   echo "# No test coverage file found.  Regenerating. #"
   echo "###############################################"
 
-  bundle exec rspec
-  bundle exec featuremap test_coverage --use-simplecov --simplecov-path $COVERAGE_FILE
+  bin/rspec
+  bin/featuremap test_coverage --use-simplecov --simplecov-path $COVERAGE_FILE
 else
   echo "#############################################################"
   echo "# Using recent coverage file.  If you'd like to regenerate: #"
@@ -21,7 +21,7 @@ else
   echo "#############################################################"
 fi
 
-bundle exec featuremap docs
+bin/featuremap docs
 cat .feature_map/docs/feature-map-config.js | sed 's/window\.FEATURE_MAP_CONFIG = /export const sampleConfig = /' > docs/sample_config.js
 cd docs && npm install && npm run lint:fix && cd ..
 exec foreman start -f Procfile.docs "$@"
