@@ -18,7 +18,7 @@ export default function SearchBox({ onSearch }) {
 
       <input
         type="text"
-        className="block w-full pl-10 px-3 py-3 text-sm font-medium text-gray-900 shadow-sm rounded-md hover:bg-gray-50 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 w-"
+        className="block w-full pl-10 px-3 py-3 text-sm font-medium bg-white text-gray-900 shadow-xs rounded-md outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 w-"
         placeholder="Search features..."
         onChange={(e) => onSearch(e.target.value)}
       />

@@ -34,7 +34,7 @@ const HealthScoreDataCard = ({ features }) => {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
-          <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+          <div className="shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             <Gauge className="size-5" />
           </div>
           <span className="flex pl-2">Health Score</span>
@@ -73,7 +73,7 @@ const HealthScoreDataCard = ({ features }) => {
         <ul className="flex flex-col flex-1 gap-y-1">
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.needsAttention).class}`}
+              className={`shrink-0 rounded-sm size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.needsAttention).class}`}
             >
               <span className="font-semibold text-white text-xs">
                 {distribution.needsAttention}
@@ -85,7 +85,7 @@ const HealthScoreDataCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.needsImprovement).class}`}
+              className={`shrink-0 rounded-sm size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.needsImprovement).class}`}
             >
               <span className="font-semibold text-white text-xs">
                 {distribution.needsImprovement}
@@ -97,7 +97,7 @@ const HealthScoreDataCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.healthy).class}`}
+              className={`shrink-0 rounded-sm size-5 flex items-center justify-center ${getHealthScoreColor(healthScores.healthy).class}`}
             >
               <span className="font-semibold text-white text-xs">{distribution.healthy}</span>
             </div>

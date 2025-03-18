@@ -84,13 +84,13 @@ export default function Digest({ features }) {
 
       <div className="flow-root">
         <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg h-full">
+          <div className="col-span-1 border border-gray-200 shadow-xs bg-white rounded-lg h-full">
             <div className="px-4 py-6 h-fit">
               <DigestHealthScoreCard features={filteredFeatures} />
             </div>
           </div>
 
-          <div className="col-span-2 h-full shadow-sm border border-gray-200 rounded-lg bg-white">
+          <div className="col-span-2 h-full shadow-xs border border-gray-200 rounded-lg bg-white">
             <div className="flex items-center justify-between px-4 py-6 bg-gray-50 rounded-md">
               <h3 className="flex items-center text-xs font-semibold text-gray-800 uppercase h-8">
                 Bottom 5 Features by Health Score
@@ -165,7 +165,7 @@ export default function Digest({ features }) {
                                 <div>
                                   <Link
                                     to={`/${encodeURIComponent(feature.name)}`}
-                                    className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
+                                    className="flex items-center justify-center shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -197,13 +197,13 @@ export default function Digest({ features }) {
 
       <div className="flow-root">
         <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg">
+          <div className="col-span-1 border border-gray-200 shadow-xs bg-white rounded-lg">
             <div className="px-4 py-6">
               <DigestTestCoverageCard features={filteredFeatures} />
             </div>
           </div>
 
-          <div className="col-span-2 h-full shadow-sm border border-gray-200 rounded-lg bg-white">
+          <div className="col-span-2 h-full shadow-xs border border-gray-200 rounded-lg bg-white">
             <div className="flex items-center justify-between px-4 py-6 bg-gray-50 rounded-md">
               <h3 className="flex items-center text-xs font-semibold text-gray-800 uppercase h-8">
                 Bottom 5 Features by Test Coverage
@@ -264,7 +264,7 @@ export default function Digest({ features }) {
                             </td>
                             <td className="px-4 py-4 text-sm">
                               <div className="flex items-center gap-x-2">
-                                <div className="flex-grow h-2 rounded-full bg-gray-100 overflow-hidden">
+                                <div className="grow h-2 rounded-full bg-gray-100 overflow-hidden">
                                   <div
                                     className={`h-full rounded-full ${getTestCoverageColor(coveragePercent).class}`}
                                     style={{ width: `${coveragePercent}%` }}
@@ -280,7 +280,7 @@ export default function Digest({ features }) {
                                 <div>
                                   <Link
                                     to={`/${encodeURIComponent(feature.name)}`}
-                                    className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
+                                    className="flex items-center justify-center shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -312,13 +312,13 @@ export default function Digest({ features }) {
 
       <div className="flow-root">
         <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-1 border border-gray-200 shadow-sm bg-white rounded-lg">
+          <div className="col-span-1 border border-gray-200 shadow-xs bg-white rounded-lg">
             <div className="px-4 py-6">
               <DigestTestPyramidCard features={filteredFeatures} />
             </div>
           </div>
 
-          <div className="col-span-2 h-full shadow-sm border border-gray-200 rounded-lg bg-white">
+          <div className="col-span-2 h-full shadow-xs border border-gray-200 rounded-lg bg-white">
             <DigestTestPyramidDetails features={filteredFeatures} />
           </div>
         </div>

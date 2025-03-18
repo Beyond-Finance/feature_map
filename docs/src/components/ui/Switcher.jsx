@@ -6,7 +6,7 @@ const Switcher = ({ items, selectedItem, onItemSelect, size = 'sm' }) => {
     <RadioGroup
       value={selectedItem}
       onChange={onItemSelect}
-      className={`inline-flex justify-between items-center rounded-md bg-white text-${size} font-medium text-gray-900 shadow-sm ring-1 ring-gray-300`}
+      className={`inline-flex justify-between items-center rounded-md bg-white text-${size} font-medium text-gray-900 shadow-xs ring-1 ring-gray-300`}
     >
       {items.map((item) => (
         <Field
@@ -15,7 +15,7 @@ const Switcher = ({ items, selectedItem, onItemSelect, size = 'sm' }) => {
         >
           <Radio
             value={item}
-            className="cursor-pointer h-full data-[checked]:bg-gray-200 hover:bg-gray-50 flex items-center px-4 shadow-sm"
+            className="cursor-pointer h-full data-checked:bg-gray-200 hover:bg-gray-50 flex items-center px-4 shadow-xs"
           >
             {item}
           </Radio>

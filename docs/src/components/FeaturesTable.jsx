@@ -94,7 +94,7 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
   );
 
   return (
-    <div className="overflow-scroll shadow-sm border border-gray-200 rounded-lg relative">
+    <div className="overflow-scroll shadow-xs border border-gray-200 rounded-lg relative">
       <table className="min-w-full">
         <thead className="bg-gray-50 border-b border-gray-200 sticky top-0">
           <tr>
@@ -187,7 +187,7 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
                 </td>
                 <td className="hidden px-4 py-4 text-sm md:table-cell">
                   <div className="flex items-center gap-x-2">
-                    <div className="flex-grow h-2 rounded-full bg-gray-100 overflow-hidden">
+                    <div className="grow h-2 rounded-full bg-gray-100 overflow-hidden">
                       <div
                         className={`h-full rounded-full ${getTestCoverageColor(coveragePercent).class}`}
                         style={{ width: `${coveragePercent}%` }}
@@ -203,7 +203,7 @@ export default function FeaturesTable({ features, searchTerm = '' }) {
                     <div>
                       <Link
                         to={`/${encodeURIComponent(name)}`}
-                        className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
+                        className="flex items-center justify-center shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

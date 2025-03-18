@@ -167,7 +167,7 @@ const DigestTestPyramidDetails = ({ features }) => {
                           <div>
                             <Link
                               to={`/${encodeURIComponent(featureName)}`}
-                              className="flex items-center justify-center flex-shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
+                              className="flex items-center justify-center shrink-0 font-medium text-gray-900 text-sm mb-1 hover:bg-gray-100 rounded-full h-6 w-6"
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"

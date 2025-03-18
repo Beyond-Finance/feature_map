@@ -21,7 +21,7 @@ export default function Feature({ features }) {
   if (!feature) {
     return (
       <div className="max-w-7xl mx-auto p-4 md:p-8">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow-sm p-6">
           <h1 className="text-xl font-bold text-red-600">Feature Not Found</h1>
           <p className="mt-2">Could not find feature: {name}</p>
           <Link to="/" className="text-blue-600 hover:text-blue-800 mt-4 inline-block">
@@ -113,10 +113,10 @@ export default function Feature({ features }) {
               </ul>
             </FeatureCard>
 
-            <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
+            <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-xs bg-white rounded-lg">
               <div className="flex items-center justify-between">
                 <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
-                  <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+                  <div className="shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
                     <Proportions />
                   </div>
                   <span className="flex pl-2">Feature Size</span>
@@ -147,7 +147,7 @@ export default function Feature({ features }) {
                     {[1, 2, 3, 4, 5].map((index) => (
                       <div
                         key={index}
-                        className={`h-6 w-1.5 rounded ${index <= filledPills ? 'bg-blue-500' : 'bg-gray-300'}`}
+                        className={`h-6 w-1.5 rounded-sm ${index <= filledPills ? 'bg-blue-500' : 'bg-gray-300'}`}
                       />
                     ))}
                   </div>
@@ -164,10 +164,10 @@ export default function Feature({ features }) {
               </div>
             </div>
 
-            <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
+            <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-xs bg-white rounded-lg">
               <div className="flex items-center justify-between">
                 <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
-                  <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+                  <div className="shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
                     <Pyramid />
                   </div>
                   <span className="flex pl-2">Test Pyramid</span>
@@ -194,9 +194,9 @@ export default function Feature({ features }) {
               <FileExplorer files={feature.assignments.files} />
             </>
           ) : (
-            <div className="h-[300px] bg-white rounded-lg border border-gray-200 shadow-sm mb-8">
+            <div className="h-[300px] bg-white rounded-lg border border-gray-200 shadow-xs mb-8">
               <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                <div className="flex items-center justify-center flex-shrink-0 h-16 w-16 bg-gray-100 rounded-full shadow text-gray-500 mb-4">
+                <div className="flex items-center justify-center shrink-0 h-16 w-16 bg-gray-100 rounded-full shadow-sm text-gray-500 mb-4">
                   <FolderTree />
                 </div>
                 <p>No files found for this feature</p>

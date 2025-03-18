@@ -112,11 +112,11 @@ const FileExplorer = ({ files }) => {
                   >
                     <div className="flex items-center group">
                       {isExpanded ? (
-                        <ChevronDown className="size-4 text-gray-400 mr-1 flex-shrink-0" />
+                        <ChevronDown className="size-4 text-gray-400 mr-1 shrink-0" />
                       ) : (
-                        <ChevronRight className="size-4 text-gray-400 mr-1 flex-shrink-0" />
+                        <ChevronRight className="size-4 text-gray-400 mr-1 shrink-0" />
                       )}
-                      <Folder className="size-4 text-gray-400 mr-2 flex-shrink-0" />
+                      <Folder className="size-4 text-gray-400 mr-2 shrink-0" />
                       <span className="font-medium text-gray-600 group-hover:text-gray-900">
                         {name}
                       </span>
@@ -138,7 +138,7 @@ const FileExplorer = ({ files }) => {
         <tr key={fullPath} className="hover:bg-gray-50">
           <td className="px-4 py-2 text-sm text-gray-900">
             <div className="flex items-center" style={{ paddingLeft: `${level * 16 + 20}px` }}>
-              <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
+              <FileCode className="size-4 text-gray-400 mr-2 shrink-0" />
               <a
                 href={`${baseUrl}/${fullPath}`}
                 className="truncate underline"
@@ -222,7 +222,7 @@ const FileExplorer = ({ files }) => {
                   <tr key={file} className="hover:bg-gray-50">
                     <td className="px-4 py-3 text-sm font-medium text-gray-900 flex-1">
                       <div className="flex items-center">
-                        <FileCode className="size-4 text-gray-400 mr-2 flex-shrink-0" />
+                        <FileCode className="size-4 text-gray-400 mr-2 shrink-0" />
                         <a
                           href={`${baseUrl}/${file}`}
                           className="truncate underline"

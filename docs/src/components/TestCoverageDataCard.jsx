@@ -36,7 +36,7 @@ const TestCoverageDataCard = ({ features }) => {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
-          <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+          <div className="shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             <FlaskConical className="size-5" />
           </div>
           <span className="flex pl-2">Test Coverage</span>
@@ -75,7 +75,7 @@ const TestCoverageDataCard = ({ features }) => {
         <ul className="flex flex-col flex-1 gap-y-1">
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.poor).class}`}
+              className={`shrink-0 rounded-sm size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.poor).class}`}
             >
               <span className="font-semibold text-white text-xs">{distribution.poor}</span>
             </div>
@@ -83,7 +83,7 @@ const TestCoverageDataCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.fair).class}`}
+              className={`shrink-0 rounded-sm size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.fair).class}`}
             >
               <span className="font-semibold text-white text-xs">{distribution.fair}</span>
             </div>
@@ -91,7 +91,7 @@ const TestCoverageDataCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.good).class}`}
+              className={`shrink-0 rounded-sm size-5 flex items-center justify-center ${getTestCoverageColor(coverageScores.good).class}`}
             >
               <span className="font-semibold text-white text-xs">{distribution.good}</span>
             </div>

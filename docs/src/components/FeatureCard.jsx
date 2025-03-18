@@ -5,10 +5,10 @@ import { Tooltip, TooltipButton, TooltipPanel } from '../components/Tooltip';
 
 const FeatureCard = ({ children, title, value, suffix = '', icon, tooltip, color }) => {
   return (
-    <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-sm bg-white rounded-lg">
+    <div className="flex flex-col gap-6 px-4 py-6 border border-gray-200 shadow-xs bg-white rounded-lg">
       <div className="flex items-center justify-between">
         <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
-          <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+          <div className="shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             {icon}
           </div>
           <span className="flex pl-2">{title}</span>
