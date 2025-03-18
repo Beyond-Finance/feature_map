@@ -16,7 +16,7 @@ import {
 // Use className to override default styles
 const Tooltip = ({
   width = 'max-w-56',
-  className = 'bg-gray-700 text-white text-xs rounded p-2',
+  className = 'bg-gray-700 text-white text-xs rounded-sm p-2',
   children,
 }) => {
   const [isOpen, setIsOpen] = useState(false);

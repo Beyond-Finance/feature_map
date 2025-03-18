@@ -33,16 +33,16 @@ const DigestHealthScoreCard = ({ features }) => {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
-          <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+          <div className="shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             <Gauge className="size-5" />
           </div>
           <span className="flex pl-2">Health Score</span>
         </h3>
 
-        <div className="relative flex-shrink-0 group">
+        <div className="relative shrink-0 group">
           <Info className="size-4 text-gray-400" />
 
-          <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2 w-48">
+          <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded-sm py-1 px-2 w-48">
             Health Score distribution by category: shows how many features fall into each level from
             low (needs attention) to good (healthy)
           </div>
@@ -68,7 +68,7 @@ const DigestHealthScoreCard = ({ features }) => {
         <ul className="flex flex-col flex-1 gap-y-2">
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.needsAttention).class}`}
+              className={`shrink-0 rounded-sm size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.needsAttention).class}`}
             >
               <span className="font-semibold text-white text-sm">
                 {distribution.needsAttention}
@@ -78,7 +78,7 @@ const DigestHealthScoreCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.needsImprovement).class}`}
+              className={`shrink-0 rounded-sm size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.needsImprovement).class}`}
             >
               <span className="font-semibold text-white text-sm">
                 {distribution.needsImprovement}
@@ -88,7 +88,7 @@ const DigestHealthScoreCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.healthy).class}`}
+              className={`shrink-0 rounded-sm size-6 flex items-center justify-center ${getHealthScoreColor(healthScores.healthy).class}`}
             >
               <span className="font-semibold text-white text-sm">{distribution.healthy}</span>
             </div>
