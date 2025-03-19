@@ -35,16 +35,16 @@ const DigestTestCoverageCard = ({ features }) => {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h3 className="flex items-center text-xs font-medium text-gray-600 uppercase">
-          <div className="flex-shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
+          <div className="shrink-0 bg-gray-100 rounded-md h-8 w-8 flex items-center justify-center">
             <FlaskConical className="size-5" />
           </div>
           <span className="flex pl-2">Test Coverage</span>
         </h3>
 
-        <div className="relative flex-shrink-0 group">
+        <div className="relative shrink-0 group">
           <Info className="size-4 text-gray-400" />
 
-          <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2 w-48">
+          <div className="absolute whitespace-wrap bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded-sm py-1 px-2 w-48">
             Test Coverage distribution by category: shows how many features fall into each level
             from poor to good
           </div>
@@ -70,7 +70,7 @@ const DigestTestCoverageCard = ({ features }) => {
         <ul className="flex flex-col flex-1 gap-y-2">
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.poor).class}`}
+              className={`shrink-0 rounded-sm size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.poor).class}`}
             >
               <span className="font-semibold text-white text-sm">{distribution.poor}</span>
             </div>
@@ -80,7 +80,7 @@ const DigestTestCoverageCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.fair).class}`}
+              className={`shrink-0 rounded-sm size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.fair).class}`}
             >
               <span className="font-semibold text-white text-sm">{distribution.fair}</span>
             </div>
@@ -90,7 +90,7 @@ const DigestTestCoverageCard = ({ features }) => {
           </li>
           <li className="flex items-center gap-x-2">
             <div
-              className={`flex-shrink-0 rounded size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.good).class}`}
+              className={`shrink-0 rounded-sm size-6 flex items-center justify-center ${getTestCoverageColor(coverageScores.good).class}`}
             >
               <span className="font-semibold text-white text-sm">{distribution.good}</span>
             </div>

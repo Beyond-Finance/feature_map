@@ -45,7 +45,7 @@ const FeatureTestPyramidCard = ({ feature }) => {
     <div className="flex items-center gap-4">
       <div className="relative h-20 w-20">
         {data.every((item) => item.value === 0) ? (
-          <div className="flex flex-col flex-shrink-0 items-center justify-center size-full bg-gray-100 rounded-full shadow text-gray-500 mb-4">
+          <div className="flex flex-col shrink-0 items-center justify-center size-full bg-gray-100 rounded-full shadow-sm text-gray-500 mb-4">
             <Triangle />
           </div>
         ) : (

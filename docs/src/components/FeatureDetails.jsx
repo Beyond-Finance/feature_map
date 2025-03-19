@@ -31,7 +31,7 @@ export default function FeatureDetails({ name, feature }) {
 
       <ul className="mb-6 space-y-2">
         <li className="flex items-center gap-2">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <FolderTree className="size-4 text-gray-500" />
           </div>
           <p className="text-sm text-gray-700">
@@ -40,7 +40,7 @@ export default function FeatureDetails({ name, feature }) {
         </li>
 
         <li className="flex items-center gap-2">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Shapes className="size-4 text-gray-500" />
           </div>
           <p className="text-sm text-gray-700">
@@ -49,7 +49,7 @@ export default function FeatureDetails({ name, feature }) {
         </li>
 
         <li className="flex items-center gap-2">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <FileCode className="size-4 text-gray-500" />
           </div>
           <p className="text-sm text-gray-700">
@@ -58,7 +58,7 @@ export default function FeatureDetails({ name, feature }) {
         </li>
 
         <li className="flex items-center gap-2">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <GitCompareArrows className="size-4 text-gray-500" />
           </div>
           <p className="text-sm text-gray-700">
@@ -67,7 +67,7 @@ export default function FeatureDetails({ name, feature }) {
         </li>
 
         <li className="flex items-center gap-2">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Hash className="size-4 text-gray-500" />
           </div>
           <p className="text-sm text-gray-700">
@@ -88,7 +88,7 @@ export default function FeatureDetails({ name, feature }) {
               feature.assignments.teams.map((team) => {
                 return (
                   <li key={team} className="text-sm text-gray-700 flex gap-2">
-                    <div className="flex items-center justify-center flex-shrink-0">
+                    <div className="flex items-center justify-center shrink-0">
                       <Users className="size-4 text-gray-500" />
                     </div>
                     {team}
@@ -97,7 +97,7 @@ export default function FeatureDetails({ name, feature }) {
               })
             ) : (
               <li className="text-sm text-gray-700 flex gap-2">
-                <div className="flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center justify-center shrink-0">
                   <Users className="size-4 text-gray-500" />
                 </div>
                 <span className="text-gray-400 italic text-sm">No teams assigned</span>
@@ -112,7 +112,7 @@ export default function FeatureDetails({ name, feature }) {
 
         <ul className="mb-6 space-y-2">
           <li className="flex items-center gap-2">
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <ExternalLink className="size-4 text-gray-500" />
             </div>
             <a
@@ -126,7 +126,7 @@ export default function FeatureDetails({ name, feature }) {
           </li>
 
           <li className="flex items-center gap-2">
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <ExternalLink className="size-4 text-gray-500" />
             </div>
             {feature.documentation_link ? (
@@ -144,7 +144,7 @@ export default function FeatureDetails({ name, feature }) {
           </li>
 
           <li className="flex items-center gap-2">
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <ExternalLink className="size-4 text-gray-500" />
             </div>
             {feature.dashboard_link ? (
