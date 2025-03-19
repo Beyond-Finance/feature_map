@@ -4,6 +4,8 @@ module FeatureMap
       class Mapper
         class << self
           def examples_by_feature(examples_path, assignments)
+            return {} if examples_path =~ /.skip$/
+
             examples_file = File.read(examples_path)
             normalized_assignments = assignments.transform_values { |feature| feature['files'] || [] }
 

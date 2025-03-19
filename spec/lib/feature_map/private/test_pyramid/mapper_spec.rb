@@ -61,6 +61,13 @@ module FeatureMap
         include_examples 'a test mapper', 'jest', Private::TestPyramid::JestMapper, 'testResults'
       end
 
+      context 'when given an indication to skip processing' do
+        it 'returns an empty hash' do
+          # NOTE: This file does not need to exist.
+          expect(described_class.examples_by_feature('anything.skip', assignments)).to eq({})
+        end
+      end
+
       context 'with unsupported format' do
         let(:unknown_path) { 'tmp/examples.unknown' }
 
