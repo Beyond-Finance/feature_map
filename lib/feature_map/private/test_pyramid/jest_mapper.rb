@@ -9,17 +9,16 @@ module FeatureMap
               result[filepath(suite['name'])] = suite['assertionResults']
             end
 
-            assignments.each_with_object({}) do |(feature_name, feature), result|
-              feature_files = feature['files'] || []
-              counts = count_tests_for_feature(tests_by_path, feature_files)
+            assignments.each_with_object({}) do |(feature_name, files), result|
+              counts = count_tests_for_feature(tests_by_path, files)
               result[feature_name] = counts
             end
           end
 
           private
 
-          def count_tests_for_feature(tests_by_path, feature_files)
-            feature_files.each_with_object({ count: 0, pending: 0 }) do |file, counts|
+          def count_tests_for_feature(tests_by_path, files)
+            files.each_with_object({ count: 0, pending: 0 }) do |file, counts|
               file_path = filepath(file)
               assertions = tests_by_path[file_path]
               next unless assertions

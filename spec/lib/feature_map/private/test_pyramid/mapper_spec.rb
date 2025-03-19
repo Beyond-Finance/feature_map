@@ -3,121 +3,104 @@
 require 'spec_helper'
 
 module FeatureMap
-  module Private
-    module TestPyramid
-      RSpec.describe Mapper do
-        let(:unit_path) { 'tmp/unit.rspec' }
-        let(:integration_path) { 'tmp/integration.rspec' }
-        let(:regression_path) { 'tmp/regression.rspec' }
-        let(:regression_assignments_path) { 'regression/.feature_map/assignments.yml' }
+  RSpec.describe Private::TestPyramid::Mapper do
+    describe '.examples_by_feature' do
+      let(:assignments) do
+        {
+          'Feature' => { 'files' => ['app/models/user.rb'] }
+        }
+      end
 
-        let(:feature_assignments) do
-          { 'Bar' => { 'files' => ['app/my_error.rb'] }, 'Foo' => { 'files' => ['app/my_file.rb'] } }
+      # Shared examples for testing different test formats
+      shared_examples 'a test mapper' do |file_extension, mapper_class, data_key|
+        let(:examples_path) { "tmp/examples.#{file_extension}" }
+        let(:examples_data) do
+          {
+            data_key => test_data
+          }
         end
-        let(:regression_feature_assignments) do
-          { 'features' => { 'Feature B' => { 'files' => ['spec/ui/feature_b_spec.rb'] } } }
-        end
-
-        let(:unit_examples) { [{ 'id' => './spec/models/model_a_spec.rb[1:1]', 'status' => 'passed' }] }
-        let(:integration_examples) { [{ 'id' => './spec/integration/feature_a_spec.rb[1:1]', 'status' => 'passed' }] }
-        let(:regression_examples) { [{ 'id' => './spec/ui/feature_b_spec.rb[1:1]', 'status' => 'passed' }] }
 
         before do
-          create_test_pyramid_artifacts
-
-          # Set up test files with specific examples
-          write_file(unit_path, { 'examples' => unit_examples }.to_json)
-          write_file(integration_path, { 'examples' => integration_examples }.to_json)
-          write_file(regression_path, { 'examples' => regression_examples }.to_json)
-          write_file(regression_assignments_path, regression_feature_assignments.to_yaml)
-
-          # Also create the test files for the unsupported format tests
-          write_file('unit.unknown', 'some content')
-          write_file('integration.unknown', 'some content')
-          write_file('regression.unknown', 'some content')
-
-          allow(RspecMapper).to receive(:map_tests_by_assignment).and_return({})
+          write_file(examples_path, examples_data.to_json)
+          allow(mapper_class).to receive(:map_tests_by_assignment).and_return('Feature' => { count: 1, pending: 0 })
         end
 
-        describe '#unit_by_feature' do
-          it 'delegates to RspecMapper with correct parameters and examples' do
-            mapper = Mapper.new(unit_path, integration_path, regression_path, regression_assignments_path)
+        it "delegates to #{mapper_class} with normalized assignments" do
+          expect(mapper_class).to receive(:map_tests_by_assignment) do |data, normalized_assignments|
+            expect(data).to eq(test_data)
+            expect(normalized_assignments).to eq('Feature' => ['app/models/user.rb'])
 
-            expect(RspecMapper).to receive(:map_tests_by_assignment) do |examples, assignments, transform|
-              expect(examples).to eq(unit_examples)
-              expect(assignments).to eq(feature_assignments)
-              expect(transform.call('some/path')).to eq('some/path_spec')
-
-              'delegated unit test data'
-            end
-
-            expect(mapper.unit_by_feature).to eq('delegated unit test data')
+            { 'Feature' => { count: 1, pending: 0 } }
           end
 
-          it 'raises an error for unsupported file types' do
-            mapper = Mapper.new('unit.unknown', integration_path, regression_path, regression_assignments_path)
-            expect { mapper.unit_by_feature }.to raise_error(/Unhandled filetype/)
-          end
+          result = described_class.examples_by_feature(examples_path, assignments)
+          expect(result).to eq('Feature' => { count: 1, pending: 0 })
+        end
+      end
+
+      context 'with RSpec format' do
+        let(:test_data) do
+          [
+            { 'id' => './spec/models/user_spec.rb[1:1]', 'status' => 'passed' }
+          ]
         end
 
-        describe '#integration_by_feature' do
-          it 'delegates to RspecMapper with correct parameters and examples' do
-            mapper = Mapper.new(unit_path, integration_path, regression_path, regression_assignments_path)
+        include_examples 'a test mapper', 'rspec', Private::TestPyramid::RspecMapper, 'examples'
+      end
 
-            expect(RspecMapper).to receive(:map_tests_by_assignment) do |examples, assignments, transform|
-              expect(examples).to eq(integration_examples)
-              expect(assignments).to eq(feature_assignments)
-              expect(transform.call('some/path')).to eq('some/path')
-
-              'delegated integration test data'
-            end
-
-            expect(mapper.integration_by_feature).to eq('delegated integration test data')
-          end
-
-          it 'raises an error for unsupported file types' do
-            mapper = Mapper.new(unit_path, 'integration.unknown', regression_path, regression_assignments_path)
-            expect { mapper.integration_by_feature }.to raise_error(/Unhandled filetype/)
-          end
+      context 'with Jest format' do
+        let(:test_data) do
+          [
+            {
+              'name' => '/project/root/src/models/User.test.js',
+              'assertionResults' => [{ 'status' => 'passed' }]
+            }
+          ]
         end
 
-        describe '#regression_by_feature' do
-          it 'delegates to RspecMapper with correct parameters and examples' do
-            mapper = Mapper.new(unit_path, integration_path, regression_path, regression_assignments_path)
+        include_examples 'a test mapper', 'jest', Private::TestPyramid::JestMapper, 'testResults'
+      end
 
-            expect(RspecMapper).to receive(:map_tests_by_assignment) do |examples, assignments, transform|
-              expect(examples).to eq(regression_examples)
-              expect(assignments).to eq(regression_feature_assignments['features'])
-              expect(transform.call('some/path')).to eq('some/path')
+      context 'with unsupported format' do
+        let(:unknown_path) { 'tmp/examples.unknown' }
 
-              'delegated regression test data'
-            end
+        before do
+          write_file(unknown_path, 'some content')
+        end
 
-            expect(mapper.regression_by_feature).to eq('delegated regression test data')
+        it 'raises an error' do
+          expect {
+            described_class.examples_by_feature(unknown_path, assignments)
+          }.to raise_error(/Unhandled filetype/)
+        end
+      end
+
+      context 'with nil files in assignments' do
+        let(:examples_path) { 'tmp/examples.rspec' }
+        let(:assignments_with_nil) do
+          {
+            'Feature with nil' => { 'files' => nil },
+            'Feature with empty' => { 'files' => [] },
+            'Feature with files' => { 'files' => ['app/models/user.rb'] }
+          }
+        end
+
+        before do
+          write_file(examples_path, { 'examples' => [] }.to_json)
+        end
+
+        it 'handles nil files in assignments gracefully' do
+          expect(Private::TestPyramid::RspecMapper).to receive(:map_tests_by_assignment) do |_examples, normalized_assignments|
+            expect(normalized_assignments).to eq(
+              'Feature with nil' => [],
+              'Feature with empty' => [],
+              'Feature with files' => ['app/models/user.rb']
+            )
+
+            {}
           end
 
-          it 'returns an empty hash when regression_path is nil' do
-            mapper = Mapper.new(unit_path, integration_path, nil, regression_assignments_path)
-            expect(mapper.regression_by_feature).to eq({})
-            expect(RspecMapper).not_to receive(:map_tests_by_assignment)
-          end
-
-          it 'uses default assignments when regression_assignments_path is nil' do
-            mapper = Mapper.new(unit_path, integration_path, regression_path, nil)
-
-            expect(RspecMapper).to receive(:map_tests_by_assignment) do |examples, assignments, transform|
-              expect(examples).to eq(regression_examples)
-              expect(assignments).to eq(feature_assignments)
-              expect(transform.call('some/path')).to eq('some/path')
-            end
-
-            mapper.regression_by_feature
-          end
-
-          it 'raises an error for unsupported file types' do
-            mapper = Mapper.new(unit_path, integration_path, 'regression.unknown', regression_assignments_path)
-            expect { mapper.regression_by_feature }.to raise_error(/Unhandled filetype/)
-          end
+          described_class.examples_by_feature(examples_path, assignments_with_nil)
         end
       end
     end

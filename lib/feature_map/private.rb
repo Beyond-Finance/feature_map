@@ -108,11 +108,13 @@ module FeatureMap
     end
 
     def self.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
-      mapper = TestPyramid::Mapper.new(unit_path, integration_path, regression_path, regression_assignments_path)
+      assignments = AssignmentsFile.load_features!
+      regression_assignments = regression_assignments_path ? YAML.load_file(regression_assignments_path)&.fetch('features') : assignments
+
       TestPyramidFile.write!(
-        mapper.unit_by_feature,
-        mapper.integration_by_feature,
-        mapper.regression_by_feature
+        TestPyramid::Mapper.examples_by_feature(unit_path, assignments),
+        TestPyramid::Mapper.examples_by_feature(integration_path, assignments),
+        regression_path ? TestPyramid::Mapper.examples_by_feature(regression_path, regression_assignments) : {}
       )
     end
 
