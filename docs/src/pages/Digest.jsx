@@ -118,7 +118,7 @@ export default function Digest({ features }) {
                         const sizeScore =
                           feature.data.additional_metrics.feature_size.percent_of_max;
                         const sizeLabel = getFeatureSizeLabel(sizeScore);
-                        const healthScore = feature.data.additional_metrics.health.score || 0;
+                        const healthScore = feature.data.additional_metrics.health.overall || 0;
 
                         return (
                           <tr key={feature.name}>
