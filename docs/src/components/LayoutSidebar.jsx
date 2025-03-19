@@ -14,6 +14,7 @@ function classNames(...classes) {
 export default function LayoutSidebar() {
   const location = useLocation();
   const { linked_sites: linkedSites, title } = config.project.documentation_site;
+  const { internal_resources: internalResoures } = config.project.documentation_site;
 
   return (
     <>
@@ -74,6 +75,35 @@ export default function LayoutSidebar() {
                         )}
                       />
                       {site.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          )}
+          {internalResoures && internalResoures.length > 0 && (
+            <li>
+              <div className="text-xs/6 font-semibold text-gray-400">Internal Resources</div>
+              <ul role="list" className="-mx-2 mt-2 space-y-2">
+                {internalResoures.map((resource) => (
+                  <li key={resource.name}>
+                    <a
+                      href={resource.url}
+                      target="_blank"
+                      className={classNames(
+                        'text-gray-700 hover:text-blue-600',
+                        'group flex gap-x-3 rounded-md px-2 text-sm/6 font-semibold items-center'
+                      )}
+                      rel="noreferrer"
+                    >
+                      <ExternalLink
+                        aria-hidden="true"
+                        className={classNames(
+                          'text-gray-400 group-hover:text-blue-600',
+                          'size-5 shrink-0'
+                        )}
+                      />
+                      {resource.name}
                     </a>
                   </li>
                 ))}

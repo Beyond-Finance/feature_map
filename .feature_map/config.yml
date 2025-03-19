@@ -68,6 +68,13 @@ documentation_site:
       url: https://example.github.io/user-service
     - name: Gateway Service
       url: https://example.github.io/gateway-service
+  internal_resources:
+    - name: Feature Management Docs
+      url: https://notion.com
+    - name: Feature Map Docs
+      url: https://example.github.io/feature_map
+    - name: New Relic Dashboard
+      url: https://newrelic.com
   size_percentile:
     minimum_thresholds:
       xl: 95
