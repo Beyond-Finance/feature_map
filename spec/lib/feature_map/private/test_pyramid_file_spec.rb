@@ -6,46 +6,23 @@ require 'spec_helper'
 module FeatureMap
   RSpec.describe Private::TestPyramidFile do
     describe '.write!' do
-      let(:unit_examples) do
-        [
-          { 'id' => './spec/my_file_spec.rb[1:1:1]', 'status' => 'passed' },
-          { 'id' => './spec/my_file_spec.rb[1:1:2]', 'status' => 'passed' },
-          { 'id' => './spec/my_file_spec.rb[1:1:3]', 'status' => 'pending' },
-          { 'id' => './spec/models/foo_spec.rb[1:1:1]', 'status' => 'passed' },
-          { 'id' => './spec/models/foo_spec.rb[1:1:2]', 'status' => 'pending' },
-          { 'id' => './spec/bar/another_file_spec.rb[1:1:1]', 'status' => 'passed' },
-          { 'id' => './spec/bar/another_file_spec.rb[1:1:2]', 'status' => 'pending' }
-        ]
-      end
-      let(:integration_examples) do
-        [
-          { 'id' => './spec/integration/bar_integration_spec.rb[1:1:1]', 'status' => 'passed' },
-          { 'id' => './spec/integration/bar_integration_spec.rb[1:1:2]', 'status' => 'pending' },
-          { 'id' => './spec/integration/another_bar_integration_spec.rb[1:1:1]', 'status' => 'pending' }
-        ]
-      end
-      let(:regression_examples) do
-        [
-          { 'id' => './spec/ui/foo_user_flow_spec.rb[1:1:1]', 'status' => 'passed' },
-          { 'id' => './spec/ui/foo_user_flow_spec.rb[1:1:2]', 'status' => 'pending' },
-          { 'id' => './spec/ui/bar_user_spec.rb[1:1:1]', 'status' => 'passed' },
-          { 'id' => './spec/ui/bar_user_spec.rb[1:1:2]', 'status' => 'passed' }
-        ]
-      end
-      let(:regression_assignments) do
+      let(:unit_by_feature) do
         {
-          'features' => {
-            'Foo' => {
-              'files' => [
-                'spec/ui/foo_user_flow_spec.rb'
-              ]
-            },
-            'Bar' => {
-              'files' => [
-                'spec/ui/bar_user_spec.rb'
-              ]
-            }
-          }
+          'Foo' => { count: 3, pending: 2 },
+          'Bar' => { count: 1, pending: 1 }
+        }
+      end
+
+      let(:integration_by_feature) do
+        {
+          'Bar' => { count: 1, pending: 1 }
+        }
+      end
+
+      let(:regression_by_feature) do
+        {
+          'Foo' => { count: 1, pending: 1 },
+          'Bar' => { count: 2, pending: 0 }
         }
       end
 
@@ -63,6 +40,13 @@ module FeatureMap
 
           ---
           features:
+            Bar:
+              unit_count: 1
+              unit_pending: 1
+              integration_count: 1
+              integration_pending: 1
+              regression_count: 2
+              regression_pending: 0
             Empty Feature:
               unit_count: 0
               unit_pending: 0
@@ -77,18 +61,10 @@ module FeatureMap
               integration_pending: 0
               regression_count: 1
               regression_pending: 1
-            Bar:
-              unit_count: 1
-              unit_pending: 1
-              integration_count: 1
-              integration_pending: 1
-              regression_count: 2
-              regression_pending: 0
         FEATURES
       end
 
       before do
-        # Must use the skip_features_validation to avoid having the GlobCache loaded from the stub assignments.yml file.
         write_configuration('skip_features_validation' => true)
         create_files_with_defined_classes
         write_file('.feature_map/definitions/empty.yml', <<~CONTENTS)
@@ -100,18 +76,12 @@ module FeatureMap
         write_file('app/bar/another_file.rb', <<~CONTENTS)
           # @feature Bar
         CONTENTS
-        write_file('spec/integration/bar_integration_spec.rb', <<~CONTENTS)
-          # @feature Bar
-        CONTENTS
-        write_file('spec/integration/bar_another_integration_spec.rb', <<~CONTENTS)
-          # @feature Bar
-        CONTENTS
       end
 
       context 'when NO test-pyramid.yml file exists' do
         it 'overwrites the test-pyramid.yml file with new test pyramid data' do
           expect(File.exist?(Private::TestPyramidFile.path)).to be_falsey
-          Private::TestPyramidFile.write!(unit_examples, integration_examples, regression_examples, regression_assignments)
+          Private::TestPyramidFile.write!(unit_by_feature, integration_by_feature, regression_by_feature)
           expect(File.read(Private::TestPyramidFile.path)).to eq(expected_file)
         end
       end
@@ -127,7 +97,7 @@ module FeatureMap
 
         it 'overwrites the test-pyramid.yml file with new test pyramid data' do
           expect(File.read(Private::TestPyramidFile.path)).not_to eq(expected_file)
-          Private::TestPyramidFile.write!(unit_examples, integration_examples, regression_examples, regression_assignments)
+          Private::TestPyramidFile.write!(unit_by_feature, integration_by_feature, regression_by_feature)
           expect(File.read(Private::TestPyramidFile.path)).to eq(expected_file)
         end
       end
@@ -186,10 +156,10 @@ module FeatureMap
           features:
             Bar:
               unit_count: 3
-                unit_pending: 2
+              unit_pending: 2
               integration_count: 0
               integration_pending: 0
-                  regression_count: 1
+              regression_count: 1
               regression_pending: 1
         CONTENTS
 

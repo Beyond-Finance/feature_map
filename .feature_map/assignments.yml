@@ -176,6 +176,9 @@ files:
   lib/feature_map/private/assignment_mappers/**/**:
     feature: Assignment Mapping
     mapper: Feature Assigned in .feature
+  lib/feature_map/private/test_pyramid/**/**:
+    feature: Testing Tools
+    mapper: Feature Assigned in .feature
   lib/feature_map/private/validations/**/**:
     feature: Validation
     mapper: Feature Assigned in .feature
@@ -202,6 +205,9 @@ files:
     mapper: Feature Assigned in .feature
   spec/lib/feature_map/private/assignment_mappers/**/**:
     feature: Assignment Mapping
+    mapper: Feature Assigned in .feature
+  spec/lib/feature_map/private/test_pyramid/**/**:
+    feature: Testing Tools
     mapper: Feature Assigned in .feature
   spec/lib/feature_map/private/validations/**/**:
     feature: Validation
@@ -361,10 +367,16 @@ features:
     - lib/feature_map/private/code_cov.rb
     - lib/feature_map/private/simple_cov_resultsets.rb
     - lib/feature_map/private/test_coverage_file.rb
+    - lib/feature_map/private/test_pyramid/jest_mapper.rb
+    - lib/feature_map/private/test_pyramid/mapper.rb
+    - lib/feature_map/private/test_pyramid/rspec_mapper.rb
     - lib/feature_map/private/test_pyramid_file.rb
     - lib/feature_map/private/todo_inspector.rb
     - spec/lib/feature_map/private/code_cov_spec.rb
     - spec/lib/feature_map/private/test_coverage_file_spec.rb
+    - spec/lib/feature_map/private/test_pyramid/jest_mapper_spec.rb
+    - spec/lib/feature_map/private/test_pyramid/mapper_spec.rb
+    - spec/lib/feature_map/private/test_pyramid/rspec_mapper_spec.rb
     - spec/lib/feature_map/private/test_pyramid_file_spec.rb
     - spec/lib/feature_map/private/todo_inspector_spec.rb
     teams:

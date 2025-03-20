@@ -315,7 +315,7 @@ RSpec.describe FeatureMap do
 
   describe '.generate_test_pyramid' do
     before do
-      create_test_coverage_artifacts
+      create_test_pyramid_artifacts
 
       write_file('tmp/unit.rspec', <<~CONTENTS)
         { "examples": []}
@@ -326,6 +326,7 @@ RSpec.describe FeatureMap do
       write_file('tmp/regression.rspec', <<~CONTENTS)
         { "examples": []}
       CONTENTS
+
       write_file('regression/.feature_map/assignments.yml', <<~CONTENTS)
         ---
         files: {}

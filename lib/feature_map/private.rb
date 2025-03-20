@@ -24,6 +24,9 @@ require 'feature_map/private/test_pyramid_file'
 require 'feature_map/private/additional_metrics_file'
 require 'feature_map/private/simple_cov_resultsets'
 require 'feature_map/private/feature_plugins/assignment'
+require 'feature_map/private/test_pyramid/mapper'
+require 'feature_map/private/test_pyramid/rspec_mapper'
+require 'feature_map/private/test_pyramid/jest_mapper'
 require 'feature_map/private/validations/files_have_features'
 require 'feature_map/private/validations/features_up_to_date'
 require 'feature_map/private/validations/files_have_unique_features'
@@ -105,11 +108,14 @@ module FeatureMap
     end
 
     def self.generate_test_pyramid!(unit_path, integration_path, regression_path, regression_assignments_path)
-      unit_examples = JSON.parse(File.read(unit_path))&.fetch('examples')
-      integration_examples = JSON.parse(File.read(integration_path))&.fetch('examples')
-      regression_examples = regression_path ? JSON.parse(File.read(regression_path))&.fetch('examples') : []
-      regression_assignments = regression_assignments_path ? YAML.load_file(regression_assignments_path) : {}
-      TestPyramidFile.write!(unit_examples, integration_examples, regression_examples, regression_assignments)
+      assignments = AssignmentsFile.load_features!
+      regression_assignments = regression_assignments_path ? YAML.load_file(regression_assignments_path)&.fetch('features') : assignments
+
+      TestPyramidFile.write!(
+        TestPyramid::Mapper.examples_by_feature(unit_path, assignments),
+        TestPyramid::Mapper.examples_by_feature(integration_path, assignments),
+        regression_path ? TestPyramid::Mapper.examples_by_feature(regression_path, regression_assignments) : {}
+      )
     end
 
     def self.gather_simplecov_test_coverage!(simplecov_paths)
