@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { config } from '../utils/config';
 
-export default function FeatureDetails({ name, feature }) {
+export default function FeatureDetails({ feature }) {
   const { project } = config;
   const featureFilters = `is:pr label:"${feature.label}"`;
   const encodedQuery = encodeURIComponent(featureFilters);
