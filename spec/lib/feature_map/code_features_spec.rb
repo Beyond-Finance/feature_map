@@ -200,4 +200,33 @@ RSpec.describe FeatureMap::CodeFeatures do
       end
     end
   end
+
+  describe 'feature methods' do
+    describe '#label' do
+      let(:features_csv) do
+        <<~CSV.strip
+          Name,Description,Documentation Link,Dashboard Link,Custom Attribute
+          A Feature,,,,
+          A really long feature name I mean someone really went overboard here,,,,
+        CSV
+      end
+
+      before do
+        write_file('.feature_map/feature_definitions.csv', features_csv)
+        FeatureMap::CodeFeatures.bust_caches!
+        allow(FeatureMap::CodeFeatures::Plugin).to receive(:registry).and_return({})
+      end
+
+      it 'returns a feature label' do
+        expect(FeatureMap::CodeFeatures.find('A Feature').label).to eq('Feature A Feature')
+      end
+
+      it 'truncates a long label' do
+        long_feature = 'A really long feature name I mean someone really went overboard here'
+        truncated_label = FeatureMap::CodeFeatures.find(long_feature).label
+        expect(truncated_label).to eq('Feature A really long feature name I mean someone ')
+        expect(truncated_label.size).to eq(FeatureMap::CodeFeatures::Feature::LABEL_LIMIT)
+      end
+    end
+  end
 end

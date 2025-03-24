@@ -73,6 +73,9 @@ module FeatureMap
     end
 
     class Feature
+      LABEL_PREFIX = 'Feature '
+      LABEL_LIMIT = 50
+
       def self.from_yml(config_yml)
         hash = YAML.load_file(config_yml)
 
@@ -99,6 +102,13 @@ module FeatureMap
 
       def name
         Plugins::Identity.for(self).identity.name
+      end
+
+      def label
+        # NOTE:  Certain uses of feature labels have character
+        #        limits.  This allows us to stay comfortably within
+        #        most without overly complex configuration.
+        "#{LABEL_PREFIX}#{name}"[0...LABEL_LIMIT]
       end
 
       def to_tag
