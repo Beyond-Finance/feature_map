@@ -81,6 +81,7 @@ module FeatureMap
           feature_definition = CodeFeatures.find(feature_name)
           hash[feature_name] = feature_definition&.raw_hash&.slice(*FETAURE_DEFINITION_KEYS_TO_INCLUDE) || {}
           hash[feature_name].merge!(
+            label: feature_definition.label,
             assignments: feature_assignments[feature_name],
             metrics: feature_metrics[feature_name],
             test_coverage: feature_test_coverage[feature_name],

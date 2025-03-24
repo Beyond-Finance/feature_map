@@ -62,6 +62,7 @@ module FeatureMap
       let(:expected_features) do
         {
           Bar: {
+            label: 'Feature Bar',
             assignments: [
               'app/lib/some_file.rb'
             ],
@@ -125,6 +126,7 @@ module FeatureMap
             }
           },
           Foo: {
+            label: 'Feature Foo',
             assignments: [
               'app/lib/some_other_file.rb'
             ],
@@ -206,6 +208,7 @@ module FeatureMap
             description: description,
             dashboard_link: dashboard_link,
             documentation_link: documentation_link,
+            label: 'Feature Foo',
             assignments: [
               'app/lib/some_other_file.rb'
             ],
