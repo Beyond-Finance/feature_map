@@ -21,6 +21,16 @@ See the [CodeCov API docs](https://docs.codecov.com/reference/repos_retrieve) fo
 
 Test coverage statistics can be pulled for a specific commit (e.g. the latest commit on a feature branch) by including the full commit SHA as an argument at the end of this CLI command (e.g. `bin/featuremap test_coverage ae80a927654997be4f48d3dbcd1320083cf22eea`). Before running this command please check the [CodeCov dashboard](https://app.codecov.io/) for your application to ensure test coverage statistics have been reported for this commit.
 
+## Using SimpleCov
+
+The `test_coverage` command also supports coverage information specified in [SimpleCov](https://github.com/simplecov-ruby/simplecov)'s `json`  format.
+
+> `bin/featuremap test_coverage --use-simplecov --simplecov-path $COVERAGE_FILE`
+
+**Notes**
+- SimpleCov mode requires at least one path to be specified with `--simplecov-path`
+- SimpleCov and CodeCov modes cannot be used together
+
 # Input
 
 Running the `bin/featuremap test_coverage` requires an active CodeCov API access token to be specified in the `CODECOV_API_TOKEN` environment variable of your shell session. This token is used to retrieve coverage statistics from the CodeCov account configured in the `.feature_map/config.yml` file.
