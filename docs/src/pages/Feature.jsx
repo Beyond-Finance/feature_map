@@ -44,7 +44,7 @@ export default function Feature({ features }) {
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         {/* Left Column */}
         <div className="col-span-1 xl:col-span-3">
-          <FeatureDetails name={name} feature={feature} />
+          <FeatureDetails feature={feature} />
         </div>
 
         {/* Right Column */}
