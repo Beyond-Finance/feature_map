@@ -11,7 +11,7 @@ module FeatureMap
         @@map_files_to_features = {} # rubocop:disable Style/ClassVars
 
         def map_files_to_features(files)
-          return @@map_files_to_features if @@map_files_to_features&.keys && @@map_files_to_features.keys.count.positive?
+          return @@map_files_to_features if @@map_files_to_features&.any?
 
           @@map_files_to_features = FeatureMap::CodeFeatures.all.each_with_object({}) do |feature, map| # rubocop:disable Style/ClassVars
             FeaturePlugins::Assignment.for(feature).assigned_globs.each do |glob|
