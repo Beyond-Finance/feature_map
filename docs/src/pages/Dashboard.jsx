@@ -42,7 +42,7 @@ const Dashboard = ({ features }) => {
       </div>
 
       <div>
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-3 gap-6">
           <li className="px-4 py-6 border border-gray-200 shadow-xs bg-white rounded-lg">
             <FeatureSizeDataCard features={filteredFeatures} />
           </li>
