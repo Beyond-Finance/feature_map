@@ -10,7 +10,7 @@ module FeatureMap
           cache = Private.glob_cache
           file_mappings = cache.mapper_descriptions_that_map_files(files)
           files_not_mapped_at_all = file_mappings.select do |_file, mapper_descriptions|
-            mapper_descriptions.count.zero?
+            mapper_descriptions.none?
           end
 
           errors = []
