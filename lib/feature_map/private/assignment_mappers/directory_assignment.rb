@@ -31,10 +31,10 @@ module FeatureMap
             .glob(File.join('**/', FEATURE_DIRECTORY_ASSIGNMENT_FILE_NAME))
             .map(&:cleanpath)
             .each_with_object({}) do |pathname, res|
-            feature = feature_for_directory_assignment_file(pathname)
-            glob = glob_for_directory_assignment_file(pathname)
-            res[glob] = feature
-          end
+              feature = feature_for_directory_assignment_file(pathname)
+              glob = glob_for_directory_assignment_file(pathname)
+              res[glob] = feature
+            end
         end
 
         def description
