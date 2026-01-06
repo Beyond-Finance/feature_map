@@ -256,6 +256,7 @@ features:
   Documentation Content:
     files:
     - readme/_layouts/default.html
+    - readme/artifacts/additional-metrics.md
     - readme/artifacts/assignments.md
     - readme/artifacts/docs.md
     - readme/artifacts/metrics.md
@@ -272,6 +273,7 @@ features:
     - readme/getting-started/inline-execution.md
     - readme/getting-started/with-code-ownership.md
     - readme/index.md
+    - readme/public-interface/additional-metrics.md
     - readme/public-interface/apply-assignments.md
     - readme/public-interface/docs.md
     - readme/public-interface/for-backtrace.md
