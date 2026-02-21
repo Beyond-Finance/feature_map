@@ -1,8 +1,6 @@
 # @feature Metrics Calculation
 # frozen_string_literal: true
 
-require 'parser/current'
-
 module FeatureMap
   module Private
     class LinesOfCodeCalculator

@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'code_ownership', '~> 1.34'
   spec.add_dependency 'faraday', '~> 2.7'
   spec.add_dependency 'packs-specification', '~> 0.0'
+  spec.add_dependency 'parser', '~> 3.3'
   spec.add_dependency 'rubocop', '~> 1.0'
   spec.add_dependency 'uri', '~> 1.0'
 
