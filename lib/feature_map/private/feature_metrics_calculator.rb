@@ -1,7 +1,6 @@
 # @feature Metrics Calculation
 # frozen_string_literal: true
 
-require 'rubocop'
 module FeatureMap
   module Private
     class FeatureMetricsCalculator
@@ -46,6 +45,10 @@ module FeatureMap
         }
 
         return metrics unless file_path.end_with?('.rb')
+
+        # Lazy load the rubocop gem only when we need to process AST nodes to avoid introducing unnecessary
+        # dependencies for use cases that do not exercise this functionality.
+        require 'rubocop'
 
         file_content = File.read(file_path)
         source = RuboCop::ProcessedSource.new(file_content, RUBY_VERSION.to_f)
