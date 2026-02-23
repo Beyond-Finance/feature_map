@@ -15,6 +15,10 @@ module FeatureMap
       end
 
       def calculate
+        # Lazy load the parser gem only when we need to process AST nodes to avoid introducing unnecessary
+        # dependencies for use cases that do not exercise this functionality.
+        require 'parser/current'
+
         process(@ast)
         @complexity
       end
@@ -22,10 +26,6 @@ module FeatureMap
       private
 
       def process(node)
-        # Lazy load the parser gem only when we need to process AST nodes to avoid introducing unnecessary
-        # dependencies for use cases that do not exercise this functionality.
-        require 'parser/current'
-
         return unless node.is_a?(Parser::AST::Node)
 
         # Increment complexity for each branching node
