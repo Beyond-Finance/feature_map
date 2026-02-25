@@ -1,8 +1,6 @@
 # @feature Metrics Calculation
 # frozen_string_literal: true
 
-require 'parser/current'
-
 module FeatureMap
   module Private
     class CyclomaticComplexityCalculator
@@ -17,6 +15,10 @@ module FeatureMap
       end
 
       def calculate
+        # Lazy load the parser gem only when we need to process AST nodes to avoid introducing unnecessary
+        # dependencies for use cases that do not exercise this functionality.
+        require 'parser/current'
+
         process(@ast)
         @complexity
       end
