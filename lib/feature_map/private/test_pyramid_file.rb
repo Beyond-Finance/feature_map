@@ -38,15 +38,15 @@ module FeatureMap
       end
 
       def self.generate_content(unit_by_feature, integration_by_feature, regression_by_feature)
-        CodeFeatures.all.map(&:name).each_with_object({}) do |feature_name, content|
-          content[feature_name] = {
+        CodeFeatures.all.map(&:name).to_h do |feature_name|
+          [feature_name, {
             'unit_count' => unit_by_feature.dig(feature_name, :count) || 0,
             'unit_pending' => unit_by_feature.dig(feature_name, :pending) || 0,
             'integration_count' => integration_by_feature.dig(feature_name, :count) || 0,
             'integration_pending' => integration_by_feature.dig(feature_name, :pending) || 0,
             'regression_count' => regression_by_feature.dig(feature_name, :count) || 0,
             'regression_pending' => regression_by_feature.dig(feature_name, :pending) || 0
-          }
+          }]
         end
       end
 

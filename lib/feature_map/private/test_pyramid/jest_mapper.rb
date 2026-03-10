@@ -5,8 +5,8 @@ module FeatureMap
         class << self
           def map_tests_by_assignment(test_suites, assignments)
             # Transform test suites into a hash of filepath => assertion results
-            tests_by_path = test_suites.each_with_object({}) do |suite, result|
-              result[filepath(suite['name'])] = suite['assertionResults']
+            tests_by_path = test_suites.to_h do |suite|
+              [filepath(suite['name']), suite['assertionResults']]
             end
 
             assignments.each_with_object({}) do |(feature_name, files), result|
