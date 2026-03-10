@@ -113,8 +113,8 @@ module FeatureMap
 
       def self.to_glob_cache
         raw_cache_contents = {}
-        features_by_name = CodeFeatures.all.each_with_object({}) do |feature, map|
-          map[feature.name] = feature
+        features_by_name = CodeFeatures.all.to_h do |feature|
+          [feature.name, feature]
         end
         mapper_descriptions = Set.new(Mapper.all.map(&:description))
 

@@ -24,8 +24,8 @@ module FeatureMap
         metrics = file_paths.map { |file| calculate_for_file(file) }
 
         # Handle numeric metrics
-        aggregate_metrics = [ABC_SIZE_METRIC, CYCLOMATIC_COMPLEXITY_METRIC, LINES_OF_CODE_METRIC].each_with_object({}) do |metric_key, agg|
-          agg[metric_key] = metrics.sum { |m| m[metric_key] || 0 }
+        aggregate_metrics = [ABC_SIZE_METRIC, CYCLOMATIC_COMPLEXITY_METRIC, LINES_OF_CODE_METRIC].to_h do |metric_key|
+          [metric_key, metrics.sum { |m| m[metric_key] || 0 }]
         end
 
         # Handle additional supported metrics
