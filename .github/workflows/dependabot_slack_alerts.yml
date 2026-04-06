@@ -14,7 +14,7 @@ jobs:
     steps:
       # Latest version available at: https://github.com/kunalnagarco/action-cve/releases
       - name: Notify Vulnerabilities
-        uses: kunalnagarco/action-cve@9ed8c1af9d131241ad1c78b608af251465121ac0 # pin @v1.14.23
+        uses: kunalnagarco/action-cve@2b395cd09ce1f7917eeb3739ad08973d3dcec875 # pin @v1.14.24
         with:
           token: ${{ secrets.ACCESS_TOKEN_GITHUB }} # This secret is located in settings > actions > Repository secrets
           slack_webhook: ${{ secrets.SLACK_WEBHOOK }} # This secret is located in settings > actions > Repository secrets
