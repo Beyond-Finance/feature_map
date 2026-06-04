@@ -6,8 +6,8 @@ export default function inlinePlugin() {
     apply: 'build',
 
     transformIndexHtml: {
-      enforce: 'post',
-      async transform(html, ctx) {
+      order: 'post',
+      async handler(html, ctx) {
         if (!ctx.bundle) return html;
 
         let jsCode = '';
