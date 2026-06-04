@@ -30,7 +30,7 @@
     "@eslint/js": "^9.22.0",
     "@modyfi/vite-plugin-yaml": "^1.1.0",
     "@tailwindcss/postcss": "^4.0.14",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^6.0.2",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
