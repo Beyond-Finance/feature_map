@@ -54,14 +54,13 @@ module FeatureMap
       end
 
       it 'returns 0 for a file with only comments and whitespace' do
-        # rubocop:disable Layout/TrailingWhitespace
+        # rubocop:disable-next Layout/TrailingWhitespace
         write_file(file_path, <<~CONTENTS)
           # Test 123
             
           \t 
             
         CONTENTS
-        # rubocop:enable Layout/TrailingWhitespace
 
         expect(calculator.calculate).to eq(0)
       end
