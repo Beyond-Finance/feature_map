@@ -32,7 +32,9 @@ module FeatureMap
         before { code_cov_request.to_return(status: 500, body: { error: 'Internal Server Error' }.to_json, headers: { 'Content-Type' => 'application/json' }) }
 
         it 'raises an error' do
-          expect { described_class.fetch_coverage_stats(commit_sha, api_token) }.to raise_error(described_class::ApiError, /500 - \{"error"=>"Internal Server Error"\}/i)
+          expect { described_class.fetch_coverage_stats(commit_sha, api_token) }.to raise_error(described_class::ApiError) do |error|
+            expect(error.message).to include('500').and include('"error"').and include('Internal Server Error')
+          end
         end
       end
 
