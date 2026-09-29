@@ -137,12 +137,15 @@ module FeatureMap
     #
     #   ./app/controllers/some_controller.rb:43:in `block (3 levels) in create'
     #
+    # Ruby 3.4 changed the opening quote around the function name from a
+    # backtick to a single quote (`block ...'` -> `'block ...'`), so both
+    # delimiters are matched to remain compatible across Ruby versions.
     backtrace_line = %r{\A(#{Pathname.pwd}/|\./)?
-        (?<file>.+)       # Matches 'app/controllers/some_controller.rb'
+        (?<file>.+)          # Matches 'app/controllers/some_controller.rb'
         :
-        (?<line>\d+)      # Matches '43'
+        (?<line>\d+)         # Matches '43'
         :in\s
-        `(?<function>.*)' # Matches "`block (3 levels) in create'"
+        [`'](?<function>.*)' # Matches "`block (3 levels) in create'" or "'block (3 levels) in create'"
       \z}x
 
     backtrace.lazy.filter_map do |line|
