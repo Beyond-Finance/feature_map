@@ -39,6 +39,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'railties', '~> 7.2'
   spec.add_development_dependency 'rake', '~> 13.2'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'simplecov', '~> 1.3'
+  if RUBY_VERSION >= '3.3'
+    spec.add_development_dependency 'simplecov', '~> 1.3'
+  else
+    spec.add_development_dependency 'simplecov', '~> 0.22'
+  end
   spec.add_development_dependency 'webmock', '~> 3.24'
 end
