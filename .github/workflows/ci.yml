@@ -16,6 +16,7 @@ jobs:
           - 3.2
           - 3.3
           - 3.4
+          - 4.0
     env:
       BUNDLE_GEMFILE: Gemfile
     name: "RSpec tests: Ruby ${{ matrix.ruby }}"
@@ -41,6 +42,6 @@ jobs:
         uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # pin @1.327.0
         with:
           bundler-cache: true
-          ruby-version: 3.4
+          ruby-version: 4.0
       - name: Run Rubocop checks
         run: bin/rubocop
