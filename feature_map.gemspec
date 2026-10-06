@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = 'feature_map'
-  spec.version       = '1.3.0'
+  spec.version       = '1.4.0'
   spec.authors       = ['Beyond Finance']
   spec.email         = ['engineering@beyondfinance.com']
   spec.summary       = 'A gem to help identify and manage features within large Ruby and Rails applications'
@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'code_ownership', '~> 1.34'
+  spec.add_dependency 'csv', '~> 3.3'
   spec.add_dependency 'faraday', '~> 2.7'
   spec.add_dependency 'packs-specification', '~> 0.0'
   spec.add_dependency 'parser', '~> 3.3'
@@ -35,7 +36,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'uri', '~> 1.0'
 
   spec.add_development_dependency 'debug', '~> 1.9'
-  spec.add_development_dependency 'github-pages', '~> 232'
   spec.add_development_dependency 'railties', '~> 7.2'
   spec.add_development_dependency 'rake', '~> 13.2'
   spec.add_development_dependency 'rspec', '~> 3.0'
