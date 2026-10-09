@@ -10,12 +10,12 @@ module FeatureMap
         \s* # Any amount of whitespace
         (#{Constants::SINGLE_LINE_COMMENT_PATTERNS.join('|')}) # Any comment start
         .* # And the rest of the line
-      /x.freeze
+      /x
       MULTI_LINE_COMMENT_PATTERN = /
         (#{Constants::MULTILINE_COMMENT_START_PATTERNS.join('|')}) # Multiline comment start
         .*? # Everything in between, but lazily so we stop when we hit...
         (#{Constants::MULTILINE_COMMENT_END_PATTERNS.join('|')}) # ...Multiline comment end
-      /xm.freeze
+      /xm
 
       def initialize(file_path)
         @file_path = file_path

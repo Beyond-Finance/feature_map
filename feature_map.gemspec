@@ -1,13 +1,13 @@
 Gem::Specification.new do |spec|
   spec.name          = 'feature_map'
-  spec.version       = '1.4.0'
+  spec.version       = '2.0.0'
   spec.authors       = ['Beyond Finance']
   spec.email         = ['engineering@beyondfinance.com']
   spec.summary       = 'A gem to help identify and manage features within large Ruby and Rails applications'
   spec.description   = 'FeatureMap helps identify and manage features within large Ruby and Rails applications. This gem works best in large, usually monolithic code bases for applications that incorporate a wide range of features with various dependencies.'
   spec.homepage      = 'https://github.com/Beyond-Finance/feature_map'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.6'
+  spec.required_ruby_version = '>= 3.3'
 
   if spec.respond_to?(:metadata)
     spec.metadata['homepage_uri'] = spec.homepage

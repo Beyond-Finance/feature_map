@@ -23,14 +23,14 @@ module FeatureMap
           \s* # Any amount of whitespace, not including newlines
           @feature\s # We find the feature annotation followed by one space
           (?<feature>.*?$) # A named capture grabs the rest as the feature until the line ends
-        /x.freeze
+        /x
 
         MULTILINE_ANNOTATION_PATTERN = /
           (?:#{Constants::MULTILINE_COMMENT_START_PATTERNS.join('|')}) # Any comment start
           .*? # Followed by any characters, including newlines, until...
           @feature\s # We find the feature annotation followed by one space
           (?<feature>.*?$) # A named capture grabs the rest as the feature until the line ends
-        /xm.freeze
+        /xm
 
         DESCRIPTION = 'Annotations at the top of file'
 
