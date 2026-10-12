@@ -1,7 +1,6 @@
 # @feature Core Library
 # frozen_string_literal: true
 
-require 'set'
 require 'json'
 require 'yaml'
 require 'feature_map/commit'

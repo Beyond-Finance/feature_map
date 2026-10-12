@@ -3,7 +3,6 @@
 
 require 'yaml'
 require 'csv'
-require 'set'
 require 'pathname'
 require 'feature_map/code_features/plugin'
 require 'feature_map/code_features/plugins/identity'

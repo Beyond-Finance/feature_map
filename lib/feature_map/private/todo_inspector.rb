@@ -6,17 +6,17 @@ module FeatureMap
     class TodoInspector
       ENTERING_COMMENT = /
         (#{(Constants::SINGLE_LINE_COMMENT_PATTERNS + Constants::MULTILINE_COMMENT_START_PATTERNS).join('|')})
-      /x.freeze
+      /x
 
       EXITING_COMMENT = /
         (#{(Constants::SINGLE_LINE_COMMENT_PATTERNS + Constants::MULTILINE_COMMENT_END_PATTERNS).join('|')})
-      /x.freeze
+      /x
 
       TODO_PATTERN = /
         TODO:?\s* # TODO with optional colon with whitespace
         (?<content>.*?) # The actual TODO content
         (#{Constants::MULTILINE_COMMENT_END_PATTERNS.join('|')})?$ # ignores comment end patterns
-      /xi.freeze
+      /xi
 
       def initialize(file_path)
         @file_path = file_path
