@@ -47,6 +47,9 @@ files:
   lib/feature_map/private/code_cov.rb:
     feature: Testing Tools
     mapper: Annotations at the top of file
+  lib/feature_map/private/configured_commands.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
   lib/feature_map/private/cyclomatic_complexity_calculator.rb:
     feature: Metrics Calculation
     mapper: Annotations at the top of file
@@ -80,11 +83,20 @@ files:
   lib/feature_map/private/percentile_metrics_calculator.rb:
     feature: Metrics Calculation
     mapper: Annotations at the top of file
+  lib/feature_map/private/pull_request_annotator.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  lib/feature_map/private/release_log_publisher.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
   lib/feature_map/private/release_notification_builder.rb:
     feature: Extension System
     mapper: Annotations at the top of file
   lib/feature_map/private/simple_cov_resultsets.rb:
     feature: Testing Tools
+    mapper: Annotations at the top of file
+  lib/feature_map/private/team_release_notifier.rb:
+    feature: Core Library
     mapper: Annotations at the top of file
   lib/feature_map/private/test_coverage_file.rb:
     feature: Testing Tools
@@ -110,6 +122,9 @@ files:
   spec/lib/feature_map/commit_spec.rb:
     feature: Core Library
     mapper: Annotations at the top of file
+  spec/lib/feature_map/configuration_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
   spec/lib/feature_map/private/additional_metrics_file_spec.rb:
     feature: Metrics Storage
     mapper: Annotations at the top of file
@@ -121,6 +136,9 @@ files:
     mapper: Annotations at the top of file
   spec/lib/feature_map/private/code_cov_spec.rb:
     feature: Testing Tools
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/configured_commands_spec.rb:
+    feature: Core Library
     mapper: Annotations at the top of file
   spec/lib/feature_map/private/cyclomatic_complexity_calculator_spec.rb:
     feature: Metrics Calculation
@@ -140,6 +158,12 @@ files:
   spec/lib/feature_map/private/health_calculator_spec.rb:
     feature: Metrics Calculation
     mapper: Annotations at the top of file
+  spec/lib/feature_map/private/integration/release_log_publisher_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/integration/team_release_notifier_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
   spec/lib/feature_map/private/lines_of_code_calculator_spec.rb:
     feature: Metrics Calculation
     mapper: Annotations at the top of file
@@ -149,8 +173,17 @@ files:
   spec/lib/feature_map/private/percentile_metrics_calculator_spec.rb:
     feature: Metrics Calculation
     mapper: Annotations at the top of file
+  spec/lib/feature_map/private/pull_request_annotator_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/release_log_publisher_spec.rb:
+    feature: Core Library
+    mapper: Annotations at the top of file
   spec/lib/feature_map/private/release_notification_builder_spec.rb:
     feature: Extension System
+    mapper: Annotations at the top of file
+  spec/lib/feature_map/private/team_release_notifier_spec.rb:
+    feature: Core Library
     mapper: Annotations at the top of file
   spec/lib/feature_map/private/test_coverage_file_spec.rb:
     feature: Testing Tools
@@ -246,9 +279,20 @@ features:
     - lib/feature_map/mapper.rb
     - lib/feature_map/output_color.rb
     - lib/feature_map/private.rb
+    - lib/feature_map/private/configured_commands.rb
+    - lib/feature_map/private/pull_request_annotator.rb
+    - lib/feature_map/private/release_log_publisher.rb
+    - lib/feature_map/private/team_release_notifier.rb
     - lib/feature_map/validator.rb
     - spec/lib/feature_map/cli_spec.rb
     - spec/lib/feature_map/commit_spec.rb
+    - spec/lib/feature_map/configuration_spec.rb
+    - spec/lib/feature_map/private/configured_commands_spec.rb
+    - spec/lib/feature_map/private/integration/release_log_publisher_spec.rb
+    - spec/lib/feature_map/private/integration/team_release_notifier_spec.rb
+    - spec/lib/feature_map/private/pull_request_annotator_spec.rb
+    - spec/lib/feature_map/private/release_log_publisher_spec.rb
+    - spec/lib/feature_map/private/team_release_notifier_spec.rb
     - spec/lib/feature_map_spec.rb
     - spec/spec_helper.rb
     teams:

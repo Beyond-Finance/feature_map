@@ -9,3 +9,5 @@ Once FeatureMap has been integrated into an application, the knowledge of which 
 - Collect and group changes to each associated feature
   - This process can be aided by the [`group_commits`](https://github.com/Beyond-Finance/feature_map/blob/8592afe515649ccf936b539e9419070c6daced7f/lib/feature_map.rb#L212) and [`generate_release_notification`](https://github.com/Beyond-Finance/feature_map/blob/8592afe515649ccf936b539e9419070c6daced7f/lib/feature_map.rb#L243C7-L243C36) methods exposed by FeatureMap
 - Publish the change to a shared space, like Slack
+
+The [`slack_release_log`]({{ '/public-interface/slack-release-log' | relative_url }}) and [`slack_team_notifications`]({{ '/public-interface/slack-team-notifications' | relative_url }}) commands do this for Slack.

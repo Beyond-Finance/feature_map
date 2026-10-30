@@ -94,4 +94,19 @@ documentation_site:
       good: 98
       fair: 95
       poor: 0
+
+# Settings for the Slack and GitHub commands.  Each section turns on the
+# command of the same name; leave a section out to leave the command off.
+# See the Public Interface pages for the keys each section accepts.
+github_pr_annotation:
+  repo: '<%= ENV.fetch('REPO', '') %>'
+  github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
+  pr_number: '<%= ENV.fetch('PR_NUMBER', '') %>'
+  base_metrics_path: '<%= ENV.fetch('BASE_METRICS_PATH', '') %>'
 ```
+
+# Environment variables
+
+The configuration file is processed as ERB before it is read as YAML, so values can come from environment variables with `<%= ENV.fetch('NAME', '') %>`.  This is how secrets such as tokens and webhooks reach the commands.  Quote the tag, as in the example above, so YAML does not turn a value like `1234567890.100000` into a number.
+
+The documentation site only publishes the `documentation_site` and `repository` sections of this file.  The `github_pr_annotation`, `slack_release_log` and `slack_team_notifications` sections are never written to the documentation site.
