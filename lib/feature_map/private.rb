@@ -35,9 +35,15 @@ require 'feature_map/private/assignment_mappers/feature_globs'
 require 'feature_map/private/assignment_mappers/directory_assignment'
 require 'feature_map/private/assignment_mappers/feature_definition_assignment'
 require 'feature_map/private/release_notification_builder'
+require 'feature_map/private/pull_request_annotator'
+require 'feature_map/private/release_log_publisher'
+require 'feature_map/private/team_release_notifier'
+require 'feature_map/private/configured_commands'
 
 module FeatureMap
   module Private
+    DOCUMENTATION_SITE_CONFIGURATION_KEYS = %w[documentation_site repository].freeze
+
     def self.apply_assignments!(assignments_file_path)
       assignments = CSV.read(assignments_file_path)
       AssignmentApplicator.apply_assignments!(assignments)
@@ -102,7 +108,7 @@ module FeatureMap
         feature_test_coverage,
         feature_test_pyramid,
         feature_additional_metrics,
-        configuration.raw_hash,
+        configuration.raw_hash.slice(*DOCUMENTATION_SITE_CONFIGURATION_KEYS),
         git_ref || configuration.repository['main_branch']
       )
     end

@@ -20,6 +20,12 @@ module FeatureMap
         test_pyramid!(argv)
       elsif command == 'additional_metrics'
         additional_metrics!(argv)
+      elsif command == 'github_pr_annotation'
+        FeatureMap.github_pr_annotation!
+      elsif command == 'slack_release_log'
+        FeatureMap.slack_release_log!
+      elsif command == 'slack_team_notifications'
+        FeatureMap.slack_team_notifications!
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -33,6 +39,9 @@ module FeatureMap
             docs - generates feature documentation
             for_feature - find assignment information for a feature
             for_file - find feature assignment for a single file
+            github_pr_annotation - comments the features and metrics affected by a pull request and labels it
+            slack_release_log - posts the changes since the previous release to the release log thread in Slack
+            slack_team_notifications - posts each team's affected features for a release to the team's Slack channel
             test_coverage - generates per-feature test coverage statistics
             test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
             additional_metrics - generates additional metrics per-feature (e.g. health score)

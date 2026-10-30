@@ -227,6 +227,18 @@ module FeatureMap
     Mapper.all.each(&:bust_caches!)
   end
 
+  def self.github_pr_annotation!
+    Private::ConfiguredCommands.github_pr_annotation
+  end
+
+  def self.slack_release_log!
+    Private::ConfiguredCommands.slack_release_log
+  end
+
+  def self.slack_team_notifications!
+    Private::ConfiguredCommands.slack_team_notifications
+  end
+
   def self.configuration
     Private.configuration
   end

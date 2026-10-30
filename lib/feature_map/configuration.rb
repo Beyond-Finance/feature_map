@@ -1,6 +1,10 @@
 # @feature Core Library
+require 'erb'
+
 module FeatureMap
   class Configuration
+    COMMAND_SECTIONS = %w[github_pr_annotation slack_release_log slack_team_notifications].freeze
+
     attr_reader :assigned_globs
     attr_reader :unassigned_globs
     attr_reader :unbuilt_gems_path
@@ -13,6 +17,7 @@ module FeatureMap
     attr_reader :repository
     attr_reader :documentation_site
     attr_reader :documentation_site_url
+    attr_reader :command_sections
 
     def initialize(
       assigned_globs: nil,
@@ -26,7 +31,8 @@ module FeatureMap
       code_cov: nil,
       repository: nil,
       documentation_site: nil,
-      documentation_site_url: nil
+      documentation_site_url: nil,
+      command_sections: nil
     )
       @assigned_globs = assigned_globs
       @unassigned_globs = unassigned_globs
@@ -40,10 +46,13 @@ module FeatureMap
       @repository = repository
       @documentation_site = documentation_site
       @documentation_site_url = documentation_site_url
+      @command_sections = command_sections || {}
     end
 
     def self.fetch
-      config_hash = YAML.load_file('.feature_map/config.yml')
+      full_hash = YAML.load(ERB.new(File.read('.feature_map/config.yml')).result) || {}
+      command_sections = full_hash.slice(*COMMAND_SECTIONS)
+      config_hash = full_hash.except(*COMMAND_SECTIONS)
 
       if config_hash.key?('require')
         config_hash['require'].each do |require_directive|
@@ -62,7 +71,8 @@ module FeatureMap
         code_cov: config_hash.fetch('code_cov', {}),
         repository: config_hash.fetch('repository', {}),
         documentation_site: config_hash.fetch('documentation_site', {}),
-        documentation_site_url: config_hash.fetch('documentation_site_url', nil)
+        documentation_site_url: config_hash.fetch('documentation_site_url', nil),
+        command_sections: command_sections
       )
     end
   end

@@ -285,6 +285,23 @@ RSpec.describe FeatureMap do
         expect(File.read(Pathname.pwd.join('.feature_map/docs/feature-map-config.js'))).to match('"git_ref":"main"')
       end
 
+      it 'never writes command section values or unlisted config keys into the documentation site' do
+        write_configuration(
+          'repository' => { 'main_branch' => 'main', 'url' => 'https://example.com' },
+          'documentation_site' => { 'title' => 'Docs' },
+          'unlisted_section' => { 'token' => 'secret-unlisted' },
+          'github_pr_annotation' => { 'github_token' => 'secret-github' },
+          'slack_release_log' => { 'slack_api_token' => 'secret-slack' },
+          'slack_team_notifications' => { 'teams' => { 'Sales' => 'https://hooks.slack.com/secret-webhook' } }
+        )
+
+        FeatureMap.generate_docs!(nil)
+
+        docs_output = Dir.glob(Pathname.pwd.join('.feature_map/docs/**/*').to_s).select { |path| File.file?(path) }.map { |path| File.read(path) }.join
+        expect(docs_output).to include('"title":"Docs"')
+        expect(docs_output).not_to match(/secret-|hooks\.slack\.com/)
+      end
+
       context 'when test coverage artifacts are present' do
         before { create_test_coverage_artifacts }
 

@@ -9,3 +9,5 @@ Once FeatureMap has been integrated into an application, the knowledge of which 
 - Collect and group changes to each associated feature
   - This process can be aided by the [`group_commits`](https://github.com/Beyond-Finance/feature_map/blob/8592afe515649ccf936b539e9419070c6daced7f/lib/feature_map.rb#L212) method exposed by FeatureMap
 - Publish the changes back to GitHub via a label or comment on the PR
+
+The [`github_pr_annotation`]({{ '/public-interface/github-pr-annotation' | relative_url }}) command does this for GitHub pull requests.
