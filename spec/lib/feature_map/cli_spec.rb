@@ -97,6 +97,23 @@ RSpec.describe FeatureMap::Cli do
     end
   end
 
+  describe 'configured commands' do
+    {
+      'github_pr_annotation' => :github_pr_annotation!,
+      'slack_release_log' => :slack_release_log!,
+      'slack_team_notifications' => :slack_team_notifications!
+    }.each do |command, method_name|
+      context "with #{command}" do
+        let(:argv) { [command] }
+
+        it "runs #{command}" do
+          expect(FeatureMap).to receive(method_name)
+          subject
+        end
+      end
+    end
+  end
+
   describe 'test_pyramid' do
     let(:argv) { ['test_pyramid', 'tmp/unit.rspec', 'tmp/integration.rspec', 'tmp/regression.rspec', 'regression/.feature_map/assignments.yml'] }
 
@@ -336,6 +353,9 @@ RSpec.describe FeatureMap::Cli do
           docs - generates feature documentation
           for_feature - find assignment information for a feature
           for_file - find feature assignment for a single file
+          github_pr_annotation - comments the features and metrics affected by a pull request and labels it
+          slack_release_log - posts the changes since the previous release to the release log thread in Slack
+          slack_team_notifications - posts each team's affected features for a release to the team's Slack channel
           test_coverage - generates per-feature test coverage statistics
           test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
           additional_metrics - generates additional metrics per-feature (e.g. health score)
