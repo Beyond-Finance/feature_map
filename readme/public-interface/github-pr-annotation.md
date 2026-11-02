@@ -22,12 +22,23 @@ github_pr_annotation:
   base_metrics_path: '<%= ENV.fetch('BASE_METRICS_PATH', '') %>'
 ```
 
-  - `repo`: the repository name. The organization comes from `repository.url`.
-  - `github_token`: a token that can read the pull request and write comments and labels.
-  - `pr_number`: the pull request to annotate.
-  - `base_metrics_path`: the `metrics.yml` generated on the base branch. When the file does not exist, the command skips the annotation.
+  - `repo` (required): the repository name. The organization comes from `repository.url`.
+  - `github_token` (required): a token that can read the pull request and write comments and labels.
+  - `pr_number` (required): the pull request to annotate.
+  - `base_metrics_path`: the `metrics.yml` generated on the base branch. When the file does not exist, the command prints a message and skips the annotation.
 
-Documentation links come from `documentation_site_url`. See [Getting Started - Configuration]({{ '/getting-started/configuration' | relative_url }}) for how environment variables are read.
+A command with a required key left empty stops with an error naming the key.
+
+The command also needs two top-level keys in `.feature_map/config.yml`, and stops with an error if either is missing:
+
+  - `repository.url`: the repository's GitHub URL, used to find the organization.
+  - `documentation_site_url`: the base URL of your documentation site, used for the documentation links in the comment.
+
+See [Getting Started - Configuration]({{ '/getting-started/configuration' | relative_url }}) for how environment variables are read.
+
+# Setting it up
+
+See [Continuous Integration - PR Tags]({{ '/continuous-integration/pr-tags' | relative_url }}) for a GitHub Actions workflow that runs this command.
 
 # Input
 

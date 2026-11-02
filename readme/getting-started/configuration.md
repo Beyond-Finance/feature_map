@@ -97,12 +97,27 @@ documentation_site:
 
 # Settings for the Slack and GitHub commands.  Each section turns on the
 # command of the same name; leave a section out to leave the command off.
-# See the Public Interface pages for the keys each section accepts.
+# See the Public Interface pages for what each key does and which are required.
 github_pr_annotation:
   repo: '<%= ENV.fetch('REPO', '') %>'
   github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
   pr_number: '<%= ENV.fetch('PR_NUMBER', '') %>'
   base_metrics_path: '<%= ENV.fetch('BASE_METRICS_PATH', '') %>'
+slack_release_log:
+  repo: '<%= ENV.fetch('REPO', '') %>'
+  display_name: Example App
+  github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
+  slack_api_token: '<%= ENV.fetch('RELEASE_LOG_SLACK_API_TOKEN', '') %>'
+  slack_app_user_id: '<%= ENV.fetch('RELEASE_LOG_SLACK_APP_USER_ID', '') %>'
+  slack_channel: '<%= ENV.fetch('RELEASE_LOG_SLACK_CHANNEL_NAME', '') %>'
+  slack_thread_parent_ts: '<%= ENV.fetch('RELEASE_LOG_SLACK_THREAD_PARENT_TS', '') %>'
+slack_team_notifications:
+  repo: '<%= ENV.fetch('REPO', '') %>'
+  display_name: Example App
+  github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
+  release_ref: '<%= ENV.fetch('RELEASE_REF', '') %>'
+  teams:
+    Onboarding: '<%= ENV.fetch('ONBOARDING_SLACK_WEBHOOK', '') %>'
 ```
 
 # Environment variables

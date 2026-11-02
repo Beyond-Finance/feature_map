@@ -25,14 +25,28 @@ slack_release_log:
   slack_thread_parent_ts: '<%= ENV.fetch('RELEASE_LOG_SLACK_THREAD_PARENT_TS', '') %>'
 ```
 
-  - `repo`: the repository name. The organization comes from `repository.url`.
+  - `repo` (required): the repository name. The organization comes from `repository.url`.
   - `display_name`: optional. The name shown in the message header. Defaults to `repo`.
-  - `github_token`: a token that can read the repository's releases.
-  - `slack_api_token`: the Slack app's token.
-  - `slack_app_user_id`: the Slack app's user ID. Without it, past messages are not cleaned up.
-  - `slack_channel` and `slack_thread_parent_ts`: where to post.
+  - `github_token` (required): a token that can read the repository's releases.
+  - `slack_api_token`: the Slack app's token. When it, `slack_channel` or `slack_thread_parent_ts` is empty, the command prints the message it would have posted and posts nothing.
+  - `slack_app_user_id`: the Slack app's user ID. When empty, messages from earlier releases are not cleaned up.
+  - `slack_channel` and `slack_thread_parent_ts`: where to post. The channel can be a name (`#release-log`) or a channel ID.
+
+A command with a required key left empty stops with an error naming the key.
+
+The command also needs these top-level keys in `.feature_map/config.yml`:
+
+  - `repository.url` and `documentation_site_url` (both required, and the command stops with an error if either is missing).
+  - `repository.main_branch`: the branch whose commits are listed. Defaults to `main`.
 
 Quote the values as shown. YAML reads an unquoted `1234567890.100000` as a number and drops the trailing zeros.
+
+# Slack setup
+
+  - The Slack app must be a member of the channel it posts to.
+  - To delete messages from earlier releases, the command reads the thread, so the app needs the history permission for the channel type (`channels:history` for public channels, `groups:history` for private ones). A name like `#release-log` is only resolved for public channels, so use the channel ID for a private channel.
+
+See [Continuous Integration - Release Notification]({{ '/continuous-integration/release-notification' | relative_url }}) for a GitHub Actions workflow that runs this command.
 
 # Input
 
