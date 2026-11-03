@@ -8,6 +8,7 @@ module FeatureMap
       MAX_RELEASE_LOG_MESSAGE_AGE_IN_SECONDS = (24 * 60 * 60)
 
       MAX_FEATURES_PER_COMMIT = 5
+      MAX_RELEASE_OUTLINE_BULLETS = 47
 
       attr_reader :github_client, :full_repo_name, :display_name, :main_branch, :slack_api_token, :slack_app_user_id, :slack_channel,
                   :slack_thread_parent_ts, :doc_site_base_url
@@ -99,9 +100,9 @@ module FeatureMap
           return
         end
 
-        message_blocks = build_release_outline(features_by_commit)
-
-        message_blocks = build_header_blocks(release_tag, current_commit_sha) + message_blocks
+        compare_url = github_compare_url(release_tag, current_commit_sha)
+        message_blocks = build_header_blocks(compare_url, current_commit_sha) +
+                         build_release_outline(features_by_commit, compare_url)
         puts "Release Log Message Content:\n#{message_blocks.to_json}\n\n"
 
         message_blocks
@@ -171,7 +172,11 @@ module FeatureMap
         @oldest_relevant_message_ts ||= (Time.now - MAX_RELEASE_LOG_MESSAGE_AGE_IN_SECONDS).to_i
       end
 
-      def build_header_blocks(release_tag, current_commit_sha)
+      def github_compare_url(release_tag, current_commit_sha)
+        "https://github.com/#{full_repo_name}/compare/#{release_tag}...#{current_commit_sha}"
+      end
+
+      def build_header_blocks(compare_url, current_commit_sha)
         [
           {
             type: 'header',
@@ -184,25 +189,56 @@ module FeatureMap
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: "Current Commit: <https://github.com/#{full_repo_name}/compare/#{release_tag}...#{current_commit_sha}|#{current_commit_sha}>\n"
+              text: "Current Commit: <#{compare_url}|#{current_commit_sha}>\n"
             }
           }
         ]
       end
 
-      def build_release_outline(features_by_commit)
+      def build_release_outline(features_by_commit, compare_url)
         return [] if features_by_commit.empty?
 
-        commits = features_by_commit.keys
-
-        commit_bullets = commits.flat_map do |commit|
-          [build_commit_bullet(commit)] + build_feature_sub_bullets(features_by_commit[commit])
+        bullets_by_commit = features_by_commit.map do |commit, features|
+          [build_commit_bullet(commit)] + build_feature_sub_bullets(features)
         end
 
-        [{
+        return [build_rich_text_block(bullets_by_commit.flatten)] if bullets_by_commit.sum(&:length) <= MAX_RELEASE_OUTLINE_BULLETS
+
+        included_bullets = fit_commit_bullets(bullets_by_commit, MAX_RELEASE_OUTLINE_BULLETS - 1)
+        omitted_commit_count = bullets_by_commit.length - included_bullets.length
+
+        [
+          build_rich_text_block(included_bullets.flatten),
+          build_truncation_notice_block(omitted_commit_count, compare_url)
+        ]
+      end
+
+      def fit_commit_bullets(bullets_by_commit, bullet_budget)
+        bullet_count = 0
+        bullets_by_commit.take_while do |commit_bullets|
+          bullet_count += commit_bullets.length
+          bullet_count <= bullet_budget
+        end
+      end
+
+      def build_rich_text_block(bullets)
+        {
           type: 'rich_text',
-          elements: commit_bullets
-        }]
+          elements: bullets
+        }
+      end
+
+      def build_truncation_notice_block(omitted_commit_count, compare_url)
+        commits_label = omitted_commit_count == 1 ? 'commit' : 'commits'
+
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: ":warning: Message truncated to fit Slack's limits. #{omitted_commit_count} older #{commits_label} " \
+                  "not shown. <#{compare_url}|View the full comparison on GitHub>"
+          }
+        }
       end
 
       def build_commit_bullet(commit)

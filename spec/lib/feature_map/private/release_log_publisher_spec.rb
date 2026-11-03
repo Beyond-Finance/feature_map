@@ -524,6 +524,69 @@ module FeatureMap
         expect(slack_client).to have_received(:chat_postMessage).with(channel: slack_channel, blocks: expected_message, thread_ts: slack_thread_parent_ts)
       end
 
+      context 'when the release contains more commits than fit within Slack message limits' do
+        let(:commit_shas) { (1..commit_count).map { |index| format('%08x', index) } }
+        let(:commit_files) do
+          commit_shas.to_h { |sha| [sha, ['app/services/create_program.rb', 'app/jobs/onboard_client_job.rb']] }
+        end
+        let(:compare_url) { "https://github.com/example-org/example-app/compare/#{previous_release_tag}...#{commit_shas.first}" }
+        let(:posted_blocks) do
+          posted_blocks = nil
+          allow(slack_client).to receive(:chat_postMessage) { |args| posted_blocks = args[:blocks] }
+          publisher.publish
+          posted_blocks
+        end
+        let(:rich_text_block) { posted_blocks.find { |block| block[:type] == 'rich_text' } }
+        let(:posted_commit_descriptions) do
+          rich_text_block[:elements]
+            .select { |list| list[:indent].zero? }
+            .map { |list| list[:elements].first[:elements].first[:text] }
+        end
+        let(:total_block_count) { posted_blocks.length + rich_text_block[:elements].length }
+
+        context 'when every commit fits' do
+          let(:commit_count) { 15 }
+
+          it 'includes all commits without a truncation notice' do
+            expect(posted_commit_descriptions.length).to eq(15)
+            expect(posted_blocks.last[:type]).to eq('rich_text')
+            expect(total_block_count).to be <= 50
+          end
+        end
+
+        context 'when one commit does not fit' do
+          let(:commit_count) { 16 }
+
+          it 'omits the oldest commit and notes it in a singular truncation notice' do
+            expect(posted_commit_descriptions).to eq((1..15).map { |index| "ABC-123 | CHORE | Sample commit #{index}" })
+            expect(posted_blocks.last).to eq(
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: ":warning: Message truncated to fit Slack's limits. 1 older commit not shown. " \
+                      "<#{compare_url}|View the full comparison on GitHub>"
+              }
+            )
+            expect(total_block_count).to be <= 50
+          end
+        end
+
+        context 'when many commits do not fit' do
+          let(:commit_count) { 20 }
+
+          it 'keeps the newest commits with all of their feature bullets and links to the full comparison' do
+            expect(posted_commit_descriptions.first).to eq('ABC-123 | CHORE | Sample commit 1')
+            expect(rich_text_block[:elements].length).to eq(45)
+            expect(rich_text_block[:elements].last[:indent]).to eq(1)
+            expect(posted_blocks.last[:text][:text]).to eq(
+              ":warning: Message truncated to fit Slack's limits. 5 older commits not shown. " \
+              "<#{compare_url}|View the full comparison on GitHub>"
+            )
+            expect(total_block_count).to be <= 50
+          end
+        end
+      end
+
       context 'when no Slack API token is set' do
         let(:slack_token) { nil }
 
