@@ -6,6 +6,8 @@ Posts the changes merged since the previous GitHub release, with the features ea
 
 This command posts to Slack when a Slack API token, channel and thread timestamp are all set. With any of them empty it prints the message it would have posted and posts nothing.
 
+**Run this command in CI.** It is meant for a CI/CD job, not for local use. It prints its progress and the messages it would post to standard output, which is useful in a job log but noisy in a terminal.
+
 # Command
 
 > `bin/featuremap slack_release_log`

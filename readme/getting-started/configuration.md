@@ -97,6 +97,7 @@ documentation_site:
 
 # Settings for the Slack and GitHub commands.  Each section turns on the
 # command of the same name; leave a section out to leave the command off.
+# These commands are meant to run in CI.
 # See the Public Interface pages for what each key does and which are required.
 github_pr_annotation:
   github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'

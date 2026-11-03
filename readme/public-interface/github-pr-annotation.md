@@ -6,6 +6,8 @@ Comments on a pull request with the features its changes affect, and keeps a mat
 
 This command posts to GitHub. Running it against a real pull request creates or updates its comment and labels.
 
+**Run this command in CI.** It is meant for a CI/CD job, not for local use. It prints its progress and the messages it would post to standard output, which is useful in a job log but noisy in a terminal.
+
 # Command
 
 > `bin/featuremap github_pr_annotation`

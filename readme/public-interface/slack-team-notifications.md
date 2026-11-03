@@ -6,6 +6,8 @@ For a release tag, posts each team a Slack message listing the features it is re
 
 This command posts to Slack for every team that has a webhook and affected features. A team with an empty webhook gets a printed message instead of a post.
 
+**Run this command in CI.** It is meant for a CI/CD job, not for local use. It prints its progress and the messages it would post to standard output, which is useful in a job log but noisy in a terminal.
+
 # Command
 
 > `bin/featuremap slack_team_notifications`
