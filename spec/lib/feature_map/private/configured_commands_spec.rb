@@ -44,18 +44,16 @@ module FeatureMap
           }
         )
         stub_const('ENV', ENV.to_h.merge('ACCESS_TOKEN_GITHUB' => 'gh-token', 'PR_NUMBER' => '1234', 'BASE_METRICS_PATH' => base_metrics_path))
-        allow(Octokit::Client).to receive(:new).and_return(:github_client)
       end
 
       it 'builds the annotator from the config and announces' do
         expect(Private::PullRequestAnnotator).to receive(:new)
-          .with(:github_client, 'example-org/example-app', '1234', base_metrics_path, 'https://example-org.github.io/example-app/#/')
+          .with('gh-token', 'example-org/example-app', '1234', base_metrics_path, 'https://example-org.github.io/example-app/#/')
           .and_return(annotator)
 
         described_class.github_pr_annotation
 
         expect(annotator).to have_received(:announce)
-        expect(Octokit::Client).to have_received(:new).with(access_token: 'gh-token', auto_paginate: true)
       end
 
       it 'skips with a message when the base metrics file does not exist' do

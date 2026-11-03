@@ -13,9 +13,8 @@ module FeatureMap
           end
 
           require 'octokit'
-          client = Octokit::Client.new(access_token: required(settings, Configuration::GITHUB_PR_ANNOTATION_SECTION, 'github_token'), auto_paginate: true)
           PullRequestAnnotator.new(
-            client,
+            required(settings, Configuration::GITHUB_PR_ANNOTATION_SECTION, 'github_token'),
             full_repo_name,
             required(settings, Configuration::GITHUB_PR_ANNOTATION_SECTION, 'pr_number'),
             base_metrics_path,

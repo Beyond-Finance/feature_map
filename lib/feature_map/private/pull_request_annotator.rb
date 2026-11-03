@@ -13,8 +13,8 @@ module FeatureMap
         'cyclomatic_complexity' => 'Cyclomatic Complexity'
       }.freeze
 
-      def initialize(client, full_repo_name, pr_number, base_branch_metrics_path, doc_site_base_url)
-        @client = client
+      def initialize(github_token, full_repo_name, pr_number, base_branch_metrics_path, doc_site_base_url)
+        @client = Octokit::Client.new(access_token: github_token, auto_paginate: true)
         @full_repo_name = full_repo_name
         @pr_number = pr_number
         @doc_site_base_url = doc_site_base_url

@@ -6,7 +6,7 @@ require 'slack-ruby-client'
 
 module FeatureMap
   RSpec.describe Private::PullRequestAnnotator do
-    subject(:annotator) { described_class.new(client, full_repo_name, pr_number, base_branch_metrics_path, doc_site_base_url) }
+    subject(:annotator) { described_class.new(github_token, full_repo_name, pr_number, base_branch_metrics_path, doc_site_base_url) }
 
     let(:client) do
       instance_double(Octokit::Client,
@@ -21,6 +21,7 @@ module FeatureMap
                       add_labels_to_an_issue: nil,
                       remove_label: nil)
     end
+    let(:github_token) { 'gh-token' }
     let(:full_repo_name) { 'example-org/example-app' }
     let(:doc_site_base_url) { 'https://example-org.github.io/example-app/#/' }
     let(:pr_number) { 1234 }
@@ -41,11 +42,17 @@ module FeatureMap
     let(:third_impacted_feature) { CodeFeatures::Feature.from_hash('name' => 'Enrollment Agreements') }
 
     before do
+      allow(Octokit::Client).to receive(:new).and_return(client)
       allow(annotator).to receive(:puts)
       allow(FeatureMap).to receive(:for_file).and_return(first_impacted_feature, second_impacted_feature, third_impacted_feature)
     end
 
     describe '#announce' do
+      it 'builds the GitHub client from the token' do
+        annotator.announce
+        expect(Octokit::Client).to have_received(:new).with(access_token: 'gh-token', auto_paginate: true)
+      end
+
       it 'retrieves the set of files for the specified pull request from Github' do
         annotator.announce
         expect(client).to have_received(:pull_request_files).with(full_repo_name, pr_number)
