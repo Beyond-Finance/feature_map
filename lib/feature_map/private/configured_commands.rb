@@ -6,18 +6,12 @@ module FeatureMap
     module ConfiguredCommands
       def self.github_pr_annotation
         run(Configuration::GITHUB_PR_ANNOTATION_SECTION) do |settings|
-          base_metrics_path = settings['base_metrics_path'].to_s
-          unless File.exist?(base_metrics_path)
-            puts "Base metrics not found at '#{base_metrics_path}'. Skipping feature announcement."
-            next
-          end
-
           require 'octokit'
           PullRequestAnnotator.new(
             required(settings, Configuration::GITHUB_PR_ANNOTATION_SECTION, 'github_token'),
             full_repo_name,
             required(settings, Configuration::GITHUB_PR_ANNOTATION_SECTION, 'pr_number'),
-            base_metrics_path,
+            settings['base_metrics_path'].to_s,
             doc_site_base_url
           ).announce
         end

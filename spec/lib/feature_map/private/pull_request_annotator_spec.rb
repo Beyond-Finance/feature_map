@@ -25,7 +25,7 @@ module FeatureMap
     let(:full_repo_name) { 'example-org/example-app' }
     let(:doc_site_base_url) { 'https://example-org.github.io/example-app/#/' }
     let(:pr_number) { 1234 }
-    let(:base_branch_metrics_path) { '/tmp/base_metrics.yml' }
+    let(:base_branch_metrics_path) { Pathname.pwd.join('base_metrics.yml').to_s }
 
     let(:pr_files) do
       [
@@ -42,6 +42,7 @@ module FeatureMap
     let(:third_impacted_feature) { CodeFeatures::Feature.from_hash('name' => 'Enrollment Agreements') }
 
     before do
+      write_file('base_metrics.yml', "---\nfeatures: {}\n")
       allow(Octokit::Client).to receive(:new).and_return(client)
       allow(annotator).to receive(:puts)
       allow(FeatureMap).to receive(:for_file).and_return(first_impacted_feature, second_impacted_feature, third_impacted_feature)
@@ -51,6 +52,16 @@ module FeatureMap
       it 'builds the GitHub client from the token' do
         annotator.announce
         expect(Octokit::Client).to have_received(:new).with(access_token: 'gh-token', auto_paginate: true)
+      end
+
+      context 'when the base metrics file does not exist' do
+        let(:base_branch_metrics_path) { '/does/not/exist.yml' }
+
+        it 'skips with a message and does not call GitHub' do
+          annotator.announce
+          expect(annotator).to have_received(:puts).with("Base metrics not found at '/does/not/exist.yml'. Skipping feature announcement.")
+          expect(client).not_to have_received(:pull_request_files)
+        end
       end
 
       it 'retrieves the set of files for the specified pull request from Github' do

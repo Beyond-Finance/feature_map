@@ -56,13 +56,6 @@ module FeatureMap
         expect(annotator).to have_received(:announce)
       end
 
-      it 'skips with a message when the base metrics file does not exist' do
-        stub_const('ENV', ENV.to_h.merge('BASE_METRICS_PATH' => '/does/not/exist.yml'))
-        expect(Private::PullRequestAnnotator).not_to receive(:new)
-
-        expect { described_class.github_pr_annotation }.to output(/Base metrics not found/).to_stdout
-      end
-
       it 'raises when repository.url is not set' do
         write_configuration('github_pr_annotation' => { 'github_token' => 'gh-token', 'pr_number' => '1', 'base_metrics_path' => base_metrics_path })
 

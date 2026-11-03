@@ -22,6 +22,11 @@ module FeatureMap
       end
 
       def announce
+        unless File.exist?(@base_branch_metrics_path)
+          puts "Base metrics not found at '#{@base_branch_metrics_path}'. Skipping feature announcement."
+          return
+        end
+
         changed_files = lookup_changed_files
         affected_features = identify_affected_features(changed_files)
         feature_metrics = gather_feature_metrics(affected_features)
