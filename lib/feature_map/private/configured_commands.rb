@@ -5,7 +5,7 @@ module FeatureMap
   module Private
     module ConfiguredCommands
       def self.github_pr_annotation
-        run('github_pr_annotation') do |settings|
+        run(Configuration::GITHUB_PR_ANNOTATION_SECTION) do |settings|
           base_metrics_path = settings['base_metrics_path'].to_s
           unless File.exist?(base_metrics_path)
             puts "Base metrics not found at '#{base_metrics_path}'. Skipping feature announcement."
@@ -13,11 +13,11 @@ module FeatureMap
           end
 
           require 'octokit'
-          client = Octokit::Client.new(access_token: required(settings, 'github_pr_annotation', 'github_token'), auto_paginate: true)
+          client = Octokit::Client.new(access_token: required(settings, Configuration::GITHUB_PR_ANNOTATION_SECTION, 'github_token'), auto_paginate: true)
           PullRequestAnnotator.new(
             client,
             full_repo_name,
-            required(settings, 'github_pr_annotation', 'pr_number'),
+            required(settings, Configuration::GITHUB_PR_ANNOTATION_SECTION, 'pr_number'),
             base_metrics_path,
             doc_site_base_url
           ).announce
@@ -25,11 +25,11 @@ module FeatureMap
       end
 
       def self.slack_release_log
-        run('slack_release_log') do |settings|
+        run(Configuration::SLACK_RELEASE_LOG_SECTION) do |settings|
           require 'octokit'
           require 'slack-ruby-client'
           ReleaseLogPublisher.new(
-            required(settings, 'slack_release_log', 'github_token'),
+            required(settings, Configuration::SLACK_RELEASE_LOG_SECTION, 'github_token'),
             full_repo_name,
             display_name(settings),
             doc_site_base_url,
@@ -43,12 +43,12 @@ module FeatureMap
       end
 
       def self.slack_team_notifications
-        run('slack_team_notifications') do |settings|
+        run(Configuration::SLACK_TEAM_NOTIFICATIONS_SECTION) do |settings|
           require 'octokit'
           require 'faraday'
           TeamReleaseNotifier.new(
-            required(settings, 'slack_team_notifications', 'release_ref'),
-            required(settings, 'slack_team_notifications', 'github_token'),
+            required(settings, Configuration::SLACK_TEAM_NOTIFICATIONS_SECTION, 'release_ref'),
+            required(settings, Configuration::SLACK_TEAM_NOTIFICATIONS_SECTION, 'github_token'),
             full_repo_name,
             display_name(settings),
             (settings['teams'] || {}).transform_values(&:to_s)

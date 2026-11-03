@@ -3,7 +3,10 @@ require 'erb'
 
 module FeatureMap
   class Configuration
-    COMMAND_SECTIONS = %w[github_pr_annotation slack_release_log slack_team_notifications].freeze
+    GITHUB_PR_ANNOTATION_SECTION = 'github_pr_annotation'.freeze
+    SLACK_RELEASE_LOG_SECTION = 'slack_release_log'.freeze
+    SLACK_TEAM_NOTIFICATIONS_SECTION = 'slack_team_notifications'.freeze
+    COMMAND_SECTIONS = [GITHUB_PR_ANNOTATION_SECTION, SLACK_RELEASE_LOG_SECTION, SLACK_TEAM_NOTIFICATIONS_SECTION].freeze
 
     attr_reader :assigned_globs
     attr_reader :unassigned_globs
