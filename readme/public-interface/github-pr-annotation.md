@@ -16,13 +16,11 @@ The command takes no arguments. All of its settings come from the `github_pr_ann
 
 ```
 github_pr_annotation:
-  repo: '<%= ENV.fetch('REPO', '') %>'
   github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
   pr_number: '<%= ENV.fetch('PR_NUMBER', '') %>'
   base_metrics_path: '<%= ENV.fetch('BASE_METRICS_PATH', '') %>'
 ```
 
-  - `repo` (required): the repository name. The organization comes from `repository.url`.
   - `github_token` (required): a token that can read the pull request and write comments and labels.
   - `pr_number` (required): the pull request to annotate.
   - `base_metrics_path`: the `metrics.yml` generated on the base branch. When the file does not exist, the command prints a message and skips the annotation.

@@ -28,7 +28,6 @@ jobs:
   release_log:
     runs-on: ubuntu-latest
     env:
-      REPO: ${{ github.event.repository.name }}
       ACCESS_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN_GITHUB }}
       RELEASE_LOG_SLACK_API_TOKEN: ${{ secrets.RELEASE_LOG_SLACK_API_TOKEN }}
       RELEASE_LOG_SLACK_APP_USER_ID: ${{ vars.RELEASE_LOG_SLACK_APP_USER_ID }}
@@ -55,7 +54,6 @@ jobs:
   team_notifications:
     runs-on: ubuntu-latest
     env:
-      REPO: ${{ github.event.repository.name }}
       RELEASE_REF: ${{ github.ref }}
       ACCESS_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN_GITHUB }}
       ONBOARDING_SLACK_WEBHOOK: ${{ secrets.ONBOARDING_SLACK_WEBHOOK }}

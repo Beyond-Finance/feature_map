@@ -38,13 +38,12 @@ module FeatureMap
         write_configuration(
           **repository_settings,
           'github_pr_annotation' => {
-            'repo' => "<%= ENV.fetch('REPO', '') %>",
             'github_token' => "<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>",
             'pr_number' => "<%= ENV.fetch('PR_NUMBER', '') %>",
             'base_metrics_path' => "<%= ENV.fetch('BASE_METRICS_PATH', '') %>"
           }
         )
-        stub_const('ENV', ENV.to_h.merge('REPO' => 'example-app', 'ACCESS_TOKEN_GITHUB' => 'gh-token', 'PR_NUMBER' => '1234', 'BASE_METRICS_PATH' => base_metrics_path))
+        stub_const('ENV', ENV.to_h.merge('ACCESS_TOKEN_GITHUB' => 'gh-token', 'PR_NUMBER' => '1234', 'BASE_METRICS_PATH' => base_metrics_path))
         allow(Octokit::Client).to receive(:new).and_return(:github_client)
       end
 
@@ -66,6 +65,12 @@ module FeatureMap
         expect { described_class.github_pr_annotation }.to output(/Base metrics not found/).to_stdout
       end
 
+      it 'raises when repository.url is not set' do
+        write_configuration('github_pr_annotation' => { 'github_token' => 'gh-token', 'pr_number' => '1', 'base_metrics_path' => base_metrics_path })
+
+        expect { described_class.github_pr_annotation }.to raise_error("'repository.url' must be set in .feature_map/config.yml")
+      end
+
       it 'raises naming the missing setting when the GitHub token is empty' do
         stub_const('ENV', ENV.to_h.merge('ACCESS_TOKEN_GITHUB' => ''))
 
@@ -82,7 +87,6 @@ module FeatureMap
             url: https://github.com/example-org/example-app
           documentation_site_url: https://example-org.github.io/example-app/
           slack_release_log:
-            repo: example-app
             display_name: Example App
             github_token: gh-token
             slack_api_token: <%= ENV.fetch('RELEASE_LOG_SLACK_API_TOKEN', '') %>
@@ -107,6 +111,15 @@ module FeatureMap
         end
       end
 
+      it 'strips a trailing .git from the repository url' do
+        write_file('.feature_map/config.yml', File.read('.feature_map/config.yml').sub('example-org/example-app', 'example-org/example-app.git'))
+        expect(Private::ReleaseLogPublisher).to receive(:new)
+          .with(anything, 'example-org/example-app', anything, anything, anything, anything, anything, anything, anything)
+          .and_return(publisher)
+
+        described_class.slack_release_log
+      end
+
       it 'builds the publisher from the config, keeping the thread timestamp exactly as written' do
         expect(Private::ReleaseLogPublisher).to receive(:new)
           .with('gh-token', 'example-org/example-app', 'Example App', 'https://example-org.github.io/example-app/#/', 'main', '', 'U1234ABCD', '#release-log', '1234567890.100000')
@@ -122,7 +135,6 @@ module FeatureMap
       let(:notifier) { instance_double(Private::TeamReleaseNotifier, notify: nil) }
       let(:section) do
         {
-          'repo' => 'example-app',
           'github_token' => 'gh-token',
           'release_ref' => 'refs/tags/v1',
           'teams' => { 'Sales' => "<%= ENV.fetch('SALES_SLACK_WEBHOOK', '') %>" }

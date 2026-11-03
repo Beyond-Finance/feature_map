@@ -16,7 +16,7 @@ module FeatureMap
           client = Octokit::Client.new(access_token: required(settings, 'github_pr_annotation', 'github_token'), auto_paginate: true)
           PullRequestAnnotator.new(
             client,
-            full_repo_name(settings, 'github_pr_annotation'),
+            full_repo_name,
             required(settings, 'github_pr_annotation', 'pr_number'),
             base_metrics_path,
             doc_site_base_url
@@ -30,7 +30,7 @@ module FeatureMap
           require 'slack-ruby-client'
           ReleaseLogPublisher.new(
             required(settings, 'slack_release_log', 'github_token'),
-            full_repo_name(settings, 'slack_release_log'),
+            full_repo_name,
             display_name(settings),
             doc_site_base_url,
             main_branch,
@@ -49,7 +49,7 @@ module FeatureMap
           TeamReleaseNotifier.new(
             required(settings, 'slack_team_notifications', 'release_ref'),
             required(settings, 'slack_team_notifications', 'github_token'),
-            full_repo_name(settings, 'slack_team_notifications'),
+            full_repo_name,
             display_name(settings),
             (settings['teams'] || {}).transform_values(&:to_s)
           ).notify
@@ -74,15 +74,14 @@ module FeatureMap
       end
 
       def self.display_name(settings)
-        settings['display_name'].to_s.empty? ? settings['repo'].to_s : settings['display_name'].to_s
+        settings['display_name'].to_s.empty? ? full_repo_name.split('/').last : settings['display_name'].to_s
       end
 
-      def self.full_repo_name(settings, section_name)
-        repo = required(settings, section_name, 'repo')
+      def self.full_repo_name
         repository_url = Private.configuration.repository['url'].to_s
         raise "'repository.url' must be set in .feature_map/config.yml" if repository_url.empty?
 
-        "#{URI.parse(repository_url).path.split('/')[1]}/#{repo}"
+        URI.parse(repository_url).path.delete_prefix('/').delete_suffix('.git')
       end
 
       def self.main_branch

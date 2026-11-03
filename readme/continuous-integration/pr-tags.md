@@ -29,7 +29,6 @@ jobs:
   annotate:
     runs-on: ubuntu-latest
     env:
-      REPO: ${{ github.event.repository.name }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
       ACCESS_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN_GITHUB }}
     steps:

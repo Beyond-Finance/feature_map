@@ -16,7 +16,6 @@ The command takes no arguments. All of its settings come from the `slack_team_no
 
 ```
 slack_team_notifications:
-  repo: '<%= ENV.fetch('REPO', '') %>'
   display_name: Example
   github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
   release_ref: '<%= ENV.fetch('RELEASE_REF', '') %>'
@@ -24,8 +23,7 @@ slack_team_notifications:
     Onboarding: '<%= ENV.fetch('ONBOARDING_SLACK_WEBHOOK', '') %>'
 ```
 
-  - `repo` (required): the repository name. The organization comes from `repository.url`.
-  - `display_name`: optional. The name shown in the message header. Defaults to `repo`.
+  - `display_name`: optional. The name shown in the message header. Defaults to the repository name from `repository.url`.
   - `github_token` (required): a token that can read the repository's releases.
   - `release_ref` (required): the release tag, as `refs/tags/<tag>`. Any other value stops the command with an error.
   - `teams`: each team's name, exactly as CodeOwnership names it, and its Slack webhook URL. A team with an empty webhook is skipped.

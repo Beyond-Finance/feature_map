@@ -16,7 +16,6 @@ The command takes no arguments. All of its settings come from the `slack_release
 
 ```
 slack_release_log:
-  repo: '<%= ENV.fetch('REPO', '') %>'
   display_name: Example
   github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
   slack_api_token: '<%= ENV.fetch('RELEASE_LOG_SLACK_API_TOKEN', '') %>'
@@ -25,8 +24,7 @@ slack_release_log:
   slack_thread_parent_ts: '<%= ENV.fetch('RELEASE_LOG_SLACK_THREAD_PARENT_TS', '') %>'
 ```
 
-  - `repo` (required): the repository name. The organization comes from `repository.url`.
-  - `display_name`: optional. The name shown in the message header. Defaults to `repo`.
+  - `display_name`: optional. The name shown in the message header. Defaults to the repository name from `repository.url`.
   - `github_token` (required): a token that can read the repository's releases.
   - `slack_api_token`: the Slack app's token. When it, `slack_channel` or `slack_thread_parent_ts` is empty, the command prints the message it would have posted and posts nothing.
   - `slack_app_user_id`: the Slack app's user ID. When empty, messages from earlier releases are not cleaned up.
