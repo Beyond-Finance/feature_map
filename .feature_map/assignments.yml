@@ -324,7 +324,10 @@ features:
     - readme/public-interface/for-class.md
     - readme/public-interface/for-feature.md
     - readme/public-interface/for-file.md
+    - readme/public-interface/github-pr-annotation.md
     - readme/public-interface/overview.md
+    - readme/public-interface/slack-release-log.md
+    - readme/public-interface/slack-team-notifications.md
     - readme/public-interface/test-coverage.md
     - readme/public-interface/test-pyramid.md
     - readme/public-interface/validate.md
