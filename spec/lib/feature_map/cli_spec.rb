@@ -110,6 +110,15 @@ RSpec.describe FeatureMap::Cli do
           expect(FeatureMap).to receive(method_name)
           subject
         end
+
+        context 'with --help' do
+          let(:argv) { [command, '--help'] }
+
+          it 'shows the usage and does not run the command' do
+            expect(FeatureMap).not_to receive(method_name)
+            expect { expect { subject }.to raise_error(SystemExit) }.to output(%r{Usage: bin/featuremap #{command}}).to_stdout
+          end
+        end
       end
     end
   end

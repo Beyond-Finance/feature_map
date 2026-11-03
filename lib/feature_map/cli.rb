@@ -21,11 +21,11 @@ module FeatureMap
       elsif command == 'additional_metrics'
         additional_metrics!(argv)
       elsif command == 'github_pr_annotation'
-        FeatureMap.github_pr_annotation!
+        github_pr_annotation!(argv)
       elsif command == 'slack_release_log'
-        FeatureMap.slack_release_log!
+        slack_release_log!(argv)
       elsif command == 'slack_team_notifications'
-        FeatureMap.slack_team_notifications!
+        slack_team_notifications!(argv)
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -274,6 +274,48 @@ module FeatureMap
       parser.parse!(args)
 
       FeatureMap.generate_additional_metrics!
+    end
+
+    def self.github_pr_annotation!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap github_pr_annotation'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      parser.parse!(argv)
+
+      FeatureMap.github_pr_annotation!
+    end
+
+    def self.slack_release_log!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap slack_release_log'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      parser.parse!(argv)
+
+      FeatureMap.slack_release_log!
+    end
+
+    def self.slack_team_notifications!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap slack_team_notifications'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      parser.parse!(argv)
+
+      FeatureMap.slack_team_notifications!
     end
 
     # For now, this just returns feature assignment
