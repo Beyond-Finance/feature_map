@@ -20,6 +20,12 @@ module FeatureMap
         test_pyramid!(argv)
       elsif command == 'additional_metrics'
         additional_metrics!(argv)
+      elsif command == 'github_pr_annotation'
+        github_pr_annotation!(argv)
+      elsif command == 'slack_release_log'
+        slack_release_log!(argv)
+      elsif command == 'slack_team_notifications'
+        slack_team_notifications!(argv)
       elsif command == 'for_file'
         for_file(argv)
       elsif command == 'for_feature'
@@ -33,6 +39,9 @@ module FeatureMap
             docs - generates feature documentation
             for_feature - find assignment information for a feature
             for_file - find feature assignment for a single file
+            github_pr_annotation - comments the features and metrics affected by a pull request and labels it
+            slack_release_log - posts the changes since the previous release to the release log thread in Slack
+            slack_team_notifications - posts each team's affected features for a release to the team's Slack channel
             test_coverage - generates per-feature test coverage statistics
             test_pyramid - generates per-feature test pyramid (unit, integration, regression) statistics
             additional_metrics - generates additional metrics per-feature (e.g. health score)
@@ -265,6 +274,48 @@ module FeatureMap
       parser.parse!(args)
 
       FeatureMap.generate_additional_metrics!
+    end
+
+    def self.github_pr_annotation!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap github_pr_annotation'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      parser.parse!(argv)
+
+      FeatureMap.github_pr_annotation!
+    end
+
+    def self.slack_release_log!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap slack_release_log'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      parser.parse!(argv)
+
+      FeatureMap.slack_release_log!
+    end
+
+    def self.slack_team_notifications!(argv)
+      parser = OptionParser.new do |opts|
+        opts.banner = 'Usage: bin/featuremap slack_team_notifications'
+
+        opts.on('--help', 'Shows this prompt') do
+          puts opts
+          exit
+        end
+      end
+      parser.parse!(argv)
+
+      FeatureMap.slack_team_notifications!
     end
 
     # For now, this just returns feature assignment

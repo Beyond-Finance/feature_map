@@ -94,4 +94,32 @@ documentation_site:
       good: 98
       fair: 95
       poor: 0
+
+# Settings for the Slack and GitHub commands.  Each section turns on the
+# command of the same name; leave a section out to leave the command off.
+# These commands are meant to run in CI.
+# See the Public Interface pages for what each key does and which are required.
+github_pr_annotation:
+  github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
+  pr_number: '<%= ENV.fetch('PR_NUMBER', '') %>'
+  base_metrics_path: '<%= ENV.fetch('BASE_METRICS_PATH', '') %>'
+slack_release_log:
+  display_name: Example App
+  github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
+  slack_api_token: '<%= ENV.fetch('RELEASE_LOG_SLACK_API_TOKEN', '') %>'
+  slack_app_user_id: '<%= ENV.fetch('RELEASE_LOG_SLACK_APP_USER_ID', '') %>'
+  slack_channel: '<%= ENV.fetch('RELEASE_LOG_SLACK_CHANNEL_NAME', '') %>'
+  slack_thread_parent_ts: '<%= ENV.fetch('RELEASE_LOG_SLACK_THREAD_PARENT_TS', '') %>'
+slack_team_notifications:
+  display_name: Example App
+  github_token: '<%= ENV.fetch('ACCESS_TOKEN_GITHUB', '') %>'
+  release_ref: '<%= ENV.fetch('RELEASE_REF', '') %>'
+  teams:
+    Onboarding: '<%= ENV.fetch('ONBOARDING_SLACK_WEBHOOK', '') %>'
 ```
+
+# Environment variables
+
+The configuration file is processed as ERB before it is read as YAML, so values can come from environment variables with `<%= ENV.fetch('NAME', '') %>`.  This is how secrets such as tokens and webhooks reach the commands.  Quote the tag, as in the example above, so YAML does not turn a value like `1234567890.100000` into a number.
+
+The documentation site only publishes the `documentation_site` and `repository` sections of this file.  The `github_pr_annotation`, `slack_release_log` and `slack_team_notifications` sections are never written to the documentation site.
