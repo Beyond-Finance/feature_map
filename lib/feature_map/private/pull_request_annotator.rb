@@ -51,6 +51,8 @@ module FeatureMap
         affected = {}
 
         changed_files.each do |file|
+          next unless Private.file_tracked?(file)
+
           feature = FeatureMap.for_file(file)
           next unless feature
 

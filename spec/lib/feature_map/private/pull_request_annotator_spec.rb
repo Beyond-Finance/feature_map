@@ -46,6 +46,7 @@ module FeatureMap
       allow(Octokit::Client).to receive(:new).and_return(client)
       allow(annotator).to receive(:puts)
       allow(FeatureMap).to receive(:for_file).and_return(first_impacted_feature, second_impacted_feature, third_impacted_feature)
+      allow(Private).to receive(:file_tracked?).and_return(true)
     end
 
     describe '#announce' do
@@ -67,6 +68,38 @@ module FeatureMap
       it 'retrieves the set of files for the specified pull request from Github' do
         annotator.announce
         expect(client).to have_received(:pull_request_files).with(full_repo_name, pr_number)
+      end
+
+      context 'when a changed file is not tracked' do
+        let(:pr_files) do
+          [
+            double('File', filename: '.github/integration_spec_guidlines.md'),
+            double('File', filename: 'app/services/test_service.rb')
+          ]
+        end
+
+        before do
+          allow(Private).to receive(:file_tracked?).with('.github/integration_spec_guidlines.md').and_return(false)
+          allow(Private).to receive(:file_tracked?).with('app/services/test_service.rb').and_return(true)
+          allow(FeatureMap).to receive(:for_file).with('.github/integration_spec_guidlines.md')
+                                                 .and_raise('Could not find feature')
+          allow(FeatureMap).to receive(:for_file).with('app/services/test_service.rb').and_return(first_impacted_feature)
+        end
+
+        it 'does not look up the untracked file and does not raise' do
+          expect { annotator.announce }.not_to raise_error
+          expect(FeatureMap).not_to have_received(:for_file).with('.github/integration_spec_guidlines.md')
+        end
+
+        it 'still reports the tracked file' do
+          annotator.announce
+          expect(FeatureMap).to have_received(:for_file).with('app/services/test_service.rb')
+          expect(client).to have_received(:add_comment) do |*args|
+            expect(args[2]).to include(first_impacted_feature.name)
+            expect(args[2]).to include('app/services/test_service.rb')
+            expect(args[2]).not_to include('integration_spec_guidlines')
+          end
+        end
       end
 
       context 'when no features are impacted by the pull request' do
